@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8">
+    <title>航班时段管理</title>
+    <link href="../css/mine.css" rel="stylesheet" />
+    
+</head>
+
+<body>
+    <div class="bw-content">
+        <div class="bw-content-title c-dark">航班时段管理</div>
+        <div class="bw-content-box">
+            <div class="bw-action-box" id="action-box">
+                <div class="pul-l team-box date-box">
+                    <label class="pul-l c-dark" for="userStatus">航班时段：</label>
+                    <select id="min-data-select" class="bw-select"></select>
+                    <span>~</span>
+                    <select id="max-data-select" class="bw-select"></select>
+                    <span id="time-select" class="bw-btn bw-btn-lan">查询</span>
+                </div>
+                <div class="action-btn-group pul-r c-light">
+                    <span class="add bw-action">
+                        <i class="iconfont c-yellow bw-add-ico"></i>
+                        新增
+                    </span>
+                    <span class="bw-action refresh">
+                        <i class="iconfont c-blue bw-refresh-ico"></i>
+                        刷新
+                    </span>
+                </div>
+            </div>
+            <div id="flight-info-table" class="bw-table box-show">
+                <table class="table-subject table-striped">
+                    <thead class="bw-thead">
+                        <tr class="c-dark">
+                            <td>序号</td>
+                            <td>航班时段</td>
+                            <td>所属时间点</td>
+                            <td>接送时段</td>
+                            <td>操作</td>
+                        </tr>
+                    </thead>
+                    <tbody class="bw-tbody c-light bw-page-content"></tbody>
+                    <script type="text/x-dot-template" class="bw-table-tpl bw-page-tpl">
+                        {{if ($bw.getLength(it)==0){ }}
+                        <tr>
+                            <td colspan="12">暂无数据</td>
+                        </tr>
+                        {{ }else{ }} {{ for (var i in it){ }} {{ $bw.serial++;}}
+                        <tr data-id="{{=it[i].id}}">
+                            <td>{{=$bw.serial}}</td>
+                            <td>{{=$bw.N(it[i].FlightStartTime)}}~{{=$bw.N(it[i].FlightEndTime)}}</td>
+                            <td>{{=$bw.N(it[i].TimePoint)}}</td>
+                            <td>{{=$bw.N(it[i].PickupStartTime)}}~{{=$bw.N(it[i].PickupEndTime)}}</td>
+                            <td>
+                                <span class="bw-btn bw-btn-danger delete" data-id="{{=it[i].STID}}">删除</span>
+                                <span class="bw-btn bw-btn-lan edit" data-key="{{=i}}" data-id="{{=it[i].STID}}">编辑</span>
+                            </td>
+                        </tr>
+                        {{ } }} {{ } }}
+                    </script>
+                </table>
+                <div class="pul-l bw-table-total">共0条记录</div>
+                <div class="bw-page"></div>
+            </div>
+        </div>
+    </div>
+    <div id="edit-layer" class="layer-html">
+        <div class="bw-panel panel-center col-18">
+            <form class="bw-form" id="edit-form" action="" method="post" enctype="multipart/form-data"></form>
+        </div>
+    </div>
+    <script type="text/x-dot-template" id="tpl-form-layer">
+        <div class="panel-content c-light">
+            <div class="bw-info-list">
+                <label class="bw-info-title pul-l">航班时段：</label>
+                <select id="FlightStartTime" class="bw-select time-select" name="FlightStartTime"></select>
+                <span>———</span>
+                <select id="FlightEndTime" class="bw-select time-select" name="FlightEndTime"></select>
+            </div>
+            <div class="bw-info-list">
+                <label class="bw-info-title pul-l">所属时间点：</label>
+                <select id="TimePoint" class="bw-select time-select" name="TimePoint"></select>
+            </div>
+            <div class="bw-info-list">
+                <label class="bw-info-title pul-l">接送时段：</label>
+                <select id="PickupStartTime" class="bw-select time-select" name="PickupStartTime"></select>
+                <span>———</span>
+                <select id="PickupEndTime" class="bw-select time-select" name="PickupEndTime"></select>
+            </div>
+        </div>
+        <div class="panel-foot">
+            <div class="bw-btn-group">
+                <input class="bw-btn bw-btn-success" id="inputSubmit" type="submit" value="保存" />
+                <input class="bw-btn bw-btn-info closeLayer" type="button" value="取消" />
+                <input type="hidden" name="STID" value="{{=$bw.N(it.STID)}}" />
+            </div>
+        </div>
+    </script>
+    <script type="text/x-dot-template" id="tpl-time">
+        {{ for(var i in it){ }}
+        <option value="{{=i}}">{{=it[i]}}</option>
+        {{ } }}
+    </script>
+    <script src="../js/ini.js"></script>
+</body>
+
+</html>

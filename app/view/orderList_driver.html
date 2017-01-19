@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8">
+    <title>司机接送清单</title>
+    <link href="../css/mine.css" rel="stylesheet" />
+    
+</head>
+
+<body>
+    <div class="bw-content">
+        <div class="bw-content-title c-dark">司机接送清单</div>
+        <div class="bw-content-box">
+            <div class="bw-action-box" id="action-box" style="margin-bottom: 0">
+                <div class="pul-l team-box search-box">
+                    <span class="pul-l c-dark">司机姓名：</span>
+                    <input class="bw-input bw-search-input" id="search-driver" type="text" placeholder="Search">
+                </div>
+                <div class="pul-l team-box search-box">
+                    <span class="pul-l c-dark">车 牌 号：</span>
+                    <input class="bw-input bw-search-input" id="search-license" type="text" placeholder="Search">
+                </div>
+                <div class="pul-l team-box">
+                    <label class="pul-l c-dark" for="userStatus">发车日期：</label>
+                    <input id="start-date-input" class="bw-input" readonly="readonly" type="text">
+                    <span class="iconfont c-light bw-date-ico pul-l" id="start-date"></span>
+                </div>
+                <div class="action-btn-group pul-r c-light">
+                    <!--  <span class="bw-action show-all">
+                       <i class="iconfont c-yellow bw-add-ico"></i>
+                       全部展开
+                   </span> -->
+                    <span class="bw-action hidden-all">
+                        <i class="iconfont c-blue bw-refresh-ico"></i>
+                        全部收起
+                    </span>
+                </div>
+            </div>
+            <div class="bw-action-box">
+                <div class="pul-l team-box">
+                    <span class="pul-l c-dark">行程类型：</span>
+                    <select id="trip-type" class="bw-select c-light"></select>
+                </div>
+                <div class="pul-l team-box">
+                    <span class="pul-l c-dark">司机状态：</span>
+                    <select id="driver-status" class="bw-select c-light"></select>
+                </div>
+                <div class="pul-l team-box">
+                    <span id="search" class="bw-btn bw-btn-lan">查询</span>
+                </div>
+            </div>
+            <div id="driver-order-table" class="bw-table box-show">
+                <table class="table-subject table-striped3">
+                    <thead class="bw-thead">
+                        <tr class="c-dark">
+                            <td>序号</td>
+                            <td>司机编号</td>
+                            <td>司机姓名</td>
+                            <td>司机电话</td>
+                            <td>车牌号</td>
+                            <td>班次号</td>
+                            <td class="search-select-td">
+                                行程类型
+                                <!-- <i class="iconfont bw-solidDown-ico pul-r bw-cursor trip-class"></i>
+                                <dl id="trip-type" class="title-search-select"> </dl>
+                                <input id="trip-type-input" type="hidden" /> -->
+                            </td>
+                            <td>发车日期</td>
+                            <td>首位乘客预约时间</td>
+                            <td>乘客人数</td>
+                            <td class="search-select-td">
+                                清单状态
+                                <!-- <i class="iconfont bw-solidDown-ico pul-r bw-cursor driver-status"></i>
+                                <dl  class="title-search-select"></dl>
+                                <input id="driver-status-input" type="hidden" /> -->
+                            </td>
+                            <td>操作</td>
+                        </tr>
+                    </thead>
+                    <tbody class="bw-tbody c-light bw-page-content"></tbody>
+                    <script type="text/x-dot-template" class="bw-table-tpl bw-page-tpl">
+                        {{if ($bw.getLength(it)==0){ }}
+                        <tr>
+                            <td colspan="12">暂无数据</td>
+                        </tr>
+                        {{ }else{ }} {{ for (var i in it){ }} {{ $bw.serial++;}}
+                        <tr class="driver-order-tr" data-id="{{=it[i].POID}}">
+                            <td>{{=$bw.serial}}</td>
+                            <td>{{=$bw.N(it[i].Code)}}</td>
+                            <td>
+                                <div class="bw-nowrap" title="{{=$bw.N(it[i].DriverName)}}">{{=$bw.N(it[i].DriverName)}}</div>
+                            </td>
+                            <td>{{=$bw.N(it[i].DriverPhone)}}</td>
+                            <td>{{=$bw.N(it[i].License)}}</td>
+                            <td>{{=$bw.N(it[i].POID)}}</td>
+                            <td>{{=$bw.N(it[i].TripTypeVal)}}</td>
+                            <td>{{=format(it[i].StartDate,'year')}}</td>
+                            <td>{{=format(it[i].PickupTime,'time')}}</td>
+                            <td>{{=$bw.N(it[i].UserNumber)}}</td>
+                            {{if(it[i].OrderState=='BeSend'){}}
+                            <td class="c-yellow">{{=$bw.N(it[i].OrderStateVal)}}</td>
+                            <td>
+                                <span class="bw-btn bw-btn-danger send-out" data-id="{{=it[i].POID}}">确认发送</span>
+                                <span class="bw-btn bw-btn-lan cancel" data-id="{{=it[i].POID}}">取消重排</span>
+                            </td>
+                            {{ }else if(it[i].OrderState=='PendConfirm'){ }}
+                            <td class="c-danger">{{=$bw.N(it[i].OrderStateVal)}}</td>
+                            <td>--</td>
+                            {{ }else if(it[i].OrderState=='Confirmed'){ }}
+                            <td class="c-violet">{{=$bw.N(it[i].OrderStateVal)}}</td>
+                            <td>--</td>
+                            {{ }else if(it[i].OrderState=='InHand'){ }}
+                            <td class="c-blue">{{=$bw.N(it[i].OrderStateVal)}}</td>
+                            <td>--</td>
+                            {{ }else if(it[i].OrderState=='Arrived'){ }}
+                            <td class="c-ffc20a">{{=$bw.N(it[i].OrderStateVal)}}</td>
+                            <td>--</td>
+                            {{ }else if(it[i].OrderState=='Completed'){ }}
+                            <td class="c-green">{{=$bw.N(it[i].OrderStateVal)}}</td>
+                            <td>--</td>
+                            {{ } }}
+                        </tr>
+                        <tr class="layer-html child-table-tr">
+                            <td class="child-table-box" colspan="13">
+                                <div class="table-title box-show">乘客信息</div>
+                                <table class="table-subject child-table box-show">
+                                    <thead class="bw-thead">
+                                        <td>序号</td>
+                                        <td>身份证</td>
+                                        <td>乘客姓名</td>
+                                        <td>手机号</td>
+                                        <td>航班</td>
+                                        <td>预约日期</td>
+                                        <td>预约时间</td>
+                                        <td>实际上车时间</td>
+                                        <td>上车地点</td>
+                                        <td>乘客状态</td>
+                                    </thead>
+                                    <tbody class="bw-tbody c-light"></tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        {{ } }} {{ } }}
+                    </script>
+                </table>
+                <div class="pul-l bw-table-total">共0条记录</div>
+                <div class="bw-page"></div>
+            </div>
+        </div>
+    </div>
+    <script type="text/x-dot-template" id="tpl-header-select">
+        <option value="">全部</option>
+        {{for(var i in it){ }}
+        <option value="{{=it[i].ItemCode}}">{{=it[i].ItemValue}}</option>
+        {{ } }}
+    </script>
+    <script type="text/x-dot-template" id="tpl-child-table">
+        {{if ($bw.getLength(it)==0){ }}
+        <tr>
+            <td colspan="12">暂无数据</td>
+        </tr>
+        {{ }else{ }} {{ for(var i in it){ }}
+        <tr>
+            <td>{{=i+1}}</td>
+            <td>{{=it[i].IDCardNo}}</td>
+            <td>{{=it[i].Name}}</td>
+            <td>{{=it[i].Phone}}</td>
+            <td></td>
+            <td>{{=it[i].PickupTime}}</td>
+            <td>{{=it[i].PickupTime}}</td>
+            <td>{{=it[i].PickupTime}}</td>
+            <td>{{=it[i].PickupAddress}}</td>
+            <td>{{=it[i].ChildStatusVal}}</td>
+        </tr>
+        {{ } }} {{ } }}
+    </script>
+    <script src="../js/ini.js"></script>
+    <script src="../Plug/laydate/laydate.js"></script>
+</body>
+
+</html>

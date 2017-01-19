@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8">
+    <title>乘客行程清单</title>
+    <link href="../css/mine.css" rel="stylesheet" />
+    
+</head>
+
+<body>
+    <div class="bw-content">
+        <div class="bw-content-title c-dark">乘客行程清单</div>
+        <div class="bw-content-box">
+            <div class="bw-action-box" id="action-box">
+                <div class="pul-l team-box search-box">
+                    <input class="bw-input bw-search-input" id="searchInput" type="text" placeholder="Search">
+                    <i class="iconfont c-light bw-search-ico bw-search"></i>
+                </div>
+                <div class="pul-l team-box">
+                    <span class="pul-l c-dark">行程类型：</span>
+                    <select class="bw-select c-light" id="trip-type"></select>
+                </div>
+                <div class="pul-l team-box">
+                    <span class="pul-l c-dark">乘客状态：</span>
+                    <select class="bw-select c-light" id="user-status"></select>
+                </div>
+                <!-- <div class="action-btn-group pul-r c-light">
+                    <span class="bw-action refresh">
+                        <i class="iconfont c-blue bw-refresh-ico"></i>
+                        取消行程
+                    </span>
+                </div> -->
+            </div>
+            <div id="user-order-table" class="bw-table box-show">
+                <table class="table-subject table-striped">
+                    <thead class="bw-thead">
+                        <tr class="c-dark">
+                            <td>序号</td>
+                            <td>身份证</td>
+                            <td>乘客姓名</td>
+                            <td>手机号</td>
+                            <td>航班</td>
+                            <td>行程类型</td>
+                            <td>舱位</td>
+                            <td>预约日期</td>
+                            <td>预约时间</td>
+                            <td>接送机地点</td>
+                            <td>乘客状态</td>
+                            <td>操作</td>
+                        </tr>
+                    </thead>
+                    <tbody class="bw-tbody c-light bw-page-content"></tbody>
+                    <script type="text/x-dot-template" class="bw-table-tpl bw-page-tpl">
+                        {{if ($bw.getLength(it)==0){ }}
+                        <tr>
+                            <td colspan="12">暂无数据</td>
+                        </tr>
+                        {{ }else{ }} {{ for (var i in it){ }} {{ $bw.serial++;}}
+                        <tr class="user-order-tr" data-id="{{=it[i].POID}}">
+                            <td>{{=$bw.serial}}</td>
+                            <td>
+                                <div class="bw-nowrap" title="{{=$bw.N(it[i].IDCardNo)}}">{{=$bw.N(it[i].IDCardNo)}}</div>
+                            </td>
+                            <td>
+                                <div class="bw-nowrap" title="{{=$bw.N(it[i].Name)}}">{{=$bw.N(it[i].Name)}}</div>
+                            </td>
+                            <td>{{=$bw.N(it[i].Phone)}}</td>
+                            <td>{{=$bw.N(it[i].FlightNo)}}</td>
+                            <td>{{=$bw.N(it[i].TripTypeVal)}}</td>
+                            <td>{{=$bw.N(it[i].CabinSeat)}}</td>
+                            <td>{{=format(it[i].PickupTime,'year')}}</td>
+                            <td>{{=format(it[i].PickupTime,'time')}}</td>
+                            <td>
+                                <div class="bw-nowrap" title="{{=$bw.N(it[i].PickupAddress)}}">{{=$bw.TN(it[i].PickupAddress)}}</div>
+                            </td>
+                            <td>{{=$bw.N(it[i].StatusVal)}} {{if(it[i].Status=='InHand' && it[i].ChildStatusVal){}} ({{=it[i].ChildStatusVal}}) {{ } }}
+                            </td>
+                            <td>
+                                {{ if(it[i].Status=='BookSuccess' || it[i].Status=='Registered' || it[i].Status=='Confirmed'){ }}
+                                <span class="bw-btn bw-btn-danger cancel" data-key="{{=i}}" data-id="{{=it[i].POID}}">取消行程</span> {{ } }}
+                            </td>
+                        </tr>
+                        {{ } }} {{ } }}
+                    </script>
+                </table>
+                <div class="pul-l bw-table-total">共0条记录</div>
+                <div class="bw-page"></div>
+            </div>
+        </div>
+    </div>
+    <div id="cancel-layer" class="layer-html">
+        <div class="bw-panel panel-center col-18">
+            <form class="bw-form" id="cancel-form" action="#" method="" enctype="multipart/form-data"></form>
+        </div>
+    </div>
+    <script type="text/x-dot-template" id="tpl-cancel-layer">
+        <div class="panel-content c-light">
+            <div class="cancel-btn-box">
+                <div class="cancel-type bw-btn bw-btn-primary">行程取消</div>
+                <div class="cancel-type bw-btn bw-btn-primary">航班取消</div>
+                <div class="cancel-type bw-btn bw-btn-primary">时间太赶</div>
+                <div class="cancel-type bw-btn bw-btn-primary">其他事项</div>
+            </div>
+            <div class="bw-info-list">
+                <label for="inspection" class="bw-info-title pul-l">其他原因：</label>
+                <textarea id="other" class="bw-textarea pul-l col-15" data-verify="maxLength" data-max="400" style="height:125px;"></textarea>
+            </div>
+        </div>
+        <div class="panel-foot">
+            <div class="bw-btn-group">
+                <input class="bw-btn bw-btn-success" id="cancel-submit" type="submit" value="确定" />
+                <input class="bw-btn bw-btn-info closeLayer" type="button" value="取消" />
+                <input id="cancel-type" type="hidden" />
+                <input id="BLIDS" type="hidden" value="{{=it.BLID}}"/>
+            </div>
+        </div>
+    </script>
+    <script type="text/x-dot-template" id="tpl-header-select">
+        <option value="">全部</option>
+        {{for(var i in it){ }}
+        <option value="{{=it[i].ItemCode}}">{{=it[i].ItemValue}}</option>
+        {{ } }}
+    </script>
+    <script src="../js/ini.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8">
+    <title>车辆信息管理</title>
+    <link href="../css/mine.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="bw-content">
+        <div class="bw-content-title c-dark">车辆信息管理</div>
+        <div class="bw-content-box">
+            <div id="action-box" class="bw-action-box small-action">
+                <div class="pul-l team-box search-box">
+                    <input class="bw-input bw-search-input" id="searchInput" type="text" placeholder="Search">
+                    <i class="iconfont c-light bw-search-ico bw-search"></i>
+                </div>
+                <div class="pul-l team-box">
+                    <span class="pul-l c-dark">车辆状态：</span>
+                    <select class="bw-select c-light" id="car-status">
+                    </select>
+                    <script type="text/x-dot-template" id="tpl-car-status">
+                        <option value="">全部</option>
+                        {{var carsState=$bw.htmlRes.carsState;}} {{for (var i in carsState) { }}
+                        <option value="{{=carsState[i].ItemCode}}">{{=carsState[i].ItemValue}}</option>
+                        {{ } }}
+                    </script>
+                </div>
+                <div class="pul-l team-box date-box">
+                    <label class="pul-l c-dark" for="userStatus">年检日期：</label>
+                    <input id="min-data-input" class="bw-input" readonly="readonly" type="text">
+                    <span class="iconfont c-light bw-date-ico pul-l" id="minDate"></span>
+                    <input id="max-data-input" class="bw-input" readonly="readonly" type="text">
+                    <span class="iconfont c-light bw-date-ico pul-l" id="maxDate"></span>
+                    <span id="date-search" class="bw-btn bw-btn-lan">查询</span>
+                </div>
+                <div class="action-btn-group pul-r c-light">
+                    <span class="add bw-action">
+                        <i class="iconfont c-yellow bw-add-ico"></i>
+                        新增
+                    </span>
+                    <span class="bw-action refresh">
+                        <i class="iconfont c-blue bw-refresh-ico"></i>
+                        刷新
+                    </span>
+                </div>
+            </div>
+            <div id="car-info-table" class="bw-table box-show" >
+                <table class="table-subject table-striped">
+                    <thead class="bw-thead">
+                        <tr class="c-dark">
+                            <td>序号</td>
+                            <td>车牌号</td>
+                            <td>司机编号</td>
+                            <td>司机姓名</td>
+                            <td>车辆品牌</td>
+                            <td>车辆型号</td>
+                            <td>座位数</td>
+                            <td>行驶证号</td>
+                            <td>车辆出厂日期</td>
+                            <td>年检日期</td>
+                            <td>车辆状态</td>
+                            <td>操作</td>
+                        </tr>
+                    </thead>
+                    <tbody class="bw-tbody c-light bw-page-content"></tbody>
+                    <script type="text/x-dot-template" class="bw-table-tpl bw-page-tpl">
+                        {{if ($bw.getLength(it)==0){ }}
+                        <tr>
+                            <td colspan="13">暂无数据</td>
+                        </tr>
+                        {{ }else{ }} {{ for (var i in it){ }} {{ $bw.serial++;}}
+                        <tr class="car-list" data-id="{{=it[i].CID}}">
+                            <td>{{=$bw.serial}}</td>
+                            <td><div class="bw-nowrap" title="{{=$bw.N(it[i].License)}}">{{=$bw.N(it[i].License)}}</div></td>
+                            <td>{{=$bw.N(it[i].Code)}}</td>
+                            <td>{{=$bw.N(it[i].Name)}}</td>
+                            <td>{{=$bw.N(it[i].Brand)}}</td>
+                            <td>{{=$bw.N(it[i].Model)}}</td>
+                            <td>{{=$bw.N(it[i].Capacity)}}</td>
+                            <td>{{=$bw.N(it[i].DrivingLicense)}}</td>
+                            <td>{{=format(it[i].ProductionDate,'year')}}</td>
+                            <td>{{=format(it[i].CheckTime,'year')}}</td>
+                            <td>{{=$bw.N(it[i].ItemValue)}}</td>
+                            <td>
+                                <span class="bw-btn bw-btn-danger delete" data-id="{{=it[i].CID}}">删除</span>
+                                <span class="bw-btn bw-btn-lan edit" data-key="{{=i}}" data-id="{{=it[i].CID}}">编辑</span>
+                            </td>
+                        </tr>
+                        
+                        {{ } }} {{ } }}
+                    </script>
+                </table>
+                <div class="pul-l bw-table-total">共5条记录</div>
+                <div class="bw-page"></div>
+            </div>
+        </div>
+    </div>
+    <div id="edit-layer" class="layer-html">
+        <div class="bw-panel panel-center col-18">
+            <form class="bw-form" id="edit-form" action="lum-api/publist" method="POST" enctype="multipart/form-data"></form>
+        </div>
+    </div>
+    <script type="text/x-dot-template" id="tpl-add-layer">
+        <div class="panel-content c-light">
+            <div class="bw-info-list">
+                <label for="car-num" class="bw-info-title pul-l">车牌号：</label>
+                <input id="car-num" data-verify="notNull" name="License" class="bw-input" type="text" />
+            </div>
+            <div class="bw-info-list">
+                <label for="driver-num" class="bw-info-title pul-l">司机编号：</label>
+                <input id="driver-num" data-verify="notNull" name="Code" class="bw-input" type="text" />
+            </div>
+            <!-- <div class="bw-info-list">
+                <label for="driver-name" class="bw-info-title pul-l">司机姓名：</label>
+                <input id="driver-name" data-verify="notNull" name="Name" class="bw-input" type="text" readonly="readonly" />
+            </div> -->
+            <div class="bw-info-list">
+                <label for="car-brand" class="bw-info-title pul-l">车辆品牌：</label>
+                <input id="car-brand" data-verify="notNull,maxLength" data-max="20" name="Brand" class="bw-input" type="text"/>
+            </div>
+            <div class="bw-info-list">
+                <label for="car-model" class="bw-info-title pul-l">车辆型号：</label>
+                <input id="car-model" data-verify="notNull" name="Model" class="bw-input" type="text" />
+            </div>
+            <div class="bw-info-list">
+                <label for="seats" class="bw-info-title pul-l">座位数：</label>
+                <input id="seats" data-verify="notNull,number" data-min="1" name="Capacity" class="bw-input" type="text" />
+            </div>
+            <div class="bw-info-list">
+                <label for="drive-num" class="bw-info-title pul-l">行驶证号码：</label>
+                <input id="drive-num" data-verify="notNull" name="DrivingLicense" class="bw-input" type="text" />
+            </div>
+            <div class="bw-info-list">
+                <label for="manufacture" class="bw-info-title pul-l">出厂日期：</label>
+                <input id="manufacture" data-verify="notNull" name="ProductionDate" class="bw-input" type="text" readonly="readonly" />
+                <span class="iconfont c-light bw-date-ico" id="manufacture-date"></span>
+            </div>
+            <div class="bw-info-list">
+                <label for="inspection" class="bw-info-title pul-l">年检日期：</label>
+                <input id="inspection" data-verify="notNull" name="CheckTime" class="bw-input" type="text" readonly="readonly" />
+                <span class="iconfont c-light bw-date-ico" id="inspection-date"></span>
+            </div>
+            <div class="bw-info-list">
+                <label class="bw-info-title pul-l">年检状态：</label>
+                <div class="bw-select-btn">
+                    {{var carsState=$bw.htmlRes.carsState;}} {{for (var i in carsState) { }} {{if(i==0){}}
+                    <input id="carsStateRadio{{=i}}" value="{{=carsState[i].ItemCode}}" name="State" type="radio" class="layer-html" checked="checked" />
+                    <label class="bw-btn bw-btn-default dict-city-btn action" for="carsStateRadio{{=i}}">{{=carsState[i].ItemValue}}</label>
+                    {{}else{}}
+                    <input id="carsStateRadio{{=i}}" value="{{=carsState[i].ItemCode}}" name="State" type="radio" class="layer-html" />
+                    <label class="bw-btn bw-btn-default dict-city-btn" for="carsStateRadio{{=i}}">{{=carsState[i].ItemValue}}</label>
+                    {{ } }} {{ } }}
+                </div>
+            </div>
+        </div>
+        <div class="panel-foot">
+            <div class="bw-btn-group">
+                <input class="bw-btn bw-btn-success" id="addSubmit" type="submit" value="保存" />
+                <input class="bw-btn bw-btn-info closeLayer" type="button" value="取消" />
+            </div>
+        </div>
+    </script>
+    <script type="text/x-dot-template" id="tpl-edit-layer">
+        <div class="panel-content c-light">
+            <div class="bw-info-list">
+                <label for="car-num" class="bw-info-title pul-l">车牌号：</label>
+                <span>{{=it.License}}</span>
+            </div>
+            <div class="bw-info-list">
+                <label for="driver-num" class="bw-info-title pul-l">司机编号：</label>
+                <input id="driver-num" data-verify="notNull" name="Code" class="bw-input" type="text" value="{{=it.Code}}" />
+            </div>
+            <div class="bw-info-list">
+                <label for="driver-name" class="bw-info-title pul-l">司机姓名：</label>
+                <input id="driver-name" data-verify="notNull" name="Name" class="bw-input" type="text" value="{{=it.Name}}" readonly="readonly" />
+            </div>
+            <div class="bw-info-list">
+                <label for="car-brand" class="bw-info-title pul-l">车辆品牌：</label>
+                <span>{{=it.Brand}}</span>
+            </div>
+            <div class="bw-info-list">
+                <label for="car-model" class="bw-info-title pul-l">车辆型号：</label>
+                <span>{{=it.Model}}</span>
+            </div>
+            <div class="bw-info-list">
+                <label for="seats" class="bw-info-title pul-l">座位数：</label>
+                <span>{{=it.Capacity}}</span>
+            </div>
+            <div class="bw-info-list">
+                <label for="drive-num" class="bw-info-title pul-l">行驶证号码：</label>
+                <span>{{=it.DrivingLicense}}</span>
+            </div>
+            <div class="bw-info-list">
+                <label for="manufacture" class="bw-info-title pul-l">出厂日期：</label>
+                <span>{{=it.ProductionDate}}</span>
+            </div>
+            <div class="bw-info-list">
+                <label for="inspection" class="bw-info-title pul-l">年检日期：</label>
+                <input id="inspection" data-verify="notNull" name="" class="bw-input" type="text" value="{{=format(it.CheckTime,'year')}}"/>
+                <span class="iconfont c-light bw-date-ico" id="inspection-date"></span>
+            </div>
+            <div class="bw-info-list">
+                <label class="bw-info-title pul-l">年检状态：</label>
+                <div class="bw-select-btn">
+                    {{var carsState=$bw.htmlRes.carsState;}} {{for (var i in carsState) { }} {{if(carsState[i].ItemCode==it.ItemCode){}}
+                    <input id="carsStateRadio{{=i}}" value="{{=carsState[i].ItemCode}}" name="State" type="radio" class="layer-html" checked="checked" />
+                    <label class="bw-btn bw-btn-default dict-city-btn action" for="carsStateRadio{{=i}}">{{=carsState[i].ItemValue}}</label>
+                    {{}else{}}
+                    <input id="carsStateRadio{{=i}}" value="{{=carsState[i].ItemCode}}" name="State" type="radio" class="layer-html" />
+                    <label class="bw-btn bw-btn-default dict-city-btn" for="carsStateRadio{{=i}}">{{=carsState[i].ItemValue}}</label>
+                    {{ } }} {{ } }}
+                </div>
+            </div>
+        </div>
+        <div class="panel-foot">
+            <div class="bw-btn-group">
+                <input class="bw-btn bw-btn-success" id="editSubmit" type="submit" value="保存" />
+                <input class="bw-btn bw-btn-info closeLayer" type="button" value="取消" />
+                <input type="hidden" name="did" value="{{=it.CID}}" />
+            </div>
+        </div>
+    </script>
+    <script src="../js/ini.js"></script>
+    <script src="../Plug/laydate/laydate.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8">
+    <title>微信预约</title>
+    <link href="../css/mine.css" rel="stylesheet" />
+    
+</head>
+
+<body>
+    <div class="bw-content">
+        <div class="bw-content-title c-dark">微信预约</div>
+        <div class="bw-content-box">
+            <div class="bw-action-box">
+                <div class="pul-l team-box date-box">
+                    <input id="min-data-input" class="bw-input" readonly="readonly" type="text" placeholder="起飞日期">
+                    <span class="iconfont c-light bw-date-ico pul-l" id="min-data" style="display:none"></span>
+                    <div class="pul-l search-select-td" style="height:30px">
+                        <input id="min-time-input" class="bw-input select-input" type="text" data-tpl="tpl-select-time-list" style="width:70px;margin-left:5px" placeholder="起飞时间">
+                        <ul class="select-hidden-list col-20"></ul>
+                    </div>
+                    <span class="pul-l">&nbsp;到&nbsp;</span>
+                    <input id="max-data-input" class="bw-input" readonly="readonly" type="text" placeholder="起飞日期">
+                    <span class="iconfont c-light bw-date-ico pul-l" id="max-data" style="display:none"></span>
+                    <div class="pul-l search-select-td" style="height:30px">
+                        <input id="max-time-input" class="bw-input select-input" type="text" data-tpl="tpl-select-time-list" style="width:70px;margin-left:5px" placeholder="起飞时间">
+                        <ul class="select-hidden-list col-20"></ul>
+                    </div>
+                </div>
+                <div class="pul-l team-box date-box">
+                    <span id="search" class="bw-btn bw-btn-lan">查询</span>
+                </div>
+            </div>
+            <div id="wechat-table" class="bw-table box-show">
+                <table class="table-subject table-striped">
+                    <thead class="bw-thead">
+                        <tr class="c-dark">
+                            <td>序号</td>
+                            <td>乘客姓名</td>
+                            <td>手机号</td>
+                            <td>航班</td>
+                            <td>舱位</td>
+                            <td>起飞日期</td>
+                            <td>起飞时间</td>
+                            <td>预约上车地点</td>
+                            <td>接送时段</td>
+                            <td>上车地点</td>
+                            <td>上车时间</td>
+                            <td>操作</td>
+                        </tr>
+                    </thead>
+                    <tbody class="bw-tbody c-light bw-page-content"></tbody>
+                    <script type="text/x-dot-template" class="bw-table-tpl bw-page-tpl">
+                        {{if ($bw.getLength(it)==0){ }}
+                        <tr>
+                            <td colspan="15">暂无数据</td>
+                        </tr>
+                        {{ }else{ }} {{ for (var i in it){ }} {{ $bw.serial++;}}
+                        <tr id="{{=it[i].BLID}}">
+                            <td>{{=$bw.serial}}</td>
+                            <td>{{=$bw.N(it[i].Name)}}</td>
+                            <td>{{=$bw.N(it[i].Phone)}}</td>
+                            <td>{{=$bw.N(it[i].FlightNo)}}</td>
+                            <td>{{=$bw.N(it[i].CabinSeat)}}</td>
+                            <td>{{=format(it[i].TakeOffDate,'year')}}</td>
+                            <td>{{=format(it[i].TakeOffTime,'time')}}</td>
+                            <td><div class="bw-nowrap" title="{{=$bw.N(it[i].PickupAddress)}}">{{=$bw.N(it[i].PickupAddress)}}</div></td>
+                            <td>{{=$bw.N(it[i].PickupTimeBucket)}}</td>
+                            <td class="search-select-td">
+                                <input class="bw-input col-20 select-input address-input" type="text" data-tpl="tpl-address-list">
+                                <ul class="select-hidden-list col-20" data-id="{{=it[i].BLID}}"></ul>
+                            </td>
+                            <td class="search-select-td">
+                                <input class="bw-input col-20 select-input" type="text" data-tpl="tpl-time-list">
+                                <ul class="select-hidden-list col-20" data-id="{{=it[i].BLID}}"></ul>
+                            </td>
+                            <td>
+                                <span class="bw-btn bw-btn-lan acceptAppointment" data-key="{{=i}}" data-id="{{=it[i].BLID}}">接受预约</span>
+                            </td>
+                        </tr>
+                        {{ } }} {{ } }}
+                    </script>
+                </table>
+                <div class="bw-page"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script type="text/x-dot-template" id="tpl-select-time-list">
+        {{for(var i in it){ }}
+        <li class="r-start-time-li bw-nowrap col-20" title="{{=it[i]}}">{{=it[i]}}</li>
+        {{ } }}
+    </script>
+    <script type="text/x-dot-template" id="tpl-time-list">
+        {{for(var i in it){ }}
+        <li class="r-start-time-li bw-nowrap col-20" title="{{=it[i]}}">{{=it[i]}}</li>
+        {{ } }}
+    </script>
+    <script type="text/x-dot-template" id="tpl-address-list">
+        {{for(var i in it){ }} {{if(it[i].location){ }}
+        <li class="r-addtess-li bw-nowrap col-20" title="{{=it[i].name}}" data-lat="{{=it[i].location.lat}}" data-lng="{{=it[i].location.lng}}">{{=it[i].name}}</li>
+        {{ } }} {{ } }}
+    </script>
+    <script src="../js/ini.js"></script>
+    <script src="../Plug/laydate/laydate.js"></script>
+</body>
+
+</html>

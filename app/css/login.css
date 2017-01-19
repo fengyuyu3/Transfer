@@ -1,0 +1,19 @@
+.login-bg{background: url('../image/login.jpg') no-repeat ; background-size:100% 100%; height:calc(100% - 40px);width:100%;display:flex;align-items: center;}
+.login-box{width:422px;height:386px;margin:0 auto;background-color: #fff;border-radius: 3px;padding:0 31px;color:#e2e2e2;}
+.login-title{text-align: center;line-height: 92px;font-size: 16px}
+.login-list{line-height: 38px !important;height:38px}
+.login-userInfo{border: solid 1px #e2e2e2;padding-left:14px;margin-bottom: 28px;}
+.login-userInfo input{height:100%;width:91%;float:left;padding:0 15px}
+.login-userInfo .iconfont{width:9%;display: inline-block;float:left}
+
+.login-input::-moz-placeholder{color:#666}
+.login-input::-webkit-input-placeholder{color:#666}
+.login-input{outline: none;display: block}
+.captcha-input{height:100%;float:left;width:30%;border: solid 1px #e2e2e2;}
+.captcha-input input{height:100%;width:100%;padding-left:14px}
+.login-captcha .captcha-img{width:30%;float:left;border: solid 1px #e2e2e2;height:100%;margin-left: 14px}
+.login-captcha .captcha-img img{width:100%;height:100%}
+.rememberPassword{float:right;cursor: pointer}
+.rememberPassword .iconfont{font-size: 20px;float:left;}
+.rememberPassword:hover{color:#37b5d9}
+.goLogin{padding:0;font-size: 14px;width:100%;}

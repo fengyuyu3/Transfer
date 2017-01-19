@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8">
+    <title>电话预约</title>
+    <link href="../css/mine.css" rel="stylesheet" />
+    
+</head>
+
+<body>
+    <div id="reg-phone" class="bw-content">
+        <div class="bw-content-title c-dark">电话预约登记</div>
+        <div class="bw-content-box">
+            <div class="bw-panel panel-center col-18">
+                <form class="bw-form" id="write-form" action="" method="">
+                    <div class="panel-title c-blue">乘客信息</div>
+                    <div class="panel-content c-light">
+                        <div class="bw-info-list">
+                            <label for="IdNo-input" class="bw-info-title pul-l">身份证或护照：</label>
+                            <input id="IdNo-input" name="IDCardNo" class="bw-input col-4" type="text" />
+                        </div>
+                        <div class="bw-info-list pul-l col-8">
+                            <label for="FlightDate-input" class="bw-info-title pul-l">航班日期：</label>
+                            <input id="FlightDate-input" name="FlightDate" class="bw-input" type="text" readonly="readonly" />
+                            <input id="flight-date-num" type="hidden" name="FlightDateName" />
+                            <span class="iconfont c-light bw-date-ico" id="trip-date-btn" style="display:none"></span>
+                        </div>
+                        <div class="bw-info-list pul-l col-8 station-box">
+                            <label for="ArriveStation-input" class="bw-info-title pul-l" style="min-width: 60px">航班目的地：</label>
+                            <input id="ArriveStation-input" name="ArriveStationName" class="bw-input" type="text" />
+                            <input id="arrive-tation-code" type="hidden" name="ArriveStation" />
+                            <input type="hidden" name="TripType" value="ClearPort" />
+                            <input type="hidden" name="TakeOffStation" value="CTU" />
+                            <ul id="arrive-tation-list"></ul>
+                        </div>
+                        <div class="pul-l col-2 flight-search-box">
+                            <span id="get-user-info" class="bw-btn bw-btn-warning">查询</span>
+                        </div>
+                    </div>
+                    <div class="bw-clear"></div>
+                    <div class="guideInfo" id="flight-info"></div>
+                    <div class="carInfo" id="write-info"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script type="text/x-dot-template" id="tpl-tation-select">
+        {{for(var i in it){}}
+        <li class="arrive-tation-name bw-nowrap" title="{{=it[i].CName}}" data-id="{{=it[i].Code}}">{{=it[i].CName}}</li>
+        {{ } }}
+    </script>
+    <script type="text/x-dot-template" id="tpl-flight-info">
+        <div class="panel-title c-blue">航班信息</div>
+        {{for(var i in it){}}
+        <div class="panel-content c-light f-i-list {{ if(it.length==1 && it[i].IsValid){ }} action {{ } }}" data-key="{{=i}}">
+            <div class="flight-info-box">
+                <div class="pul-l col-5"><span class="bw-info-title">乘客姓名：</span><span>{{=$bw.TN(it[i].UserName)}}</span></div>
+                <div class="pul-l col-5"><span class="bw-info-title">起飞日期：</span><span>{{=format(it[i].TakeOffDate,'year')}}</span></div>
+                <div class="pul-l col-5"><span class="bw-info-title">起飞时间：</span><span>{{=format(it[i].TakeOffTime,'time')}}</span></div>
+            </div>
+            <div class="flight-info-box">
+                <div class="pul-l col-5"><span class="bw-info-title">航班号：</span><span>{{=$bw.TN(it[i].FlightNo)}}</span></div>
+                <div class="pul-l col-5"><span class="bw-info-title">舱位：</span><span>{{=$bw.TN(it[i].CabinSeat)}}</span></div>
+                <div class="pul-l col-5"><span class="bw-info-title">乘坐资格：</span> 
+                    {{if(it[i].IsValid){}}
+                    <span class="c-green">是 {{if(it[i].ValidType==1){}} <span class="c-danger">已预约</span>{{ } }}</span> 
+                    {{ }else{ }}
+                    <span class="c-danger">否</span> 
+                    {{ } }}
+                </div>
+            </div>
+        </div>
+        {{ } }}
+    </script>
+    <script type="text/x-dot-template" id="tpl-write-info">
+        <div class="panel-title c-blue">预约信息</div>
+        <div class="panel-content c-light">
+            <div class="bw-info-list">
+                <label for="PickupAddress-input" class="bw-info-title pul-l">上车地点：</label>
+                <div class="select-hidden-list-box" style="margin-left:100px">
+                    <input id="PickupAddress-input" data-verify="notNull" name="PickupAddress" class="bw-input select-input" type="text" data-box="address-select-list" data-tpl="tpl-address-list" />
+                    <span class="c-danger">上车地址必须从类别中选择，以获取坐标</span>
+                    <ul id="address-select-list" class="select-hidden-list col-10"></ul>
+                </div>
+            </div>
+            <div class="bw-info-list">
+                <label for="Phone-input" class="bw-info-title pul-l">联系方式：</label>
+                <input id="Phone-input" data-verify="phone" name="Phone" class="bw-input" type="text" />
+            </div>
+            <div class="bw-info-list">
+                <label for="AlternativePhone-input" class="bw-info-title pul-l">来电号码：</label>
+                <input id="AlternativePhone-input" data-verify="phone" name="AlternativePhone" class="bw-input" type="text" />
+            </div>
+            <div class="bw-info-list">
+                <span class="bw-info-title pul-l">所属航段：</span><span>{{=it.TripPeriod}}</span>
+            </div>
+            <div class="bw-info-list">
+                <span class="bw-info-title pul-l">上车时段：</span><span>{{=it.AboardStartTime}}-{{=it.AboardEndTime}}</span>
+            </div>
+            <div class="bw-info-list">
+                <span class="bw-info-title pul-l">上车时间：</span>
+                <div class="select-hidden-list-box pul-l">
+                    <input id="start-time" data-verify="notNull" name="PickupTime-word" class="bw-input select-input" type="text" data-box="start-time-list" data-tpl="tpl-time-list" />
+                    <ul id="start-time-list" class="select-hidden-list col-10"></ul>
+                </div>
+            </div>
+            <div class="bw-clear"></div>
+            <div class="panel-foot">
+                <div class="bw-btn-group">
+                    <input class="bw-btn bw-btn-success" id="submit" type="submit" value="确定" />
+                    <input class="bw-btn bw-btn-info closeLayer" type="button" value="取消" />
+                    <input type="hidden" value="{{=it.TID}}" name="TID" />
+                    <input type="hidden" value="{{=it.PID}}" name="PID" />
+                    <input id="pickup-time" type="hidden" value="" data-val="{{=format(it.TakeOffDate,'year')}}" name="PickupTime" />
+                    <input type="hidden" value="{{=it.TakeOfStation}}" name="DestAddress" />
+                    <input id="Address" type="hidden" name="Address" />
+                    <input id="PickupLongitude" type="hidden" name="PickupLongitude" />
+                    <input id="PickupLatitude" type="hidden" name="PickupLatitude" />
+                    <input type="hidden" name="CityCode" value="CTU" />
+                </div>
+            </div>
+        </div>
+    </script>
+    <script type="text/x-dot-template" id="tpl-time-list">
+        {{for(var i in it){ }}
+        <li class="r-start-time-li">{{=it[i]}}</li>
+        {{ } }}
+    </script>
+    <script type="text/x-dot-template" id="tpl-address-list">
+        {{for(var i in it){ }}
+        {{if(it[i].location){ }}
+            <li class="r-addtess-li" data-lat="{{=it[i].location.lat}}" data-lng="{{=it[i].location.lng}}">{{=it[i].name}}</li>
+        {{ } }}
+        {{ } }}
+    </script>
+    <script src="../js/ini.js"></script>
+    <script src="../Plug/laydate/laydate.js"></script>
+</body>
+
+</html>

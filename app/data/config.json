@@ -1,0 +1,46 @@
+{
+  "tips":"左侧菜单和顶部菜单配置 left内menu的id必须设置",
+  "top":{},
+  "left":[
+    {
+      "title":"预约管理",
+      "icon":"../image/3x_0002.png",
+      "name":"registration",
+      "menu":[
+        {"id":"registration_phone","name":"电话预约","href":"./registration_phone.html"},
+        {"id":"registration_wechat","name":"微信预约","href":"./registration_wechat.html"}
+      ]
+    },
+    {
+      "title":"排班信息",
+      "icon":"../image/3x_0002.png",
+      "name":"scheduling",
+      "menu":[
+        {"id":"scheduling_waiting","name":"待排信息","href":"./scheduling_waiting.html"}
+      ]
+    },
+    {
+      "title":"乘客行程清单",
+      "icon":"../image/3x_0002.png",
+      "name":"userOrderList",
+      "href":"./orderList_user.html"
+    },
+    {
+      "title":"司机接送清单",
+      "icon":"../image/3x_0002.png",
+      "name":"driverOrderList",
+      "href":"./orderList_driver.html"
+    },
+    {
+      "title":"基础信息管理",
+      "icon":"../image/3x_0002.png",
+      "name":"BasicManagement",
+      "menu":[
+        {"id":"basic_driver","name":"司机信息管理","href":"./basic_driver.html"},
+        {"id":"basic_car","name":"车辆信息管理","href":"./basic_car.html"},
+        {"id":"basic_place","name":"接送地点管理","href":"./basic_place.html"},
+        {"id":"basic_flight","name":"航班时段管理","href":"./basic_flight.html"}
+      ]
+    }
+  ]
+}

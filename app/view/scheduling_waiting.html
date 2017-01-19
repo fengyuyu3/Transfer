@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8">
+    <title>等待排班</title>
+    <link href="../css/mine.css" rel="stylesheet" />
+    
+</head>
+
+<body>
+    <div class="bw-content">
+        <div class="bw-content-title c-dark">等待排班</div>
+        <div class="bw-content-box">
+            <div class="bw-action-box">
+                <div class="pul-l team-box date-box">
+                    <label class="pul-l c-dark" for="userStatus">起飞日期：</label>
+                    <input id="start-data-input" class="bw-input" readonly="readonly" type="text">
+                    <span class="iconfont c-light bw-date-ico pul-l" id="start-data"></span>
+                </div>
+                <div class="pul-l team-box">
+                    <span class="pul-l c-dark">航班时段：</span>
+                    <select class="bw-select c-light" id="flight-time"></select>
+                    <script type="text/x-dot-template" id="tpl-flight-time">
+                        <option value="">全部</option>
+                        {{for(var i in it){}}
+                        <option value="{{=$bw.N(it[i].TimeCode)}}">{{=$bw.N(it[i].FlightStartTime)}}~{{=$bw.N(it[i].FlightEndTime)}}</option>
+                        {{ } }}
+                    </script>
+                </div>
+                <span id="search-btn" class="bw-btn bw-btn-lan">查询</span>
+                <span id="artificial-btn" class="bw-btn bw-btn-lan pul-r">手动排班</span>
+            </div>
+            <div id="waiting-table" class="bw-table box-show">
+                <table class="table-subject table-striped">
+                    <thead class="bw-thead">
+                        <tr class="c-dark">
+                            <td>
+                                <input class="select-all" name="select-all" type="checkbox" />
+                            </td>
+                            <td>序号</td>
+                            <td>起飞日期</td>
+                            <td>航班时段</td>
+                            <td>接送时段</td>
+                            <td>预约时间</td>
+                            <td>上车地点</td>
+                            <td>起飞时间</td>
+                            <td>乘客姓名</td>
+                            <td>手机号</td>
+                            <td>航班</td>
+                            <td>舱位</td>
+                        </tr>
+                    </thead>
+                    <tbody class="bw-tbody c-light bw-page-content"></tbody>
+                    <script type="text/x-dot-template" class="bw-table-tpl bw-page-tpl">
+                        {{if ($bw.getLength(it)==0){ }}
+                        <tr>
+                            <td colspan="12">暂无数据</td>
+                        </tr>
+                        {{ }else{ }} {{ for (var i in it){ }} {{ $bw.serial++;}}
+                        <tr data-id="{{=it[i].id}}">
+                            <td>
+                                <input class="btn-checkbox" type="checkbox" name="btn-checkbox" data-key="{{=it[i].BLID}}" {{if(SELECTINFO[it[i].BLID]){ }} checked="checked" {{ } }}/>
+                            </td>
+                            <td>{{=$bw.serial}}</td>
+                            <td>{{=format(it[i].RealityTakeOffDate,'year')}}</td>
+                            <td>{{=$bw.N(it[i].ExtAttr1)}}~{{=$bw.N(it[i].ExtAttr2)}}</td>
+                            <td>{{=$bw.N(it[i].ExtAttr3)}}~{{=$bw.N(it[i].ExtAttr4)}}</td>
+                            <td>{{=$bw.N(it[i].PickupTime)}}</td>
+                            <td>
+                                <div class="bw-nowrap" title="{{=$bw.N(it[i].PickupAddress)}}">{{=$bw.N(it[i].PickupAddress)}}</div>
+                            </td>
+                            <td>{{=format(it[i].RealityTakeOffDate,'time')}}</td>
+                            <td>{{=$bw.N(it[i].Name)}}</td>
+                            <td>{{=$bw.N(it[i].Phone)}}</td>
+                            <td>{{=$bw.N(it[i].FlightNo)}}</td>
+                            <td>{{=$bw.N(it[i].CabinSeat)}}</td>
+                        </tr>
+                        {{ } }} {{ } }}
+                    </script>
+                </table>
+                <div class="pul-l bw-table-total">共0条记录</div>
+                <div class="bw-page"></div>
+            </div>
+        </div>
+    </div>
+    <div id="artificial-layer" class="layer-html">
+        <div class="bw-panel panel-center col-18">
+            <form class="bw-form" id="artificial-form" action="lum-api/publist" method="PUT" enctype="multipart/form-data"></form>
+        </div>
+    </div>
+    <script type="text/x-dot-template" id="tpl-artificial-layer">
+        <div class="bw-panel panel-center col-18">
+            <div class="panel-title c-blue">今日限号</div>
+            <div class="panel-content c-light">
+                <div class="bw-info-list">
+                    <div class="w-d-list-box">
+                        <div class="radio-box bw-nowrap">
+                            <input id="" type="radio" class="bw-radio" value="">
+                            <label class="bw-nowrap" for="">李师傅</label>
+                        </div>
+                        <div class="radio-box bw-nowrap">
+                            <input id="" type="radio" class="bw-radio" value="">
+                            <label class="bw-nowrap" for="">李师傅</label>
+                        </div>
+                        <div class="radio-box bw-nowrap">
+                            <input id="" type="radio" class="bw-radio" value="">
+                            <label class="bw-nowrap" for="">李师傅</label>
+                        </div>
+                        <div class="radio-box bw-nowrap">
+                            <input id="" type="radio" class="bw-radio" value="">
+                            <label class="bw-nowrap" for="">李师傅</label>
+                        </div>
+                        <div class="radio-box bw-nowrap">
+                            <input id="" type="radio" class="bw-radio" value="">
+                            <label class="bw-nowrap" for="">李师傅</label>
+                        </div>
+                        <div class="radio-box bw-nowrap">
+                            <input id="" type="radio" class="bw-radio" value="">
+                            <label class="bw-nowrap" for="">李师傅</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-title c-blue">昨天排班少</div>
+            <div class="panel-content c-light">
+                <div class="bw-info-list">
+                    <div class="w-d-list-box">
+                        <div class="radio-box bw-nowrap">
+                            <input id="" type="radio" class="bw-radio" value="">
+                            <label class="bw-nowrap" for="">李师傅</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-title c-blue">待排司机</div>
+            <div class="panel-content c-light">
+                <div class="bw-info-list">
+                    <div class="w-d-list-box">
+                        <div class="radio-box bw-nowrap">
+                            <input id="" type="radio" class="bw-radio" value="">
+                            <label class="bw-nowrap" for="">李师傅</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-foot">
+                <div class="bw-btn-group">
+                    <input class="bw-btn bw-btn-success" id="inputSubmit" type="submit" value="确定" />
+                    <input class="bw-btn bw-btn-info closeLayer" type="button" value="取消" />
+                </div>
+            </div>
+        </div>
+    </script>
+    <script src="../js/ini.js"></script>
+    <script src="../Plug/laydate/laydate.js"></script>
+</body>
+
+</html>

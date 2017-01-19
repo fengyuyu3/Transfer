@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8">
+    <title>home</title>
+    <script src="../js/ini.js"></script>
+</head>
+
+<body>
+    <div class="bw-content" id="home-count">
+        <div class="bw-content-title c-dark home-title">Overview</div>
+        <div class="content-count">
+            <ul id="count-area">
+                <script type="text/x-dot-template" charset="utf-8" id="count-template">
+                    {{if(it){}}
+                    <li class="pul-l count-li bw-cursor home-count" data-class="Device-Management" data-menu="Device" data-url="./deviceList.html">
+                        <div class="count-title">Total Device</div>
+                        <div class="count-num">{{=it.deviceNum}}</div>
+                    </li>
+                    <li class="pul-l count-li bw-cursor home-count" data-class="Device-Management" data-menu="Email" data-url="./emailList.html">
+                        <div class="count-title">Total Account</div>
+                        <div class="count-num">{{=it.accountNum}}</div>
+                    </li>
+                    <li class="pul-l count-li bw-cursor home-count" data-class="Subscription-Management" data-menu="Public" data-url="./publicList.html">
+                        <div class="count-title">Public List</div>
+                        <div class="count-num">{{=it.pubListNum}}</div>
+                    </li>
+                    <li class="pul-l count-li bw-cursor home-count" data-class="Subscription-Management" data-menu="Pending" data-url="./pendingApprovalList.html?isIgnored=1">
+                        <div class="count-title">Pending Approval List</div>
+                        <div class="count-num">{{=it.pendingListNum}}</div>
+                    </li>
+                    {{ } }}
+                </script>
+            </ul>
+        </div>
+        <div class="bw-table  pul-l box-show" id="bw-table-latest" data-url="lum-api/account/pageList4Latest">
+            <div class="bw-table-title c-blue">Latest Updates</div>
+            <table class="table-subject table-striped">
+                <thead class="bw-thead">
+                    <tr class="c-dark">
+                        <td>New Account</td>
+                        <td>Device</td>
+                        <td>Regstration Time</td>
+                    </tr>
+                </thead>
+                <tbody class="bw-tbody c-light bw-page-content"></tbody>
+                <script type="text/x-dot-template" class="bw-table-tpl bw-page-tpl">
+                    {{ for (var i in it){ }}
+                    <tr>
+                        <td data-field="orderId">{{=it[i].email}}</td>
+                        <td data-field="storeName">{{=it[i].deviceName}}</td>
+                        <td data-field="goodsNum">{{=format(it[i].cdt)}}</td>
+                    </tr>
+                    {{ } }}
+                </script>
+            </table>
+            <!--   <div class="bw-page"></div> -->
+        </div>
+        <div class="bw-table col-8 pul-l box-show" id="bw-table-location" data-url="lum-api/device/location">
+            <div class="bw-table-title c-blue">Location</div>
+            <table class="table-subject table-striped">
+                <thead class="bw-thead">
+                    <tr class="c-dark">
+                        <td>Location</td>
+                        <td>Total Device</td>
+                    </tr>
+                </thead>
+                <tbody class="bw-tbody c-light bw-page-content"></tbody>
+                <script type="text/x-dot-template" class="bw-table-tpl bw-page-tpl">
+                    {{ for (var i in it){ }}
+                    <tr class="location-tr bw-cursor" data-class="Device-Management" data-menu="Device" data-url="./deviceList.html?keyword={{=it[i].location}}">
+                        <td>{{=it[i].location}}</td>
+                        <td>{{=it[i].deviceNum}}</td>
+                    </tr>
+                    {{ } }}
+                </script>
+            </table>
+            <!--   <div class="bw-page"></div> -->
+        </div>
+    </div>
+    <script>
+        function htmlLoad(){
+            //console.info($bw);
+        }
+    </script>
+</body>
+
+</html>

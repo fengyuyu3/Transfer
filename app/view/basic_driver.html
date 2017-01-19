@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8">
+    <title>司机信息管理</title>
+    <link href="../css/mine.css" rel="stylesheet" />
+    
+</head>
+
+<body>
+    <div class="bw-content">
+        <div class="bw-content-title c-dark">司机信息管理</div>
+        <div class="bw-content-box">
+            <div class="bw-action-box" id="action-box">
+                <div class="pul-l team-box search-box">
+                    <input class="bw-input bw-search-input" id="searchInput" type="text" placeholder="Search">
+                    <i class="iconfont c-light bw-search-ico bw-search"></i>
+                </div>
+                <div class="pul-l team-box">
+                    <span class="pul-l c-dark">所属区域：</span>
+                    <select class="bw-select c-light" id="area">
+                    </select>
+                    <script type="text/x-dot-template" id="tpl-area">
+                        <option value="">全部</option>
+                        {{var dictCity=$bw.htmlRes.dictCity;}} {{for (var i in dictCity) { }}
+                        <option value="{{=dictCity[i].CityId}}">{{=dictCity[i].Name}}</option>
+                        {{ } }}
+                    </script>
+                </div>
+                <div class="action-btn-group pul-r c-light">
+                    <span class="add bw-action">
+                        <i class="iconfont c-yellow bw-add-ico"></i>
+                        新增
+                    </span>
+                    <span class="bw-action refresh">
+                        <i class="iconfont c-blue bw-refresh-ico"></i>
+                        刷新
+                    </span>
+                </div>
+            </div>
+            <div id="driver-info-table" class="bw-table box-show">
+                <table class="table-subject table-striped">
+                    <thead class="bw-thead">
+                        <tr class="c-dark">
+                            <td>序号</td>
+                            <td>司机编号</td>
+                            <td>司机姓名</td>
+                            <td>性别</td>
+                            <td>出生日期</td>
+                            <td>身份证</td>
+                            <td>手机号</td>
+                            <td>驾驶证号</td>
+                            <td>所属区域</td>
+                            <td>详细地址</td>
+                            <td>操作</td>
+                        </tr>
+                    </thead>
+                    <tbody class="bw-tbody c-light bw-page-content"></tbody>
+                    <script type="text/x-dot-template" class="bw-table-tpl bw-page-tpl">
+                        {{if ($bw.getLength(it)==0){ }}
+                        <tr>
+                            <td colspan="12">暂无数据</td>
+                        </tr>
+                        {{ }else{ }} {{ for (var i in it){ }} {{ $bw.serial++;}}
+                        <tr data-id="{{=it[i].DID}}">
+                            <td>{{=$bw.serial}}</td>
+                            <td>
+                                <div class="bw-nowrap" title="{{=$bw.N(it[i].Code)}}">{{=$bw.N(it[i].Code)}}</div>
+                            </td>
+                            <td>
+                                <div class="bw-nowrap" title="{{=$bw.N(it[i].Name)}}">{{=$bw.N(it[i].Name)}}</div>
+                            </td>
+                            <td>{{=$bw.N(it[i].Gender)}}</td>
+                            <td>{{=format(it[i].Birthday,'year')}}</td>
+                            <td>
+                                <div class="bw-nowrap" title="{{=$bw.N(it[i].IDCard)}}">{{=$bw.N(it[i].IDCard)}}</div>
+                            </td>
+                            <td>{{=$bw.N(it[i].Phone)}}</td>
+                            <td>{{=$bw.N(it[i].ArchivesNumber)}}</td>
+                            <td>{{=$bw.TN(it[i].Area)}}</td>
+                            <td>
+                                <div class="bw-nowrap" title="{{=$bw.N(it[i].Address)}}">{{=$bw.N(it[i].Address)}}</div>
+                            </td>
+                            <td>
+                                <span class="bw-btn bw-btn-danger delete" data-id="{{=it[i].DID}}">删除</span>
+                                <span class="bw-btn bw-btn-lan edit" data-key="{{=i}}" data-id="{{=it[i].DID}}">编辑</span>
+                                <span class="bw-btn bw-btn-warning edit-pwd" data-key="{{=i}}" data-id="{{=it[i].DID}}">重置密码</span>
+                            </td>
+                        </tr>
+                        {{ } }} {{ } }}
+                    </script>
+                </table>
+                <div class="pul-l bw-table-total">共0条记录</div>
+                <div class="bw-page"></div>
+            </div>
+        </div>
+    </div>
+    <div id="edit-layer" class="layer-html">
+        <div class="bw-panel panel-center col-18">
+            <form class="bw-form" id="edit-form" action="" method="post" enctype="multipart/form-data"></form>
+        </div>
+    </div>
+    <script type="text/x-dot-template" id="tpl-add-layer">
+        <div class="panel-content c-light">
+            <div class="bw-info-list">
+                <label for="driver-name" class="bw-info-title pul-l">司机姓名：</label>
+                <input id="driver-name" data-verify="notNull,maxLength" data-max="20" name="Name" class="bw-input" type="text" />
+            </div>
+            <div class="bw-info-list">
+                <label class="bw-info-title pul-l">性别：</label>
+                {{var gender=$bw.htmlRes.gender;}} {{for (var i in gender) { }}
+                <input id="{{=gender[i].ItemCode}}" class="bw-radio" type="radio" name="Gender" value="{{=gender[i].DIID}}" {{if(i==0){}} checked="checked" {{ } }} />
+                <label for="{{=gender[i].ItemCode}}">{{=gender[i].ItemValue}}</label>
+                {{ } }}
+            </div>
+            <div class="bw-info-list">
+                <label for="birthday" class="bw-info-title pul-l">出生日期：</label>
+                <input id="birthday" data-verify="notNull" name="Birthday" class="bw-input" type="text" readonly="readonly" />
+                <span class="iconfont c-light bw-date-ico" id="selectDate"></span>
+            </div>
+            <div class="bw-info-list">
+                <label for="ID-number" class="bw-info-title pul-l">身份证号：</label>
+                <input id="ID-number" data-verify="notNull,IDCard" name="IDCard" class="bw-input" type="text" />
+            </div>
+            <div class="bw-info-list">
+                <label for="phone" class="bw-info-title pul-l">手机号码：</label>
+                <input id="phone" data-verify="notNull,phone" name="Phone" class="bw-input" type="text" />
+            </div>
+            <div class="bw-info-list">
+                <label class="bw-info-title pul-l">所属区域：</label>
+                <div class="bw-select-btn">
+                    {{var dictCity=$bw.htmlRes.dictCity;}} {{for (var i in dictCity) { }} {{if(i==0){}}
+                    <input id="dictCiryRadio{{=i}}" value="{{=dictCity[i].CityId}}" name="AreaId" type="radio" class="layer-html" checked="checked" />
+                    <label class="bw-btn bw-btn-default dict-city-btn action" for="dictCiryRadio{{=i}}">{{=dictCity[i].Name}}</label>
+                    {{}else{}}
+                    <input id="dictCiryRadio{{=i}}" value="{{=dictCity[i].CityId}}" name="AreaId" type="radio" class="layer-html" />
+                    <label class="bw-btn bw-btn-default dict-city-btn" for="dictCiryRadio{{=i}}">{{=dictCity[i].Name}}</label>
+                    {{ } }} {{ } }}
+                </div>
+                <!-- <select class="bw-select" name="AreaId" size="1">
+                    {{var dictCity=$bw.htmlRes.dictCity;}} 
+                    {{for (var i in dictCity) { }}
+                    <option value="{{=dictCity[i].CityId}}">{{=dictCity[i].Name}}</option>
+                    {{ } }}
+                </select> -->
+            </div>
+            <div class="bw-info-list">
+                <label for="address" class="bw-info-title pul-l">详细地址：</label>
+                <textarea id="address" class="bw-textarea pul-l col-10" data-verify="notNull" name="Address"></textarea>
+            </div>
+        </div>
+        <div class="panel-foot">
+            <div class="bw-btn-group">
+                <input class="bw-btn bw-btn-success" id="addSubmit" type="submit" value="保存" />
+                <input class="bw-btn bw-btn-info closeLayer" type="button" value="取消" />
+                <input id="driver-code" type="hidden" value="" name="Code" />
+            </div>
+        </div>
+    </script>
+    <script type="text/x-dot-template" id="tpl-edit-layer">
+        <div class="panel-content c-light">
+            <div class="bw-info-list">
+                <label class="bw-info-title pul-l">司机编号：</label>
+                <span>{{=it.Code}}</span>
+            </div>
+            <div class="bw-info-list">
+                <label class="bw-info-title pul-l">司机姓名：</label>
+                <span>{{=it.Name}}</span>
+            </div>
+            <div class="bw-info-list">
+                <label class="bw-info-title pul-l">性别：</label>
+                <span>{{=it.Gender}}</span>
+            </div>
+            <div class="bw-info-list">
+                <label class="bw-info-title pul-l">出生日期：</label>
+                <span>{{=it.Birthday}}</span>
+            </div>
+            <div class="bw-info-list">
+                <label class="bw-info-title pul-l">身份证号：</label>
+                <span>{{=it.IDCard}}</span>
+            </div>
+            <div class="bw-info-list">
+                <label for="phone" class="bw-info-title pul-l">手机号码：</label>
+                <input id="phone" data-verify="notNull" name="Phone" class="bw-input" type="text" value="{{=it.Phone}}" />
+            </div>
+            <div class="bw-info-list">
+                <label class="bw-info-title pul-l">所属区域：</label>
+                <div class="bw-select-btn">
+                    {{var dictCity=$bw.htmlRes.dictCity;}} {{for (var i in dictCity) { }} {{if(dictCity[i].CityId==it.AreaID){}}
+                    <input id="dictCiryRadio{{=i}}" value="{{=dictCity[i].CityId}}" name="AreaId" type="radio" class="layer-html" checked="checked" />
+                    <label class="bw-btn bw-btn-default dict-city-btn action" for="dictCiryRadio{{=i}}">{{=dictCity[i].Name}}</label>
+                    {{}else{}}
+                    <input id="dictCiryRadio{{=i}}" value="{{=dictCity[i].CityId}}" name="AreaId" type="radio" class="layer-html" />
+                    <label class="bw-btn bw-btn-default dict-city-btn" for="dictCiryRadio{{=i}}">{{=dictCity[i].Name}}</label>
+                    {{ } }} {{ } }}
+                </div>
+            </div>
+            <div class="bw-info-list">
+                <label for="address" class="bw-info-title pul-l">详细地址：</label>
+                <textarea id="address" class="bw-textarea pul-l col-10" data-verify="notNull" name="Address">{{=it.Address}}</textarea>
+            </div>
+        </div>
+        <div class="panel-foot">
+            <div class="bw-btn-group">
+                <input class="bw-btn bw-btn-success" id="editSubmit" type="submit" value="保存" />
+                <input class="bw-btn bw-btn-info closeLayer" type="button" value="取消" />
+                <input id="driver-code" type="hidden" value="{{=it.DID}}" name="DID" />
+            </div>
+        </div>
+    </script>
+    <script src="../js/ini.js"></script>
+    <script src="../Plug/laydate/laydate.js"></script>
+</body>
+
+</html>

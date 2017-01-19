@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8">
+    <title>接送地管理</title>
+    <link href="../css/mine.css" rel="stylesheet" />
+    
+</head>
+
+<body>
+    <div class="bw-content">
+        <div class="bw-content-title c-dark">接送地点管理</div>
+        <div class="bw-content-box">
+            <div class="bw-action-box" id="action-box">
+                <div class="pul-l team-box search-box">
+                    <input class="bw-input bw-search-input" id="searchInput" type="text" placeholder="Search">
+                    <i class="iconfont c-light bw-search-ico bw-search"></i>
+                </div>
+                <div class="pul-l team-box">
+                    <span class="pul-l c-dark">区域：</span>
+                    <select class="bw-select c-light" id="area"></select>
+                    <script type="text/x-dot-template" id="tpl-area">
+                        <option value="">全部</option>
+                        {{var dictCity=$bw.htmlRes.dictCity;}} {{for (var i in dictCity) { }}
+                        <option value="{{=dictCity[i].CityId}}">{{=dictCity[i].Name}}</option>
+                        {{ } }}
+                    </script>
+                </div>
+                <div class="action-btn-group pul-r c-light">
+                    <span class="add bw-action">
+                        <i class="iconfont c-yellow bw-add-ico"></i>
+                        新增
+                    </span>
+                    <span class="bw-action refresh">
+                        <i class="iconfont c-blue bw-refresh-ico"></i>
+                        刷新
+                    </span>
+                </div>
+            </div>
+            <div id="place-info-table" class="bw-table box-show">
+                <table class="table-subject table-striped">
+                    <thead class="bw-thead">
+                        <tr class="c-dark">
+                            <td>序号</td>
+                            <td>区域</td>
+                            <td>接送地点</td>
+                            <td>操作</td>
+                        </tr>
+                    </thead>
+                    <tbody class="bw-tbody c-light bw-page-content"></tbody>
+                    <script type="text/x-dot-template" class="bw-table-tpl bw-page-tpl">
+                        {{if ($bw.getLength(it)==0){ }}
+                        <tr>
+                            <td colspan="12">暂无数据</td>
+                        </tr>
+                        {{ }else{ }} {{ for (var i in it){ }} {{ $bw.serial++;}}
+                        <tr data-id="{{=it[i].id}}">
+                            <td>{{=$bw.serial}}</td>
+                            <td>
+                                {{=$transfer.getDictCiryName(it[i].ExtAttr1)}}
+                            </td>
+                            <td>
+                                <div class="bw-nowrap" title="{{=$bw.N(it[i].ItemValue)}}">{{=$bw.N(it[i].ItemValue)}}</div>
+                            </td>
+                            <td>
+                                <span class="bw-btn bw-btn-danger delete" data-id="{{=it[i].DIID}}">删除</span>
+                                <span class="bw-btn bw-btn-lan edit" data-key="{{=i}}" data-id="{{=it[i].DIID}}">编辑</span>
+                            </td>
+                        </tr>
+                        {{ } }} {{ } }}
+                    </script>
+                </table>
+                <div class="pul-l bw-table-total">共0条记录</div>
+                <div class="bw-page"></div>
+            </div>
+        </div>
+    </div>
+    <div id="edit-layer" class="layer-html">
+        <div class="bw-panel panel-center col-18">
+            <form class="bw-form" id="edit-form" action="" method="post" enctype="multipart/form-data"></form>
+        </div>
+    </div>
+    <script type="text/x-dot-template" id="tpl-form-layer">
+        <div class="panel-content c-light">
+            <div class="bw-info-list">
+                <label class="bw-info-title pul-l">所属区域：</label>
+                <select id="edit-select-area" class="bw-select" name="ExtAttr1">
+                    {{var dictCity=$bw.htmlRes.dictCity;}} {{for (var i in dictCity) { }}
+                    <option value="{{=dictCity[i].CityId}}">{{=dictCity[i].Name}}</option>
+                    {{ } }}
+                </select>
+            </div>
+            <div class="bw-info-list">
+                <label for="address" class="bw-info-title pul-l">接送地点：</label>
+                <textarea id="address" class="bw-textarea pul-l col-10" data-verify="notNull" name="Address">{{=$bw.N(it.ItemValue)}}</textarea>
+            </div>
+        </div>
+        <div class="panel-foot">
+            <div class="bw-btn-group">
+                <input class="bw-btn bw-btn-success" id="inputSubmit" type="submit" value="保存" />
+                <input class="bw-btn bw-btn-info closeLayer" type="button" value="取消" />
+                <input type="hidden" name="DIID" value="{{=it.DIID}}" />
+            </div>
+        </div>
+    </script>
+    <script src="../js/ini.js"></script>
+</body>
+
+</html>
