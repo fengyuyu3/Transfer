@@ -156,9 +156,13 @@ public class DataHelper {
         return device;
     }
 
+
     /**
      * 返回缓存文件夹
-
+     *
+     * @param context
+     * @return
+     */
     public static File getCacheFile(Context context) {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             File file = null;
@@ -175,6 +179,7 @@ public class DataHelper {
 
     /**
      * 获取自定义缓存文件地址
+     *
      * @param context
      * @return
      */
@@ -186,10 +191,11 @@ public class DataHelper {
 
     /**
      * 创建未存在的文件夹
+     *
      * @param file
      * @return
      */
-    public static File makeDirs(File file){
+    public static File makeDirs(File file) {
         if (!file.exists()) {
             file.mkdirs();
         }
