@@ -158,7 +158,7 @@ public class DataHelper {
 
     /**
      * 返回缓存文件夹
-     */
+
     public static File getCacheFile(Context context) {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             File file = null;

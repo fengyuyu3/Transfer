@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -59,6 +60,7 @@ public class UserActivity extends WEActivity<UserPresenter> implements UserContr
     @Override
     protected void initData() {
         mPresenter.requestUsers(true);//打开app时自动加载列表
+        Log.e("kkk","test");
     }
 
     @Override
