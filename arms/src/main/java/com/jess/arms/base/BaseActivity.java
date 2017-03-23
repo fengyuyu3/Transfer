@@ -5,7 +5,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.jess.arms.mvp.Presenter;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
@@ -31,6 +33,8 @@ public abstract class BaseActivity<P extends Presenter> extends RxAppCompatActiv
     private static final String LAYOUT_FRAMELAYOUT = "FrameLayout";
     private static final String LAYOUT_RELATIVELAYOUT = "RelativeLayout";
     public static final String IS_NOT_ADD_ACTIVITY_LIST = "is_add_activity_list";//是否加入到activity的list，管理
+    private ViewGroup rootView;
+    private View noDataView;
 
 
     @Override
@@ -62,6 +66,8 @@ public abstract class BaseActivity<P extends Presenter> extends RxAppCompatActiv
         if (useEventBus())//如果要使用eventbus请将此方法返回true
             EventBus.getDefault().register(this);//注册到事件主线
         setContentView(initView());
+        rootView = (ViewGroup) getWindow().getDecorView();
+        initId();
         //绑定到butterknife
         mUnbinder = ButterKnife.bind(this);
         ComponentInject();//依赖注入
@@ -72,6 +78,8 @@ public abstract class BaseActivity<P extends Presenter> extends RxAppCompatActiv
      * 依赖注入的入口
      */
     protected abstract void ComponentInject();
+    protected abstract int getNodataId();
+    protected abstract void initId();
 
 
     public void FullScreencall() {
@@ -118,5 +126,25 @@ public abstract class BaseActivity<P extends Presenter> extends RxAppCompatActiv
     protected abstract View initView();
 
     protected abstract void initData();
+
+    public void initNoDataId(){
+        if(rootView != null ){
+            if(noDataView == null) {
+                noDataView = getLayoutInflater().inflate(getNodataId(), rootView, false);
+                if (noDataView != null) {
+                    showNodata(false);
+                    rootView.addView(noDataView);
+                }
+            }else{
+                Log.e(TAG,"noDataView is Empty");
+            }
+        }
+    }
+
+    public void showNodata(boolean show){
+        if(noDataView != null){
+            noDataView.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
+    }
 
 }

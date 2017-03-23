@@ -1,5 +1,6 @@
 package com.ironaviation.traveller.common;
 
+import com.ironaviation.traveller.R;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.mvp.Presenter;
 
@@ -23,4 +24,15 @@ public abstract class WEActivity<P extends Presenter> extends BaseActivity<P> {
         super.onDestroy();
         this.mWeApplication = null;
     }
+
+    @Override
+    protected void initId() {
+        initNoDataId();
+    }
+
+    @Override
+    protected int getNodataId() {
+        return R.layout.include_nodata;
+    }
+
 }
