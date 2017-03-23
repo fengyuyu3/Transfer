@@ -11,29 +11,32 @@ import com.ironaviation.traveller.mvp.model.api.Api;
  * Contact with jess.yan.effort@gmail.com
  */
 
-public class BaseJson<T> implements Serializable{
+public class BaseData<T> implements Serializable {
     private T data;
-    private String code;
-    private String msg;
+    private int Status;
+    private int ServerStatus;
+    private String Message;
+    private String Url;
 
     public T getData() {
         return data;
     }
 
-    public String getCode() {
-        return code;
+    public int getStatus() {
+        return Status;
     }
 
     public String getMsg() {
-        return msg;
+        return Message;
     }
 
     /**
      * 请求是否成功
+     *
      * @return
      */
     public boolean isSuccess() {
-        if (code.equals(Api.RequestSuccess)) {
+        if (Status == Api.RequestSuccess) {
             return true;
         } else {
             return false;

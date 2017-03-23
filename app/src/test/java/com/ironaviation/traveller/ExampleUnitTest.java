@@ -1,4 +1,4 @@
-package me.jessyan.mvparms.demo;
+package com.ironaviation.traveller;
 
 import org.junit.Test;
 
