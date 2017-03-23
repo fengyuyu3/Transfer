@@ -61,6 +61,8 @@ public class UserActivity extends WEActivity<UserPresenter> implements UserContr
     protected void initData() {
         mPresenter.requestUsers(true);//打开app时自动加载列表
         Log.e("kkk","test");
+        Log.e("kkk","miaomiaomiao");
+
     }
 
     @Override
