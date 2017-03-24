@@ -1,20 +1,26 @@
-package com.ironaviation.traveller.mvp.ui.activity;
+package com.ironaviation.traveller.mvp.ui.main;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.utils.ViewFindUtils;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.DaggerMainComponent;
 import com.ironaviation.traveller.di.module.MainModule;
 import com.ironaviation.traveller.mvp.contract.MainContract;
 import com.ironaviation.traveller.mvp.presenter.MainPresenter;
+import com.ironaviation.traveller.mvp.ui.widget.AutoSlidingTabLayout;
 import com.jess.arms.utils.UiUtils;
 
+import java.util.ArrayList;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -38,6 +44,12 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 public class MainActivity extends WEActivity<MainPresenter> implements MainContract.View {
 
+    private ArrayList<Fragment> mFragments = new ArrayList<>();
+    private final String[] mTitles = {
+            "热门", "iOS", "Android"
+            , "前端"
+    };
+    private MyPagerAdapter mAdapter;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -57,7 +69,18 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
     @Override
     protected void initData() {
 
-        mPresenter.login("18980096915","147085");
+        for (String title : mTitles) {
+            mFragments.add(SimpleCardFragment.getInstance(title));
+        }
+        View decorView = getWindow().getDecorView();
+        ViewPager vp = ViewFindUtils.find(decorView, R.id.vp);
+        mAdapter = new MyPagerAdapter(getSupportFragmentManager());
+        vp.setAdapter(mAdapter);
+        //mPresenter.login("18980096915","147085");
+        final AutoSlidingTabLayout tabLayout_7 = ViewFindUtils.find(decorView, R.id.tl_7);
+        tabLayout_7.setViewPager(vp, mTitles);
+        vp.setCurrentItem(4);
+
     }
 
 
@@ -88,5 +111,25 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
         finish();
     }
 
+    private class MyPagerAdapter extends FragmentPagerAdapter {
+        public MyPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragments.size();
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mTitles[position];
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragments.get(position);
+        }
+    }
 
 }

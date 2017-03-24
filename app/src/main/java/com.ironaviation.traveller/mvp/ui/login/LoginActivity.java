@@ -1,9 +1,8 @@
-package com.ironaviation.traveller.mvp.ui.activity.login;
+package com.ironaviation.traveller.mvp.ui.login;
 
 import android.content.Intent;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -15,7 +14,6 @@ import com.ironaviation.traveller.di.module.login.LoginModule;
 import com.ironaviation.traveller.mvp.contract.login.LoginContract;
 import com.ironaviation.traveller.mvp.presenter.Login.LoginPresenter;
 import com.jess.arms.utils.UiUtils;
-
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 

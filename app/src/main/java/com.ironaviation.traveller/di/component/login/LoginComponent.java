@@ -2,7 +2,7 @@ package com.ironaviation.traveller.di.component.login;
 
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.di.module.login.LoginModule;
-import com.ironaviation.traveller.mvp.ui.activity.login.LoginActivity;
+import com.ironaviation.traveller.mvp.ui.login.LoginActivity;
 import com.jess.arms.di.scope.ActivityScope;
 
 import dagger.Component;
@@ -33,4 +33,6 @@ import dagger.Component;
 @Component(modules = LoginModule.class, dependencies = AppComponent.class)
 public interface LoginComponent {
     void inject(LoginActivity activity);
+
+
 }

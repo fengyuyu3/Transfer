@@ -2,7 +2,7 @@ package com.ironaviation.traveller.di.component;
 
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.di.module.MainModule;
-import com.ironaviation.traveller.mvp.ui.activity.MainActivity;
+import com.ironaviation.traveller.mvp.ui.main.MainActivity;
 import com.jess.arms.di.scope.ActivityScope;
 
 import dagger.Component;
