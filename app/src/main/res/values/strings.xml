@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Traveller</string>
+    <string name="app_name">机场接送</string>
 
     <!--identification-->
     <string name="identification">认证</string>
@@ -8,6 +8,11 @@
     <string name="hint_name">请输入姓名</string>
     <string name="hint_id_numeral">请输入身份证号</string>
 
+    <!--个人中心-->
+    <string name="personal_center">个人中心</string>
+    <string name="message">消息</string>
+    <string name="setting">设置</string>
+    <string name="trip">行程</string>
     <!--登陆-->
     <string name="login_input_phone">输入电话号码</string>
     <string name="login_input_code">输入验证码</string>

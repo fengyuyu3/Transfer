@@ -1,6 +1,7 @@
 package com.ironaviation.traveller.common;
 
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
@@ -25,7 +26,8 @@ public abstract class WEActivity<P extends Presenter> extends BaseActivity<P> {
     private CustomProgress customProgress;
     protected Toolbar mToolbar, myToolbar;
     protected Button btnRight, myBtnRight;
-    protected TextView mTitle, myTitle,mFunctionRight;
+    protected TextView mTitle, myTitle, mFunctionRight;
+    protected ImageView mIvFunctionLeft;
     protected SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
@@ -126,8 +128,8 @@ public abstract class WEActivity<P extends Presenter> extends BaseActivity<P> {
         mToolbar = (Toolbar) getDelegate().findViewById(R.id.toolbar);
         btnRight = (Button) getDelegate().findViewById(R.id.btn_right);
         mTitle = (TextView) getDelegate().findViewById(R.id.tv_title);
-        mFunctionRight= (TextView) getDelegate().findViewById(R.id.tv_function_right);
-
+        mFunctionRight = (TextView) getDelegate().findViewById(R.id.tv_function_right);
+        mIvFunctionLeft = (ImageView) getDelegate().findViewById(R.id.iv_function_left);
         myToolbar = (Toolbar) getDelegate().findViewById(R.id.nodata_toolbar);
         myBtnRight = (Button) getDelegate().findViewById(R.id.nodata_btn_right);
         myTitle = (TextView) getDelegate().findViewById(R.id.nodata_tv_title);
@@ -137,6 +139,9 @@ public abstract class WEActivity<P extends Presenter> extends BaseActivity<P> {
         }
     }
 
+    /**
+     * 设置右功能键
+     */
     protected void setRightFunctionText(String text) {
         if (!TextUtils.isEmpty(text)) {
             if (mFunctionRight != null) {
@@ -146,8 +151,31 @@ public abstract class WEActivity<P extends Presenter> extends BaseActivity<P> {
         }
     }
 
+    /**
+     * 设置左功能键
+     */
+    protected void setLeftFunction(Drawable text) {
+        if (text != null) {
+            if (mIvFunctionLeft != null) {
+                mIvFunctionLeft.setVisibility(View.VISIBLE);
+                mIvFunctionLeft.setImageDrawable(text);
+            }
+        }
+    }
+    /**
+     * 设置左功能键
+     */
+    protected void setNavigationIcon(Drawable text) {
+        if (text != null) {
+            if (mToolbar != null) {
+                mToolbar.setNavigationIcon(text);
+            }
+        }
+    }
 
-    //设置标题
+    /**
+     * 设置标题
+     */
     public void setTitle(String title) {
         if (!TextUtils.isEmpty(title)) {
             if (mTitle != null) {

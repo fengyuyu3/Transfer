@@ -13,6 +13,9 @@
     <color name="input_box_grey_un_select">#b2b2b2</color>
     <color name="id_cord_background">#f3f3f3</color>
 
+    <color name="bg_personal_center">#343843</color>
+
+
     <color name="code_grey">#c1aa86</color>
     <color name="login_edit">#3a3a3a</color>
     <color name="login_hint_edit">#9c9c9c</color>

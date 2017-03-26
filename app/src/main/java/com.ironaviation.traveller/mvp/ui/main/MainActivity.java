@@ -1,15 +1,25 @@
 package com.ironaviation.traveller.mvp.ui.main;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.utils.BarUtils;
 import com.ironaviation.traveller.app.utils.ViewFindUtils;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
@@ -18,9 +28,13 @@ import com.ironaviation.traveller.di.module.MainModule;
 import com.ironaviation.traveller.mvp.contract.MainContract;
 import com.ironaviation.traveller.mvp.presenter.MainPresenter;
 import com.ironaviation.traveller.mvp.ui.widget.AutoSlidingTabLayout;
+import com.ironaviation.traveller.mvp.ui.widget.AutoToolbar;
 import com.jess.arms.utils.UiUtils;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -44,10 +58,29 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 public class MainActivity extends WEActivity<MainPresenter> implements MainContract.View {
 
+    @BindView(R.id.btn_right)
+    Button mBtnRight;
+    @BindView(R.id.iv_function_left)
+    ImageView mIvFunctionLeft;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.tv_function_right)
+    TextView mTvFunctionRight;
+    @BindView(R.id.toolbar)
+    AutoToolbar mToolbar;
+    @BindView(R.id.tl_7)
+    AutoSlidingTabLayout mTl7;
+    @BindView(R.id.vp)
+    ViewPager mVp;
+    @BindView(R.id.main_content)
+    CoordinatorLayout mMainContent;
+    @BindView(R.id.navigation_view)
+    NavigationView mNavigationView;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
     private ArrayList<Fragment> mFragments = new ArrayList<>();
     private final String[] mTitles = {
-            "热门", "iOS", "Android"
-            , "前端"
+            "接机", "送机"
     };
     private MyPagerAdapter mAdapter;
 
@@ -81,11 +114,17 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
         ViewPager vp = ViewFindUtils.find(decorView, R.id.vp);
         mAdapter = new MyPagerAdapter(getSupportFragmentManager());
         vp.setAdapter(mAdapter);
-        mPresenter.login("18980096915","147085");
         final AutoSlidingTabLayout tabLayout_7 = ViewFindUtils.find(decorView, R.id.tl_7);
         tabLayout_7.setViewPager(vp, mTitles);
         vp.setCurrentItem(4);
-
+        setTitle(getString(R.string.app_name));
+        setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_user));
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawerLayout.openDrawer(Gravity.LEFT);
+            }
+        });
     }
 
 
@@ -114,6 +153,13 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
     @Override
     public void killMyself() {
         finish();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 
     private class MyPagerAdapter extends FragmentPagerAdapter {

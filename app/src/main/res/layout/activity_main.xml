@@ -3,20 +3,64 @@
                                      xmlns:tl="http://schemas.android.com/apk/res-auto"
                                      android:layout_width="match_parent"
                                      android:layout_height="match_parent"
-                                     android:orientation="vertical">
+                                     android:orientation="vertical"
+                                     android:fitsSystemWindows="true">
 
-    <com.ironaviation.traveller.mvp.ui.widget.AutoSlidingTabLayout
-        android:id="@+id/tl_7"
-        android:layout_width="match_parent"
-        android:layout_height="144px"
-        android:background="#57385C"
-        tl:tl_indicator_corner_radius="4.5px"
-        tl:tl_indicator_height="9px"
-        tl:tl_tab_space_equal="true"
-        tl:tl_indicator_width="30px"/>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp"
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="600px"/>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/v"
+        android:fitsSystemWindows="true">
+
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/main_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.zhy.autolayout.AutoRelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <include
+                    android:id="@+id/appbar"
+                    layout="@layout/include_toolbar"/>
+
+                <com.ironaviation.traveller.mvp.ui.widget.AutoSlidingTabLayout
+                    android:id="@+id/tl_7"
+                    android:layout_width="match_parent"
+                    android:layout_height="144px"
+                    android:layout_below="@+id/appbar"
+                    android:background="#57385C"
+                    tl:tl_indicator_corner_radius="4.5px"
+                    tl:tl_indicator_height="9px"
+                    tl:tl_indicator_width="30px"
+                    tl:tl_tab_space_equal="true"/>
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/vp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:layout_below="@+id/tl_7"/>
+            </com.zhy.autolayout.AutoRelativeLayout>
+        </android.support.design.widget.CoordinatorLayout>
+
+        <android.support.design.widget.NavigationView
+            android:id="@+id/navigation_view"
+            android:layout_width="700px"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            >
+
+            <include
+                layout="@layout/include_left_slide_menu"
+
+                ></include>
+
+        </android.support.design.widget.NavigationView>
+
+    </android.support.v4.widget.DrawerLayout>
+
 </com.zhy.autolayout.AutoLinearLayout>
