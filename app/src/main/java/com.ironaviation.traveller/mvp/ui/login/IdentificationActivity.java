@@ -57,6 +57,7 @@ public class IdentificationActivity extends WEActivity<IdentificationPresenter> 
     @BindView(R.id.et_numeral)
     EditText mEtNumeral;
 
+
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerIdentificationComponent
@@ -68,12 +69,19 @@ public class IdentificationActivity extends WEActivity<IdentificationPresenter> 
     }
 
     @Override
+    protected void nodataRefresh() {
+
+    }
+
+    @Override
     protected View initView() {
         return LayoutInflater.from(this).inflate(R.layout.activity_identification, null, false);
     }
 
     @Override
     protected void initData() {
+        setTitle(getString(R.string.title_identification));
+        setRightFunctionText(getString(R.string.function_skip));
 
     }
 
@@ -113,7 +121,7 @@ public class IdentificationActivity extends WEActivity<IdentificationPresenter> 
 
     @Override
     public String getNumeral() {
-        return mEtName.getText().toString();
+        return mEtNumeral.getText().toString().trim();
     }
 
     @Override

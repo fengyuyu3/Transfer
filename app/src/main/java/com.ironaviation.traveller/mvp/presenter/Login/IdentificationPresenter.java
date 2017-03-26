@@ -64,13 +64,14 @@ public class IdentificationPresenter extends BasePresenter<IdentificationContrac
 
     public void identification() {
         if (TextUtils.isEmpty(mRootView.getName())) {
-            UiUtils.makeText(mApplication.getString(R.string.id_numeral_hint));
+            UiUtils.makeText(mApplication.getString(R.string.hint_name));
             return;
         }
         if (TextUtils.isEmpty(mRootView.getNumeral())) {
-            UiUtils.makeText(mApplication.getString(R.string.name_hint));
+            UiUtils.makeText(mApplication.getString(R.string.hint_id_numeral));
             return;
         }
+
 
 
     }

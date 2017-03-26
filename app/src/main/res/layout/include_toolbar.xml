@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
 
-    <RelativeLayout
+    <com.zhy.autolayout.AutoRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize">
 
-        <android.support.v7.widget.Toolbar
+        <com.ironaviation.traveller.mvp.ui.widget.AutoToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@android:color/white"
             >
+
             <Button
                 android:id="@+id/btn_right"
                 android:layout_width="wrap_content"
@@ -20,16 +22,39 @@
                 android:layout_gravity="center_vertical|right"
                 android:visibility="gone"
                 />
-        </android.support.v7.widget.Toolbar>
-        <TextView
-            android:gravity="center"
-            android:text="title"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:id="@+id/tv_title"
-            android:singleLine="true"
-            android:ellipsize="marquee"
-            />
-    </RelativeLayout>
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ellipsize="marquee"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="title"
+                android:textColor="@color/word_already_input"
+                android:textSize="44px"/>
+
+
+            <TextView
+                android:id="@+id/tv_function_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="32px"
+                android:padding="10px"
+                android:ellipsize="marquee"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="title"
+                android:textColor="@color/word_wait_input"
+                android:textSize="32px"
+                android:visibility="invisible"
+                />
+
+        </com.ironaviation.traveller.mvp.ui.widget.AutoToolbar>
+
+
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+</com.zhy.autolayout.AutoLinearLayout>

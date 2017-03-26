@@ -6,10 +6,14 @@ import com.google.gson.Gson;
 import com.ironaviation.traveller.mvp.contract.login.LoginContract;
 import com.ironaviation.traveller.mvp.model.api.cache.CacheManager;
 import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
+import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BaseModel;
 
 import javax.inject.Inject;
+
+import rx.Observable;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -55,4 +59,8 @@ public class LoginModel extends BaseModel<ServiceManager, CacheManager> implemen
         this.mApplication = null;
     }
 
+    @Override
+    public Observable<BaseData<LoginEntity>> getLoginInfo(String userInfo, String code) {
+        return null;
+    }
 }
