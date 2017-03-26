@@ -67,7 +67,7 @@ public class MainModel extends BaseModel<ServiceManager, CacheManager> implement
     public Observable<BaseData<LoginEntity>> login(String ID, String password) {
         Login login = new Login();
 
-        login.setUserName(ID);//禁用司机
+       /* login.setUserName(ID);//禁用司机
 
         login.setPassword(CommonUtil.MD5Code(password.toUpperCase()).toString());//转大写后加密
 
@@ -76,7 +76,7 @@ public class MainModel extends BaseModel<ServiceManager, CacheManager> implement
 
         } else {
             // login.put("ClientID", PushManager.getInstance().getClientid(getApplicationContext()));
-        }
+        }*/
 
 
         return mCommonService.login(login);

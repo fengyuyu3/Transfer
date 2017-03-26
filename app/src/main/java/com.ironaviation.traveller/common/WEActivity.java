@@ -1,5 +1,6 @@
 package com.ironaviation.traveller.common;
 
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -167,5 +168,19 @@ public abstract class WEActivity<P extends Presenter> extends BaseActivity<P> {
                 .getBackground();
         // 开始动画
         spinner.start();
+    }
+
+    public void startActivity(Intent intent){
+        super.startActivity(intent);
+        startAnimation();
+    }
+
+    public void startActivity(Class clazz){
+        super.startActivity(new Intent(this,clazz));
+        startAnimation();
+    }
+
+    public void startAnimation(){
+        overridePendingTransition(R.anim.right_in,R.anim.left_out);
     }
 }

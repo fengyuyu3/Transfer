@@ -9,6 +9,8 @@ import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
+import com.jess.arms.R;
+
 import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
 import org.simple.eventbus.ThreadMode;
@@ -77,10 +79,14 @@ public class AppManager {
     }
 
     private void dispatchStart(Message message) {
-        if (message.obj instanceof Intent)
+        if (message.obj instanceof Intent) {
             startActivity((Intent) message.obj);
-        else if (message.obj instanceof Class)
+            startAnimation();
+        }
+        else if (message.obj instanceof Class) {
             startActivity((Class) message.obj);
+            startAnimation();
+        }
         return;
     }
 
@@ -112,9 +118,15 @@ public class AppManager {
             //如果没有前台的activity就使用new_task模式启动activity
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mApplication.startActivity(intent);
+            startAnimation();
             return;
         }
         getCurrentActivity().startActivity(intent);
+        startAnimation();
+    }
+
+    public void startAnimation(){
+        getCurrentActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }
 
     /**
@@ -124,6 +136,7 @@ public class AppManager {
      */
     public void startActivity(Class activityClass) {
         startActivity(new Intent(mApplication, activityClass));
+        startAnimation();
     }
 
     /**

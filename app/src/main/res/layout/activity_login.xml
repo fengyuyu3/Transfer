@@ -51,6 +51,7 @@
             android:hint="@string/login_input_code"
             />
         <TextView
+            android:id="@+id/tv_code"
             android:paddingRight="20px"
             android:paddingLeft="30px"
             android:paddingBottom="10px"
@@ -68,6 +69,7 @@
     </RelativeLayout>
 
         <Button
+            android:id="@+id/btn_login"
             android:textSize="34px"
             android:layout_gravity="center"
             android:layout_marginTop="120px"

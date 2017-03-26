@@ -3,13 +3,13 @@ package com.ironaviation.traveller.mvp.presenter;
 import android.app.Application;
 import android.widget.Toast;
 
-import com.ironaviation.traveller.app.utils.RxUtils;
 import com.ironaviation.traveller.mvp.contract.MainContract;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
+import com.jess.arms.utils.RxUtils;
 import com.jess.arms.widget.imageloader.ImageLoader;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;

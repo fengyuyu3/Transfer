@@ -1,17 +1,26 @@
 package com.ironaviation.traveller.mvp.presenter.Login;
 
 import android.app.Application;
+import android.app.MediaRouteActionProvider;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.widget.TextView;
 
+import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.mvp.contract.login.LoginContract;
+import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
+import com.ironaviation.traveller.mvp.ui.login.IdentificationActivity;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
+import com.jess.arms.utils.RxUtils;
 import com.jess.arms.utils.UiUtils;
+import com.jess.arms.widget.imageloader.BaseImageLoaderStrategy;
 import com.jess.arms.widget.imageloader.ImageLoader;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
 import javax.inject.Inject;
 
@@ -68,16 +77,28 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
 
     public void getLoginInfo(){
         if(TextUtils.isEmpty(mRootView.getUserInfo())){
-            UiUtils.makeText("用户名不能为空");
+            UiUtils.makeText(mApplication.getString(R.string.login_no_userInfo));
             return ;
         }
         if(TextUtils.isEmpty(mRootView.getCode())){
-            UiUtils.makeText("验证码不能为空");
+            UiUtils.makeText(mApplication.getString(R.string.login_no_code));
             return ;
         }
 
-
-
+        mModel.getLoginInfo(mRootView.getUserInfo(),mRootView.getCode())
+                .compose(RxUtils.<BaseData<LoginEntity>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<LoginEntity>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<LoginEntity> loginEntityBaseData) {
+                        if(loginEntityBaseData.isSuccess()) {
+                            Intent intent = new Intent(mApplication, IdentificationActivity.class);
+                            mRootView.launchActivity(intent);
+                            mRootView.killMyself();
+                        }else{
+                            mRootView.showMessage(loginEntityBaseData.getMsg());
+                        }
+                    }
+                });
 
     }
 

@@ -68,6 +68,11 @@ public class IdentificationActivity extends WEActivity<IdentificationPresenter> 
     }
 
     @Override
+    protected void nodataRefresh() {
+
+    }
+
+    @Override
     protected View initView() {
         return LayoutInflater.from(this).inflate(R.layout.activity_identification, null, false);
     }

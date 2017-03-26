@@ -1,15 +1,19 @@
 package com.ironaviation.traveller.mvp.ui.login;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.utils.BarUtils;
+import com.ironaviation.traveller.app.utils.CountTimerUtil;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.login.DaggerLoginComponent;
@@ -19,6 +23,8 @@ import com.ironaviation.traveller.mvp.presenter.Login.LoginPresenter;
 import com.jess.arms.utils.UiUtils;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -32,16 +38,13 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 
 /**
- *
- * 项目名称：Transfer      
- * 类描述：   
- * 创建人：flq  
- * 创建时间：2017/3/23 13:30   
- * 修改人：  
- * 修改时间：2017/3/23 13:30   
- * 修改备注：   
- * @version
- *
+ * 项目名称：Transfer
+ * 类描述：
+ * 创建人：flq
+ * 创建时间：2017/3/23 13:30
+ * 修改人：
+ * 修改时间：2017/3/23 13:30
+ * 修改备注：
  */
 
 public class LoginActivity extends WEActivity<LoginPresenter> implements LoginContract.View {
@@ -50,7 +53,12 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
     EditText etphone;
     @BindView(R.id.et_code)
     EditText etCode;
+    @BindView(R.id.btn_login)
+    Button mBtnLogin;
+    @BindView(R.id.tv_code)
+    TextView mTvCode;
 
+    CountTimerUtil mCountTimerUtil;
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerLoginComponent
@@ -73,7 +81,10 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
 
     @Override
     protected void initData() {
-        Log.e("kkk",BarUtils.getStatusBarHeight(this)+"");
+
+//        mPresenter.getLoginInfo();
+
+        Log.e("kkk", BarUtils.getStatusBarHeight(this) + "");
         setTitle("测试");
         /*mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +99,7 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
             public void run() {
                 showStart(false);
             }
-        },4000);
+        }, 4000);
     }
 
 
@@ -128,5 +139,19 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
     @Override
     public String getUserInfo() {
         return etphone.getText().toString().trim();
+    }
+
+    @OnClick({R.id.btn_login,R.id.tv_code})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_login:
+                startActivity(IdentificationActivity.class);
+                killMyself();
+                break;
+            case R.id.tv_code:
+                mCountTimerUtil = new CountTimerUtil(60000,1000,mTvCode);
+                mCountTimerUtil.start();
+                break;
+        }
     }
 }

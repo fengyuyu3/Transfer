@@ -10,9 +10,9 @@ package com.ironaviation.traveller.mvp.model.entity;
  * 修改备注：
  */
 public class Login {
+
     String UserName;
-    String Password;
-    String ClientID;
+    String Code;
 
     public String getUserName() {
         return UserName;
@@ -22,19 +22,11 @@ public class Login {
         UserName = userName;
     }
 
-    public String getPassword() {
-        return Password;
+    public String getCode() {
+        return Code;
     }
 
-    public void setPassword(String password) {
-        Password = password;
-    }
-
-    public String getClientID() {
-        return ClientID;
-    }
-
-    public void setClientID(String clientID) {
-        ClientID = clientID;
+    public void setCode(String code) {
+        Code = code;
     }
 }
