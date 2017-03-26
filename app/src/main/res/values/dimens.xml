@@ -2,6 +2,12 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="h_input_box">104px</dimen>
+    <dimen name="w_input_box">600px</dimen>
+    <dimen name="fillet_little_input">10px</dimen>
+    <dimen name="word_button">34px</dimen>
+    <dimen name="word_input_box">32px</dimen>
+
 
     <dimen name="login_defult_font">32px</dimen>
 </resources>

@@ -4,6 +4,14 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#FFFFFF</color>
+    <!--common-->
+    <color name="word_already_input">#3a3a3a</color>
+    <color name="word_wait_input">#9b9ca0</color>
+    <color name="button_red_select">#d03734</color>
+    <color name="button_red_un_select">#e75047</color>
+    <color name="input_box_tan_select">#c1aa86</color>
+    <color name="input_box_grey_un_select">#b2b2b2</color>
+    <color name="id_cord_background">#f3f3f3</color>
 
     <color name="code_grey">#c1aa86</color>
     <color name="login_edit">#3a3a3a</color>

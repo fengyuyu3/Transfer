@@ -81,7 +81,7 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
         ViewPager vp = ViewFindUtils.find(decorView, R.id.vp);
         mAdapter = new MyPagerAdapter(getSupportFragmentManager());
         vp.setAdapter(mAdapter);
-        //mPresenter.login("18980096915","147085");
+        mPresenter.login("18980096915","147085");
         final AutoSlidingTabLayout tabLayout_7 = ViewFindUtils.find(decorView, R.id.tl_7);
         tabLayout_7.setViewPager(vp, mTitles);
         vp.setCurrentItem(4);

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:id="@+id/rl_id_cord"
+        android:layout_width="match_parent"
+        android:layout_height="409px"
+        android:background="@color/id_cord_background"
+        >
+
+        <ImageView
+            android:layout_width="640px"
+            android:layout_height="368px"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@mipmap/ic_id_card"
+            />
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_name"
+        android:layout_width="@dimen/w_input_box"
+        android:layout_height="@dimen/h_input_box"
+        android:layout_below="@+id/rl_id_cord"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="78px"
+        android:background="@drawable/select_input_bux_tan"
+        >
+
+        <EditText
+            android:id="@+id/et_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_id_numeral"
+        android:layout_width="@dimen/w_input_box"
+        android:layout_height="@dimen/h_input_box"
+        android:layout_below="@+id/rl_name"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40px"
+        android:background="@drawable/select_input_bux_tan"
+        >
+
+        <EditText
+            android:id="@+id/et_numeral"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_identification"
+        android:layout_width="@dimen/w_input_box"
+        android:layout_height="@dimen/h_input_box"
+        android:layout_below="@+id/rl_id_numeral"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="120px"
+        android:background="@drawable/select_button_red"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/identification"
+            android:textColor="@color/white"
+            android:textSize="@dimen/word_button"
+            />
+
+
+    </RelativeLayout>
+</com.zhy.autolayout.AutoRelativeLayout>
