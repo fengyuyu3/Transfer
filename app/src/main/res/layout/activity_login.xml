@@ -1,6 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/ic_login_background"
+    android:orientation="vertical">
 
+    <RelativeLayout
+        android:focusableInTouchMode="true"
+        android:focusable="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="480px"
+        android:background="@drawable/btn_login_edit_shap"
+        android:layout_width="600px"
+        android:layout_height="104px">
+
+        <ImageView
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_phone"
+            android:layout_marginLeft="32px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/et_phone"
+            android:maxLength="11"
+            android:inputType="number"
+            style="@style/input_edit_style"
+            android:layout_marginLeft="86px"
+            android:hint="@string/login_input_phone"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_gravity="center"
+        android:layout_marginTop="40px"
+        android:background="@drawable/btn_login_edit_shap"
+        android:layout_width="600px"
+        android:layout_height="104px">
+
+        <ImageView
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="32px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/et_code"
+            android:inputType="number"
+            android:maxLength="6"
+            style="@style/input_edit_style"
+            android:layout_marginLeft="86px"
+            android:hint="@string/login_input_code"
+            />
+        <TextView
+            android:paddingRight="20px"
+            android:paddingLeft="30px"
+            android:paddingBottom="10px"
+            android:paddingTop="10px"
+            android:textSize="@dimen/login_defult_font"
+            android:textColor="@color/code_grey"
+            android:gravity="center"
+            android:text="@string/login_code"
+            android:background="@drawable/btn_login_code_shap"
+            android:layout_marginRight="36px"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+        <Button
+            android:textSize="34px"
+            android:layout_gravity="center"
+            android:layout_marginTop="120px"
+            android:background="@drawable/btn_login_edit_shap"
+            android:textColor="@color/login_btn"
+            android:gravity="center"
+            android:text="@string/login_btn"
+            android:layout_width="600px"
+            android:layout_height="104px" />
 </LinearLayout>

@@ -1,6 +1,7 @@
 package com.jess.arms.base;
 
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,7 +9,9 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.jess.arms.R;
 import com.jess.arms.mvp.Presenter;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 import com.zhy.autolayout.AutoFrameLayout;
@@ -35,6 +38,7 @@ public abstract class BaseActivity<P extends Presenter> extends RxAppCompatActiv
     public static final String IS_NOT_ADD_ACTIVITY_LIST = "is_add_activity_list";//是否加入到activity的list，管理
     private ViewGroup rootView;
     private View noDataView;
+    private View startView;
 
 
     @Override
@@ -68,6 +72,7 @@ public abstract class BaseActivity<P extends Presenter> extends RxAppCompatActiv
         setContentView(initView());
         rootView = (ViewGroup) getWindow().getDecorView();
         initId();
+        initBaseData();
         //绑定到butterknife
         mUnbinder = ButterKnife.bind(this);
         ComponentInject();//依赖注入
@@ -80,6 +85,9 @@ public abstract class BaseActivity<P extends Presenter> extends RxAppCompatActiv
     protected abstract void ComponentInject();
     protected abstract int getNodataId();
     protected abstract void initId();
+    protected abstract void initBaseData();
+    protected abstract int getStartId();
+    protected abstract void showStartAnimation(View view);
 
 
     public void FullScreencall() {
@@ -144,6 +152,27 @@ public abstract class BaseActivity<P extends Presenter> extends RxAppCompatActiv
     public void showNodata(boolean show){
         if(noDataView != null){
             noDataView.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    public void initStartId(){
+        if(rootView != null ){
+            if(startView == null) {
+                startView = getLayoutInflater().inflate(getStartId(), rootView, false);
+                showStartAnimation(startView);
+                if (startView != null) {
+                    showStart(false);
+                    rootView.addView(startView);
+                }
+            }else{
+                Log.e(TAG,"startView is Empty");
+            }
+        }
+    }
+
+    public void showStart(boolean show){
+        if(startView != null){
+            startView.setVisibility(show ? View.VISIBLE : View.GONE);
         }
     }
 

@@ -211,11 +211,16 @@ public class UiUtils {
      * @param text
      */
     public static void SnackbarText(String text) {
-        Message message = new Message();
+        /*Message message = new Message();
         message.what = SHOW_SNACKBAR;
         message.obj = text;
         message.arg1 = 0;
-        EventBus.getDefault().post(message, APPMANAGER_MESSAGE);
+        EventBus.getDefault().post(message, APPMANAGER_MESSAGE);*/
+        if (mToast == null) {
+            mToast = Toast.makeText(getContext(), text, Toast.LENGTH_SHORT);
+        }
+        mToast.setText(text);
+        mToast.show();
     }
 
     /**

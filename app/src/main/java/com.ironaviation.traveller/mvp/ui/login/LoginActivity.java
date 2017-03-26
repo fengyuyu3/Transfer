@@ -3,10 +3,13 @@ package com.ironaviation.traveller.mvp.ui.login;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.utils.BarUtils;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.login.DaggerLoginComponent;
@@ -14,6 +17,8 @@ import com.ironaviation.traveller.di.module.login.LoginModule;
 import com.ironaviation.traveller.mvp.contract.login.LoginContract;
 import com.ironaviation.traveller.mvp.presenter.Login.LoginPresenter;
 import com.jess.arms.utils.UiUtils;
+
+import butterknife.BindView;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -41,6 +46,10 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 public class LoginActivity extends WEActivity<LoginPresenter> implements LoginContract.View {
 
+    @BindView(R.id.et_phone)
+    EditText etphone;
+    @BindView(R.id.et_code)
+    EditText etCode;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -53,17 +62,31 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
     }
 
     @Override
+    protected void nodataRefresh() {
+        setTitle("测试没有数据");
+    }
+
+    @Override
     protected View initView() {
         return LayoutInflater.from(this).inflate(R.layout.activity_login, null, false);
     }
 
     @Override
     protected void initData() {
-        showNodata(true);
+        Log.e("kkk",BarUtils.getStatusBarHeight(this)+"");
+        setTitle("测试");
+        /*mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_OK);
+                finish();
+            }
+        });*/
+        showStart(true);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                showNodata(false);
+                showStart(false);
             }
         },4000);
     }
@@ -97,4 +120,13 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
     }
 
 
+    @Override
+    public String getCode() {
+        return etCode.getText().toString().trim();
+    }
+
+    @Override
+    public String getUserInfo() {
+        return etphone.getText().toString().trim();
+    }
 }

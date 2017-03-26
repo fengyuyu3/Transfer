@@ -62,6 +62,11 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
     }
 
     @Override
+    protected void nodataRefresh() {
+
+    }
+
+    @Override
     protected View initView() {
         return LayoutInflater.from(this).inflate(R.layout.activity_main, null, false);
     }

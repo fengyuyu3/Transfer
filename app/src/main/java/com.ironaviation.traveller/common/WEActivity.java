@@ -1,7 +1,15 @@
 package com.ironaviation.traveller.common;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.mvp.ui.widget.CustomProgress;
@@ -15,6 +23,10 @@ import com.jess.arms.mvp.Presenter;
 public abstract class WEActivity<P extends Presenter> extends BaseActivity<P> {
     protected WEApplication mWeApplication;
     private CustomProgress customProgress;
+    protected Toolbar mToolbar,myToolbar;
+    protected Button btnRight,myBtnRight;
+    protected TextView mTitle,myTitle;
+    protected SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void ComponentInject() {
@@ -24,6 +36,8 @@ public abstract class WEActivity<P extends Presenter> extends BaseActivity<P> {
 
     //提供AppComponent(提供所有的单例对象)给子类，进行Component依赖
     protected abstract void setupActivityComponent(AppComponent appComponent);
+
+    protected abstract void nodataRefresh();
 
     @Override
     protected void onDestroy() {
@@ -37,11 +51,17 @@ public abstract class WEActivity<P extends Presenter> extends BaseActivity<P> {
     @Override
     protected void initId() {
         initNoDataId();
+        initStartId();
     }
 
     @Override
     protected int getNodataId() {
         return R.layout.include_nodata;
+    }
+
+    @Override
+    protected int getStartId() {
+        return R.layout.progress_custom;
     }
 
     /**
@@ -91,9 +111,61 @@ public abstract class WEActivity<P extends Presenter> extends BaseActivity<P> {
                 }
             }, 300);
 
-
         }
 
     }
 
+    @Override
+    protected void initBaseData() {
+        initToolBar();
+        setNodataSwipeRefreshLayout();
+    }
+
+    protected void initToolBar() {
+        mToolbar = (Toolbar) getDelegate().findViewById(R.id.toolbar);
+        btnRight = (Button) getDelegate().findViewById(R.id.btn_right);
+        mTitle = (TextView) getDelegate().findViewById(R.id.tv_title);
+
+        myToolbar = (Toolbar) getDelegate().findViewById(R.id.nodata_toolbar);
+        myBtnRight = (Button) getDelegate().findViewById(R.id.nodata_btn_right);
+        myTitle = (TextView) getDelegate().findViewById(R.id.nodata_tv_title);
+        if (mToolbar != null) {
+            setSupportActionBar(mToolbar);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+    }
+
+    //设置标题
+    public void setTitle(String title){
+        if(!TextUtils.isEmpty(title)){
+            if(mTitle != null){
+                mTitle.setText(title);
+            }
+            if(myTitle != null){
+                myTitle.setText(title);
+            }
+        }
+    }
+
+    //设置
+    public void setNodataSwipeRefreshLayout(){
+        mSwipeRefreshLayout = (SwipeRefreshLayout) getDelegate().findViewById(R.id.nodata_swipeRefreshLayout);
+        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimaryDark), getResources().getColor(R.color.colorPrimaryDark));
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                nodataRefresh();
+            }
+        });
+    }
+
+    @Override
+    protected void showStartAnimation(View startView) {
+        ImageView imageView = (ImageView) startView.findViewById(R.id.spinnerImageView);
+        // 获取ImageView上的动画背景
+        AnimationDrawable spinner = (AnimationDrawable) imageView
+                .getBackground();
+        // 开始动画
+        spinner.start();
+    }
 }

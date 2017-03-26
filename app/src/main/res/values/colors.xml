@@ -4,4 +4,9 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#FFFFFF</color>
+
+    <color name="code_grey">#c1aa86</color>
+    <color name="login_edit">#3a3a3a</color>
+    <color name="login_hint_edit">#9c9c9c</color>
+    <color name="login_btn">#e75047</color>
 </resources>

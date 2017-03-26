@@ -1,11 +1,14 @@
 package com.ironaviation.traveller.mvp.presenter.Login;
 
 import android.app.Application;
+import android.text.TextUtils;
+import android.widget.TextView;
 
 import com.ironaviation.traveller.mvp.contract.login.LoginContract;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
+import com.jess.arms.utils.UiUtils;
 import com.jess.arms.widget.imageloader.ImageLoader;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
@@ -61,6 +64,21 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
         this.mAppManager = null;
         this.mImageLoader = null;
         this.mApplication = null;
+    }
+
+    public void getLoginInfo(){
+        if(TextUtils.isEmpty(mRootView.getUserInfo())){
+            UiUtils.makeText("用户名不能为空");
+            return ;
+        }
+        if(TextUtils.isEmpty(mRootView.getCode())){
+            UiUtils.makeText("验证码不能为空");
+            return ;
+        }
+
+
+
+
     }
 
 }
