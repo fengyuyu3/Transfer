@@ -1,9 +1,9 @@
-package com.ironaviation.traveller.mvp.model.travel;
+package com.ironaviation.traveller.mvp.model.my;
 
 import android.app.Application;
 
 import com.google.gson.Gson;
-import com.ironaviation.traveller.mvp.contract.travel.TravelContract;
+import com.ironaviation.traveller.mvp.contract.my.TravelContract;
 import com.ironaviation.traveller.mvp.model.api.cache.CacheManager;
 import com.ironaviation.traveller.mvp.model.api.service.CommonService;
 import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;

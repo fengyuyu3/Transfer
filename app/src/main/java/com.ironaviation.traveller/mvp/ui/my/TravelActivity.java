@@ -1,4 +1,4 @@
-package com.ironaviation.traveller.mvp.ui.travel;
+package com.ironaviation.traveller.mvp.ui.my;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -9,11 +9,11 @@ import android.view.View;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
-import com.ironaviation.traveller.di.component.travel.DaggerTravelComponent;
-import com.ironaviation.traveller.di.module.travel.TravelModule;
-import com.ironaviation.traveller.mvp.contract.travel.TravelContract;
+import com.ironaviation.traveller.di.component.my.DaggerTravelComponent;
+import com.ironaviation.traveller.di.module.my.TravelModule;
+import com.ironaviation.traveller.mvp.contract.my.TravelContract;
 import com.ironaviation.traveller.mvp.model.entity.response.TravelResponse;
-import com.ironaviation.traveller.mvp.presenter.travel.TravelPresenter;
+import com.ironaviation.traveller.mvp.presenter.my.TravelPresenter;
 import com.jess.arms.utils.UiUtils;
 
 

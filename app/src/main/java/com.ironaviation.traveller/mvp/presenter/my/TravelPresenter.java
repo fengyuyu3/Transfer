@@ -1,8 +1,8 @@
-package com.ironaviation.traveller.mvp.presenter.travel;
+package com.ironaviation.traveller.mvp.presenter.my;
 
 import android.app.Application;
 
-import com.ironaviation.traveller.mvp.contract.travel.TravelContract;
+import com.ironaviation.traveller.mvp.contract.my.TravelContract;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.response.TravelResponse;
 import com.jess.arms.base.AppManager;

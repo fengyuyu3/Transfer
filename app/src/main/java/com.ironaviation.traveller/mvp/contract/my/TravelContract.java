@@ -1,4 +1,4 @@
-package com.ironaviation.traveller.mvp.contract.travel;
+package com.ironaviation.traveller.mvp.contract.my;
 
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.response.TravelResponse;

@@ -1,4 +1,4 @@
-package com.ironaviation.traveller.mvp.ui.travel;
+package com.ironaviation.traveller.mvp.ui.my;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;

@@ -9,6 +9,7 @@ import android.view.View;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
+import com.ironaviation.traveller.di.component.my.DaggerMessageComponent;
 import com.ironaviation.traveller.di.module.my.MessageModule;
 import com.ironaviation.traveller.mvp.contract.my.MessageContract;
 import com.ironaviation.traveller.mvp.presenter.my.MessagePresenter;
