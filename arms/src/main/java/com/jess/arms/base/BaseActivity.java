@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.jess.arms.R;
 import com.jess.arms.mvp.Presenter;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 import com.zhy.autolayout.AutoFrameLayout;
@@ -159,7 +158,7 @@ public abstract class BaseActivity<P extends Presenter> extends RxAppCompatActiv
         if(rootView != null ){
             if(startView == null) {
                 startView = getLayoutInflater().inflate(getStartId(), rootView, false);
-                showStartAnimation(startView);
+//                showStartAnimation(startView);
                 if (startView != null) {
                     showStart(false);
                     rootView.addView(startView);

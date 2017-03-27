@@ -17,4 +17,5 @@
     <color name="login_edit">#3a3a3a</color>
     <color name="login_hint_edit">#9c9c9c</color>
     <color name="login_btn">#e75047</color>
+    <color name="progress_background">#f4b0b6</color>
 </resources>

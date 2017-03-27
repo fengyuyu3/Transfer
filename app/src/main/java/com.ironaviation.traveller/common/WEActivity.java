@@ -24,9 +24,9 @@ import com.jess.arms.mvp.Presenter;
 public abstract class WEActivity<P extends Presenter> extends BaseActivity<P> {
     protected WEApplication mWeApplication;
     private CustomProgress customProgress;
-    protected Toolbar mToolbar,myToolbar;
-    protected Button btnRight,myBtnRight;
-    protected TextView mTitle,myTitle;
+    protected Toolbar mToolbar, myToolbar;
+    protected Button btnRight, myBtnRight;
+    protected TextView mTitle, myTitle,mFunctionRight;
     protected SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
@@ -96,6 +96,7 @@ public abstract class WEActivity<P extends Presenter> extends BaseActivity<P> {
             exception.printStackTrace();
         }
     }
+
     /**
      * 隐藏正在加载的进度条
      */
@@ -126,6 +127,7 @@ public abstract class WEActivity<P extends Presenter> extends BaseActivity<P> {
         mToolbar = (Toolbar) getDelegate().findViewById(R.id.toolbar);
         btnRight = (Button) getDelegate().findViewById(R.id.btn_right);
         mTitle = (TextView) getDelegate().findViewById(R.id.tv_title);
+        mFunctionRight= (TextView) getDelegate().findViewById(R.id.tv_function_right);
 
         myToolbar = (Toolbar) getDelegate().findViewById(R.id.nodata_toolbar);
         myBtnRight = (Button) getDelegate().findViewById(R.id.nodata_btn_right);
@@ -136,20 +138,30 @@ public abstract class WEActivity<P extends Presenter> extends BaseActivity<P> {
         }
     }
 
+    protected void setRightFunctionText(String text) {
+        if (!TextUtils.isEmpty(text)) {
+            if (mFunctionRight != null) {
+                mFunctionRight.setVisibility(View.VISIBLE);
+                mFunctionRight.setText(text);
+            }
+        }
+    }
+
+
     //设置标题
-    public void setTitle(String title){
-        if(!TextUtils.isEmpty(title)){
-            if(mTitle != null){
+    public void setTitle(String title) {
+        if (!TextUtils.isEmpty(title)) {
+            if (mTitle != null) {
                 mTitle.setText(title);
             }
-            if(myTitle != null){
+            if (myTitle != null) {
                 myTitle.setText(title);
             }
         }
     }
 
     //设置
-    public void setNodataSwipeRefreshLayout(){
+    public void setNodataSwipeRefreshLayout() {
         mSwipeRefreshLayout = (SwipeRefreshLayout) getDelegate().findViewById(R.id.nodata_swipeRefreshLayout);
         mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimaryDark), getResources().getColor(R.color.colorPrimaryDark));
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -162,12 +174,12 @@ public abstract class WEActivity<P extends Presenter> extends BaseActivity<P> {
 
     @Override
     protected void showStartAnimation(View startView) {
-        ImageView imageView = (ImageView) startView.findViewById(R.id.spinnerImageView);
+        /*ImageView imageView = (ImageView) startView.findViewById(R.id.spinnerImageView);
         // 获取ImageView上的动画背景
         AnimationDrawable spinner = (AnimationDrawable) imageView
                 .getBackground();
         // 开始动画
-        spinner.start();
+        spinner.start();*/
     }
 
     public void startActivity(Intent intent){

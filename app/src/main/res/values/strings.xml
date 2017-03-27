@@ -3,8 +3,10 @@
 
     <!--identification-->
     <string name="identification">认证</string>
-    <string name="name_hint">请输入姓名</string>
-    <string name="id_numeral_hint">请输入身份证号</string>
+    <string name="title_identification">实名认证</string>
+    <string name="function_skip">跳过</string>
+    <string name="hint_name">请输入姓名</string>
+    <string name="hint_id_numeral">请输入身份证号</string>
 
     <!--登陆-->
     <string name="login_input_phone">输入电话号码</string>

@@ -1,22 +1,25 @@
-package com.ironaviation.traveller.mvp.model.login;
+package com.ironaviation.traveller.mvp.model.travel;
 
 import android.app.Application;
 
 import com.google.gson.Gson;
-import com.ironaviation.traveller.mvp.contract.login.LoginContract;
+import com.ironaviation.traveller.mvp.contract.travel.TravelContract;
 import com.ironaviation.traveller.mvp.model.api.cache.CacheManager;
 import com.ironaviation.traveller.mvp.model.api.service.CommonService;
 import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
-import com.ironaviation.traveller.mvp.model.entity.Login;
-import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
+import com.ironaviation.traveller.mvp.model.entity.request.TravelRequest;
+import com.ironaviation.traveller.mvp.model.entity.response.TravelResponse;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BaseModel;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
 import rx.Observable;
 
+import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
 /**
@@ -33,22 +36,22 @@ import rx.Observable;
  * 项目名称：Transfer      
  * 类描述：   
  * 创建人：flq  
- * 创建时间：2017/3/23 13:29   
+ * 创建时间：2017/3/26 17:28   
  * 修改人：  
- * 修改时间：2017/3/23 13:29   
+ * 修改时间：2017/3/26 17:28   
  * 修改备注：   
  * @version
  *
  */
 
 @ActivityScope
-public class LoginModel extends BaseModel<ServiceManager, CacheManager> implements LoginContract.Model {
+public class TravelModel extends BaseModel<ServiceManager, CacheManager> implements TravelContract.Model {
     private Gson mGson;
     private Application mApplication;
     private CommonService mCommonService;
 
     @Inject
-    public LoginModel(ServiceManager serviceManager, CacheManager cacheManager, Gson gson, Application application) {
+    public TravelModel(ServiceManager serviceManager, CacheManager cacheManager, Gson gson, Application application) {
         super(serviceManager, cacheManager);
         this.mGson = gson;
         this.mApplication = application;
@@ -63,10 +66,9 @@ public class LoginModel extends BaseModel<ServiceManager, CacheManager> implemen
     }
 
     @Override
-    public Observable<BaseData<LoginEntity>> getLoginInfo(String userInfo, String code) {
-        Login mLogin = new Login();
-        mLogin.setCode(code);
-        mLogin.setUserName(userInfo);
-        return mCommonService.login(mLogin);
+    public Observable<BaseData<List<TravelResponse>>> getTravelData() {
+        TravelRequest travelRequest = new TravelRequest();
+
+        return mCommonService.getTravelData(travelRequest);
     }
 }

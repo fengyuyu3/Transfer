@@ -10,5 +10,6 @@ public interface Api {
     String APP_DOMAIN = "http://th-api.bestwise.net";// 测试
     String BASE_URL = "/api";
     String LOGIN = "/api/Drivers/SignIn";// 登录
+    String Travel = "";
     int RequestSuccess = 1;
 }

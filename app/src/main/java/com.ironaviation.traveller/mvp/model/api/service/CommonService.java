@@ -4,8 +4,12 @@ import com.ironaviation.traveller.mvp.model.api.Api;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.Login;
 import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
+import com.ironaviation.traveller.mvp.model.entity.request.TravelRequest;
+import com.ironaviation.traveller.mvp.model.entity.response.TravelResponse;
 
 import org.json.JSONObject;
+
+import java.util.List;
 
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -22,4 +26,7 @@ public interface CommonService {
     // @FormUrlEncoded
     @POST(Api.LOGIN)
     Observable<BaseData<LoginEntity>> login(@Body Login params);
+
+    @POST(Api.Travel)
+    Observable<BaseData<List<TravelResponse>>> getTravelData(@Body TravelRequest params);
 }

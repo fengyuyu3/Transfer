@@ -11,8 +11,8 @@
         android:layout_gravity="center"
         android:layout_marginTop="480px"
         android:background="@drawable/btn_login_edit_shap"
-        android:layout_width="600px"
-        android:layout_height="104px">
+        android:layout_width="@dimen/w_input_box"
+        android:layout_height="@dimen/h_input_box">
 
         <ImageView
             android:layout_centerVertical="true"
@@ -22,7 +22,7 @@
             android:layout_height="wrap_content" />
         <EditText
             android:id="@+id/et_phone"
-            android:maxLength="11"
+            android:maxLength="20"
             android:inputType="number"
             style="@style/input_edit_style"
             android:layout_marginLeft="86px"
@@ -34,8 +34,8 @@
         android:layout_gravity="center"
         android:layout_marginTop="40px"
         android:background="@drawable/btn_login_edit_shap"
-        android:layout_width="600px"
-        android:layout_height="104px">
+        android:layout_width="@dimen/w_input_box"
+        android:layout_height="@dimen/h_input_box">
 
         <ImageView
             android:layout_centerVertical="true"
@@ -64,7 +64,7 @@
             android:layout_marginRight="36px"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
+            android:layout_width="220px"
             android:layout_height="wrap_content" />
     </RelativeLayout>
 
@@ -77,6 +77,6 @@
             android:textColor="@color/login_btn"
             android:gravity="center"
             android:text="@string/login_btn"
-            android:layout_width="600px"
-            android:layout_height="104px" />
+            android:layout_width="@dimen/w_input_box"
+            android:layout_height="@dimen/h_input_box" />
 </LinearLayout>

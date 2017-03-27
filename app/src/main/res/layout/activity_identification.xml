@@ -5,10 +5,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include
+        android:id="@+id/include_toolbar"
+        layout="@layout/include_toolbar"
+        ></include>
+
+
     <com.zhy.autolayout.AutoRelativeLayout
         android:id="@+id/rl_id_cord"
         android:layout_width="match_parent"
         android:layout_height="409px"
+        android:layout_below="@+id/include_toolbar"
         android:background="@color/id_cord_background"
         >
 
@@ -29,13 +36,21 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="78px"
         android:background="@drawable/select_input_bux_tan"
+        android:focusable="true"
         >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="32px"
+            android:src="@mipmap/ic_user"/>
 
         <EditText
             android:id="@+id/et_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
+            style="@style/input_edit_style"
+            android:layout_marginLeft="86px"
+            android:hint="@string/hint_name"
             />
 
 
@@ -47,14 +62,26 @@
         android:layout_height="@dimen/h_input_box"
         android:layout_below="@+id/rl_name"
         android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
         android:layout_marginTop="40px"
         android:background="@drawable/select_input_bux_tan"
+        android:focusable="true"
         >
+
+        <ImageView
+            android:layout_width="20px"
+            android:layout_height="20px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="42px"
+            android:src="@drawable/dot_grey"/>
 
         <EditText
             android:id="@+id/et_numeral"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            style="@style/input_edit_style"
+            android:layout_marginLeft="86px"
+            android:hint="@string/hint_id_numeral"
+
+            />
 
     </RelativeLayout>
 
@@ -65,7 +92,7 @@
         android:layout_below="@+id/rl_id_numeral"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="120px"
-        android:background="@drawable/select_button_red"
+        android:background="@drawable/select_btn_red"
         >
 
         <TextView

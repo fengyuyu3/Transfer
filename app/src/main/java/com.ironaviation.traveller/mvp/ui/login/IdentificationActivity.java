@@ -1,8 +1,11 @@
 package com.ironaviation.traveller.mvp.ui.login;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -42,7 +45,7 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  * 修改时间：2017-03-26 10:03
  * 修改备注：
  */
-public class IdentificationActivity extends WEActivity<IdentificationPresenter> implements IdentificationContract.View {
+public class IdentificationActivity extends WEActivity<IdentificationPresenter> implements IdentificationContract.View,View.OnFocusChangeListener {
 
     @BindView(R.id.rl_identification)
     RelativeLayout rl_identification;
@@ -56,6 +59,7 @@ public class IdentificationActivity extends WEActivity<IdentificationPresenter> 
     EditText mEtName;
     @BindView(R.id.et_numeral)
     EditText mEtNumeral;
+
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -79,7 +83,10 @@ public class IdentificationActivity extends WEActivity<IdentificationPresenter> 
 
     @Override
     protected void initData() {
-
+        setTitle(getString(R.string.title_identification));
+        setRightFunctionText(getString(R.string.function_skip));
+        mEtName.setOnFocusChangeListener(this);
+        mRlIdNumeral.setOnFocusChangeListener(this);
     }
 
 
@@ -118,7 +125,7 @@ public class IdentificationActivity extends WEActivity<IdentificationPresenter> 
 
     @Override
     public String getNumeral() {
-        return mEtName.getText().toString();
+        return mEtNumeral.getText().toString().trim();
     }
 
     @Override
@@ -136,6 +143,31 @@ public class IdentificationActivity extends WEActivity<IdentificationPresenter> 
                 mPresenter.identification();
                 break;
 
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    @Override
+    public void onFocusChange(View view, boolean b) {
+        switch (view.getId()){
+            case R.id.et_name:
+                if(b) {
+                    mRlName.setBackground(getResources().getDrawable(R.drawable.input_bux_tan_select));
+                    mRlIdNumeral.setBackground(getResources().getDrawable(R.drawable.input_bux_grey_un_select));
+                }else{
+                    mRlName.setBackground(getResources().getDrawable(R.drawable.input_bux_grey_un_select));
+                    mRlIdNumeral.setBackground(getResources().getDrawable(R.drawable.input_bux_tan_select));
+                }
+                break;
+            case R.id.et_numeral:
+                if(b) {
+                    mRlName.setBackground(getResources().getDrawable(R.drawable.input_bux_grey_un_select));
+                    mRlIdNumeral.setBackground(getResources().getDrawable(R.drawable.input_bux_tan_select));
+                }else{
+                    mRlName.setBackground(getResources().getDrawable(R.drawable.input_bux_tan_select));
+                    mRlIdNumeral.setBackground(getResources().getDrawable(R.drawable.input_bux_grey_un_select));
+                }
+                break;
         }
     }
 }

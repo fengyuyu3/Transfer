@@ -1,23 +1,17 @@
-package com.ironaviation.traveller.mvp.presenter.Login;
+package com.ironaviation.traveller.mvp.presenter.travel;
 
 import android.app.Application;
-import android.app.MediaRouteActionProvider;
-import android.content.Intent;
-import android.text.TextUtils;
-import android.widget.TextView;
 
-import com.ironaviation.traveller.R;
-import com.ironaviation.traveller.mvp.contract.login.LoginContract;
+import com.ironaviation.traveller.mvp.contract.travel.TravelContract;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
-import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
-import com.ironaviation.traveller.mvp.ui.login.IdentificationActivity;
+import com.ironaviation.traveller.mvp.model.entity.response.TravelResponse;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.utils.RxUtils;
-import com.jess.arms.utils.UiUtils;
-import com.jess.arms.widget.imageloader.BaseImageLoaderStrategy;
 import com.jess.arms.widget.imageloader.ImageLoader;
+
+import java.util.List;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
@@ -40,23 +34,23 @@ import javax.inject.Inject;
  * 项目名称：Transfer      
  * 类描述：   
  * 创建人：flq  
- * 创建时间：2017/3/23 13:29   
+ * 创建时间：2017/3/26 17:28   
  * 修改人：  
- * 修改时间：2017/3/23 13:29   
+ * 修改时间：2017/3/26 17:28   
  * 修改备注：   
  * @version
  *
  */
 
 @ActivityScope
-public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginContract.View> {
+public class TravelPresenter extends BasePresenter<TravelContract.Model, TravelContract.View> {
     private RxErrorHandler mErrorHandler;
     private Application mApplication;
     private ImageLoader mImageLoader;
     private AppManager mAppManager;
 
     @Inject
-    public LoginPresenter(LoginContract.Model model, LoginContract.View rootView
+    public TravelPresenter(TravelContract.Model model, TravelContract.View rootView
             , RxErrorHandler handler, Application application
             , ImageLoader imageLoader, AppManager appManager) {
         super(model, rootView);
@@ -75,32 +69,30 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
         this.mApplication = null;
     }
 
-    public void getLoginInfo(){
-        if(TextUtils.isEmpty(mRootView.getUserInfo())){
-            UiUtils.makeText(mApplication.getString(R.string.login_no_userInfo));
-            return ;
-        }
-        if(TextUtils.isEmpty(mRootView.getCode())){
-            UiUtils.makeText(mApplication.getString(R.string.login_no_code));
-            return ;
-        }
-
-        mModel.getLoginInfo(mRootView.getUserInfo(),mRootView.getCode())
-                .compose(RxUtils.<BaseData<LoginEntity>>applySchedulers(mRootView))
-                .subscribe(new ErrorHandleSubscriber<BaseData<LoginEntity>>(mErrorHandler) {
+    public void getTravelData(){
+        mModel.getTravelData()
+                .compose(RxUtils.<BaseData<List<TravelResponse>>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<List<TravelResponse>>>(mErrorHandler) {
                     @Override
-                    public void onNext(BaseData<LoginEntity> loginEntityBaseData) {
-                        if(loginEntityBaseData.isSuccess()) {
-                            Intent intent = new Intent(mApplication, IdentificationActivity.class);
-                            mRootView.launchActivity(intent);
-                            mRootView.killMyself();
+                    public void onNext(BaseData<List<TravelResponse>> listBaseData) {
+                        if(listBaseData.isSuccess()){
+                            if(listBaseData.getData() != null) {
+                                mRootView.setDatas(listBaseData.getData());
+                            }else{
+                                mRootView.setNodata();
+                            }
                         }else{
-                            mRootView.showMessage(loginEntityBaseData.getMsg());
+                            mRootView.showMessage(listBaseData.getMsg());
+                            mRootView.setError();
                         }
                     }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        mRootView.setError();
+                    }
                 });
-
-
     }
 
 }
