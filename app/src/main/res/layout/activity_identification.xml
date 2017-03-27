@@ -35,6 +35,8 @@
         android:layout_below="@+id/rl_id_cord"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="78px"
+        android:paddingRight="@dimen/interval_input_box"
+        android:paddingLeft="@dimen/interval_input_box"
         android:background="@drawable/select_input_bux_tan"
         android:focusable="true"
         >
@@ -43,13 +45,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="32px"
             android:src="@mipmap/ic_user"/>
 
         <EditText
             android:id="@+id/et_name"
             style="@style/input_edit_style"
-            android:layout_marginLeft="86px"
+            android:layout_marginLeft="62px"
             android:hint="@string/hint_name"
             android:focusable="true"
             />
@@ -66,6 +67,8 @@
         android:layout_gravity="center"
         android:layout_marginTop="40px"
         android:background="@drawable/select_input_bux_tan"
+        android:paddingRight="@dimen/interval_input_box"
+        android:paddingLeft="@dimen/interval_input_box"
         android:focusable="true"
         >
 
@@ -73,13 +76,13 @@
             android:layout_width="20px"
             android:layout_height="20px"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="42px"
+            android:layout_marginLeft="10px"
             android:src="@drawable/dot_grey"/>
 
         <EditText
             android:id="@+id/et_numeral"
             style="@style/input_edit_style"
-            android:layout_marginLeft="86px"
+            android:layout_marginLeft="62px"
             android:hint="@string/hint_id_numeral"
             android:focusable="true"
             />

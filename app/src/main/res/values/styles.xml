@@ -28,4 +28,21 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:textCursorDrawable">@null</item>
     </style>
+
+    <style name="common_text_style">
+        <item name="android:maxLines">1</item>
+        <item name="android:background">@null</item>
+        <item name="android:textSize">@dimen/word_input_box</item>
+        <item name="android:textColor">@color/login_edit</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="common_text_content_style">
+        <item name="android:maxLines">1</item>
+        <item name="android:background">@null</item>
+        <item name="android:textSize">@dimen/word_content</item>
+        <item name="android:textColor">@color/login_edit</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
 </resources>

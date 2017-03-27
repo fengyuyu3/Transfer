@@ -3,10 +3,13 @@ package com.ironaviation.traveller.common;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -17,6 +20,11 @@ import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.mvp.ui.widget.CustomProgress;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.mvp.Presenter;
+
+import org.simple.eventbus.EventBus;
+
+import static com.jess.arms.base.AppManager.APPMANAGER_MESSAGE;
+import static com.jess.arms.base.AppManager.START_ACTIVITY;
 
 /**
  * Created by jess on 8/5/16 13:13
@@ -163,6 +171,7 @@ public abstract class WEActivity<P extends Presenter> extends BaseActivity<P> {
             }
         }
     }
+
     /**
      * 设置左功能键
      */
@@ -210,17 +219,32 @@ public abstract class WEActivity<P extends Presenter> extends BaseActivity<P> {
         spinner.start();*/
     }
 
-    public void startActivity(Intent intent){
+    public void startActivity(Intent intent) {
         super.startActivity(intent);
-        startAnimation();
+        Message message = new Message();
+        message.what = START_ACTIVITY;
+        message.obj = intent;
+        EventBus.getDefault().post(message, APPMANAGER_MESSAGE);
     }
 
-    public void startActivity(Class clazz){
-        super.startActivity(new Intent(this,clazz));
-        startAnimation();
+    public void startActivity(Class clazz) {
+        Intent intent = new Intent(this, clazz);
+        Message message = new Message();
+        message.what = START_ACTIVITY;
+        message.obj = intent;
+        EventBus.getDefault().post(message, APPMANAGER_MESSAGE);
+        Log.e("kkk","llll");
     }
 
-    public void startAnimation(){
-        overridePendingTransition(R.anim.right_in,R.anim.left_out);
+    public void startActivity(Class clazz,Bundle c) {
+        Intent intent = new Intent(this, clazz);
+        intent.putExtras(c);
+        Message message = new Message();
+        message.what = START_ACTIVITY;
+        message.obj = intent;
+        EventBus.getDefault().post(message, APPMANAGER_MESSAGE);
+    }
+    public void startAnimation() {
+        overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }
 }

@@ -6,15 +6,15 @@
 
     <com.zhy.autolayout.AutoRelativeLayout
         android:layout_width="match_parent"
-        android:fitsSystemWindows="true"
+        android:layout_height="?attr/actionBarSize"
 
-        android:layout_height="?attr/actionBarSize">
+        android:fitsSystemWindows="true">
 
         <com.ironaviation.traveller.mvp.ui.widget.AutoToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@android:color/white"
+            android:background="@color/bg_toolbar"
             >
 
             <Button
@@ -41,7 +41,7 @@
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="title"
-                android:textColor="@color/word_already_input"
+                android:textColor="@color/white"
                 android:textSize="44px"/>
 
 
@@ -56,7 +56,7 @@
                 android:padding="10px"
                 android:singleLine="true"
                 android:text="title"
-                android:textColor="@color/word_wait_input"
+                android:textColor="@color/word_toolbar_right"
                 android:textSize="32px"
                 android:visibility="invisible"
                 />

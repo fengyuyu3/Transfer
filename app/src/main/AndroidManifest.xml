@@ -9,7 +9,34 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <!-- 个推SDK权限配置开始 -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <!-- 支持iBeancon 需要蓝牙权限 -->
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <!-- 支持个推3.0 电子围栏功能 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <!-- 浮动通知权限 -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <!-- 自定义权限 -->
+    <uses-permission android:name="getui.permission.GetuiService.${applicationId}"/>
 
+    <permission
+        android:name="getui.permission.GetuiService.${applicationId}"
+        android:protectionLevel="normal">
+    </permission>
+
+    <!-- 个推SDK权限配置结束 -->
     <application
         android:name=".common.WEApplication"
         android:allowBackup="true"
@@ -19,35 +46,8 @@
         android:theme="@style/AppTheme">
 
 
+        <!--主页-->
         <activity android:name=".mvp.ui.main.MainActivity">
-                 <intent-filter>
-                         <action android:name="android.intent.action.MAIN"/>
-
-                         <category android:name="android.intent.category.LAUNCHER"/>
-                     </intent-filter>
-        </activity>
-
-
-        <activity android:name=".mvp.ui.login.IdentificationActivity"
-
-
-            >
-           <!-- <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>-->
-        </activity>
-
-        <activity android:name=".mvp.ui.login.LoginActivity">
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>-->
-        </activity>
-
-        <activity android:name=".mvp.ui.travel.TravelActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -55,6 +55,76 @@
             </intent-filter>
         </activity>
 
+        <!--认证-->
+        <activity
+            android:name=".mvp.ui.login.IdentificationActivity"
+            android:hardwareAccelerated="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            >
+
+        </activity>
+        <!--登录-->
+        <activity
+            android:name=".mvp.ui.login.LoginActivity"
+            android:hardwareAccelerated="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            >
+
+        </activity>
+        <!--旅行-->
+        <activity
+            android:name=".mvp.ui.my.TravelActivity"
+            android:hardwareAccelerated="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            >
+
+        </activity>
+        <!--消息-->
+        <activity
+            android:name=".mvp.ui.my.MessageActivity"
+            android:hardwareAccelerated="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            >
+
+        </activity>
+        <!--设置-->
+        <activity
+            android:name=".mvp.ui.my.SettingActivity"
+            android:hardwareAccelerated="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            >
+
+        </activity>
+
+
+        <!-- 配置的第三方参数属性 -->
+        <meta-data
+            android:name="PUSH_APPID"
+            android:value="${GETUI_APP_ID}"/>
+        <meta-data
+            android:name="PUSH_APPKEY"
+            android:value="${GETUI_APP_KEY}"/>
+        <meta-data
+            android:name="PUSH_APPSECRET"
+            android:value="${GETUI_APP_SECRET}"/>
+        <!-- 配置个推SDK核心服务 -->
+        <service android:name=".app.service.WEGTIntentService"/>
+        <service
+            android:name=".app.service.WEPushService"
+            android:exported="true"
+            android:label="PushService"
+            android:process=":pushservice">
+        </service>
         <!-- autolayout meta
         将设计图的宽高配置后,配合AutoLauout控件使用,在设计图尺寸以外的其它尺寸手机上,也能达到和设计图一样的效果
         -->

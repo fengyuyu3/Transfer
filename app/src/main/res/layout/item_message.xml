@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="136px">
+
+        <ImageView
+
+            android:id="@+id/iv_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="32px"
+            android:layout_marginRight="32px"
+            android:background="@mipmap/ic_bell"/>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="135px"
+            android:background="@color/line_little_grey"
+            ></View>
+
+        <TextView
+            android:id="@+id/tv_message_title"
+            style="@style/common_text_style"
+            android:layout_marginTop="32px"
+            android:layout_toRightOf="@+id/iv_message"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/tv_message_text"
+            style="@style/common_text_content_style"
+            android:layout_below="@+id/tv_message_title"
+            android:layout_marginBottom="32px"
+            android:layout_toRightOf="@+id/iv_message"
+            />
+    </com.zhy.autolayout.AutoRelativeLayout>
+</com.zhy.autolayout.AutoRelativeLayout>

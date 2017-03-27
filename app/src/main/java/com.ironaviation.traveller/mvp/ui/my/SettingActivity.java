@@ -9,15 +9,12 @@ import android.view.View;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
-import com.ironaviation.traveller.di.component.my.DaggerTravelComponent;
-import com.ironaviation.traveller.di.module.my.TravelModule;
-import com.ironaviation.traveller.mvp.contract.my.TravelContract;
-import com.ironaviation.traveller.mvp.model.entity.response.TravelResponse;
-import com.ironaviation.traveller.mvp.presenter.my.TravelPresenter;
+import com.ironaviation.traveller.di.component.my.DaggerSettingComponent;
+import com.ironaviation.traveller.di.module.my.SettingModule;
+import com.ironaviation.traveller.mvp.contract.my.SettingContract;
+import com.ironaviation.traveller.mvp.presenter.my.SettingPresenter;
 import com.jess.arms.utils.UiUtils;
 
-
-import java.util.List;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -32,27 +29,25 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 /**
  *
- * 项目名称：Transfer
- * 类描述：
- * 创建人：flq
- * 创建时间：2017/3/26 17:29
- * 修改人：
- * 修改时间：2017/3/26 17:29
- * 修改备注：
+ * 项目名称：Traveller      
+ * 类描述：   
+ * 创建人：starRing  
+ * 创建时间：2017-03-27 10:33   
+ * 修改人：starRing  
+ * 修改时间：2017-03-27 10:33   
+ * 修改备注：   
  * @version
  *
  */
+public class SettingActivity extends WEActivity<SettingPresenter> implements SettingContract.View {
 
-public class TravelActivity extends WEActivity<TravelPresenter> implements TravelContract.View {
 
-
-    private TravelAdapter mTravelAdapter;
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
-        DaggerTravelComponent
+        DaggerSettingComponent
                 .builder()
                 .appComponent(appComponent)
-                .travelModule(new TravelModule(this)) //请将TravelModule()第一个首字母改为小写
+                .settingModule(new SettingModule(this)) //请将SettingModule()第一个首字母改为小写
                 .build()
                 .inject(this);
     }
@@ -64,13 +59,14 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
 
     @Override
     protected View initView() {
-        return LayoutInflater.from(this).inflate(R.layout.activity_travel, null, false);
+        return LayoutInflater.from(this).inflate(R.layout.activity_setting, null, false);
     }
 
     @Override
     protected void initData() {
-        mTravelAdapter = new TravelAdapter(R.layout.item_travel);
+
     }
+
 
     @Override
     public void showLoading() {
@@ -99,18 +95,5 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
         finish();
     }
 
-    @Override
-    public void setDatas(List<TravelResponse> mTravelResponses) {
-        mTravelAdapter.setNewData(mTravelResponses);
-    }
 
-    @Override
-    public void setNodata() {
-        showNodata(true);
-    }
-
-    @Override
-    public void setError() {
-
-    }
 }
