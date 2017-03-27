@@ -13,70 +13,69 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="40px"
         android:layout_marginTop="170px"
+        android:text="@string/personal_center"
         android:textColor="@color/white"
         android:textSize="36px"
-        android:text="@string/personal_center"
         android:textStyle="bold"/>
+
     <com.zhy.autolayout.AutoRelativeLayout
         android:id="@+id/rl_head_portrait"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="115px"
         android:layout_marginLeft="40px"
+        android:layout_marginTop="115px"
         >
+
         <ImageView
             android:id="@+id/iv_head_portrait"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_head_portrait_default"
             />
+
         <TextView
             android:id="@+id/iv_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="20px"
+            android:layout_toRightOf="@+id/iv_head_portrait"
             android:textColor="@color/white"
             android:textSize="36px"
-            android:layout_toRightOf="@+id/iv_head_portrait"
-            android:layout_centerVertical="true"
-           />
-
+            />
 
 
     </com.zhy.autolayout.AutoRelativeLayout>
 
 
-
-    <RelativeLayout
-        android:id="@+id/rl_change_password"
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:id="@+id/rl_trip"
         android:layout_width="match_parent"
         android:layout_height="120px"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_marginTop="50px"
         android:layout_below="@+id/view">
-<!--
+
         <ImageView
-            android:id="@+id/iv_change_password"
+            android:id="@+id/iv_trip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="28px"
             android:layout_marginLeft="66px"
-            android:background="@mipmap/icon_change_password"
+            android:background="@mipmap/ic_trip"
             android:clickable="false"/>
 
         <TextView
-            android:id="@+id/tvChangePassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/v_level_13"
-            android:layout_toRightOf="@+id/iv_change_password"
+            android:layout_marginBottom="28px"
+            android:layout_marginLeft="43px"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/iv_trip"
             android:clickable="false"
-            android:text="@string/change_password"
-            android:textColor="@color/C_666666"
-            android:textSize="@dimen/tv_16"/>-->
-
-
+            android:text="@string/trip"
+            android:textColor="@color/white"
+            android:textSize="30px"/>
 
 
         <View
@@ -84,7 +83,81 @@
             android:layout_height="0.5dp"
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
-            android:background="#494c56"/>
-    </RelativeLayout>
+            android:background="@color/line_grey"/>
+    </com.zhy.autolayout.AutoRelativeLayout>
 
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:id="@+id/rl_message"
+        android:layout_width="match_parent"
+        android:layout_height="120px"
+        android:layout_below="@+id/view">
+
+        <ImageView
+            android:id="@+id/iv_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="28px"
+            android:layout_marginLeft="66px"
+            android:background="@mipmap/ic_message"
+            android:clickable="false"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="28px"
+            android:layout_marginLeft="43px"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/iv_message"
+            android:clickable="false"
+            android:text="@string/message"
+            android:textColor="@color/white"
+            android:textSize="30px"/>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:background="@color/line_grey"/>
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:id="@+id/rl_setting"
+        android:layout_width="match_parent"
+        android:layout_height="120px"
+        android:layout_below="@+id/view">
+
+        <ImageView
+            android:id="@+id/iv_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="28px"
+            android:layout_marginLeft="66px"
+            android:background="@mipmap/ic_setting"
+            android:clickable="false"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="28px"
+            android:layout_marginLeft="43px"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/iv_setting"
+            android:clickable="false"
+            android:text="@string/setting"
+            android:textColor="@color/white"
+            android:textSize="30px"/>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:background="@color/line_grey"/>
+    </com.zhy.autolayout.AutoRelativeLayout>
 </com.zhy.autolayout.AutoLinearLayout>

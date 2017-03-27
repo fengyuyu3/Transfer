@@ -15,6 +15,8 @@
 
     <color name="bg_personal_center">#343843</color>
 
+    <color name="line_grey">#494c56</color>
+
 
     <color name="code_grey">#c1aa86</color>
     <color name="login_edit">#3a3a3a</color>
