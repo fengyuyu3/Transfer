@@ -38,10 +38,13 @@
         android:layout_height="@dimen/h_input_box">
 
         <ImageView
+            android:layout_width="20px"
+            android:layout_height="20px"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="32px"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_marginLeft="42px"
+
+            android:src="@drawable/dot_grey"
+            />
         <EditText
             android:id="@+id/et_code"
             android:inputType="number"
