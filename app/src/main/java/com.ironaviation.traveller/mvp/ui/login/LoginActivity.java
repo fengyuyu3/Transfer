@@ -93,11 +93,11 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
                 finish();
             }
         });*/
-        showStart(true);
+        showError(true);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                showStart(false);
+                showError(false);
             }
         }, 4000);
     }

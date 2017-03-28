@@ -32,7 +32,7 @@
 
 
             >
-           <!-- <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -47,12 +47,12 @@
             </intent-filter>-->
         </activity>
 
-        <activity android:name=".mvp.ui.travel.TravelActivity">
-            <intent-filter>
+        <activity android:name=".mvp.ui.my.TravelActivity">
+           <!-- <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+            </intent-filter>-->
         </activity>
 
         <!-- autolayout meta

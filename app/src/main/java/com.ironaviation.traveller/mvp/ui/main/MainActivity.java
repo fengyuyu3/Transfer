@@ -27,6 +27,7 @@ import com.ironaviation.traveller.di.component.DaggerMainComponent;
 import com.ironaviation.traveller.di.module.MainModule;
 import com.ironaviation.traveller.mvp.contract.MainContract;
 import com.ironaviation.traveller.mvp.presenter.MainPresenter;
+import com.ironaviation.traveller.mvp.ui.airportoff.AirPortOffFragment;
 import com.ironaviation.traveller.mvp.ui.widget.AutoSlidingTabLayout;
 import com.ironaviation.traveller.mvp.ui.widget.AutoToolbar;
 import com.jess.arms.utils.UiUtils;
@@ -58,8 +59,6 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 public class MainActivity extends WEActivity<MainPresenter> implements MainContract.View {
 
-    @BindView(R.id.btn_right)
-    Button mBtnRight;
     @BindView(R.id.iv_function_left)
     ImageView mIvFunctionLeft;
     @BindView(R.id.tv_title)
@@ -107,9 +106,11 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
     @Override
     protected void initData() {
 
-        for (String title : mTitles) {
+        mFragments.add(SimpleCardFragment.getInstance(mTitles[0]));
+        mFragments.add(new AirPortOffFragment());
+        /*for (String title : mTitles) {
             mFragments.add(SimpleCardFragment.getInstance(title));
-        }
+        }*/
         View decorView = getWindow().getDecorView();
         ViewPager vp = ViewFindUtils.find(decorView, R.id.vp);
         mAdapter = new MyPagerAdapter(getSupportFragmentManager());

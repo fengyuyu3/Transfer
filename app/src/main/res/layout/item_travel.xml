@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-      android:orientation="vertical"
+<com.jess.arms.widget.autolayout.AutoCardView xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:background="@color/white">
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:orientation="vertical"
+      android:background="@drawable/btn_login_edit_shap"
+      android:id="@+id/card_view"
+      android:foreground="?android:attr/selectableItemBackground"
+      app:cardBackgroundColor="@color/white"
+      app:cardCornerRadius="10px"
+      app:cardUseCompatPadding="true">
 
     <com.zhy.autolayout.AutoLinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <com.zhy.autolayout.AutoLinearLayout
+        android:padding="32px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
+            android:textSize="30px"
+            android:textColor="@color/travel_runtime"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:id="@+id/tv_status"
@@ -16,22 +30,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <ImageView
-            android:src="@mipmap/ic_launcher"
+            android:src="@mipmap/ic_go"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </com.zhy.autolayout.AutoLinearLayout>
 
 
     <com.zhy.autolayout.AutoLinearLayout
+        android:paddingLeft="32px"
+        android:layout_marginTop="8px"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
-            android:src="@mipmap/ic_launcher"
+            android:layout_gravity="center"
+            android:src="@mipmap/ic_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
         <TextView
+            android:maxLines="1"
+            android:textSize="30px"
+            android:textColor="@color/login_edit"
+            android:layout_marginLeft="24px"
             android:id="@+id/tv_time"
             android:layout_gravity="center"
             android:text="2017/03/08 10:20"
@@ -40,11 +62,13 @@
     </com.zhy.autolayout.AutoLinearLayout>
 
     <com.zhy.autolayout.AutoLinearLayout
+        android:layout_marginTop="38px"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <com.zhy.autolayout.AutoLinearLayout
+            android:paddingLeft="32px"
             android:layout_weight="1"
             android:orientation="vertical"
             android:layout_width="wrap_content"
@@ -54,10 +78,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <ImageView
-                    android:src="@mipmap/ic_launcher"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/ic_blue_point"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <TextView
+                    android:maxLines="1"
+                    android:textSize="30px"
+                    android:textColor="@color/login_edit"
+                    android:layout_marginLeft="24px"
                     android:id="@+id/tv_airport"
                     android:layout_gravity="center"
                     android:text="双流机场"
@@ -65,14 +94,21 @@
                     android:layout_height="wrap_content"/>
             </com.zhy.autolayout.AutoLinearLayout>
             <com.zhy.autolayout.AutoLinearLayout
+                android:layout_marginBottom="32px"
+                android:layout_marginTop="24px"
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <ImageView
-                    android:src="@mipmap/ic_launcher"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/ic_green_point"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <TextView
+                    android:maxLines="1"
+                    android:textSize="30px"
+                    android:textColor="@color/login_edit"
+                    android:layout_marginLeft="24px"
                     android:id="@+id/tv_hotel"
                     android:text="城市名人酒店"
                     android:layout_gravity="center"
@@ -80,11 +116,13 @@
                     android:layout_height="wrap_content"/>
             </com.zhy.autolayout.AutoLinearLayout>
         </com.zhy.autolayout.AutoLinearLayout>
+
         <ImageView
+            android:layout_marginRight="58px"
             android:layout_gravity="center"
-            android:src="@mipmap/ic_launcher"
+            android:src="@mipmap/ic_car"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </com.zhy.autolayout.AutoLinearLayout>
-
-</com.zhy.autolayout.AutoLinearLayout>
+    </com.zhy.autolayout.AutoLinearLayout>
+</com.jess.arms.widget.autolayout.AutoCardView>

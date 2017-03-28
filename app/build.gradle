@@ -70,4 +70,5 @@ dependencies {
         exclude group: 'com.android.support'
     }
     compile files('libs/nineoldandroids-2.4.0.jar')
+    compile rootProject.ext.dependencies["cardview-v7"]
 }

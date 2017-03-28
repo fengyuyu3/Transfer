@@ -1,8 +1,10 @@
 package com.ironaviation.traveller.common;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
@@ -17,44 +19,26 @@ import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.mvp.ui.widget.CustomProgress;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.mvp.Presenter;
+import com.zhy.autolayout.AutoLinearLayout;
 
 /**
  * Created by jess on 8/5/16 13:13
  * contact with jess.yan.effort@gmail.com
  */
-public abstract class WEActivity<P extends Presenter> extends BaseActivity<P> {
-    protected WEApplication mWeApplication;
-    private CustomProgress customProgress;
-    protected Toolbar mToolbar, myToolbar;
-    protected Button btnRight, myBtnRight;
-    protected TextView mTitle, myTitle, mFunctionRight;
-    protected ImageView mIvFunctionLeft;
-    protected SwipeRefreshLayout mSwipeRefreshLayout;
+public abstract class WEActivity<P extends Presenter> extends BaseWEActivity<P> {
 
-    @Override
-    protected void ComponentInject() {
-        mWeApplication = (WEApplication) getApplication();
-        setupActivityComponent(mWeApplication.getAppComponent());
-    }
 
-    //提供AppComponent(提供所有的单例对象)给子类，进行Component依赖
-    protected abstract void setupActivityComponent(AppComponent appComponent);
-
-    protected abstract void nodataRefresh();
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        this.mWeApplication = null;
-        if (customProgress != null) {
-            customProgress.miss();
-        }
-    }
+    protected Toolbar mToolbar, nodataToolbar;
+    protected TextView mTitle, nodataTitle, mFunctionRight,nodataFunctionRight;
+    protected ImageView mIvFunctionLeft,nodataIvFunctionLeft;
+    protected SwipeRefreshLayout mNodataSwipeRefresh;
+    protected AutoLinearLayout llError;
 
     @Override
     protected void initId() {
         initNoDataId();
         initStartId();
+        initErrorId();
     }
 
     @Override
@@ -67,78 +51,19 @@ public abstract class WEActivity<P extends Presenter> extends BaseActivity<P> {
         return R.layout.progress_custom;
     }
 
-    /**
-     * 显示正在加载的进度条
-     */
-    public void showProgressDialog() {
-        if (!isFinishing() && customProgress != null
-                && customProgress.isShowing()) {
-            customProgress.miss();
-            customProgress = null;
-        }
-        try {
-            customProgress = new CustomProgress(WEActivity.this);
-            //customProgress.show(this, "加载中...", true, null);
-            customProgress.show(this, "", true, null);
-        } catch (WindowManager.BadTokenException exception) {
-            exception.printStackTrace();
-        }
-    }
-
-    public void showProgressDialog(String msg) {
-        if (!isFinishing() && customProgress != null
-                && customProgress.isShowing()) {
-            customProgress.miss();
-            customProgress = null;
-        }
-        try {
-            customProgress = new CustomProgress(WEActivity.this);
-            customProgress.show(this, msg, true, null);
-        } catch (WindowManager.BadTokenException exception) {
-            exception.printStackTrace();
-        }
-    }
-
-    /**
-     * 隐藏正在加载的进度条
-     */
-    public void dismissProgressDialog() {
-
-
-        if (!isFinishing() && customProgress != null) {
-
-            new Handler().postDelayed(new Runnable() {
-
-                public void run() {
-                    //execute the task
-                    customProgress.miss();
-                }
-            }, 300);
-
-        }
-
+    @Override
+    protected int getErrorId() {
+        return R.layout.include_error;
     }
 
     @Override
     protected void initBaseData() {
         initToolBar();
         setNodataSwipeRefreshLayout();
+        setErrorRefresh();
     }
 
-    protected void initToolBar() {
-        mToolbar = (Toolbar) getDelegate().findViewById(R.id.toolbar);
-        btnRight = (Button) getDelegate().findViewById(R.id.btn_right);
-        mTitle = (TextView) getDelegate().findViewById(R.id.tv_title);
-        mFunctionRight = (TextView) getDelegate().findViewById(R.id.tv_function_right);
-        mIvFunctionLeft = (ImageView) getDelegate().findViewById(R.id.iv_function_left);
-        myToolbar = (Toolbar) getDelegate().findViewById(R.id.nodata_toolbar);
-        myBtnRight = (Button) getDelegate().findViewById(R.id.nodata_btn_right);
-        myTitle = (TextView) getDelegate().findViewById(R.id.nodata_tv_title);
-        if (mToolbar != null) {
-            setSupportActionBar(mToolbar);
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-        }
-    }
+    protected abstract void nodataRefresh();
 
     /**
      * 设置右功能键
@@ -149,11 +74,15 @@ public abstract class WEActivity<P extends Presenter> extends BaseActivity<P> {
                 mFunctionRight.setVisibility(View.VISIBLE);
                 mFunctionRight.setText(text);
             }
+            if(nodataFunctionRight != null){
+                nodataFunctionRight.setVisibility(View.VISIBLE);
+                nodataFunctionRight.setText(text);
+            }
         }
     }
 
     /**
-     * 设置左功能键
+     * 设置自定义左功能键
      */
     protected void setLeftFunction(Drawable text) {
         if (text != null) {
@@ -161,16 +90,74 @@ public abstract class WEActivity<P extends Presenter> extends BaseActivity<P> {
                 mIvFunctionLeft.setVisibility(View.VISIBLE);
                 mIvFunctionLeft.setImageDrawable(text);
             }
+            if (nodataIvFunctionLeft != null) {
+                nodataIvFunctionLeft.setVisibility(View.VISIBLE);
+                nodataIvFunctionLeft.setImageDrawable(text);
+            }
         }
     }
     /**
-     * 设置左功能键
+     * 设置导航左功能键
      */
     protected void setNavigationIcon(Drawable text) {
         if (text != null) {
             if (mToolbar != null) {
                 mToolbar.setNavigationIcon(text);
             }
+            if(nodataToolbar != null){
+                nodataToolbar.setNavigationIcon(text);
+            }
+        }
+    }
+
+    public void setErrorRefresh(){
+        llError = (AutoLinearLayout) getDelegate().findViewById(R.id.ll_error);
+        llError.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nodataRefresh();
+            }
+        });
+    }
+
+    //设置
+    public void setNodataSwipeRefreshLayout() {
+        mNodataSwipeRefresh = (SwipeRefreshLayout) getDelegate().findViewById(R.id.nodata_swipeRefreshLayout);
+        mNodataSwipeRefresh.setColorSchemeColors(getResources().getColor(R.color.colorPrimaryDark), getResources().getColor(R.color.colorPrimaryDark));
+        mNodataSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                nodataRefresh();
+            }
+        });
+    }
+
+    protected void initToolBar() {
+        mToolbar = (Toolbar) getDelegate().findViewById(R.id.toolbar);
+        mTitle = (TextView) getDelegate().findViewById(R.id.tv_title);
+        mFunctionRight = (TextView) getDelegate().findViewById(R.id.tv_function_right);
+        mIvFunctionLeft = (ImageView) getDelegate().findViewById(R.id.iv_function_left);
+
+        nodataToolbar = (Toolbar) getDelegate().findViewById(R.id.nodata_toolbar);
+        nodataTitle = (TextView) getDelegate().findViewById(R.id.nodata_tv_title);
+        nodataFunctionRight = (TextView) getDelegate().findViewById(R.id.nodata_tv_function_right);
+        nodataIvFunctionLeft = (ImageView) getDelegate().findViewById(R.id.nodata_iv_function_left);
+
+        if (mToolbar != null) {
+            setSupportActionBar(mToolbar);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+        if(nodataToolbar != null){
+            setSupportActionBar(nodataToolbar);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    public void setToolbarColor(int color){
+        if(color != 0){
+            mToolbar.setBackgroundColor(getResources().getColor(color));
+            nodataToolbar.setBackgroundColor(getResources().getColor(color));
         }
     }
 
@@ -182,23 +169,12 @@ public abstract class WEActivity<P extends Presenter> extends BaseActivity<P> {
             if (mTitle != null) {
                 mTitle.setText(title);
             }
-            if (myTitle != null) {
-                myTitle.setText(title);
+            if (nodataTitle != null) {
+                nodataTitle.setText(title);
             }
         }
     }
 
-    //设置
-    public void setNodataSwipeRefreshLayout() {
-        mSwipeRefreshLayout = (SwipeRefreshLayout) getDelegate().findViewById(R.id.nodata_swipeRefreshLayout);
-        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimaryDark), getResources().getColor(R.color.colorPrimaryDark));
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                nodataRefresh();
-            }
-        });
-    }
 
     @Override
     protected void showStartAnimation(View startView) {
@@ -208,19 +184,5 @@ public abstract class WEActivity<P extends Presenter> extends BaseActivity<P> {
                 .getBackground();
         // 开始动画
         spinner.start();*/
-    }
-
-    public void startActivity(Intent intent){
-        super.startActivity(intent);
-        startAnimation();
-    }
-
-    public void startActivity(Class clazz){
-        super.startActivity(new Intent(this,clazz));
-        startAnimation();
-    }
-
-    public void startAnimation(){
-        overridePendingTransition(R.anim.right_in,R.anim.left_out);
     }
 }

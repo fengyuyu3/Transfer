@@ -1,8 +1,12 @@
 package com.ironaviation.traveller.mvp.ui.my;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -16,8 +20,11 @@ import com.ironaviation.traveller.mvp.model.entity.response.TravelResponse;
 import com.ironaviation.traveller.mvp.presenter.my.TravelPresenter;
 import com.jess.arms.utils.UiUtils;
 
-
+import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -31,22 +38,26 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 
 /**
- *
- * 项目名称：Transfer      
- * 类描述：   
- * 创建人：flq  
- * 创建时间：2017/3/26 17:29   
- * 修改人：  
- * 修改时间：2017/3/26 17:29   
- * 修改备注：   
- * @version
- *
+ * 项目名称：Transfer
+ * 类描述：
+ * 创建人：flq
+ * 创建时间：2017/3/26 17:29
+ * 修改人：
+ * 修改时间：2017/3/26 17:29
+ * 修改备注：
  */
 
-public class TravelActivity extends WEActivity<TravelPresenter> implements TravelContract.View {
+public class TravelActivity extends WEActivity<TravelPresenter> implements TravelContract.View, SwipeRefreshLayout.OnRefreshListener {
 
+
+    @BindView(R.id.sl_travel)
+    SwipeRefreshLayout mSlTravel;
+    @BindView(R.id.rv_travel)
+    RecyclerView mRvTravel;
 
     private TravelAdapter mTravelAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerTravelComponent
@@ -59,7 +70,8 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
 
     @Override
     protected void nodataRefresh() {
-
+        showMessage("没有数据");
+        mNodataSwipeRefresh.setRefreshing(false);
     }
 
     @Override
@@ -69,7 +81,31 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
 
     @Override
     protected void initData() {
+
+        showNodata(true);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showNodata(false);
+            }
+        }, 4000);
+        setToolbarColor(R.color.base_color);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRvTravel.setLayoutManager(mLayoutManager);
         mTravelAdapter = new TravelAdapter(R.layout.item_travel);
+        mSlTravel.setColorSchemeColors(getResources().getColor(R.color.colorPrimaryDark), getResources().getColor(R.color.colorPrimaryDark));
+        mSlTravel.setOnRefreshListener(this);
+        mRvTravel.setAdapter(mTravelAdapter);
+        mTravelAdapter.setNewData(getList());
+
+    }
+
+    public List<TravelResponse> getList() {
+        List<TravelResponse> list = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            list.add(new TravelResponse());
+        }
+        return list;
     }
 
     @Override
@@ -111,6 +147,11 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
 
     @Override
     public void setError() {
+        showError(true);
+    }
 
+    @Override
+    public void onRefresh() {
+//        mPresenter.getTravelData();//刷新数据
     }
 }

@@ -21,4 +21,8 @@
     <string name="login_no_userInfo">请输入用户信息</string>
     <string name="login_no_code">请输入验证码</string>
     <string name="login_code_reset">s</string>
+    
+    <!--错误界面-->
+    <string name="include_error_hint">数据获取失败</string>
+    <string name="inlcude_error_info">请检查网络后点击重新加载</string>
 </resources>

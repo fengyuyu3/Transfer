@@ -38,6 +38,7 @@ public abstract class BaseActivity<P extends Presenter> extends RxAppCompatActiv
     private ViewGroup rootView;
     private View noDataView;
     private View startView;
+    private View errorView;
 
 
     @Override
@@ -87,6 +88,7 @@ public abstract class BaseActivity<P extends Presenter> extends RxAppCompatActiv
     protected abstract void initBaseData();
     protected abstract int getStartId();
     protected abstract void showStartAnimation(View view);
+    protected abstract int getErrorId();
 
 
     public void FullScreencall() {
@@ -175,4 +177,23 @@ public abstract class BaseActivity<P extends Presenter> extends RxAppCompatActiv
         }
     }
 
+    public void initErrorId(){
+        if(rootView != null ){
+            if(errorView == null) {
+                errorView = getLayoutInflater().inflate(getErrorId(), rootView, false);
+                if (errorView != null) {
+                    showNodata(false);
+                    rootView.addView(errorView);
+                }
+            }else{
+                Log.e(TAG,"noDataView is Empty");
+            }
+        }
+    }
+
+    public void showError(boolean show){
+        if(errorView != null){
+            errorView.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
+    }
 }

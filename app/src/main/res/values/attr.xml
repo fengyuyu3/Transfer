@@ -7,4 +7,11 @@
         <attr name="rightPadding" />
     </declare-styleable>
 
+    <declare-styleable name="PublicView">
+        <attr name="left_logo" format="reference" />
+        <attr name="hint" format="string" />
+        <attr name="right_peroson" format="boolean" />
+        <attr name="right_code" format="boolean"/>
+        <attr name="text" format="string"/>
+    </declare-styleable>
 </resources>
