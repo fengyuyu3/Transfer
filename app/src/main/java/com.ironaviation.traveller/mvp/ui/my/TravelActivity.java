@@ -38,6 +38,10 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 
 /**
+<<<<<<< HEAD
+=======
+ *
+>>>>>>> 5d6f064cb6be0f5678a8e63b5bf0f2b1b647e1cb
  * 项目名称：Transfer
  * 类描述：
  * 创建人：flq
@@ -45,6 +49,11 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  * 修改人：
  * 修改时间：2017/3/26 17:29
  * 修改备注：
+<<<<<<< HEAD
+=======
+ * @version
+ *
+>>>>>>> 5d6f064cb6be0f5678a8e63b5bf0f2b1b647e1cb
  */
 
 public class TravelActivity extends WEActivity<TravelPresenter> implements TravelContract.View, SwipeRefreshLayout.OnRefreshListener {

@@ -1,29 +1,20 @@
 package com.ironaviation.traveller.mvp.ui.my;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
-import com.ironaviation.traveller.di.component.my.DaggerMessageComponent;
-import com.ironaviation.traveller.di.module.my.MessageModule;
-import com.ironaviation.traveller.mvp.contract.my.MessageContract;
-import com.ironaviation.traveller.mvp.model.entity.response.MessageResponse;
-import com.ironaviation.traveller.mvp.presenter.my.MessagePresenter;
+import com.ironaviation.traveller.di.component.my.DaggerSettingComponent;
+import com.ironaviation.traveller.di.module.my.SettingModule;
+import com.ironaviation.traveller.mvp.contract.my.SettingContract;
+import com.ironaviation.traveller.mvp.presenter.my.SettingPresenter;
 import com.jess.arms.utils.UiUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -37,28 +28,26 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 
 /**
- * 项目名称：Traveller
- * 类描述：   消息页面
- * 创建人：starRing
- * 创建时间：2017-03-27 10:12
- * 修改人：starRing
- * 修改时间：2017-03-27 10:12
- * 修改备注：
+ *
+ * 项目名称：Traveller      
+ * 类描述：   
+ * 创建人：starRing  
+ * 创建时间：2017-03-27 10:33   
+ * 修改人：starRing  
+ * 修改时间：2017-03-27 10:33   
+ * 修改备注：   
+ * @version
+ *
  */
-public class MessageActivity extends WEActivity<MessagePresenter> implements MessageContract.View {
+public class SettingActivity extends WEActivity<SettingPresenter> implements SettingContract.View {
 
-    @BindView(R.id.rv_message)
-    RecyclerView mRvMessage;
-    @BindView(R.id.sl_message)
-    SwipeRefreshLayout mSlMessage;
-    private MessageAdapter mMessageAdapter;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
-        DaggerMessageComponent
+        DaggerSettingComponent
                 .builder()
                 .appComponent(appComponent)
-                .messageModule(new MessageModule(this)) //请将MessageModule()第一个首字母改为小写
+                .settingModule(new SettingModule(this)) //请将SettingModule()第一个首字母改为小写
                 .build()
                 .inject(this);
     }
@@ -70,15 +59,12 @@ public class MessageActivity extends WEActivity<MessagePresenter> implements Mes
 
     @Override
     protected View initView() {
-        return LayoutInflater.from(this).inflate(R.layout.activity_message, null, false);
+        return LayoutInflater.from(this).inflate(R.layout.activity_setting, null, false);
     }
 
     @Override
     protected void initData() {
-        mRvMessage.setLayoutManager(new LinearLayoutManager(this));
-        mMessageAdapter = new MessageAdapter(R.layout.item_message);
-        mRvMessage.setAdapter(mMessageAdapter);
-        mMessageAdapter.setNewData(getList());
+
     }
 
 
@@ -110,27 +96,4 @@ public class MessageActivity extends WEActivity<MessagePresenter> implements Mes
     }
 
 
-    @Override
-    public void setDatas(List<MessageResponse> mTravelResponses) {
-
-        mMessageAdapter.setNewData(mTravelResponses);
-    }
-
-    public List<MessageResponse> getList() {
-        List<MessageResponse> list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            list.add(new MessageResponse());
-        }
-        return list;
-    }
-
-    @Override
-    public void setNodata() {
-
-    }
-
-    @Override
-    public void setError() {
-
-    }
 }

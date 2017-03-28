@@ -3,22 +3,13 @@ package com.ironaviation.traveller.mvp.model.my;
 import android.app.Application;
 
 import com.google.gson.Gson;
-import com.ironaviation.traveller.mvp.contract.my.MessageContract;
+import com.ironaviation.traveller.mvp.contract.my.SettingContract;
 import com.ironaviation.traveller.mvp.model.api.cache.CacheManager;
-import com.ironaviation.traveller.mvp.model.api.service.CommonService;
 import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
-import com.ironaviation.traveller.mvp.model.entity.BaseData;
-import com.ironaviation.traveller.mvp.model.entity.request.MessageRequest;
-import com.ironaviation.traveller.mvp.model.entity.request.TravelRequest;
-import com.ironaviation.traveller.mvp.model.entity.response.MessageResponse;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BaseModel;
 
-import java.util.List;
-
 import javax.inject.Inject;
-
-import rx.Observable;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -33,28 +24,28 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 
 /**
- * 项目名称：Traveller
- * 类描述：
- * 创建人：starRing
- * 创建时间：2017-03-27 10:11
- * 修改人：starRing
- * 修改时间：2017-03-27 10:11
- * 修改备注：
+ *
+ * 项目名称：Traveller      
+ * 类描述：   
+ * 创建人：starRing  
+ * 创建时间：2017-03-27 10:32   
+ * 修改人：starRing  
+ * 修改时间：2017-03-27 10:32   
+ * 修改备注：   
+ * @version
+ *
  */
 @ActivityScope
-public class MessageModel extends BaseModel<ServiceManager, CacheManager> implements MessageContract.Model {
+public class SettingModel extends BaseModel<ServiceManager, CacheManager> implements SettingContract.Model {
     private Gson mGson;
     private Application mApplication;
-    private CommonService mCommonService;
 
     @Inject
-    public MessageModel(ServiceManager serviceManager, CacheManager cacheManager, Gson gson, Application application) {
+    public SettingModel(ServiceManager serviceManager, CacheManager cacheManager, Gson gson, Application application) {
         super(serviceManager, cacheManager);
         this.mGson = gson;
         this.mApplication = application;
-        mCommonService = serviceManager.getCommonService();
     }
-
 
     @Override
     public void onDestroy() {
@@ -63,10 +54,4 @@ public class MessageModel extends BaseModel<ServiceManager, CacheManager> implem
         this.mApplication = null;
     }
 
-    @Override
-    public Observable<BaseData<List<MessageResponse>>> getMessageData() {
-        MessageRequest travelRequest = new MessageRequest();
-
-        return mCommonService.getMessageData(travelRequest);
-    }
 }

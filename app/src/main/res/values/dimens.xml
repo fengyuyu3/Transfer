@@ -7,7 +7,8 @@
     <dimen name="fillet_little_input">10px</dimen>
     <dimen name="word_button">34px</dimen>
     <dimen name="word_input_box">32px</dimen>
-
+    <dimen name="word_content">28px</dimen>
+    <dimen name="interval_input_box">24px</dimen>
 
     <dimen name="login_defult_font">32px</dimen>
 </resources>

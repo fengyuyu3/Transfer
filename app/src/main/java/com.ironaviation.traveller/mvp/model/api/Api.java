@@ -11,5 +11,6 @@ public interface Api {
     String BASE_URL = "/api";
     String LOGIN = "/api/Drivers/SignIn";// 登录
     String Travel = "";
+    String MESSAGE = "";
     int RequestSuccess = 1;
 }

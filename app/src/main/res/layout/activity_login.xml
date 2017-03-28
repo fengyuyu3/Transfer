@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@mipmap/ic_login_background"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <com.zhy.autolayout.AutoRelativeLayout
         android:focusableInTouchMode="true"
         android:focusable="true"
         android:layout_gravity="center"
         android:layout_marginTop="480px"
+        android:paddingLeft="@dimen/interval_input_box"
+        android:paddingRight="@dimen/interval_input_box"
         android:background="@drawable/btn_login_edit_shap"
         android:layout_width="@dimen/w_input_box"
         android:layout_height="@dimen/h_input_box">
@@ -17,7 +19,6 @@
         <ImageView
             android:layout_centerVertical="true"
             android:src="@mipmap/ic_phone"
-            android:layout_marginLeft="32px"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <EditText
@@ -25,15 +26,17 @@
             android:maxLength="20"
             android:inputType="number"
             style="@style/input_edit_style"
-            android:layout_marginLeft="86px"
+            android:layout_marginLeft="62px"
             android:hint="@string/login_input_phone"
             />
-    </RelativeLayout>
+    </com.zhy.autolayout.AutoRelativeLayout>
 
-    <RelativeLayout
+    <com.zhy.autolayout.AutoRelativeLayout
         android:layout_gravity="center"
         android:layout_marginTop="40px"
         android:background="@drawable/btn_login_edit_shap"
+        android:paddingLeft="@dimen/interval_input_box"
+
         android:layout_width="@dimen/w_input_box"
         android:layout_height="@dimen/h_input_box">
 
@@ -41,7 +44,7 @@
             android:layout_width="20px"
             android:layout_height="20px"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="42px"
+            android:layout_marginLeft="10px"
 
             android:src="@drawable/dot_grey"
             />
@@ -50,16 +53,13 @@
             android:inputType="number"
             android:maxLength="6"
             style="@style/input_edit_style"
-            android:layout_marginLeft="86px"
+            android:layout_marginLeft="62px"
             android:hint="@string/login_input_code"
             />
         <TextView
             android:id="@+id/tv_code"
-            android:paddingRight="20px"
-            android:paddingLeft="30px"
-            android:paddingBottom="10px"
-            android:paddingTop="10px"
-            android:textSize="@dimen/login_defult_font"
+
+            android:textSize="28px"
             android:textColor="@color/code_grey"
             android:gravity="center"
             android:text="@string/login_code"
@@ -67,9 +67,9 @@
             android:layout_marginRight="36px"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:layout_width="220px"
-            android:layout_height="wrap_content" />
-    </RelativeLayout>
+            android:layout_width="175px"
+            android:layout_height="53px" />
+    </com.zhy.autolayout.AutoRelativeLayout>
 
         <Button
             android:id="@+id/btn_login"
@@ -82,4 +82,4 @@
             android:text="@string/login_btn"
             android:layout_width="@dimen/w_input_box"
             android:layout_height="@dimen/h_input_box" />
-</LinearLayout>
+</com.zhy.autolayout.AutoLinearLayout>

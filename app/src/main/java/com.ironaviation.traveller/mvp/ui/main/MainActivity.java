@@ -1,10 +1,14 @@
 package com.ironaviation.traveller.mvp.ui.main;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -18,8 +22,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.igexin.sdk.PushManager;
 import com.ironaviation.traveller.R;
-import com.ironaviation.traveller.app.utils.BarUtils;
+import com.ironaviation.traveller.app.service.WEGTIntentService;
+import com.ironaviation.traveller.app.service.WEPushService;
+import com.ironaviation.traveller.app.utils.CountTimerUtil;
 import com.ironaviation.traveller.app.utils.ViewFindUtils;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
@@ -28,14 +35,20 @@ import com.ironaviation.traveller.di.module.MainModule;
 import com.ironaviation.traveller.mvp.contract.MainContract;
 import com.ironaviation.traveller.mvp.presenter.MainPresenter;
 import com.ironaviation.traveller.mvp.ui.airportoff.AirPortOffFragment;
+import com.ironaviation.traveller.mvp.ui.login.IdentificationActivity;
+import com.ironaviation.traveller.mvp.ui.my.MessageActivity;
+import com.ironaviation.traveller.mvp.ui.my.SettingActivity;
+import com.ironaviation.traveller.mvp.ui.my.TravelActivity;
 import com.ironaviation.traveller.mvp.ui.widget.AutoSlidingTabLayout;
 import com.ironaviation.traveller.mvp.ui.widget.AutoToolbar;
 import com.jess.arms.utils.UiUtils;
+import com.zhy.autolayout.AutoRelativeLayout;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -77,12 +90,34 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
     NavigationView mNavigationView;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
+    @BindView(R.id.tv_left_slide_menu_title)
+    TextView mTvLeftSlideMenuTitle;
+    @BindView(R.id.iv_head_portrait)
+    ImageView mIvHeadPortrait;
+    @BindView(R.id.iv_phone)
+    TextView mIvPhone;
+    @BindView(R.id.rl_head_portrait)
+    AutoRelativeLayout mRlHeadPortrait;
+    @BindView(R.id.iv_trip)
+    ImageView mIvTrip;
+    @BindView(R.id.rl_trip)
+    AutoRelativeLayout mRlTrip;
+    @BindView(R.id.iv_message)
+    ImageView mIvMessage;
+    @BindView(R.id.rl_message)
+    AutoRelativeLayout mRlMessage;
+    @BindView(R.id.iv_setting)
+    ImageView mIvSetting;
+    @BindView(R.id.rl_setting)
+    AutoRelativeLayout mRlSetting;
     private ArrayList<Fragment> mFragments = new ArrayList<>();
     private final String[] mTitles = {
             "接机", "送机"
     };
     private MyPagerAdapter mAdapter;
 
+    // DemoPushService.class 自定义服务名称, 核心服务
+    private Class userPushService = WEPushService.class;
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerMainComponent
@@ -126,8 +161,41 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
                 mDrawerLayout.openDrawer(Gravity.LEFT);
             }
         });
+        // com.getui.demo.DemoPushService 为第三方自定义推送服务
+        PackageManager pkgManager = getPackageManager();
+
+        // 读写 sd card 权限非常重要, android6.0默认禁止的, 建议初始化之前就弹窗让用户赋予该权限
+        boolean sdCardWritePermission =
+                pkgManager.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, getPackageName()) == PackageManager.PERMISSION_GRANTED;
+
+        // read phone state用于获取 imei 设备信息
+        boolean phoneSatePermission =
+                pkgManager.checkPermission(Manifest.permission.READ_PHONE_STATE, getPackageName()) == PackageManager.PERMISSION_GRANTED;
+
+        if (Build.VERSION.SDK_INT >= 23 && !sdCardWritePermission || !phoneSatePermission) {
+            requestPermission();
+        } else {
+            PushManager.getInstance().initialize(this.getApplicationContext(), userPushService);
+        }
+        PushManager.getInstance().initialize(this.getApplicationContext(), userPushService);
+        PushManager.getInstance().registerPushIntentService(this.getApplicationContext(), WEGTIntentService.class);
     }
 
+    @OnClick({R.id.rl_message, R.id.rl_setting, R.id.rl_trip})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.rl_message:
+                startActivity(MessageActivity.class);
+                break;
+            case R.id.rl_setting:
+                startActivity(SettingActivity.class);
+                break;
+            case R.id.rl_trip:
+
+                startActivity(TravelActivity.class);
+                break;
+        }
+    }
 
     @Override
     public void showLoading() {
@@ -183,5 +251,11 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
             return mFragments.get(position);
         }
     }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE},
+                REQUEST_PERMISSION);
+    }
+    private static final int REQUEST_PERMISSION = 0;
 
 }
