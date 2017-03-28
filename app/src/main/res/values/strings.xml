@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">机场接送</string>
+    <string name="app_name">机场专线</string>
 
     <!--identification-->
     <string name="identification">认证</string>
@@ -11,8 +11,15 @@
     <!--个人中心-->
     <string name="personal_center">个人中心</string>
     <string name="message">消息</string>
+    <string name="my_message">我的消息</string>
     <string name="setting">设置</string>
     <string name="trip">行程</string>
+    <!--支付-->
+    <string name="payment">支付</string>
+    <string name="go_to_pay">去支付</string>
+    <string name="ali_pay_payment">支付宝支付</string>
+    <string name="we_chat_Payment">微信支付</string>
+    <string name="union_payment">银联支付</string>
     <!--登陆-->
     <string name="login_input_phone">输入电话号码</string>
     <string name="login_input_code">输入验证码</string>
@@ -21,7 +28,7 @@
     <string name="login_no_userInfo">请输入用户信息</string>
     <string name="login_no_code">请输入验证码</string>
     <string name="login_code_reset">s</string>
-    
+
     <!--错误界面-->
     <string name="include_error_hint">数据获取失败</string>
     <string name="inlcude_error_info">请检查网络后点击重新加载</string>

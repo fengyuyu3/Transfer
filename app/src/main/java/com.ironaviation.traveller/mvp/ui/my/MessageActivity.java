@@ -2,10 +2,13 @@ package com.ironaviation.traveller.mvp.ui.my;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -45,7 +48,7 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  * 修改时间：2017-03-27 10:12
  * 修改备注：
  */
-public class MessageActivity extends WEActivity<MessagePresenter> implements MessageContract.View {
+public class MessageActivity extends WEActivity<MessagePresenter> implements MessageContract.View, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.rv_message)
     RecyclerView mRvMessage;
@@ -65,7 +68,8 @@ public class MessageActivity extends WEActivity<MessagePresenter> implements Mes
 
     @Override
     protected void nodataRefresh() {
-
+        showMessage("没有数据");
+        mNodataSwipeRefresh.setRefreshing(false);
     }
 
     @Override
@@ -75,10 +79,19 @@ public class MessageActivity extends WEActivity<MessagePresenter> implements Mes
 
     @Override
     protected void initData() {
+        setTitle(getString(R.string.my_message));
+        setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_back));
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         mRvMessage.setLayoutManager(new LinearLayoutManager(this));
         mMessageAdapter = new MessageAdapter(R.layout.item_message);
         mRvMessage.setAdapter(mMessageAdapter);
         mMessageAdapter.setNewData(getList());
+        mSlMessage.setOnRefreshListener(this);
     }
 
 
@@ -126,11 +139,23 @@ public class MessageActivity extends WEActivity<MessagePresenter> implements Mes
 
     @Override
     public void setNodata() {
-
+        showNodata(true);
     }
 
     @Override
     public void setError() {
+        showError(true);
+    }
 
+    @Override
+    public void onRefresh() {
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showMessage("有数据");
+                mSlMessage.setRefreshing(false);
+            }
+        }, 1000);
     }
 }

@@ -118,6 +118,7 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
 
     // DemoPushService.class 自定义服务名称, 核心服务
     private Class userPushService = WEPushService.class;
+
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerMainComponent
@@ -154,13 +155,15 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
         tabLayout_7.setViewPager(vp, mTitles);
         vp.setCurrentItem(4);
         setTitle(getString(R.string.app_name));
-        setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_user));
+        setRightFunctionText("成都", R.color.white);
+        setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_head));
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mDrawerLayout.openDrawer(Gravity.LEFT);
             }
         });
+
         // com.getui.demo.DemoPushService 为第三方自定义推送服务
         PackageManager pkgManager = getPackageManager();
 
@@ -253,9 +256,10 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
     }
 
     private void requestPermission() {
-        ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE},
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE},
                 REQUEST_PERMISSION);
     }
+
     private static final int REQUEST_PERMISSION = 0;
 
 }

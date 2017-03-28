@@ -3,11 +3,11 @@
                                      xmlns:tl="http://schemas.android.com/apk/res-auto"
                                      android:layout_width="match_parent"
                                      android:layout_height="match_parent"
-                                     android:orientation="vertical"
-                                     android:fitsSystemWindows="true">
+                                     android:fitsSystemWindows="true"
+                                     android:orientation="vertical">
 
 
-    <android.support.v4.widget.DrawerLayout
+    <com.ironaviation.traveller.mvp.ui.widget.AutoDrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -30,26 +30,35 @@
                 <com.ironaviation.traveller.mvp.ui.widget.AutoSlidingTabLayout
                     android:id="@+id/tl_7"
                     android:layout_width="match_parent"
-                    android:layout_height="144px"
+                    android:layout_height="90px"
                     android:layout_below="@+id/appbar"
-                    android:background="#57385C"
+                    android:background="@color/white"
+                    tl:tl_indicator_color="@color/word_toolbar_select"
                     tl:tl_indicator_corner_radius="4.5px"
                     tl:tl_indicator_height="9px"
-                    tl:tl_indicator_width="30px"
-                    tl:tl_tab_space_equal="true"/>
-
+                    tl:tl_indicator_width_equal_title="true"
+                    tl:tl_tab_space_equal="true"
+                    tl:tl_textSelectColor="@color/word_toolbar_select"
+                    tl:tl_textUnselectColor="@color/word_toolbar_un_select"
+                    />
+                <View
+                    android:id="@+id/v_shadow"
+                    android:layout_width="match_parent"
+                    android:layout_height="10px"
+                    android:layout_below="@+id/tl_7"
+                    android:background="@drawable/shadow_grey"/>
                 <android.support.v4.view.ViewPager
                     android:id="@+id/vp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
 
-                    android:layout_below="@+id/tl_7"/>
+                    android:layout_below="@+id/v_shadow"/>
             </com.zhy.autolayout.AutoRelativeLayout>
         </android.support.design.widget.CoordinatorLayout>
 
         <android.support.design.widget.NavigationView
             android:id="@+id/navigation_view"
-            android:layout_width="700px"
+            android:layout_width="472px"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             >
@@ -61,6 +70,6 @@
 
         </android.support.design.widget.NavigationView>
 
-    </android.support.v4.widget.DrawerLayout>
+    </com.ironaviation.traveller.mvp.ui.widget.AutoDrawerLayout>
 
 </com.zhy.autolayout.AutoLinearLayout>
