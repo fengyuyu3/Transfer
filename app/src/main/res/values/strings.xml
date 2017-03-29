@@ -20,6 +20,14 @@
     <string name="ali_pay_payment">支付宝支付</string>
     <string name="we_chat_Payment">微信支付</string>
     <string name="union_payment">银联支付</string>
+    <!--设置-->
+    <string name="setting_identification">实名认证</string>
+    <string name="usual_address">常用地址</string>
+    <string name="connect_us">联系我们</string>
+    <string name="cancellation_account">注销账号</string>
+    <string name="us_phone">028-86868686</string>
+    <string name="unauthorized">未认证</string>
+    <string name="authenticated">已认证</string>
     <!--登陆-->
     <string name="login_input_phone">输入电话号码</string>
     <string name="login_input_code">输入验证码</string>

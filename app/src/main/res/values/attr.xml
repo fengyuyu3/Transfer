@@ -20,5 +20,10 @@
         <attr name="right_go_on" format="reference"/>
         <attr name="text_iti" format="string"/>
     </declare-styleable>
-
+    <declare-styleable name="TextTextImageView">
+        <attr name="tti_right_go_on" format="reference"/>
+        <attr name="tti_text" format="string"/>
+        <attr name="tti_text_color" format="color"/>
+        <attr name="tti_title" format="string"/>
+    </declare-styleable>
 </resources>

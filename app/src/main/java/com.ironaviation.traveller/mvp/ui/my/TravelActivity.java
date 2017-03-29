@@ -8,9 +8,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
@@ -94,7 +97,7 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
             public void run() {
                 showNodata(false);
             }
-        }, 4000);
+        }, 300);
         setToolbarColor(R.color.base_color);
         mLayoutManager = new LinearLayoutManager(this);
         mRvTravel.setLayoutManager(mLayoutManager);
@@ -105,6 +108,14 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
         mSlTravel.setOnRefreshListener(this);
         mRvTravel.setAdapter(mTravelAdapter);
         mTravelAdapter.setNewData(getList());
+        mTravelAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                startActivity(EstimateActivity.class);
+
+            }
+        });
+
 
     }
 

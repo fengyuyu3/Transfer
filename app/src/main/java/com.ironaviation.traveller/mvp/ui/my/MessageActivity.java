@@ -92,6 +92,7 @@ public class MessageActivity extends WEActivity<MessagePresenter> implements Mes
         mRvMessage.setAdapter(mMessageAdapter);
         mMessageAdapter.setNewData(getList());
         mSlMessage.setOnRefreshListener(this);
+
     }
 
 

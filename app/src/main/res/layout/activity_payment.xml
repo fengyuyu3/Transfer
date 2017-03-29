@@ -21,7 +21,7 @@
             android:layout_marginBottom="100px"
             android:layout_marginTop="128px"
             android:text="24.00"
-            android:textColor="@color/payment_money"
+            android:textColor="@color/word_red"
             android:textSize="80px"
             />
 
