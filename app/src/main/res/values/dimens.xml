@@ -12,6 +12,7 @@
     <dimen name="word_button">34px</dimen>
     <dimen name="word_input_box">32px</dimen>
     <dimen name="word_title_little">30px</dimen>
+    <dimen name="word_content_little">26px</dimen>
     <dimen name="word_content">28px</dimen>
     <dimen name="interval_input_box">24px</dimen>
 

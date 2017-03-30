@@ -39,7 +39,7 @@ public abstract class WEActivity<P extends Presenter> extends BaseWEActivity<P> 
 
     protected Toolbar mToolbar, nodataToolbar;
     protected TextView mTitle, nodataTitle, mFunctionRight, nodataFunctionRight;
-    protected ImageView mIvFunctionLeft, nodataIvFunctionLeft;
+    protected ImageView mIvFunctionLeft, nodataIvFunctionLeft,mIvFunctionRight,noDataIvFunctionRight;
     protected SwipeRefreshLayout mNodataSwipeRefresh;
     protected AutoLinearLayout llError;
 
@@ -101,7 +101,7 @@ public abstract class WEActivity<P extends Presenter> extends BaseWEActivity<P> 
                 mFunctionRight.setTextColor(ContextCompat.getColor(this, color));
                 mFunctionRight.setText(text);
             }
-            if (nodataFunctionRight != null) {
+            if (noDataIvFunctionRight != null) {
                 nodataFunctionRight.setVisibility(View.VISIBLE);
                 nodataFunctionRight.setText(text);
                 nodataFunctionRight.setTextColor(ContextCompat.getColor(this, color));
@@ -115,14 +115,31 @@ public abstract class WEActivity<P extends Presenter> extends BaseWEActivity<P> 
      */
     protected void setLeftFunction(Drawable text) {
         if (text != null) {
-            if (mIvFunctionLeft != null) {
-                mIvFunctionLeft.setVisibility(View.VISIBLE);
-                mIvFunctionLeft.setImageDrawable(text);
+            if (mIvFunctionRight != null) {
+                mIvFunctionRight.setVisibility(View.VISIBLE);
+                mIvFunctionRight.setImageDrawable(text);
             }
-            if (nodataIvFunctionLeft != null) {
+            if (noDataIvFunctionRight != null) {
+                noDataIvFunctionRight.setVisibility(View.VISIBLE);
+                noDataIvFunctionRight.setImageDrawable(text);
+            }
+        }
+    }
+
+    /**
+     * 设置自定义右功能键
+     */
+    protected void setRightFunction(Drawable text, View.OnClickListener listener) {
+        if (text != null) {
+            if (mIvFunctionRight != null) {
+                mIvFunctionRight.setVisibility(View.VISIBLE);
+                mIvFunctionRight.setImageDrawable(text);
+                mIvFunctionRight.setOnClickListener(listener);
+            }
+           /* if (nodataIvFunctionLeft != null) {
                 nodataIvFunctionLeft.setVisibility(View.VISIBLE);
                 nodataIvFunctionLeft.setImageDrawable(text);
-            }
+            }*/
         }
     }
 
@@ -168,12 +185,12 @@ public abstract class WEActivity<P extends Presenter> extends BaseWEActivity<P> 
         mTitle = (TextView) getDelegate().findViewById(R.id.tv_title);
         mFunctionRight = (TextView) getDelegate().findViewById(R.id.tv_function_right);
         mIvFunctionLeft = (ImageView) getDelegate().findViewById(R.id.iv_function_left);
-
+        mIvFunctionRight= (ImageView) getDelegate().findViewById(R.id.iv_function_right);
         nodataToolbar = (Toolbar) getDelegate().findViewById(R.id.nodata_toolbar);
         nodataTitle = (TextView) getDelegate().findViewById(R.id.nodata_tv_title);
         nodataFunctionRight = (TextView) getDelegate().findViewById(R.id.nodata_tv_function_right);
         nodataIvFunctionLeft = (ImageView) getDelegate().findViewById(R.id.nodata_iv_function_left);
-
+        noDataIvFunctionRight= (ImageView) getDelegate().findViewById(R.id.nodata_iv_function_right);
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayShowTitleEnabled(false);

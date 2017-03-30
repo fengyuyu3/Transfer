@@ -84,6 +84,14 @@ public class SettingActivity extends WEActivity<SettingPresenter> implements Set
 
     @Override
     protected void initData() {
+        setTitle(getString(R.string.setting));
+        setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_back));
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         mTtiIdentification.setText(getString(R.string.unauthorized));
         mTtiIdentification.setTextColor(ContextCompat.getColor(this, R.color.word_red));
         setTv_version_name();
