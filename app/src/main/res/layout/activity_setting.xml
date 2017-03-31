@@ -1,7 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<com.zhy.autolayout.AutoLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-</LinearLayout>
+    <include
+        layout="@layout/include_toolbar"
+        ></include>
+
+    <com.ironaviation.traveller.mvp.ui.widget.TextTextImageView
+        android:id="@+id/tti_identification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/h_fillet"
+        app:tti_right_go_on="@mipmap/ic_goon_grey"
+        app:tti_title="@string/setting_identification"
+        ></com.ironaviation.traveller.mvp.ui.widget.TextTextImageView>
+
+    <com.ironaviation.traveller.mvp.ui.widget.TextTextImageView
+        android:id="@+id/tti_usual_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/h_fillet"
+        app:tti_right_go_on="@mipmap/ic_goon_grey"
+        app:tti_title="@string/usual_address"
+        ></com.ironaviation.traveller.mvp.ui.widget.TextTextImageView>
+
+    <com.ironaviation.traveller.mvp.ui.widget.TextTextImageView
+        android:id="@+id/tti_connect_us"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/h_fillet"
+        app:tti_right_go_on="@mipmap/ic_goon_grey"
+        app:tti_text="@string/us_phone"
+        app:tti_title="@string/connect_us"
+        ></com.ironaviation.traveller.mvp.ui.widget.TextTextImageView>
+
+    <com.ironaviation.traveller.mvp.ui.widget.TextTextImageView
+        android:id="@+id/tti_cancellation_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/h_fillet2"
+        app:tti_title="@string/cancellation_account"
+        ></com.ironaviation.traveller.mvp.ui.widget.TextTextImageView>
+
+
+    <TextView
+        android:id="@+id/tv_version_name"
+        style="@style/common_text_content_style"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="60px"
+
+        android:textColor="@color/input_box_grey_un_select"
+        />
+</com.zhy.autolayout.AutoLinearLayout>

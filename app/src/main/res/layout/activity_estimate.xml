@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ratingBar="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/include_toolbar"
+        ></include>
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="180px"
+        android:background="@color/bg_toolbar"
+        >
+
+        <ImageView
+            android:id="@+id/iv_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/h_fillet2"
+            android:background="@mipmap/ic_head_grey"
+            />
+
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+
+            android:layout_toRightOf="@+id/iv_head"
+            >
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/ll_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24px"
+                >
+
+                <TextView
+                    android:id="@+id/it_driver_name"
+                    style="@style/common_text_style"
+                    android:gravity="center"
+                    android:text="李师傅"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/word_title_little"
+                    />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="12px"
+                    android:background="@mipmap/ic_little_star"
+                    />
+
+                <TextView
+                    android:id="@+id/it_driver_grade"
+                    style="@style/common_text_style"
+                    android:layout_marginLeft="9px"
+                    android:gravity="center"
+                    android:text="5.0"
+                    android:textColor="@color/white"
+
+                    android:textSize="@dimen/word_content_little"
+                    />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <TextView
+                android:layout_width="174px"
+                android:layout_height="44px"
+                android:layout_below="@+id/ll_name"
+                android:layout_marginLeft="24px"
+                android:layout_marginTop="15px"
+                android:background="@drawable/box_grey"
+                android:gravity="center"
+                android:text="穿A123456"
+                android:textColor="@color/white"
+                android:textSize="26px"
+
+                />
+
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/h_fillet2"
+            android:layout_marginTop="45px"
+            >
+
+            <TextView
+                android:id="@+id/tv_final_payment"
+                style="@style/common_text_style"
+                android:text="@string/final_payment"
+                android:textColor="#f2d2d1"
+                android:textSize="@dimen/word_content_little"
+                />
+
+            <TextView
+                android:id="@+id/tv_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_final_payment"
+                android:layout_marginTop="8px"
+                android:text="12.00"
+                android:textColor="@color/white"
+                android:textSize="56px"
+                />
+
+            <TextView
+                android:id="@+id/tv_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/tv_money"
+                android:layout_marginBottom="15px"
+                android:layout_marginLeft="16px"
+                android:layout_toRightOf="@+id/tv_money"
+                android:text="元"
+                android:textColor="@color/white"
+                android:textSize="28px"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/tv_money"
+                android:layout_marginBottom="15px"
+                android:layout_marginLeft="8px"
+                android:layout_toRightOf="@+id/tv_unit"
+                android:background="@mipmap/ic_gone_white"
+                />
+        </com.zhy.autolayout.AutoRelativeLayout>
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+
+    <TextView
+        style="@style/common_text_style"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="79px"
+        android:gravity="center"
+        android:text="@string/anonymous_evaluation"
+        android:textColor="@color/word_grey"
+        android:textSize="@dimen/word_content_little"
+
+        />
+
+
+    <com.ironaviation.traveller.mvp.ui.widget.CustomerRatingBar
+        android:id="@+id/rating_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="65px"
+        android:layout_gravity="center"
+        android:layout_marginTop="41px"
+        ratingBar:clickable="true"
+        ratingBar:starCount="5"
+        ratingBar:starEmpty="@mipmap/ic_star_grey"
+        ratingBar:starFill="@mipmap/ic_star_yellow"
+        ratingBar:starHalf="@mipmap/ic_star_yellow_half"
+        ratingBar:starImageSize="65px"
+        />
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_evaluation_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="66px"
+        android:layout_marginRight="66px"
+        android:layout_marginTop="30px"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="219px"
+        android:layout_marginLeft="52px"
+        android:layout_marginRight="52px"
+        android:layout_marginTop="48px"
+        />
+</com.zhy.autolayout.AutoLinearLayout>

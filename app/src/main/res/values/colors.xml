@@ -4,16 +4,28 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#c3c3c3</color>
     <color name="white">#FFFFFF</color>
+
+
+    <color name="bg_write_grey">#f3f3f3</color>
     <!--common-->
     <color name="word_already_input">#3a3a3a</color>
     <color name="word_wait_input">#9b9ca0</color>
     <color name="word_toolbar_right">#eec1bf</color>
-    <color name="button_red_select">#d03734</color>
-    <color name="button_red_un_select">#e75047</color>
+
     <color name="input_box_tan_select">#c1aa86</color>
     <color name="input_box_grey_un_select">#b2b2b2</color>
+    <color name="bg_swipe_menu">#c5a981</color>
     <color name="id_cord_background">#f3f3f3</color>
+    <color name="button_red_select">#d03734</color>
+    <color name="button_red_un_select">#e75047</color>
     <color name="bg_toolbar">#d23026</color>
+    <color name="word_toolbar_select">#d23930</color>
+    <color name="word_red">#e83328</color>
+    <color name="word_toolbar_un_select">#9c9c9c</color>
+    <color name="word_grey">#9c9c9c</color>
+
+
+    <color name="payment_unity">#aeaeae</color>
 
     <color name="bg_personal_center">#343843</color>
 

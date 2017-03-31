@@ -45,7 +45,17 @@
                 android:text="title"
                 android:textColor="@color/word_wait_input"
                 android:textSize="32px"
-                android:visibility="invisible"
+                android:visibility="gone"
+                />
+            <ImageView
+                android:id="@+id/nodata_iv_function_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="32px"
+                android:gravity="center"
+                android:padding="10px"
+                android:visibility="gone"
                 />
 
         </com.ironaviation.traveller.mvp.ui.widget.AutoToolbar>

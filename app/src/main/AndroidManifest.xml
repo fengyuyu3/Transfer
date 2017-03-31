@@ -95,7 +95,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"
-           />
+            />
 
         <!--设置-->
         <activity
@@ -132,6 +132,39 @@
             android:screenOrientation="portrait"
             android:theme="@style/TranslucentTheme"
             android:windowSoftInputMode="stateHidden|adjustPan">
+        </activity>
+
+
+        <!--支付-->
+        <activity
+            android:name=".mvp.ui.payment.PaymentActivity"
+            android:hardwareAccelerated="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            >
+
+        </activity>
+        <!--常用地址-->
+        <activity
+            android:name=".mvp.ui.my.UsualAddressActivity"
+            android:hardwareAccelerated="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            >
+
+        </activity>
+
+        <!--评价-->
+        <activity
+            android:name=".mvp.ui.my.EstimateActivity"
+            android:hardwareAccelerated="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            >
+
         </activity>
 
 

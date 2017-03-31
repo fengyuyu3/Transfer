@@ -4,15 +4,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
+import com.ironaviation.traveller.common.WEApplication;
 import com.ironaviation.traveller.di.component.my.DaggerTravelComponent;
 import com.ironaviation.traveller.di.module.my.TravelModule;
 import com.ironaviation.traveller.mvp.contract.my.TravelContract;
@@ -38,10 +43,8 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 
 /**
-<<<<<<< HEAD
 =======
  *
->>>>>>> 5d6f064cb6be0f5678a8e63b5bf0f2b1b647e1cb
  * 项目名称：Transfer
  * 类描述：
  * 创建人：flq
@@ -49,11 +52,8 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  * 修改人：
  * 修改时间：2017/3/26 17:29
  * 修改备注：
-<<<<<<< HEAD
-=======
  * @version
  *
->>>>>>> 5d6f064cb6be0f5678a8e63b5bf0f2b1b647e1cb
  */
 
 public class TravelActivity extends WEActivity<TravelPresenter> implements TravelContract.View, SwipeRefreshLayout.OnRefreshListener {
@@ -97,15 +97,25 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
             public void run() {
                 showNodata(false);
             }
-        }, 4000);
+        }, 300);
         setToolbarColor(R.color.base_color);
         mLayoutManager = new LinearLayoutManager(this);
         mRvTravel.setLayoutManager(mLayoutManager);
         mTravelAdapter = new TravelAdapter(R.layout.item_travel);
-        mSlTravel.setColorSchemeColors(getResources().getColor(R.color.colorPrimaryDark), getResources().getColor(R.color.colorPrimaryDark));
+
+        mSlTravel.setColorSchemeColors(ContextCompat.getColor(WEApplication.getContext(),R.color.colorPrimaryDark),
+                ContextCompat.getColor(WEApplication.getContext(),R.color.colorPrimaryDark));
         mSlTravel.setOnRefreshListener(this);
         mRvTravel.setAdapter(mTravelAdapter);
         mTravelAdapter.setNewData(getList());
+        mTravelAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                startActivity(EstimateActivity.class);
+
+            }
+        });
+
 
     }
 

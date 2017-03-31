@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_estimate_reason"
+        style="@style/common_text_content_style"
+        android:layout_width="290px"
+        android:layout_height="70px"
+        android:layout_below="@+id/tv_message_title"
+        android:layout_marginTop="26px"
+        android:background="@drawable/select_item_btn_grey_wirte"
+        android:gravity="center"
+        />
+</com.zhy.autolayout.AutoLinearLayout>

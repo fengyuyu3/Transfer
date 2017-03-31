@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">机场接送</string>
+    <string name="app_name">机场专线</string>
 
     <!--identification-->
     <string name="identification">认证</string>
@@ -11,8 +11,28 @@
     <!--个人中心-->
     <string name="personal_center">个人中心</string>
     <string name="message">消息</string>
+    <string name="my_message">我的消息</string>
     <string name="setting">设置</string>
     <string name="trip">行程</string>
+    <!--支付-->
+    <string name="payment">支付</string>
+    <string name="go_to_pay">去支付</string>
+    <string name="ali_pay_payment">支付宝支付</string>
+    <string name="we_chat_Payment">微信支付</string>
+    <string name="union_payment">银联支付</string>
+    <!--设置-->
+    <string name="setting_identification">实名认证</string>
+    <string name="usual_address">常用地址</string>
+    <string name="connect_us">联系我们</string>
+    <string name="cancellation_account">注销账号</string>
+    <string name="us_phone">028-86868686</string>
+    <string name="unauthorized">未认证</string>
+    <string name="authenticated">已认证</string>
+    <!--评价-->
+    <string name="final_payment">最终支付</string>
+    <string name="anonymous_evaluation">匿名评价</string>
+    <string name="estimate">评价</string>
+    <string name="money_unit">元</string>
     <!--登陆-->
     <string name="login_input_phone">输入电话号码</string>
     <string name="login_input_code">输入验证码</string>
@@ -21,11 +41,11 @@
     <string name="login_no_userInfo">请输入用户信息</string>
     <string name="login_no_code">请输入验证码</string>
     <string name="login_code_reset">s</string>
-    
+
     <!--错误界面-->
     <string name="include_error_hint">数据获取失败</string>
     <string name="inlcude_error_info">请检查网络后点击重新加载</string>
-    
+
     <!--送机-->
     <string name="airport_no">请输入航班号</string>
     <string name="airport_time">乘车时间</string>
@@ -38,4 +58,24 @@
     <string name="airport_affirm">确认</string>
     <string name="airport_fly_time">当地起飞时间</string>
     <string name="airport_city">请选择城市</string>
+
+    <string name="great_satisfaction">非常满意</string>
+    <string name="please_point_out_insufficient">请指出不足...</string>
+    <!--cancel-->
+    <string-array name="great_satisfaction_reason_list">
+        <item>车内整洁</item>
+        <item>活地图，认路准</item>
+        <item>驾驶平稳</item>
+        <item>态度好，服务棒</item>
+        <item>很有礼貌</item>
+    </string-array>
+    <!--cancel-->
+    <string-array name="insufficient_reason_list">
+        <item>服务态度恶劣</item>
+        <item>等待时间久</item>
+        <item>危险驾驶</item>
+        <item>乘车时间久</item>
+        <item>车太脏</item>
+        <item>道路不熟悉</item>
+    </string-array>
 </resources>

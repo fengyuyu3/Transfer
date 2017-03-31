@@ -1,10 +1,14 @@
 package com.ironaviation.traveller.mvp.ui.my;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.common.AppComponent;
@@ -13,8 +17,14 @@ import com.ironaviation.traveller.di.component.my.DaggerSettingComponent;
 import com.ironaviation.traveller.di.module.my.SettingModule;
 import com.ironaviation.traveller.mvp.contract.my.SettingContract;
 import com.ironaviation.traveller.mvp.presenter.my.SettingPresenter;
+import com.ironaviation.traveller.mvp.ui.login.LoginActivity;
+import com.ironaviation.traveller.mvp.ui.widget.TextTextImageView;
+import com.jess.arms.utils.DeviceUtils;
 import com.jess.arms.utils.UiUtils;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -28,19 +38,29 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 
 /**
- *
- * 项目名称：Traveller      
- * 类描述：   
- * 创建人：starRing  
- * 创建时间：2017-03-27 10:33   
- * 修改人：starRing  
- * 修改时间：2017-03-27 10:33   
- * 修改备注：   
- * @version
- *
+ * 项目名称：Traveller
+ * 类描述：
+ * 创建人：starRing
+ * 创建时间：2017-03-27 10:33
+ * 修改人：starRing
+ * 修改时间：2017-03-27 10:33
+ * 修改备注：
  */
 public class SettingActivity extends WEActivity<SettingPresenter> implements SettingContract.View {
 
+
+    @BindView(R.id.iv_function_left)
+    ImageView mIvFunctionLeft;
+    @BindView(R.id.tti_identification)
+    TextTextImageView mTtiIdentification;
+    @BindView(R.id.tti_usual_address)
+    TextTextImageView mTtiUsualAddress;
+    @BindView(R.id.tti_connect_us)
+    TextTextImageView mTtiConnectUs;
+    @BindView(R.id.tti_cancellation_account)
+    TextTextImageView mTtiCancellationAccount;
+    @BindView(R.id.tv_version_name)
+    TextView mTvVersionName;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -64,7 +84,17 @@ public class SettingActivity extends WEActivity<SettingPresenter> implements Set
 
     @Override
     protected void initData() {
-
+        setTitle(getString(R.string.setting));
+        setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_back));
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        mTtiIdentification.setText(getString(R.string.unauthorized));
+        mTtiIdentification.setTextColor(ContextCompat.getColor(this, R.color.word_red));
+        setTv_version_name();
     }
 
 
@@ -95,5 +125,40 @@ public class SettingActivity extends WEActivity<SettingPresenter> implements Set
         finish();
     }
 
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
+    @OnClick({R.id.tti_identification, R.id.tti_usual_address, R.id.tti_connect_us, R.id.tti_cancellation_account})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tti_identification:
+
+                break;
+            case R.id.tti_usual_address:
+                startActivity(UsualAddressActivity.class);
+                break;
+            case R.id.tti_connect_us:
+
+                break;
+            case R.id.tti_cancellation_account:
+
+                UiUtils.killAll();
+                startActivity(LoginActivity.class);
+                break;
+        }
+    }
+
+    private void setTv_version_name() {
+
+        String versionName = DeviceUtils.getVersionName(this);
+        if (!TextUtils.isEmpty(versionName)) {
+            mTvVersionName.setText(getResources().getString(R.string.app_name) + " " + versionName);
+        }
+    }
 
 }

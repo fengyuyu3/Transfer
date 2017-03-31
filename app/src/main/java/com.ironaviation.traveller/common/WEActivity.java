@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -37,8 +38,8 @@ public abstract class WEActivity<P extends Presenter> extends BaseWEActivity<P> 
 
 
     protected Toolbar mToolbar, nodataToolbar;
-    protected TextView mTitle, nodataTitle, mFunctionRight,nodataFunctionRight;
-    protected ImageView mIvFunctionLeft,nodataIvFunctionLeft;
+    protected TextView mTitle, nodataTitle, mFunctionRight, nodataFunctionRight;
+    protected ImageView mIvFunctionLeft, nodataIvFunctionLeft,mIvFunctionRight,noDataIvFunctionRight;
     protected SwipeRefreshLayout mNodataSwipeRefresh;
     protected AutoLinearLayout llError;
 
@@ -80,11 +81,31 @@ public abstract class WEActivity<P extends Presenter> extends BaseWEActivity<P> 
         if (!TextUtils.isEmpty(text)) {
             if (mFunctionRight != null) {
                 mFunctionRight.setVisibility(View.VISIBLE);
+                mFunctionRight.setTextColor(ContextCompat.getColor(this, R.color.white));
                 mFunctionRight.setText(text);
             }
-            if(nodataFunctionRight != null){
+            if (nodataFunctionRight != null) {
                 nodataFunctionRight.setVisibility(View.VISIBLE);
                 nodataFunctionRight.setText(text);
+            }
+        }
+    }
+
+    /**
+     * 设置右功能键+颜色
+     */
+    protected void setRightFunctionText(String text, int color) {
+        if (!TextUtils.isEmpty(text)) {
+            if (mFunctionRight != null) {
+                mFunctionRight.setVisibility(View.VISIBLE);
+                mFunctionRight.setTextColor(ContextCompat.getColor(this, color));
+                mFunctionRight.setText(text);
+            }
+            if (noDataIvFunctionRight != null) {
+                nodataFunctionRight.setVisibility(View.VISIBLE);
+                nodataFunctionRight.setText(text);
+                nodataFunctionRight.setTextColor(ContextCompat.getColor(this, color));
+
             }
         }
     }
@@ -94,14 +115,31 @@ public abstract class WEActivity<P extends Presenter> extends BaseWEActivity<P> 
      */
     protected void setLeftFunction(Drawable text) {
         if (text != null) {
-            if (mIvFunctionLeft != null) {
-                mIvFunctionLeft.setVisibility(View.VISIBLE);
-                mIvFunctionLeft.setImageDrawable(text);
+            if (mIvFunctionRight != null) {
+                mIvFunctionRight.setVisibility(View.VISIBLE);
+                mIvFunctionRight.setImageDrawable(text);
             }
-            if (nodataIvFunctionLeft != null) {
+            if (noDataIvFunctionRight != null) {
+                noDataIvFunctionRight.setVisibility(View.VISIBLE);
+                noDataIvFunctionRight.setImageDrawable(text);
+            }
+        }
+    }
+
+    /**
+     * 设置自定义右功能键
+     */
+    protected void setRightFunction(Drawable text, View.OnClickListener listener) {
+        if (text != null) {
+            if (mIvFunctionRight != null) {
+                mIvFunctionRight.setVisibility(View.VISIBLE);
+                mIvFunctionRight.setImageDrawable(text);
+                mIvFunctionRight.setOnClickListener(listener);
+            }
+           /* if (nodataIvFunctionLeft != null) {
                 nodataIvFunctionLeft.setVisibility(View.VISIBLE);
                 nodataIvFunctionLeft.setImageDrawable(text);
-            }
+            }*/
         }
     }
 
@@ -113,13 +151,13 @@ public abstract class WEActivity<P extends Presenter> extends BaseWEActivity<P> 
             if (mToolbar != null) {
                 mToolbar.setNavigationIcon(text);
             }
-            if(nodataToolbar != null){
+            if (nodataToolbar != null) {
                 nodataToolbar.setNavigationIcon(text);
             }
         }
     }
 
-    public void setErrorRefresh(){
+    public void setErrorRefresh() {
         llError = (AutoLinearLayout) getDelegate().findViewById(R.id.ll_error);
         llError.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,8 +169,9 @@ public abstract class WEActivity<P extends Presenter> extends BaseWEActivity<P> 
 
     //设置
     public void setNodataSwipeRefreshLayout() {
+
         mNodataSwipeRefresh = (SwipeRefreshLayout) getDelegate().findViewById(R.id.nodata_swipeRefreshLayout);
-        mNodataSwipeRefresh.setColorSchemeColors(getResources().getColor(R.color.colorPrimaryDark), getResources().getColor(R.color.colorPrimaryDark));
+        mNodataSwipeRefresh.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimaryDark), ContextCompat.getColor(this, R.color.colorPrimaryDark));
         mNodataSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -146,27 +185,27 @@ public abstract class WEActivity<P extends Presenter> extends BaseWEActivity<P> 
         mTitle = (TextView) getDelegate().findViewById(R.id.tv_title);
         mFunctionRight = (TextView) getDelegate().findViewById(R.id.tv_function_right);
         mIvFunctionLeft = (ImageView) getDelegate().findViewById(R.id.iv_function_left);
-
+        mIvFunctionRight= (ImageView) getDelegate().findViewById(R.id.iv_function_right);
         nodataToolbar = (Toolbar) getDelegate().findViewById(R.id.nodata_toolbar);
         nodataTitle = (TextView) getDelegate().findViewById(R.id.nodata_tv_title);
         nodataFunctionRight = (TextView) getDelegate().findViewById(R.id.nodata_tv_function_right);
         nodataIvFunctionLeft = (ImageView) getDelegate().findViewById(R.id.nodata_iv_function_left);
-
+        noDataIvFunctionRight= (ImageView) getDelegate().findViewById(R.id.nodata_iv_function_right);
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-        if(nodataToolbar != null){
+        if (nodataToolbar != null) {
             setSupportActionBar(nodataToolbar);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    public void setToolbarColor(int color){
-        if(color != 0){
-            mToolbar.setBackgroundColor(getResources().getColor(color));
-            nodataToolbar.setBackgroundColor(getResources().getColor(color));
+    public void setToolbarColor(int color) {
+        if (color != 0) {
+            mToolbar.setBackgroundColor(ContextCompat.getColor(WEApplication.getContext(), color));
+            nodataToolbar.setBackgroundColor(ContextCompat.getColor(WEApplication.getContext(), color));
         }
     }
 
@@ -209,10 +248,10 @@ public abstract class WEActivity<P extends Presenter> extends BaseWEActivity<P> 
         message.what = START_ACTIVITY;
         message.obj = intent;
         EventBus.getDefault().post(message, APPMANAGER_MESSAGE);
-        Log.e("kkk","llll");
+        Log.e("kkk", "llll");
     }
 
-    public void startActivity(Class clazz,Bundle c) {
+    public void startActivity(Class clazz, Bundle c) {
         Intent intent = new Intent(this, clazz);
         intent.putExtras(c);
         Message message = new Message();

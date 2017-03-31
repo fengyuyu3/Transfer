@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/include_toolbar"></include>
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="100px"
+            android:layout_marginTop="128px"
+            android:text="24.00"
+            android:textColor="@color/word_red"
+            android:textSize="80px"
+            />
+
+        <TextView
+            android:id="@+id/tv_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tv_money"
+            android:layout_marginBottom="28px"
+            android:layout_marginLeft="12px"
+            android:layout_toRightOf="@+id/tv_money"
+            android:text="元"
+            android:textColor="@color/payment_unity"
+            android:textSize="28px"
+            />
+
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+
+    <com.ironaviation.traveller.mvp.ui.widget.ImageTextImageView
+        android:id="@+id/ivi_we_chat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:left_logo_iti="@mipmap/ic_we_chat"
+        app:right_go_on="@mipmap/ic_radio_button_unchecked_black"
+        app:text_iti="@string/we_chat_Payment">
+
+    </com.ironaviation.traveller.mvp.ui.widget.ImageTextImageView>
+
+    <com.ironaviation.traveller.mvp.ui.widget.ImageTextImageView
+        android:id="@+id/ivi_ali_pay"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:left_logo_iti="@mipmap/ic_ali_pay"
+        app:right_go_on="@mipmap/ic_radio_button_unchecked_black"
+        app:text_iti="@string/ali_pay_payment">
+
+    </com.ironaviation.traveller.mvp.ui.widget.ImageTextImageView>
+
+    <com.ironaviation.traveller.mvp.ui.widget.ImageTextImageView
+        android:id="@+id/ivi_union_pay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:left_logo_iti="@mipmap/ic_union"
+        app:right_go_on="@mipmap/ic_radio_button_unchecked_black"
+        app:text_iti="@string/union_payment">
+
+    </com.ironaviation.traveller.mvp.ui.widget.ImageTextImageView>
+
+
+    <TextView
+        android:id="@+id/rl_go_to_pay"
+        style="@style/button_red_style"
+        android:layout_width="@dimen/w_input_box"
+        android:layout_height="@dimen/h_input_box"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="120px"
+        android:text="@string/go_to_pay"
+        >
+    </TextView>
+</com.zhy.autolayout.AutoLinearLayout>
