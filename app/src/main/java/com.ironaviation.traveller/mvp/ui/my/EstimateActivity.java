@@ -12,12 +12,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.my.DaggerEstimateComponent;
 import com.ironaviation.traveller.di.module.my.EstimateModule;
 import com.ironaviation.traveller.mvp.contract.my.EstimateContract;
+import com.ironaviation.traveller.mvp.model.entity.response.EstimateResponse;
 import com.ironaviation.traveller.mvp.presenter.my.EstimatePresenter;
 import com.ironaviation.traveller.mvp.ui.widget.CustomerRatingBar;
 import com.jess.arms.utils.UiUtils;
@@ -27,6 +29,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -57,13 +60,15 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
     CustomerRatingBar mRatingBar;
     @BindView(R.id.rv_evaluation_content)
     RecyclerView mRvEvaluationContent;
+    @BindView(R.id.tv_anonymous_evaluation)
+    TextView mTvAnonymousEvaluation;
 
     private EstimateAdapter mEstimateAdapter;
 
     private String[] great_satisfaction_reasons;
     private String[] insufficient_reasons;
-    private List<String> greatSatisfactionReasonList = new ArrayList<>();
-    private List<String> insufficientReasonList = new ArrayList<>();
+    private List<EstimateResponse> greatSatisfactionReasonList = new ArrayList<>();
+    private List<EstimateResponse> insufficientReasonList = new ArrayList<>();
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -85,10 +90,10 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
         great_satisfaction_reasons = getResources().getStringArray(R.array.great_satisfaction_reason_list);
         insufficient_reasons = getResources().getStringArray(R.array.insufficient_reason_list);
         for (int i = 0; i < insufficient_reasons.length; i++) {
-            insufficientReasonList.add(insufficient_reasons[i]);
+            insufficientReasonList.add(new EstimateResponse(insufficient_reasons[i]));
         }
         for (int i = 0; i < great_satisfaction_reasons.length; i++) {
-            greatSatisfactionReasonList.add(great_satisfaction_reasons[i]);
+            greatSatisfactionReasonList.add(new EstimateResponse(great_satisfaction_reasons[i]));
         }
         setTitle(getString(R.string.estimate));
         mToolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_back));
@@ -122,7 +127,21 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
         mEstimateAdapter = new EstimateAdapter(R.layout.item_estimate);
         mRvEvaluationContent.setAdapter(mEstimateAdapter);
         mRvEvaluationContent.addItemDecoration(new SpaceItemDecoration(20));
+        mEstimateAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public boolean onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                EstimateResponse estimateResponse = (EstimateResponse) adapter.getData().get(position);
+                if (estimateResponse.isType()) {
+                    estimateResponse.setType(false);
+                    view.setBackgroundResource(R.drawable.btn_write_un_select);
+                } else {
+                    estimateResponse.setType(true);
+                    view.setBackgroundResource(R.drawable.btn_grey_select);
 
+                }
+                return false;
+            }
+        });
     }
 
 
@@ -203,5 +222,11 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
 
             }
         }
+    }
+
+
+    @OnClick({R.id.tv_anonymous_evaluation})
+    public void onClick(View view) {
+
     }
 }

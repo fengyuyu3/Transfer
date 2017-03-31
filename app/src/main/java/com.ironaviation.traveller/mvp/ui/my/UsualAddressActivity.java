@@ -151,7 +151,7 @@ public class UsualAddressActivity extends WEActivity<UsualAddressPresenter> impl
             int height = ViewGroup.LayoutParams.MATCH_PARENT;
             if (viewType == 0) {
                 SwipeMenuItem addItem = new SwipeMenuItem(UsualAddressActivity.this)
-                        .setBackgroundDrawable(R.color.bg_swipe_menu)
+                        .setBackgroundDrawable(R.color.bg_champagne)
                         .setText("      删除      ") // 文字。
                         .setTextColor(Color.WHITE) // 文字颜色
                         // 。
@@ -171,8 +171,7 @@ public class UsualAddressActivity extends WEActivity<UsualAddressPresenter> impl
     private UsualAddressAdapter.OnItemClickListener onItemClickListener = new UsualAddressAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(int position) {
-
-
+            startActivity(AddressActivity.class);
         }
 
 
@@ -197,7 +196,7 @@ public class UsualAddressActivity extends WEActivity<UsualAddressPresenter> impl
 
     public UsualAddressResponse getData() {
         UsualAddressResponse mUsualAddressResponse = new UsualAddressResponse();
-        List<UsualAddressResponse.UsualAddress> mUsualAddressList=new ArrayList<>();
+        List<UsualAddressResponse.UsualAddress> mUsualAddressList = new ArrayList<>();
         mUsualAddressResponse.setUsualAddressList(mUsualAddressList);
         UsualAddressResponse.UsualAddress home = mUsualAddressResponse.new UsualAddress();
         home.setAddress("天府5街666号");

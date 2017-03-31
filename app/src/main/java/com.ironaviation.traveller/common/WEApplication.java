@@ -3,6 +3,7 @@ package com.ironaviation.traveller.common;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.baidu.mapapi.SDKInitializer;
 import com.jess.arms.base.BaseApplication;
 import com.jess.arms.di.module.GlobeConfigModule;
 import com.jess.arms.http.GlobeHttpHandler;
@@ -35,6 +36,9 @@ public class WEApplication extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        //在使用SDK各组件之前初始化context信息，传入ApplicationContext
+        //注意该方法要再setContentView方法之前实现
+        SDKInitializer.initialize(getApplicationContext());
         mAppComponent = DaggerAppComponent
                 .builder()
                 .appModule(getAppModule())//baseApplication提供
