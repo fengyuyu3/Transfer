@@ -67,7 +67,7 @@ public abstract class BaseActivity<P extends Presenter> extends RxAppCompatActiv
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApplication = (BaseApplication) getApplication();
-        if (useEventBus())//如果要使用eventbus请将此方法返回true
+//        if (useEventBus())//如果要使用eventbus请将此方法返回true
             EventBus.getDefault().register(this);//注册到事件主线
         setContentView(initView());
         rootView = (ViewGroup) getWindow().getDecorView();
@@ -109,7 +109,7 @@ public abstract class BaseActivity<P extends Presenter> extends RxAppCompatActiv
         super.onDestroy();
         if (mPresenter != null) mPresenter.onDestroy();//释放资源
         if (mUnbinder != Unbinder.EMPTY) mUnbinder.unbind();
-        if (useEventBus())//如果要使用eventbus请将此方法返回true
+//        if (useEventBus())//如果要使用eventbus请将此方法返回true
             EventBus.getDefault().unregister(this);
         this.mPresenter = null;
         this.mUnbinder = null;

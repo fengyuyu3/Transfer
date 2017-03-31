@@ -48,4 +48,6 @@
     <color name="order_success_font">#d23f36</color>
     <color name="popwindow_backgound">#66000000</color>
     <color name="play_range_bg">#DD000000</color>
+
+    <color name="line_background">#e3e4e5</color>
 </resources>

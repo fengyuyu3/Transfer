@@ -20,4 +20,6 @@ public interface Constant {
 
     int AIRPORT_FLY_NUM = 21;
     int AIRPORT_FLY_TIME = 22;
+    int TRAVEL_CANCEL = 31;
+    int TRAVEL_CUSTOMER = 32;
 }

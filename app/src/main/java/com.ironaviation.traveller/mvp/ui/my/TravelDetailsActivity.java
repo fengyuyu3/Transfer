@@ -1,20 +1,29 @@
 package com.ironaviation.traveller.mvp.ui.my;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.my.DaggerTravelDetailsComponent;
 import com.ironaviation.traveller.di.module.my.TravelDetailsModule;
+import com.ironaviation.traveller.event.TravelCancelEvent;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.TravelDetailsContract;
 import com.ironaviation.traveller.mvp.presenter.my.TravelDetailsPresenter;
+import com.ironaviation.traveller.mvp.ui.widget.AutoToolbar;
+import com.ironaviation.traveller.mvp.ui.widget.MoreActionPopupWindow;
 import com.jess.arms.utils.UiUtils;
+import com.zhy.autolayout.AutoLinearLayout;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -28,19 +37,38 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 
 /**
- *
- * 项目名称：Transfer      
- * 类描述：   
- * 创建人：flq  
- * 创建时间：2017/3/29 15:41   
- * 修改人：  
- * 修改时间：2017/3/29 15:41   
- * 修改备注：   
- * @version
- *
+ * 项目名称：Transfer
+ * 类描述：
+ * 创建人：flq
+ * 创建时间：2017/3/29 15:41
+ * 修改人：
+ * 修改时间：2017/3/29 15:41
+ * 修改备注：
  */
 
-public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> implements TravelDetailsContract.View {
+public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> implements TravelDetailsContract.View, View.OnClickListener {
+
+    @BindView(R.id.tw_name)
+    TextView mTwName;
+    @BindView(R.id.tw_score)
+    TextView mTwScore;
+    @BindView(R.id.tw_car_num)
+    TextView mTwCarNum;
+    @BindView(R.id.yw_car_color)
+    TextView mYwCarColor;
+    @BindView(R.id.iw_mobile)
+    ImageView mIwMobile;
+    @BindView(R.id.ll_driver_info)
+    AutoLinearLayout mLlDriverInfo;
+    @BindView(R.id.ll_complete)
+    AutoLinearLayout mLlComplete;
+    @BindView(R.id.ll_ordering)
+    AutoLinearLayout mLlOrdering;
+    @BindView(R.id.rl_go_to_pay)
+    TextView mRlGoToPay;
+    @BindView(R.id.ll_going)
+    AutoLinearLayout mLlGoing;
+    private MoreActionPopupWindow mPopupWindow;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -59,7 +87,8 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 
     @Override
     protected void initData() {
-
+//        setRightFunction(R.mipmap.ic_id_card, this);
+//        mPopupWindow = new MoreActionPopupWindow(this);
     }
 
 
@@ -90,9 +119,30 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         finish();
     }
 
-
     @Override
     protected void nodataRefresh() {
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_function_right:
+                if (mPopupWindow != null) {
+                    mPopupWindow.showPopupWindow(mToolbar);
+                }
+                break;
+        }
+    }
+
+    public void onEventMainThread(TravelCancelEvent event) {
+        switch (event.getEvent()) {
+            case Constant.TRAVEL_CANCEL:
+                showMessage("取消");
+                break;
+            case Constant.TRAVEL_CUSTOMER:
+                showMessage("联系客户");
+                break;
+        }
     }
 }

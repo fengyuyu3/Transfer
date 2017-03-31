@@ -59,7 +59,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginRight="32px"
-
                 android:gravity="center"
                 android:padding="10px"
                 android:visibility="gone"

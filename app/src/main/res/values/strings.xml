@@ -78,4 +78,12 @@
         <item>车太脏</item>
         <item>道路不熟悉</item>
     </string-array>
+
+    <!--行程-->
+    <string name="travel_complete">行程完成</string>
+    <string name="travel_arrive">确认到达</string>
+    <string name="travel_order_success">派单成功</string>
+    <string name="travel_ordering">派单中</string>
+    <string name="travel_go_off">距离您出发时间还有10小时</string>
+    <string name="travel_go_out">在您出行前30分钟为您发送司机的信息</string>
 </resources>

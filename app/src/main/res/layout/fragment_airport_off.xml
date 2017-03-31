@@ -7,6 +7,7 @@
                                      android:orientation="vertical">
 
     <com.ironaviation.traveller.mvp.ui.widget.AutoScrollView
+        android:fillViewport="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -71,16 +72,21 @@
                 />
 
             <com.zhy.autolayout.AutoLinearLayout
+                android:paddingLeft="15px"
+                android:paddingRight="15px"
+                android:id="@+id/ll_certification"
                 android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
                 <android.support.v7.widget.RecyclerView
+                    android:visibility="gone"
+                    android:background="@color/white"
                     android:paddingLeft="15px"
                     android:paddingRight="15px"
                     android:id="@+id/rw_airport"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
                 </android.support.v7.widget.RecyclerView>
 
             </com.zhy.autolayout.AutoLinearLayout>

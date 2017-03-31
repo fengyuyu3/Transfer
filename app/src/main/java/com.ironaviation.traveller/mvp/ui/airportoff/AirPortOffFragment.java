@@ -4,28 +4,30 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.utils.CheckIdCardUtils;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEFragment;
 import com.ironaviation.traveller.di.component.airportoff.DaggerAirPortOffComponent;
 import com.ironaviation.traveller.di.module.airportoff.AirPortOffModule;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.airportoff.AirPortOffContract;
-import com.ironaviation.traveller.mvp.contract.airportoff.TravelFloatContract;
 import com.ironaviation.traveller.mvp.model.entity.request.AirPortRequest;
 import com.ironaviation.traveller.mvp.presenter.airportoff.AirPortOffPresenter;
-import com.ironaviation.traveller.mvp.ui.manager.FullyLinearLayoutManager;
-import com.ironaviation.traveller.mvp.ui.my.TravelDetailsActivity;
 import com.ironaviation.traveller.mvp.ui.widget.NumDialog;
 import com.ironaviation.traveller.mvp.ui.widget.PublicTextView;
-import com.ironaviation.traveller.mvp.ui.widget.PublicView;
 import com.ironaviation.traveller.mvp.ui.widget.TravelPopupwindow;
 import com.jess.arms.utils.UiUtils;
+import com.zhy.autolayout.AutoLinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +59,7 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 
 public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implements AirPortOffContract.View
-        , NumDialog.CallBackItem, AirPortAdapter.ItemIdCallBack,AirPortAdapter.ItemIdStatusCallBack {
+        , NumDialog.CallBackItem, AirPortAdapter.ItemIdCallBack, AirPortAdapter.ItemIdStatusCallBack {
 
     @BindView(R.id.pw_person)
     PublicTextView mPwPerson;
@@ -73,16 +75,20 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     PublicTextView mPwSeat;
     @BindView(R.id.rw_airport)
     RecyclerView rwAirport;
+    @BindView(R.id.ll_certification)
+    AutoLinearLayout llCertification;
     Unbinder unbinder;
+
     /*@BindView(R.id.pw_id_card)
     PublicView mPwIdCard;*/
 
-    private NumDialog mNumDialog,mTerminal;
+    private NumDialog mNumDialog, mTerminal;
     private AirPortAdapter mAirPortAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private TravelPopupwindow mTravelPopupwindow;
     private static final int NUM = 6;
-    private List<AirPortRequest> list;
+    private List<AirPortRequest> list; //这是recylerview 的数据
+    private List<AirPortRequest> mAirportRequests;
 
     public static AirPortOffFragment newInstance() {
         AirPortOffFragment fragment = new AirPortOffFragment();
@@ -107,14 +113,14 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     @Override
     protected void initData() {
         mTravelPopupwindow = new TravelPopupwindow(getActivity());
-        mLayoutManager = new FullyLinearLayoutManager(getActivity());
-        rwAirport.setNestedScrollingEnabled(false);
+        /*mLayoutManager = new FullyLinearLayoutManager(getActivity());
         mAirPortAdapter = new AirPortAdapter(this,this);
-        mNumDialog = new NumDialog(getActivity(), getNumsData(), this,Constant.AIRPORT_TYPE_SEAT);
-        mTerminal = new NumDialog(getActivity(),getTerminal(),this,Constant.AIRPORT_TYPE_TERMINAL);
         rwAirport.setLayoutManager(mLayoutManager);
-        rwAirport.setAdapter(mAirPortAdapter);
+        rwAirport.setAdapter(mAirPortAdapter);*/
+        mNumDialog = new NumDialog(getActivity(), getNumsData(), this, Constant.AIRPORT_TYPE_SEAT);
+        mTerminal = new NumDialog(getActivity(), getTerminal(), this, Constant.AIRPORT_TYPE_TERMINAL);
 //        setRidTimeHide();
+        initEmptyData();
     }
 
     /**
@@ -164,7 +170,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     }
 
 
-    @OnClick({R.id.pw_seat,R.id.pw_airport,R.id.pw_flt_no})
+    @OnClick({R.id.pw_seat, R.id.pw_airport, R.id.pw_flt_no})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.pw_seat:
@@ -189,33 +195,37 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         return list;
     }
 
-    public List<String> getTerminal(){
+    public List<String> getTerminal() {
         List<String> list = new ArrayList<>();
-        for(int i = 0 ; i < 2; i++){
-            list.add("T"+(i+1)+"航站楼");
+        for (int i = 0; i < 2; i++) {
+            list.add("T" + (i + 1) + "航站楼");
         }
         return list;
     }
 
+    public void initEmptyData(){
+        mAirportRequests = new ArrayList<>();
+        for(int i = 0; i < NUM; i ++) {
+            AirPortRequest request = new AirPortRequest();
+            request.setStatus(Constant.AIRPORT_NO);
+            mAirportRequests.add(request);
+        }
+    }
+
     @Override
-    public void getItem(int position , int type) {
-        if(type == Constant.AIRPORT_TYPE_SEAT) {
+    public void getItem(int position, int type) {
+        if (type == Constant.AIRPORT_TYPE_SEAT) {
             mPwSeat.setTextInfo("需要" + (position + 1) + "个座位");
-            list = new ArrayList<>();
-            for (int i = 0; i < position + 1; i++) {
-                AirPortRequest request = new AirPortRequest();
-                if (i == 0) {
-                    request.setStatus(Constant.AIRPORT_SUCCESS);
-                    request.setIdCard("510321198507245790");
-                } else {
-                    request.setStatus(Constant.AIRPORT_NO);
-                }
-                list.add(request);
+            clearMoreData(position);
+            List<AirPortRequest> list = new ArrayList<>();
+            for (int i = 0; i < position ; i++) {
+                list.add(mAirportRequests.get(i));
             }
-            mAirPortAdapter.setData(list);
+            addLinearLayout(position);
+//            mAirPortAdapter.setData(list);
             mNumDialog.dismiss();
-        }else{
-            mPwAirport.setTextInfo("T"+(position+1)+"航站楼");
+        } else {
+            mPwAirport.setTextInfo("T" + (position + 1) + "航站楼");
             mTerminal.dismiss();
         }
     }
@@ -223,7 +233,8 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     //获取验证身份号码的位置和身份证号码
     @Override
     public void getItem(String cardId, int position) {
-        UiUtils.makeText(cardId + " " + position);
+        mAirportRequests.get(position).setStatus(Constant.AIRPORT_SUCCESS);
+        mAirportRequests.get(position).setIdCard(cardId);
     }
 
     @Override
@@ -247,17 +258,139 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         mAirPortAdapter.setData(list);
     }
 
-    public void setRidTimeHide(){
+    public void setRidTimeHide() {
         mPwTime.setVisibility(View.GONE);
         mPwAddress.setVisibility(View.GONE);
         mPwAirport.setVisibility(View.GONE);
         mPwSeat.setVisibility(View.GONE);
     }
-    public void setRidTimeShow(){
+
+    public void setRidTimeShow() {
         mPwTime.setVisibility(View.VISIBLE);
         mPwAddress.setVisibility(View.VISIBLE);
         mPwAirport.setVisibility(View.VISIBLE);
         mPwSeat.setVisibility(View.VISIBLE);
     }
 
+    public void addLinearLayout(int position) {
+//        llCertification
+        llCertification.removeAllViews();
+        for(int i = 0; i < position + 1 ;i++ ) {
+            MyAirportHolder holder = new MyAirportHolder();
+            View view = LayoutInflater.from(getActivity()).inflate(R.layout.include_public_view, null, false);
+            holder.mIvLogo = (ImageView) view.findViewById(R.id.iv_logo); //右边的图标
+            holder.mLineEdt = view.findViewById(R.id.line_edt); //底下的线
+            holder.mIvStatus = (ImageView) view.findViewById(R.id.iv_status); //右边的图标  占时不用;
+            holder.mEdtContent = (EditText) view.findViewById(R.id.edt_content); // 文本框
+            holder.mTvCode = (TextView) view.findViewById(R.id.tv_code);  //验证按钮
+            holder.mPwLl = (AutoLinearLayout) view.findViewById(R.id.pw_ll); //整个布局
+            if(mAirportRequests.get(i).getStatus() == Constant.AIRPORT_SUCCESS){
+                setSuccess(holder);
+            }else if(mAirportRequests.get(i).getStatus() == Constant.AIRPORT_FAILURE){
+                setFailure(holder);
+            }else{
+                setNomal(holder);
+            }
+            if(i == position){
+                holder.mLineEdt.setVisibility(View.GONE);
+            }
+            setAirportData(holder,mAirportRequests.get(i));
+            setlistener(holder,i);
+            llCertification.addView(view);
+        }
+
+    }
+
+    //正常状况
+    public void setNomal(MyAirportHolder holder){
+        holder.mIvLogo.setImageResource(R.mipmap.ic_validate);
+        holder.mTvCode.setText("验证");
+        holder.mTvCode.setTextColor(getResources().getColor(R.color.white));
+        holder.mTvCode.setBackgroundResource(R.drawable.btn_code_brown);
+        holder.mEdtContent.setEnabled(true);
+    }
+
+    //成功状态
+    public void setSuccess(MyAirportHolder holder){
+        holder.mIvLogo.setImageResource(R.mipmap.ic_success);
+        holder.mTvCode.setText("重置");
+        holder.mTvCode.setTextColor(getResources().getColor(R.color.white));
+        holder.mTvCode.setBackgroundResource(R.drawable.btn_code_brown);
+        holder.mEdtContent.setEnabled(false);
+    }
+
+    //失败状态
+    public void setFailure(MyAirportHolder holder){
+        holder.mIvLogo.setImageResource(R.mipmap.ic_failure);
+        holder.mTvCode.setText("验证");
+        holder.mTvCode.setTextColor(getResources().getColor(R.color.white));
+        holder.mTvCode.setBackgroundResource(R.drawable.btn_code_brown);
+        holder.mEdtContent.setEnabled(true);
+    }
+
+    //设置数据
+    public void setAirportData(MyAirportHolder holder,AirPortRequest request){
+        holder.mEdtContent.setText(request.getIdCard());
+        if(request.getStatus() == Constant.AIRPORT_SUCCESS){
+            setSuccess(holder);
+        }else if(request.getStatus() == Constant.AIRPORT_FAILURE){
+            setFailure(holder);
+        }else{
+            setNomal(holder);
+        }
+    }
+
+    public void setlistener(final MyAirportHolder holder, final int position){
+        holder.mEdtContent.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                mAirportRequests.get(position).setIdCard(editable.toString());
+            }
+        });
+
+        holder.mTvCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mAirportRequests.get(position).getStatus() != Constant.AIRPORT_SUCCESS) {
+                    if (holder.mEdtContent.getText().toString().trim() != null && CheckIdCardUtils.validateCard(holder.mEdtContent.getText().toString().trim())) {
+                        mAirportRequests.get(position).setStatus(Constant.AIRPORT_SUCCESS);
+                        mAirportRequests.get(position).setIdCard(holder.mEdtContent.getText().toString().trim());
+                        UiUtils.makeText(holder.mEdtContent.getText().toString().trim() + "  " + position);
+                    } else {
+                        UiUtils.makeText("请输入正确身份证号码:" + holder.mEdtContent.getText().toString().trim() + "  " + position);
+                    }
+                }else{
+                    holder.mEdtContent.setText("");
+                    setNomal(holder);
+                    mAirportRequests.get(position).setStatus(Constant.AIRPORT_NO);
+                }
+            }
+        });
+    }
+
+    public void clearMoreData(int position){
+        for(int i = position+1 ; i < NUM; i++){
+            mAirportRequests.get(i).setIdCard("");
+            mAirportRequests.get(i).setStatus(Constant.AIRPORT_NO);
+        }
+    }
+
+    public class MyAirportHolder {
+        public ImageView mIvLogo;
+        public View mLineEdt;
+        public ImageView mIvStatus;
+        public EditText mEdtContent;
+        public TextView mTvCode;
+        public AutoLinearLayout mPwLl;
+    }
 }

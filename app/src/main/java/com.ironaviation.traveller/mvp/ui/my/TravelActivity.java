@@ -111,12 +111,10 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
         mTravelAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                startActivity(EstimateActivity.class);
-
+//                startActivity(EstimateActivity.class);
+                startActivity(TravelDetailsActivity.class);
             }
         });
-
-
     }
 
     public List<TravelResponse> getList() {

@@ -144,6 +144,23 @@ public abstract class WEActivity<P extends Presenter> extends BaseWEActivity<P> 
     }
 
     /**
+     * 设置自定义右功能键
+     */
+    protected void setRightFunction(int resId, View.OnClickListener listener) {
+        if (resId != 0) {
+            if (mIvFunctionRight != null) {
+                mIvFunctionRight.setVisibility(View.VISIBLE);
+                mIvFunctionRight.setImageResource(resId);
+                mIvFunctionRight.setOnClickListener(listener);
+            }
+           /* if (nodataIvFunctionLeft != null) {
+                nodataIvFunctionLeft.setVisibility(View.VISIBLE);
+                nodataIvFunctionLeft.setImageDrawable(text);
+            }*/
+        }
+    }
+
+    /**
      * 设置导航左功能键
      */
     protected void setNavigationIcon(Drawable text) {
