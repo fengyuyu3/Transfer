@@ -32,7 +32,7 @@
                 android:ellipsize="marquee"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="title"
+                android:text=""
                 android:textColor="@color/white"
                 android:textSize="44px"/>
 
