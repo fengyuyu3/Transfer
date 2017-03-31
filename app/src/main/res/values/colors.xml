@@ -4,8 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#c3c3c3</color>
     <color name="white">#FFFFFF</color>
-
-
+    <color name="bg_champagne">#c5a981</color>
+    <color name="bg_champagne_deep">#b79a71</color>
     <color name="bg_write_grey">#f3f3f3</color>
     <!--common-->
     <color name="word_already_input">#3a3a3a</color>
@@ -14,7 +14,6 @@
 
     <color name="input_box_tan_select">#c1aa86</color>
     <color name="input_box_grey_un_select">#b2b2b2</color>
-    <color name="bg_swipe_menu">#c5a981</color>
     <color name="id_cord_background">#f3f3f3</color>
     <color name="button_red_select">#d03734</color>
     <color name="button_red_un_select">#e75047</color>

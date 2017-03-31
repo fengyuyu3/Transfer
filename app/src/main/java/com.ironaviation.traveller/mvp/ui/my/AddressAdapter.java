@@ -1,10 +1,10 @@
 package com.ironaviation.traveller.mvp.ui.my;
 
+import com.baidu.mapapi.search.core.PoiInfo;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.mvp.model.entity.response.EstimateResponse;
-import com.ironaviation.traveller.mvp.model.entity.response.MessageResponse;
 
 /**
  * 项目名称：Traveller
@@ -15,15 +15,17 @@ import com.ironaviation.traveller.mvp.model.entity.response.MessageResponse;
  * 修改时间：2017-03-30 16:58
  * 修改备注：
  */
-public class EstimateAdapter extends BaseQuickAdapter<EstimateResponse, BaseViewHolder> {
+public class AddressAdapter extends BaseQuickAdapter<PoiInfo, BaseViewHolder> {
 
-    public EstimateAdapter(int layoutResId) {
+    public AddressAdapter(int layoutResId) {
         super(layoutResId);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, EstimateResponse item) {
-        helper.setText(R.id.tv_estimate_reason, item.getName());
-        helper.addOnClickListener(R.id.tv_estimate_reason);
+    protected void convert(BaseViewHolder helper, PoiInfo item) {
+        helper.setText(R.id.tv_item_address, item.name);
+        helper.setText(R.id.tv_item_detail_address, item.address);
     }
+
+
 }

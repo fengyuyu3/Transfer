@@ -178,11 +178,45 @@
         android:layout_marginRight="66px"
         android:layout_marginTop="30px"/>
 
-    <EditText
+
+    <com.zhy.autolayout.AutoRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="219px"
         android:layout_marginLeft="52px"
         android:layout_marginRight="52px"
         android:layout_marginTop="48px"
-        />
+        android:background="@color/bg_write_grey"
+
+        >
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="21px"
+            android:layout_marginRight="21px"
+            android:layout_marginTop="16px"
+            android:background="@null"
+            android:gravity="top"
+            android:hint="@string/other_estimate"
+            android:maxLength="50"
+            android:textColor="@color/login_edit"
+            android:textColorHint="@color/login_hint_edit"
+            android:textSize="@dimen/word_content"
+            />
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+
+    <TextView
+        android:id="@+id/tv_anonymous_evaluation"
+        style="@style/button_red_style"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/h_input_box"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="52px"
+        android:layout_marginRight="52px"
+        android:layout_marginTop="44px"
+        android:background="@drawable/select_but_champagne"
+        android:text="@string/anonymous_evaluation"
+        >
+    </TextView>
 </com.zhy.autolayout.AutoLinearLayout>

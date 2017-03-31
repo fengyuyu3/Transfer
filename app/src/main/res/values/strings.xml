@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">机场专线</string>
 
+    <string name="city">成都</string>
+    <!--address-->
+    <string name="hint_home_address">请输入家庭地址</string>
+    <!--common-->
+    <string name="cancel">取消</string>
     <!--identification-->
     <string name="identification">认证</string>
     <string name="title_identification">实名认证</string>
@@ -32,6 +37,7 @@
     <string name="final_payment">最终支付</string>
     <string name="anonymous_evaluation">匿名评价</string>
     <string name="estimate">评价</string>
+    <string name="other_estimate">其他评价</string>
     <string name="money_unit">元</string>
     <!--登陆-->
     <string name="login_input_phone">输入电话号码</string>
