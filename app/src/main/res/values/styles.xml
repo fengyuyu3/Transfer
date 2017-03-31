@@ -45,4 +45,14 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
+
+    <!-- Translucent theme -->
+    <style name="TranslucentTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorAccent">@color/colorAccent</item>e
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/popwindow_backgound</item>
+    </style>
+
 </resources>

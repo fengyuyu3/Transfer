@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#c3c3c3</color>
     <color name="white">#FFFFFF</color>
     <!--common-->
     <color name="word_already_input">#3a3a3a</color>
@@ -30,4 +30,10 @@
     <color name="travel_runtime">#bfaf99</color>
     <color name="base_color">#d23026</color>
     <color name="airport_edit_gray">#c3c3c3</color>
+    <color name="color_brown">#c5a981</color>
+
+    <color name="color_travel_details_font">#5a5a5a</color>
+    <color name="order_success_font">#d23f36</color>
+    <color name="popwindow_backgound">#66000000</color>
+    <color name="play_range_bg">#DD000000</color>
 </resources>

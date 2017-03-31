@@ -13,5 +13,27 @@
         <attr name="right_peroson" format="boolean" />
         <attr name="right_code" format="boolean"/>
         <attr name="text" format="string"/>
+        <attr name="line" format="boolean"/>
+        <attr name="my_enable" format="boolean"/>
+        <attr name="padding_left" format="integer"/>
+    </declare-styleable>
+
+    <declare-styleable name="PublicTextView">
+        <attr name="left_logo1" format="reference" />
+        <attr name="hint1" format="string" />
+        <attr name="right_peroson1" format="boolean" />
+        <attr name="right_code1" format="boolean"/>
+        <attr name="text1" format="string"/>
+        <attr name="line1" format="boolean"/>
+        <attr name="my_enable1" format="boolean"/>
+        <attr name="padding_left1" format="integer"/>
+        <attr name="textColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="CircleImageView">
+        <attr name="civ_border_width" format="dimension" />
+        <attr name="civ_border_color" format="color" />
+        <attr name="civ_border_overlay" format="boolean" />
+        <attr name="civ_fill_color" format="color" />
     </declare-styleable>
 </resources>

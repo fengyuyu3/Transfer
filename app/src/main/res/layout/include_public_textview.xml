@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:orientation="vertical"
+     android:background="@color/white"
+     android:id="@+id/pw_ll1"
+     android:paddingLeft="32px"
+     android:paddingRight="32px">
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="112px">
+
+        <ImageView
+            android:id="@+id/iv_logo1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_blue_point"/>
+
+        <View
+            android:id="@+id/line_edt1"
+            android:layout_marginLeft="50px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/airport_edit_gray"
+            android:layout_width="match_parent"
+            android:layout_height="1px"/>
+
+        <TextView
+            android:textSize="30px"
+            android:id="@+id/tv_person1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="本人"
+            android:visibility="gone"/>
+
+        <TextView
+            android:gravity="center|left"
+            android:paddingLeft="10px"
+            android:textColor="@color/airport_edit_gray"
+            android:textSize="30px"
+            android:layout_marginLeft="50px"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:id="@+id/edt_content1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            />
+
+        <TextView
+            android:background="@color/color_brown"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:textSize="30px"
+            android:visibility="visible"
+            android:id="@+id/tv_code1"
+            android:layout_width="116px"
+            android:layout_height="47px"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="验证"/>
+
+    </com.zhy.autolayout.AutoRelativeLayout>
+</com.zhy.autolayout.AutoLinearLayout>

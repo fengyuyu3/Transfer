@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         xmlns:aigestudio="http://schemas.android.com/tools"
+         android:background="@color/popwindow_backgound"
+         android:id="@+id/ll_port"
+         android:orientation="vertical">
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:id="@+id/rl_travel_num"
+        android:layout_width="match_parent"
+        android:layout_height="112px"
+        android:layout_marginTop="360px"
+        android:background="@color/white">
+
+        <ImageView
+            android:layout_marginLeft="32px"
+            android:id="@+id/iv_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_airport"/>
+
+        <EditText
+            android:id="@+id/edt_travel_num"
+            android:imeOptions="actionDone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="82px"
+            android:background="@null"
+            android:hint="@string/airport_no"
+            android:maxLines="1"
+            android:paddingLeft="10px"
+            android:singleLine="true"
+            android:textColor="@color/login_edit"
+            android:textColorHint="@color/airport_edit_gray"
+            android:textSize="30px"
+            />
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:background="@color/white"
+            android:id="@+id/rl_airport_fly_time"
+            android:layout_width="match_parent"
+            android:layout_height="112px"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iw_time"
+                android:visibility="invisible"
+                android:layout_marginLeft="32px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/ic_airport_time"/>
+
+            <TextView
+                android:id="@+id/tw_fly_time"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="82px"
+                android:background="@null"
+                android:gravity="center|left"
+                android:maxLines="1"
+                android:paddingLeft="10px"
+                android:singleLine="true"
+                android:text="@string/airport_fly"
+                android:textColor="@color/airport_edit_gray"
+                android:textSize="30px"/>
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:id="@+id/rl_city"
+        android:layout_width="match_parent"
+        android:layout_height="112px"
+        android:background="@color/white"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_marginLeft="32px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_time"/>
+
+        <TextView
+            android:id="@+id/tw_city"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="82px"
+            android:background="@null"
+            android:gravity="center|left"
+            android:maxLines="1"
+            android:paddingLeft="10px"
+            android:singleLine="true"
+            android:text="@string/airport_city"
+            android:textColor="@color/airport_edit_gray"
+            android:textSize="30px"/>
+    </com.zhy.autolayout.AutoRelativeLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rw_city"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:visibility="invisible">
+    </android.support.v7.widget.RecyclerView>
+
+</com.zhy.autolayout.AutoLinearLayout>

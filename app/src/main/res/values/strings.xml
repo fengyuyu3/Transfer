@@ -25,4 +25,17 @@
     <!--错误界面-->
     <string name="include_error_hint">数据获取失败</string>
     <string name="inlcude_error_info">请检查网络后点击重新加载</string>
+    
+    <!--送机-->
+    <string name="airport_no">请输入航班号</string>
+    <string name="airport_time">乘车时间</string>
+    <string name="airport_address">上车地址</string>
+    <string name="airport_airport">选择航站楼</string>
+    <string name="airport_seat">需要1个座位数</string>
+    <string name="airport_validate">请输入身份证号验证</string>
+    <string name="airport_fly">请选择起飞时间</string>
+    <string name="airport_cancel">取消</string>
+    <string name="airport_affirm">确认</string>
+    <string name="airport_fly_time">当地起飞时间</string>
+    <string name="airport_city">请选择城市</string>
 </resources>

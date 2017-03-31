@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                     android:layout_width="match_parent"
-                                     android:layout_height="wrap_content"
-                                     android:orientation="vertical"
-                                     android:padding="32px">
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:orientation="vertical"
+     android:background="@color/white"
+     android:id="@+id/pw_ll"
+     android:paddingLeft="32px"
+     android:paddingRight="32px">
 
     <com.zhy.autolayout.AutoRelativeLayout
         android:layout_width="match_parent"
@@ -14,30 +17,55 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:src="@mipmap/ic_blue_point"/>
+            android:src="@mipmap/ic_validate"/>
+
+        <View
+            android:id="@+id/line_edt"
+            android:layout_marginLeft="50px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/airport_edit_gray"
+            android:layout_width="match_parent"
+            android:layout_height="1px"/>
+
+        <ImageView
+            android:src="@mipmap/ic_success"
+            android:textSize="30px"
+            android:id="@+id/iv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:visibility="visible"/>
+
 
         <EditText
+            android:hint="@string/airport_validate"
+            android:textColorHint="@color/airport_edit_gray"
+            android:paddingLeft="10px"
+            android:textColor="@color/login_edit"
+            android:textSize="30px"
+            android:layout_marginLeft="50px"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:background="@null"
             android:id="@+id/edt_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="50px"/>
+            android:layout_alignParentTop="true"
+            />
 
         <TextView
-            android:id="@+id/tv_person"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="本人"
-            android:visibility="visible"/>
-
-        <TextView
+            android:background="@color/color_brown"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:textSize="30px"
             android:visibility="gone"
             android:id="@+id/tv_code"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="116px"
+            android:layout_height="47px"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:text="验证"/>
+
     </com.zhy.autolayout.AutoRelativeLayout>
 </com.zhy.autolayout.AutoLinearLayout>
