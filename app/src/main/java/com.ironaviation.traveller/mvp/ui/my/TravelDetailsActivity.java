@@ -3,6 +3,7 @@ package com.ironaviation.traveller.mvp.ui.my;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -48,26 +49,32 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> implements TravelDetailsContract.View, View.OnClickListener {
 
-    @BindView(R.id.tw_name)
+    @BindView(R.id.tw_name) //司机名字
     TextView mTwName;
-    @BindView(R.id.tw_score)
+    @BindView(R.id.tw_score) //分数
     TextView mTwScore;
-    @BindView(R.id.tw_car_num)
+    @BindView(R.id.tw_car_num) //车牌号码
     TextView mTwCarNum;
-    @BindView(R.id.yw_car_color)
+    @BindView(R.id.yw_car_color) //汽车颜色
     TextView mYwCarColor;
-    @BindView(R.id.iw_mobile)
+    @BindView(R.id.iw_mobile) //打电话
     ImageView mIwMobile;
     @BindView(R.id.ll_driver_info)
-    AutoLinearLayout mLlDriverInfo;
+    AutoLinearLayout mLlDriverInfo; //司机信息
     @BindView(R.id.ll_complete)
-    AutoLinearLayout mLlComplete;
+    AutoLinearLayout mLlComplete; //派单成功
     @BindView(R.id.ll_ordering)
-    AutoLinearLayout mLlOrdering;
+    AutoLinearLayout mLlOrdering; //派单中
     @BindView(R.id.rl_go_to_pay)
-    TextView mRlGoToPay;
+    TextView mRlGoToPay;  //确认到达按钮
     @BindView(R.id.ll_going)
-    AutoLinearLayout mLlGoing;
+    AutoLinearLayout mLlGoing; //派单进行中
+    @BindView(R.id.id_line)
+    View idLine;
+    @BindView(R.id.ll_arrive)
+    AutoLinearLayout mLlArrive; // 确认到达
+    @BindView(R.id.tw_order_info)
+    TextView mTwOrderInfo; //派单中标题
     private MoreActionPopupWindow mPopupWindow;
 
     @Override
@@ -87,8 +94,8 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 
     @Override
     protected void initData() {
-//        setRightFunction(R.mipmap.ic_id_card, this);
-//        mPopupWindow = new MoreActionPopupWindow(this);
+        setRightFunction(R.mipmap.ic_airport, this);
+        mPopupWindow = new MoreActionPopupWindow(this);
     }
 
 
@@ -129,13 +136,14 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         switch (view.getId()) {
             case R.id.iv_function_right:
                 if (mPopupWindow != null) {
-                    mPopupWindow.showPopupWindow(mToolbar);
+                    mPopupWindow.showPopupWindow(idLine);
                 }
                 break;
         }
     }
 
     public void onEventMainThread(TravelCancelEvent event) {
+        Log.e("kkk",event.getEvent()+"");
         switch (event.getEvent()) {
             case Constant.TRAVEL_CANCEL:
                 showMessage("取消");
@@ -144,5 +152,39 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
                 showMessage("联系客户");
                 break;
         }
+    }
+
+
+    public void going(){  //派单进行中
+        mLlGoing.setVisibility(View.VISIBLE); //正在进行中
+        mLlDriverInfo.setVisibility(View.VISIBLE); //司机信息
+        mLlComplete.setVisibility(View.GONE);//派单成功
+        mLlOrdering.setVisibility(View.GONE);//派单中
+        mLlArrive.setVisibility(View.GONE);  // 确认到达
+
+    }
+
+    public void complete(){ //派单成功
+        mLlComplete.setVisibility(View.VISIBLE);//派单成功
+        mLlDriverInfo.setVisibility(View.VISIBLE); //司机信息
+        mLlOrdering.setVisibility(View.GONE);//派单中
+        mLlArrive.setVisibility(View.GONE);  // 确认到达
+        mLlGoing.setVisibility(View.GONE); //正在进行中
+    }
+
+    public void order(){ //派单中
+        mLlOrdering.setVisibility(View.VISIBLE);//派单中
+        mLlComplete.setVisibility(View.GONE);//派单成功
+        mLlDriverInfo.setVisibility(View.GONE); //司机信息
+        mLlArrive.setVisibility(View.GONE);  // 确认到达
+        mLlGoing.setVisibility(View.GONE); //正在进行中
+    }
+
+    public void arrive(){ //确认到达
+        mLlArrive.setVisibility(View.VISIBLE);  // 确认到达
+        mLlDriverInfo.setVisibility(View.VISIBLE); //司机信息
+        mLlOrdering.setVisibility(View.GONE);//派单中
+        mLlComplete.setVisibility(View.GONE);//派单成功
+        mLlGoing.setVisibility(View.GONE); //正在进行中
     }
 }

@@ -1,14 +1,20 @@
 package com.ironaviation.traveller.mvp.presenter.airportoff;
 
 import android.app.Application;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.ironaviation.traveller.mvp.contract.airportoff.TravelFloatContract;
+import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.response.Flight;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
+import com.jess.arms.utils.RxUtils;
 import com.jess.arms.widget.imageloader.ImageLoader;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
 import javax.inject.Inject;
 
@@ -61,6 +67,22 @@ public class TravelFloatPresenter extends BasePresenter<TravelFloatContract.Mode
         this.mAppManager = null;
         this.mImageLoader = null;
         this.mApplication = null;
+    }
+
+    public void getFlightInfo(String flightNo,String date){
+        mModel.getFlightInfo(flightNo,date)
+                .compose(RxUtils.<BaseData<Flight>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<Flight>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<Flight> flightBaseData) {
+                        if(flightBaseData.isSuccess()){
+                            if(flightBaseData.getData() != null){
+                                mRootView.showMessage(flightBaseData.getData().getInfo().toString());
+                            }
+                        }
+                    }
+                });
+
     }
 
 }

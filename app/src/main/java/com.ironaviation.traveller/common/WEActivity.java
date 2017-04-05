@@ -265,7 +265,6 @@ public abstract class WEActivity<P extends Presenter> extends BaseWEActivity<P> 
         message.what = START_ACTIVITY;
         message.obj = intent;
         EventBus.getDefault().post(message, APPMANAGER_MESSAGE);
-        Log.e("kkk", "llll");
     }
 
     public void startActivity(Class clazz, Bundle c) {

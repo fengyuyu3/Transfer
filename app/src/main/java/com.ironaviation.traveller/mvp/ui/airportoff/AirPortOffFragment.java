@@ -1,10 +1,12 @@
 package com.ironaviation.traveller.mvp.ui.airportoff;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +30,7 @@ import com.ironaviation.traveller.mvp.ui.widget.PublicTextView;
 import com.ironaviation.traveller.mvp.ui.widget.TravelPopupwindow;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoLinearLayout;
+import com.zhy.autolayout.AutoRelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,6 +81,16 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     @BindView(R.id.ll_certification)
     AutoLinearLayout llCertification;
     Unbinder unbinder;
+    @BindView(R.id.ll_state)
+    AutoRelativeLayout mLlState;
+    @BindView(R.id.tw_best_price)
+    TextView mTwBestPrice;
+    @BindView(R.id.tw_original_price)
+    TextView mTwOriginalPrice;
+    @BindView(R.id.tw_go_to_order)
+    TextView mTwGoToOrder;
+    @BindView(R.id.ll_price)
+    AutoLinearLayout mLlPrice;
 
     /*@BindView(R.id.pw_id_card)
     PublicView mPwIdCard;*/
@@ -121,6 +134,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         mTerminal = new NumDialog(getActivity(), getTerminal(), this, Constant.AIRPORT_TYPE_TERMINAL);
 //        setRidTimeHide();
         initEmptyData();
+        setPrice();
     }
 
     /**
@@ -182,6 +196,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
             case R.id.pw_flt_no:
                 Intent intent = new Intent(getActivity(), TravelFloatActivity.class);
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.left_in_alpha, R.anim.right_out_alpha);
 //                mTravelPopupwindow.showPopupWindow(mPwPerson);
                 break;
         }
@@ -203,9 +218,9 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         return list;
     }
 
-    public void initEmptyData(){
+    public void initEmptyData() {
         mAirportRequests = new ArrayList<>();
-        for(int i = 0; i < NUM; i ++) {
+        for (int i = 0; i < NUM; i++) {
             AirPortRequest request = new AirPortRequest();
             request.setStatus(Constant.AIRPORT_NO);
             mAirportRequests.add(request);
@@ -218,7 +233,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
             mPwSeat.setTextInfo("需要" + (position + 1) + "个座位");
             clearMoreData(position);
             List<AirPortRequest> list = new ArrayList<>();
-            for (int i = 0; i < position ; i++) {
+            for (int i = 0; i < position; i++) {
                 list.add(mAirportRequests.get(i));
             }
             addLinearLayout(position);
@@ -275,7 +290,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     public void addLinearLayout(int position) {
 //        llCertification
         llCertification.removeAllViews();
-        for(int i = 0; i < position + 1 ;i++ ) {
+        for (int i = 0; i < position + 1; i++) {
             MyAirportHolder holder = new MyAirportHolder();
             View view = LayoutInflater.from(getActivity()).inflate(R.layout.include_public_view, null, false);
             holder.mIvLogo = (ImageView) view.findViewById(R.id.iv_logo); //右边的图标
@@ -284,25 +299,25 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
             holder.mEdtContent = (EditText) view.findViewById(R.id.edt_content); // 文本框
             holder.mTvCode = (TextView) view.findViewById(R.id.tv_code);  //验证按钮
             holder.mPwLl = (AutoLinearLayout) view.findViewById(R.id.pw_ll); //整个布局
-            if(mAirportRequests.get(i).getStatus() == Constant.AIRPORT_SUCCESS){
+            if (mAirportRequests.get(i).getStatus() == Constant.AIRPORT_SUCCESS) {
                 setSuccess(holder);
-            }else if(mAirportRequests.get(i).getStatus() == Constant.AIRPORT_FAILURE){
+            } else if (mAirportRequests.get(i).getStatus() == Constant.AIRPORT_FAILURE) {
                 setFailure(holder);
-            }else{
+            } else {
                 setNomal(holder);
             }
-            if(i == position){
+            if (i == position) {
                 holder.mLineEdt.setVisibility(View.GONE);
             }
-            setAirportData(holder,mAirportRequests.get(i));
-            setlistener(holder,i);
+            setAirportData(holder, mAirportRequests.get(i));
+            setlistener(holder, i);
             llCertification.addView(view);
         }
 
     }
 
     //正常状况
-    public void setNomal(MyAirportHolder holder){
+    public void setNomal(MyAirportHolder holder) {
         holder.mIvLogo.setImageResource(R.mipmap.ic_validate);
         holder.mTvCode.setText("验证");
         holder.mTvCode.setTextColor(getResources().getColor(R.color.white));
@@ -311,7 +326,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     }
 
     //成功状态
-    public void setSuccess(MyAirportHolder holder){
+    public void setSuccess(MyAirportHolder holder) {
         holder.mIvLogo.setImageResource(R.mipmap.ic_success);
         holder.mTvCode.setText("重置");
         holder.mTvCode.setTextColor(getResources().getColor(R.color.white));
@@ -320,7 +335,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     }
 
     //失败状态
-    public void setFailure(MyAirportHolder holder){
+    public void setFailure(MyAirportHolder holder) {
         holder.mIvLogo.setImageResource(R.mipmap.ic_failure);
         holder.mTvCode.setText("验证");
         holder.mTvCode.setTextColor(getResources().getColor(R.color.white));
@@ -329,18 +344,18 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     }
 
     //设置数据
-    public void setAirportData(MyAirportHolder holder,AirPortRequest request){
+    public void setAirportData(MyAirportHolder holder, AirPortRequest request) {
         holder.mEdtContent.setText(request.getIdCard());
-        if(request.getStatus() == Constant.AIRPORT_SUCCESS){
+        if (request.getStatus() == Constant.AIRPORT_SUCCESS) {
             setSuccess(holder);
-        }else if(request.getStatus() == Constant.AIRPORT_FAILURE){
+        } else if (request.getStatus() == Constant.AIRPORT_FAILURE) {
             setFailure(holder);
-        }else{
+        } else {
             setNomal(holder);
         }
     }
 
-    public void setlistener(final MyAirportHolder holder, final int position){
+    public void setlistener(final MyAirportHolder holder, final int position) {
         holder.mEdtContent.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -361,7 +376,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         holder.mTvCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mAirportRequests.get(position).getStatus() != Constant.AIRPORT_SUCCESS) {
+                if (mAirportRequests.get(position).getStatus() != Constant.AIRPORT_SUCCESS) {
                     if (holder.mEdtContent.getText().toString().trim() != null && CheckIdCardUtils.validateCard(holder.mEdtContent.getText().toString().trim())) {
                         mAirportRequests.get(position).setStatus(Constant.AIRPORT_SUCCESS);
                         mAirportRequests.get(position).setIdCard(holder.mEdtContent.getText().toString().trim());
@@ -369,7 +384,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
                     } else {
                         UiUtils.makeText("请输入正确身份证号码:" + holder.mEdtContent.getText().toString().trim() + "  " + position);
                     }
-                }else{
+                } else {
                     holder.mEdtContent.setText("");
                     setNomal(holder);
                     mAirportRequests.get(position).setStatus(Constant.AIRPORT_NO);
@@ -378,8 +393,16 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         });
     }
 
-    public void clearMoreData(int position){
-        for(int i = position+1 ; i < NUM; i++){
+    public void setPrice(){
+        String bestPrice = "<font color='#e83328' font-size=80px>"+"22.04"+"</font>"+"<font color='#b2b2b2' size=40> 元</font>";
+        mTwBestPrice.setText(Html.fromHtml(bestPrice));
+        String originalPrice = "<font color='#3a3a3a' font-size=80>"+"22.04"+"</font>"+"<font color='#3a3a3a' size=40> 元</font>";
+        mTwOriginalPrice.setText(Html.fromHtml(originalPrice));
+        mTwOriginalPrice.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG );
+    }
+
+    public void clearMoreData(int position) {
+        for (int i = position + 1; i < NUM; i++) {
             mAirportRequests.get(i).setIdCard("");
             mAirportRequests.get(i).setStatus(Constant.AIRPORT_NO);
         }

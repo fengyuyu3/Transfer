@@ -92,4 +92,6 @@
     <string name="travel_ordering">派单中</string>
     <string name="travel_go_off">距离您出发时间还有10小时</string>
     <string name="travel_go_out">在您出行前30分钟为您发送司机的信息</string>
+    <string name="travel_explain">四川航空免费接送机说明</string>
+    <string name="travel_order">确认预约</string>
 </resources>

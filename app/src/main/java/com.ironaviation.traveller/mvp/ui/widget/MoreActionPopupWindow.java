@@ -41,8 +41,8 @@ public class MoreActionPopupWindow extends PopupWindow implements View.OnClickLi
         llCancel.setOnClickListener(this);
 
         setContentView(v);
-        setHeight(222);
-        setWidth(172);
+        setHeight(380);
+        setWidth(450);
         setFocusable(true);
         setOutsideTouchable(true);
         setBackgroundDrawable(new BitmapDrawable());
@@ -50,7 +50,8 @@ public class MoreActionPopupWindow extends PopupWindow implements View.OnClickLi
 
     public void showPopupWindow(View view) {
         if (!isShowing()) {
-            showAtLocation(view, Gravity.TOP|Gravity.RIGHT,40,80);
+//            showAtLocation(view, Gravity.TOP|Gravity.RIGHT,40,80);
+            showAsDropDown(view);
         } else {
             dismiss();
         }

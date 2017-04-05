@@ -1,7 +1,11 @@
 package com.ironaviation.traveller.mvp.contract.airportoff;
 
+import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.response.Flight;
 import com.jess.arms.mvp.BaseView;
 import com.jess.arms.mvp.IModel;
+
+import rx.Observable;
 
 /**
  * 通过Template生成对应页面的MVP和Dagger代码,请注意输入框中输入的名字必须相同
@@ -33,6 +37,6 @@ public interface TravelFloatContract {
 
     //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存
     interface Model extends IModel {
-
+        Observable<BaseData<Flight>> getFlightInfo(String flightNo, String date);
     }
 }

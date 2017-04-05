@@ -31,6 +31,7 @@ import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -225,6 +226,15 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
                 calendar.setTime(date);
             }
         });
+    }
+
+    @OnClick({R.id.ll_port})
+    public void onClick(View view){
+        switch (view.getId()) {
+            case R.id.ll_port:
+                finish();
+            break;
+        }
     }
 
 }

@@ -11,7 +11,7 @@
         android:id="@+id/rl_travel_num"
         android:layout_width="match_parent"
         android:layout_height="112px"
-        android:layout_marginTop="360px"
+        android:layout_marginTop="320px"
         android:background="@color/white">
 
         <ImageView
@@ -110,5 +110,7 @@
         android:background="@color/white"
         android:visibility="invisible">
     </android.support.v7.widget.RecyclerView>
+
+
 
 </com.zhy.autolayout.AutoLinearLayout>

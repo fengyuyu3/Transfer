@@ -49,4 +49,5 @@
     <color name="play_range_bg">#DD000000</color>
 
     <color name="line_background">#e3e4e5</color>
+    <color name="color_transparent">#00000000</color>
 </resources>

@@ -6,6 +6,7 @@ import com.ironaviation.traveller.mvp.model.entity.Login;
 import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
 import com.ironaviation.traveller.mvp.model.entity.request.MessageRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.TravelRequest;
+import com.ironaviation.traveller.mvp.model.entity.response.Flight;
 import com.ironaviation.traveller.mvp.model.entity.response.MessageResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.TravelResponse;
 
@@ -16,7 +17,9 @@ import java.util.List;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -34,4 +37,7 @@ public interface CommonService {
 
     @POST(Api.MESSAGE)
     Observable<BaseData<List<MessageResponse>>> getMessageData(@Body MessageRequest params);
+
+    @GET(Api.FLIGHT)
+    Observable<BaseData<Flight>> getFlightInfo(@Query("flightNo")String flightno,@Query("date")String date);
 }

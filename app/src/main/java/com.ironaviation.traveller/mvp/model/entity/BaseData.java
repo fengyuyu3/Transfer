@@ -1,6 +1,7 @@
 package com.ironaviation.traveller.mvp.model.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.ironaviation.traveller.mvp.model.api.Api;
 
@@ -12,22 +13,60 @@ import com.ironaviation.traveller.mvp.model.api.Api;
  */
 
 public class BaseData<T> implements Serializable {
-    private T data;
+
+    private T Data;
+    private String ServerStatus;
     private int Status;
-    private int ServerStatus;
     private String Message;
     private String Url;
+    private List<BaseError> Errors;
 
     public T getData() {
-        return data;
+        return Data;
+    }
+
+    public void setData(T data) {
+        Data = data;
+    }
+
+    public String getUrl() {
+        return Url;
+    }
+
+    public void setUrl(String url) {
+        Url = url;
+    }
+
+    public List<BaseError> getErrors() {
+        return Errors;
+    }
+
+    public void setErrors(List<BaseError> errors) {
+        Errors = errors;
+    }
+
+    public String getServerStatus() {
+        return ServerStatus;
+    }
+
+    public void setServerStatus(String serverStatus) {
+        ServerStatus = serverStatus;
     }
 
     public int getStatus() {
         return Status;
     }
 
-    public String getMsg() {
+    public void setStatus(int status) {
+        Status = status;
+    }
+
+    public String getMessage() {
         return Message;
+    }
+
+    public void setMessage(String message) {
+        Message = message;
     }
 
     /**
