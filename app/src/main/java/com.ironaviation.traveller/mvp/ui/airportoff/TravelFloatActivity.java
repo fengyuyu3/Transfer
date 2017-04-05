@@ -195,6 +195,7 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
             public void onClick(View view) {
                 mRlAirportFlyTime.setVisibility(View.VISIBLE);
                 setShowTime();
+                mPresenter.getFlightInfo("cz3081","2017-04-05");
                 pvTime.show();
             }
         });

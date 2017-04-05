@@ -86,7 +86,7 @@ public class IdentificationActivity extends WEActivity<IdentificationPresenter> 
         setTitle(getString(R.string.title_identification));
         setRightFunctionText(getString(R.string.function_skip));
         mEtName.setOnFocusChangeListener(this);
-        mRlIdNumeral.setOnFocusChangeListener(this);
+//        mRlIdNumeralgitgit .setOnFocusChangeListeadbner(this);
     }
 
 

@@ -95,7 +95,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
                             mRootView.launchActivity(intent);
                             mRootView.killMyself();
                         }else{
-                            mRootView.showMessage(loginEntityBaseData.getMsg());
+                            mRootView.showMessage(loginEntityBaseData.getMessage());
                         }
                     }
                 });

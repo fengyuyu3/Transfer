@@ -147,7 +147,14 @@ public class WEApplication extends BaseApplication {
 
                         //return chain.request().newBuilder().header("token", tokenId)
 //                .build();
-                        return request;
+                        String key = "Bearer JrC1cA1KtQit9IQOTLCMQ1R-Bt-rRaii_XXf1nZgwlnjmuz80kto6JLSkYFIxfzTNph17MA8dooMyKmOn-UtDXd46mZRllg6UplBZ47rjqTLZGPSG1d9I19BhOBsNqK9nnIsKC3hh-VeUXCBhi0VvwEG7Fo81jLgRxAQoNt4gJlsEavC9ZmSiLCGtUhQ3M38Bd5Lbqytv3_3YNNuUOyL0Uc12FAjuymQV8RkHus5eFf355gUSgSenFVQCuOqDBaPPDP4qqpK-jiwauwdYOJaC_EOiBXFhOt2YRgh0VtmasibVN2-fKBocgrStFC44lkcn39ZJkhbCXMeEOdd-zX8ljzcAeCPFiWN-cYCerhI1u2gSEmleAws8prEca7TyIvsrssZdatn_NMdpc1U-7a-sn_7jWKgFFUASQc0eZVMyv8fC7Z6x7t-0GqilaLZyMyq-h0P2O3QgGFYt889WBi0k0Uxv5T7yJeqz_4z22kW0RbxuLFv";
+                        Request.Builder builder = chain.request().newBuilder();
+                        builder.addHeader("Authorization",key);
+
+                        return builder
+                                    .build();
+
+//                        return request;
                     }
                 })
                 .responseErroListener(new ResponseErroListener() {

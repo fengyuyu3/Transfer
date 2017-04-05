@@ -82,7 +82,7 @@ public class TravelPresenter extends BasePresenter<TravelContract.Model, TravelC
                                 mRootView.setNodata();
                             }
                         }else{
-                            mRootView.showMessage(listBaseData.getMsg());
+                            mRootView.showMessage(listBaseData.getMessage());
                             mRootView.setError();
                         }
                     }

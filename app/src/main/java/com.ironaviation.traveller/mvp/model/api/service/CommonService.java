@@ -39,5 +39,5 @@ public interface CommonService {
     Observable<BaseData<List<MessageResponse>>> getMessageData(@Body MessageRequest params);
 
     @GET(Api.FLIGHT)
-    Observable<BaseData<Flight>> getFlightInfo(@Query("flightNo")String flightno,@Query("date")String date);
+    Observable<BaseData<Flight>> getFlightInfo(@Query("flightNo")String flightNo,@Query("date")String date);
 }
