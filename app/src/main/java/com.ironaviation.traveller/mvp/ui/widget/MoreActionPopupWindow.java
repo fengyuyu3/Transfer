@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.event.TravelCancelEvent;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.zhy.autolayout.AutoLinearLayout;
@@ -16,6 +17,8 @@ import com.zhy.autolayout.AutoLinearLayout;
 import org.simple.eventbus.EventBus;
 
 import butterknife.ButterKnife;
+
+import static com.jess.arms.base.AppManager.APPMANAGER_MESSAGE;
 
 /**
  * 项目名称：Transfer
@@ -60,10 +63,10 @@ public class MoreActionPopupWindow extends PopupWindow implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_cancel:
-                EventBus.getDefault().post(new TravelCancelEvent(Constant.TRAVEL_CANCEL));
+                EventBus.getDefault().post(new TravelCancelEvent(Constant.TRAVEL_CANCEL), EventBusTags.TRAVEL_DETAILS);
                 break;
             case R.id.ll_customer:
-                EventBus.getDefault().post(new TravelCancelEvent(Constant.TRAVEL_CUSTOMER));
+                EventBus.getDefault().post(new TravelCancelEvent(Constant.TRAVEL_CUSTOMER), EventBusTags.TRAVEL_DETAILS);
                 break;
         }
         dismiss();

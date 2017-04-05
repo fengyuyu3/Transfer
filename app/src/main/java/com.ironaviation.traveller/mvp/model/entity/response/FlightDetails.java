@@ -124,4 +124,21 @@ public class FlightDetails {
     public void setPackageGate(String PackageGate) {
         this.PackageGate = PackageGate;
     }
+
+    @Override
+    public String toString() {
+        return "FlightDetails{" +
+                "TakeOff='" + TakeOff + '\'' +
+                ", Arrive='" + Arrive + '\'' +
+                ", TakeOffTime='" + TakeOffTime + '\'' +
+                ", RealityTakeOffTime='" + RealityTakeOffTime + '\'' +
+                ", ArriveTime='" + ArriveTime + '\'' +
+                ", RealityArriveTime='" + RealityArriveTime + '\'' +
+                ", State='" + State + '\'' +
+                ", StateId=" + StateId +
+                ", Gate='" + Gate + '\'' +
+                ", CheckInCounter='" + CheckInCounter + '\'' +
+                ", PackageGate='" + PackageGate + '\'' +
+                '}';
+    }
 }

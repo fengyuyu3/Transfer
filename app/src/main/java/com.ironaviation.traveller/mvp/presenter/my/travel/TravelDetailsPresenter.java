@@ -1,20 +1,14 @@
-package com.ironaviation.traveller.mvp.presenter.airportoff;
+package com.ironaviation.traveller.mvp.presenter.my.travel;
 
 import android.app.Application;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.ironaviation.traveller.mvp.contract.airportoff.TravelFloatContract;
-import com.ironaviation.traveller.mvp.model.entity.BaseData;
-import com.ironaviation.traveller.mvp.model.entity.response.Flight;
+import com.ironaviation.traveller.mvp.contract.my.travel.TravelDetailsContract;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
-import com.jess.arms.utils.RxUtils;
 import com.jess.arms.widget.imageloader.ImageLoader;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
-import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
 import javax.inject.Inject;
 
@@ -34,23 +28,23 @@ import javax.inject.Inject;
  * 项目名称：Transfer      
  * 类描述：   
  * 创建人：flq  
- * 创建时间：2017/3/30 16:34   
+ * 创建时间：2017/3/29 15:40   
  * 修改人：  
- * 修改时间：2017/3/30 16:34   
+ * 修改时间：2017/3/29 15:40   
  * 修改备注：   
  * @version
  *
  */
 
 @ActivityScope
-public class TravelFloatPresenter extends BasePresenter<TravelFloatContract.Model, TravelFloatContract.View> {
+public class TravelDetailsPresenter extends BasePresenter<TravelDetailsContract.Model, TravelDetailsContract.View> {
     private RxErrorHandler mErrorHandler;
     private Application mApplication;
     private ImageLoader mImageLoader;
     private AppManager mAppManager;
 
     @Inject
-    public TravelFloatPresenter(TravelFloatContract.Model model, TravelFloatContract.View rootView
+    public TravelDetailsPresenter(TravelDetailsContract.Model model, TravelDetailsContract.View rootView
             , RxErrorHandler handler, Application application
             , ImageLoader imageLoader, AppManager appManager) {
         super(model, rootView);
@@ -67,23 +61,6 @@ public class TravelFloatPresenter extends BasePresenter<TravelFloatContract.Mode
         this.mAppManager = null;
         this.mImageLoader = null;
         this.mApplication = null;
-    }
-
-    public void getFlightInfo(String flightNo,String date){
-        mModel.getFlightInfo(flightNo,date)
-                .compose(RxUtils.<BaseData<Flight>>applySchedulers(mRootView))
-                .subscribe(new ErrorHandleSubscriber<BaseData<Flight>>(mErrorHandler) {
-                    @Override
-                    public void onNext(BaseData<Flight> flightBaseData) {
-                        if(flightBaseData.isSuccess()){
-                            if(flightBaseData.getData() != null){
-                                mRootView.showMessage(flightBaseData.getData().getInfo().toString());
-                                Log.e("kkk",flightBaseData.getData().getInfo().toString());
-                            }
-                        }
-                    }
-                });
-
     }
 
 }

@@ -1,7 +1,11 @@
-package com.ironaviation.traveller.mvp.contract.my;
+package com.ironaviation.traveller.di.component.my.travel;
 
-import com.jess.arms.mvp.BaseView;
-import com.jess.arms.mvp.IModel;
+import com.ironaviation.traveller.common.AppComponent;
+import com.ironaviation.traveller.di.module.my.travel.TravelDetailsModule;
+import com.ironaviation.traveller.mvp.ui.my.travel.TravelDetailsActivity;
+import com.jess.arms.di.scope.ActivityScope;
+
+import dagger.Component;
 
 /**
  * 通过Template生成对应页面的MVP和Dagger代码,请注意输入框中输入的名字必须相同
@@ -17,22 +21,16 @@ import com.jess.arms.mvp.IModel;
  * 项目名称：Transfer      
  * 类描述：   
  * 创建人：flq  
- * 创建时间：2017/3/29 15:36   
+ * 创建时间：2017/3/29 15:42   
  * 修改人：  
- * 修改时间：2017/3/29 15:36   
+ * 修改时间：2017/3/29 15:42   
  * 修改备注：   
  * @version
  *
  */
 
-public interface TravelDetailsContract {
-    //对于经常使用的关于UI的方法可以定义到BaseView中,如显示隐藏进度条,和显示文字消息
-    interface View extends BaseView {
-
-    }
-
-    //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存
-    interface Model extends IModel {
-
-    }
+@ActivityScope
+@Component(modules = TravelDetailsModule.class, dependencies = AppComponent.class)
+public interface TravelDetailsComponent {
+    void inject(TravelDetailsActivity activity);
 }

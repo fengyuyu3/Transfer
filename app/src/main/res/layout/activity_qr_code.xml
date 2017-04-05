@@ -2,19 +2,88 @@
 <com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                      android:layout_width="match_parent"
                                      android:layout_height="match_parent"
-                                     android:background="@color/bg_champagne"
+                                     android:background="@color/shadow_champagne"
                                      android:orientation="vertical">
 
-    <include
-        layout="@layout/include_toolbar"
-        ></include>
 
-    <ImageView
-        android:id="@+id/zxingview"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_centerInParent="true"
-        />
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+
+        android:fitsSystemWindows="true">
+
+        <com.ironaviation.traveller.mvp.ui.widget.AutoToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="0dp">
+
+            <ImageView
+                android:id="@+id/iv_function_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_marginLeft="@dimen/h_fillet2"
+                android:padding="10px"
+
+                />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:layout_marginLeft="26px"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="123456"
+                android:textColor="@color/white"
+                android:textSize="44px"/>
+
+
+
+        </com.ironaviation.traveller.mvp.ui.widget.AutoToolbar>
+
+
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_width="700px"
+        android:layout_height="988px"
+        android:layout_marginLeft="25px"
+        android:layout_marginTop="72px"
+        android:background="@drawable/box_white"
+        >
+
+        <TextView
+            android:id="@+id/tv_qr_code_hint"
+            style="@style/common_text_content_style"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="116px"
+            android:text="@string/qr_code_hint"
+            android:textSize="@dimen/word_title_little"
+            />
+
+        <ImageView
+            android:id="@+id/zxingview"
+            android:layout_width="420px"
+            android:layout_height="420px"
+            android:layout_below="@+id/tv_qr_code_hint"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="126px"
+            />
+
+        <TextView
+            android:id="@+id/tv_order_id"
+            style="@style/common_text_content_style"
+            android:layout_below="@+id/zxingview"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="55px"
+            android:text="001234456766"
+            android:textSize="65px"
+
+            />
+    </com.zhy.autolayout.AutoRelativeLayout>
 
 
 </com.zhy.autolayout.AutoLinearLayout>

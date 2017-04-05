@@ -1,8 +1,8 @@
-package com.ironaviation.traveller.mvp.presenter.my;
+package com.ironaviation.traveller.mvp.presenter.my.travel;
 
 import android.app.Application;
 
-import com.ironaviation.traveller.mvp.contract.my.TravelContract;
+import com.ironaviation.traveller.mvp.contract.my.travel.TravelContract;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.response.TravelResponse;
 import com.jess.arms.base.AppManager;
@@ -13,10 +13,10 @@ import com.jess.arms.widget.imageloader.ImageLoader;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
-
-import javax.inject.Inject;
 
 
 /**

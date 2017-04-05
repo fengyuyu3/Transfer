@@ -115,13 +115,22 @@ public abstract class WEActivity<P extends Presenter> extends BaseWEActivity<P> 
      */
     protected void setLeftFunction(Drawable text) {
         if (text != null) {
-            if (mIvFunctionRight != null) {
-                mIvFunctionRight.setVisibility(View.VISIBLE);
-                mIvFunctionRight.setImageDrawable(text);
+            if (mIvFunctionLeft != null) {
+                mIvFunctionLeft.setVisibility(View.VISIBLE);
+                mIvFunctionLeft.setImageDrawable(text);
             }
-            if (noDataIvFunctionRight != null) {
-                noDataIvFunctionRight.setVisibility(View.VISIBLE);
-                noDataIvFunctionRight.setImageDrawable(text);
+
+        }
+    }
+    /**
+     * 设置自定义左功能键
+     */
+    protected void setLeftFunction(Drawable text,View.OnClickListener listener) {
+        if (text != null) {
+            if (mIvFunctionLeft != null) {
+                mIvFunctionLeft.setVisibility(View.VISIBLE);
+                mIvFunctionLeft.setImageDrawable(text);
+                mIvFunctionLeft.setOnClickListener(listener);
             }
         }
     }

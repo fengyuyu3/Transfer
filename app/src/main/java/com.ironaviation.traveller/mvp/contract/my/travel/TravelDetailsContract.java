@@ -1,15 +1,7 @@
-package com.ironaviation.traveller.di.module.my;
+package com.ironaviation.traveller.mvp.contract.my.travel;
 
-import com.google.gson.Gson;
-
-import android.app.Application;
-
-import com.ironaviation.traveller.mvp.contract.my.TravelContract;
-import com.ironaviation.traveller.mvp.model.my.TravelModel;
-import com.jess.arms.di.scope.ActivityScope;
-
-import dagger.Module;
-import dagger.Provides;
+import com.jess.arms.mvp.BaseView;
+import com.jess.arms.mvp.IModel;
 
 /**
  * 通过Template生成对应页面的MVP和Dagger代码,请注意输入框中输入的名字必须相同
@@ -25,35 +17,22 @@ import dagger.Provides;
  * 项目名称：Transfer      
  * 类描述：   
  * 创建人：flq  
- * 创建时间：2017/3/26 17:30   
+ * 创建时间：2017/3/29 15:36   
  * 修改人：  
- * 修改时间：2017/3/26 17:30   
+ * 修改时间：2017/3/29 15:36   
  * 修改备注：   
  * @version
  *
  */
 
-@Module
-public class TravelModule {
-    private TravelContract.View view;
+public interface TravelDetailsContract {
+    //对于经常使用的关于UI的方法可以定义到BaseView中,如显示隐藏进度条,和显示文字消息
+    interface View extends BaseView {
 
-    /**
-     * 构建TravelModule时,将View的实现类传进来,这样就可以提供View的实现类给presenter
-     * @param view
-     */
-    public TravelModule(TravelContract.View view) {
-        this.view = view;
     }
 
-    @ActivityScope
-    @Provides
-    TravelContract.View provideTravelView() {
-        return this.view;
-    }
+    //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存
+    interface Model extends IModel {
 
-    @ActivityScope
-    @Provides
-    TravelContract.Model provideTravelModel(TravelModel model) {
-        return model;
     }
 }

@@ -1,35 +1,31 @@
-package com.ironaviation.traveller.mvp.ui.my;
+package com.ironaviation.traveller.mvp.ui.my.travel;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.common.WEApplication;
-import com.ironaviation.traveller.di.component.my.DaggerTravelComponent;
-import com.ironaviation.traveller.di.module.my.TravelModule;
-import com.ironaviation.traveller.mvp.contract.my.TravelContract;
+import com.ironaviation.traveller.di.component.my.travel.DaggerTravelComponent;
+import com.ironaviation.traveller.di.module.my.travel.TravelModule;
+import com.ironaviation.traveller.mvp.contract.my.travel.TravelContract;
 import com.ironaviation.traveller.mvp.model.entity.response.TravelResponse;
-import com.ironaviation.traveller.mvp.presenter.my.TravelPresenter;
+import com.ironaviation.traveller.mvp.presenter.my.travel.TravelPresenter;
 import com.jess.arms.utils.UiUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -43,8 +39,8 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 
 /**
-=======
- *
+ * =======
+ * <p>
  * 项目名称：Transfer
  * 类描述：
  * 创建人：flq
@@ -52,8 +48,6 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  * 修改人：
  * 修改时间：2017/3/26 17:29
  * 修改备注：
- * @version
- *
  */
 
 public class TravelActivity extends WEActivity<TravelPresenter> implements TravelContract.View, SwipeRefreshLayout.OnRefreshListener {
@@ -103,8 +97,8 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
         mRvTravel.setLayoutManager(mLayoutManager);
         mTravelAdapter = new TravelAdapter(R.layout.item_travel);
 
-        mSlTravel.setColorSchemeColors(ContextCompat.getColor(WEApplication.getContext(),R.color.colorPrimaryDark),
-                ContextCompat.getColor(WEApplication.getContext(),R.color.colorPrimaryDark));
+        mSlTravel.setColorSchemeColors(ContextCompat.getColor(WEApplication.getContext(), R.color.colorPrimaryDark),
+                ContextCompat.getColor(WEApplication.getContext(), R.color.colorPrimaryDark));
         mSlTravel.setOnRefreshListener(this);
         mRvTravel.setAdapter(mTravelAdapter);
         mTravelAdapter.setNewData(getList());
@@ -113,6 +107,8 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 //                startActivity(EstimateActivity.class);
                 startActivity(TravelDetailsActivity.class);
+                //   startActivity(TravelCancelActivity.class);
+
             }
         });
     }

@@ -1,7 +1,6 @@
-package com.ironaviation.traveller.mvp.ui.my;
+package com.ironaviation.traveller.mvp.ui.my.travel;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,21 +9,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
-import com.ironaviation.traveller.di.component.my.DaggerTravelDetailsComponent;
-import com.ironaviation.traveller.di.module.my.TravelDetailsModule;
+import com.ironaviation.traveller.di.component.my.travel.DaggerTravelDetailsComponent;
+import com.ironaviation.traveller.di.module.my.travel.TravelDetailsModule;
 import com.ironaviation.traveller.event.TravelCancelEvent;
 import com.ironaviation.traveller.mvp.constant.Constant;
-import com.ironaviation.traveller.mvp.contract.my.TravelDetailsContract;
-import com.ironaviation.traveller.mvp.presenter.my.TravelDetailsPresenter;
-import com.ironaviation.traveller.mvp.ui.widget.AutoToolbar;
+import com.ironaviation.traveller.mvp.contract.my.travel.TravelDetailsContract;
+import com.ironaviation.traveller.mvp.presenter.my.travel.TravelDetailsPresenter;
 import com.ironaviation.traveller.mvp.ui.widget.MoreActionPopupWindow;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoLinearLayout;
 
+
+import org.simple.eventbus.Subscriber;
+
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -50,15 +51,15 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
 public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> implements TravelDetailsContract.View, View.OnClickListener {
 
     @BindView(R.id.tw_name) //司机名字
-    TextView mTwName;
+            TextView mTwName;
     @BindView(R.id.tw_score) //分数
-    TextView mTwScore;
+            TextView mTwScore;
     @BindView(R.id.tw_car_num) //车牌号码
-    TextView mTwCarNum;
+            TextView mTwCarNum;
     @BindView(R.id.yw_car_color) //汽车颜色
-    TextView mYwCarColor;
+            TextView mYwCarColor;
     @BindView(R.id.iw_mobile) //打电话
-    ImageView mIwMobile;
+            ImageView mIwMobile;
     @BindView(R.id.ll_driver_info)
     AutoLinearLayout mLlDriverInfo; //司机信息
     @BindView(R.id.ll_complete)
@@ -142,11 +143,13 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         }
     }
 
+
+    @Subscriber(tag = EventBusTags.TRAVEL_DETAILS)
     public void onEventMainThread(TravelCancelEvent event) {
-        Log.e("kkk",event.getEvent()+"");
+        Log.e("kkk", event.getEvent() + "");
         switch (event.getEvent()) {
             case Constant.TRAVEL_CANCEL:
-                showMessage("取消");
+                startActivity(TravelCancelActivity.class);
                 break;
             case Constant.TRAVEL_CUSTOMER:
                 showMessage("联系客户");
@@ -155,7 +158,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     }
 
 
-    public void going(){  //派单进行中
+    public void going() {  //派单进行中
         mLlGoing.setVisibility(View.VISIBLE); //正在进行中
         mLlDriverInfo.setVisibility(View.VISIBLE); //司机信息
         mLlComplete.setVisibility(View.GONE);//派单成功
@@ -164,7 +167,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 
     }
 
-    public void complete(){ //派单成功
+    public void complete() { //派单成功
         mLlComplete.setVisibility(View.VISIBLE);//派单成功
         mLlDriverInfo.setVisibility(View.VISIBLE); //司机信息
         mLlOrdering.setVisibility(View.GONE);//派单中
@@ -172,7 +175,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         mLlGoing.setVisibility(View.GONE); //正在进行中
     }
 
-    public void order(){ //派单中
+    public void order() { //派单中
         mLlOrdering.setVisibility(View.VISIBLE);//派单中
         mLlComplete.setVisibility(View.GONE);//派单成功
         mLlDriverInfo.setVisibility(View.GONE); //司机信息
@@ -180,7 +183,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         mLlGoing.setVisibility(View.GONE); //正在进行中
     }
 
-    public void arrive(){ //确认到达
+    public void arrive() { //确认到达
         mLlArrive.setVisibility(View.VISIBLE);  // 确认到达
         mLlDriverInfo.setVisibility(View.VISIBLE); //司机信息
         mLlOrdering.setVisibility(View.GONE);//派单中

@@ -75,4 +75,16 @@ public class FlightInfo {
     public void setRate(int Rate) {
         this.Rate = Rate;
     }
+
+    @Override
+    public String toString() {
+        return "FlightInfo{" +
+                "From='" + From + '\'' +
+                ", To='" + To + '\'' +
+                ", FlightNo='" + FlightNo + '\'' +
+                ", Company='" + Company + '\'' +
+                ", Date='" + Date + '\'' +
+                ", Rate=" + Rate +
+                '}';
+    }
 }

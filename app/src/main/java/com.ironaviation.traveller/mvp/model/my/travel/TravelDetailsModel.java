@@ -1,17 +1,15 @@
-package com.ironaviation.traveller.mvp.model.my;
+package com.ironaviation.traveller.mvp.model.my.travel;
 
 import android.app.Application;
 
 import com.google.gson.Gson;
-import com.ironaviation.traveller.mvp.contract.my.TravelDetailsContract;
+import com.ironaviation.traveller.mvp.contract.my.travel.TravelDetailsContract;
 import com.ironaviation.traveller.mvp.model.api.cache.CacheManager;
 import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BaseModel;
 
 import javax.inject.Inject;
-
-import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
 /**

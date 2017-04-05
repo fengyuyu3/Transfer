@@ -1,11 +1,9 @@
-package com.ironaviation.traveller.mvp.ui.my;
+package com.ironaviation.traveller.mvp.ui.my.travel;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.mvp.model.entity.response.TravelResponse;
-
-import java.util.List;
 
 /**
  * 项目名称：Transfer

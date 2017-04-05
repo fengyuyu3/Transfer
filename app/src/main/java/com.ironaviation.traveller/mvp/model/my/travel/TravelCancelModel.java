@@ -1,16 +1,17 @@
-package com.ironaviation.traveller.mvp.presenter.my;
+package com.ironaviation.traveller.mvp.model.my.travel;
 
 import android.app.Application;
 
-import com.ironaviation.traveller.mvp.contract.my.TravelDetailsContract;
-import com.jess.arms.base.AppManager;
+import com.google.gson.Gson;
+import com.ironaviation.traveller.mvp.contract.my.travel.TravelCancelContract;
+import com.ironaviation.traveller.mvp.model.api.cache.CacheManager;
+import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
 import com.jess.arms.di.scope.ActivityScope;
-import com.jess.arms.mvp.BasePresenter;
-import com.jess.arms.widget.imageloader.ImageLoader;
-
-import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import com.jess.arms.mvp.BaseModel;
 
 import javax.inject.Inject;
+
+import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
 /**
@@ -22,44 +23,34 @@ import javax.inject.Inject;
  * 如果想生成Fragment的相关文件,则将上面构建顺序中的Activity换为Fragment,并将Component中inject方法的参数改为此Fragment
  */
 
-
 /**
  *
- * 项目名称：Transfer      
+ * 项目名称：Traveller      
  * 类描述：   
- * 创建人：flq  
- * 创建时间：2017/3/29 15:40   
- * 修改人：  
- * 修改时间：2017/3/29 15:40   
+ * 创建人：starRing  
+ * 创建时间：2017-04-05 14:25   
+ * 修改人：starRing  
+ * 修改时间：2017-04-05 14:25   
  * 修改备注：   
  * @version
  *
  */
-
 @ActivityScope
-public class TravelDetailsPresenter extends BasePresenter<TravelDetailsContract.Model, TravelDetailsContract.View> {
-    private RxErrorHandler mErrorHandler;
+public class TravelCancelModel extends BaseModel<ServiceManager, CacheManager> implements TravelCancelContract.Model {
+    private Gson mGson;
     private Application mApplication;
-    private ImageLoader mImageLoader;
-    private AppManager mAppManager;
 
     @Inject
-    public TravelDetailsPresenter(TravelDetailsContract.Model model, TravelDetailsContract.View rootView
-            , RxErrorHandler handler, Application application
-            , ImageLoader imageLoader, AppManager appManager) {
-        super(model, rootView);
-        this.mErrorHandler = handler;
+    public TravelCancelModel(ServiceManager serviceManager, CacheManager cacheManager, Gson gson, Application application) {
+        super(serviceManager, cacheManager);
+        this.mGson = gson;
         this.mApplication = application;
-        this.mImageLoader = imageLoader;
-        this.mAppManager = appManager;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        this.mErrorHandler = null;
-        this.mAppManager = null;
-        this.mImageLoader = null;
+        this.mGson = null;
         this.mApplication = null;
     }
 

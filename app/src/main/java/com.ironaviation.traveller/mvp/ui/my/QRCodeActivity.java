@@ -48,15 +48,15 @@ public class QRCodeActivity extends WEActivity {
     @Override
     protected void initData() {
         createEnglishQRCode("11326");
-        mToolbar.setTitle("订单二维码");
-        mToolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.bg_champagne));
-        setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_back));
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        setTitle(getString(R.string.order_qr_code));
+        setLeftFunction(ContextCompat.getDrawable(this, R.mipmap.ic_back), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+        mToolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.shadow_champagne));
+
     }
 
     private void createEnglishQRCode(final String cord) {

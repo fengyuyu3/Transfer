@@ -1,11 +1,11 @@
-package com.ironaviation.traveller.di.component.my;
+package com.ironaviation.traveller.di.module.my.travel;
 
-import com.ironaviation.traveller.common.AppComponent;
-import com.ironaviation.traveller.di.module.my.TravelModule;
-import com.ironaviation.traveller.mvp.ui.my.TravelActivity;
+import com.ironaviation.traveller.mvp.contract.my.travel.TravelContract;
+import com.ironaviation.traveller.mvp.model.my.travel.TravelModel;
 import com.jess.arms.di.scope.ActivityScope;
 
-import dagger.Component;
+import dagger.Module;
+import dagger.Provides;
 
 /**
  * 通过Template生成对应页面的MVP和Dagger代码,请注意输入框中输入的名字必须相同
@@ -21,16 +21,35 @@ import dagger.Component;
  * 项目名称：Transfer      
  * 类描述：   
  * 创建人：flq  
- * 创建时间：2017/3/26 17:31   
+ * 创建时间：2017/3/26 17:30   
  * 修改人：  
- * 修改时间：2017/3/26 17:31   
+ * 修改时间：2017/3/26 17:30   
  * 修改备注：   
  * @version
  *
  */
 
-@ActivityScope
-@Component(modules = TravelModule.class, dependencies = AppComponent.class)
-public interface TravelComponent {
-    void inject(TravelActivity activity);
+@Module
+public class TravelModule {
+    private TravelContract.View view;
+
+    /**
+     * 构建TravelModule时,将View的实现类传进来,这样就可以提供View的实现类给presenter
+     * @param view
+     */
+    public TravelModule(TravelContract.View view) {
+        this.view = view;
+    }
+
+    @ActivityScope
+    @Provides
+    TravelContract.View provideTravelView() {
+        return this.view;
+    }
+
+    @ActivityScope
+    @Provides
+    TravelContract.Model provideTravelModel(TravelModel model) {
+        return model;
+    }
 }

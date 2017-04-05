@@ -4,6 +4,15 @@
     <string name="city">成都</string>
     <!--address-->
     <string name="hint_home_address">请输入家庭地址</string>
+    <string name="home">家</string>
+    <string name="company">公司</string>
+    <!--取消行程-->
+
+
+    <string name="travel_cancel">取消行程</string>
+
+    <string name="determine_cancel">确定取消</string>
+    <string name="cancel_travel_hint">请选择取消原因</string>
     <!--common-->
     <string name="cancel">取消</string>
     <!--identification-->
@@ -67,6 +76,11 @@
 
     <string name="great_satisfaction">非常满意</string>
     <string name="please_point_out_insufficient">请指出不足...</string>
+    <!--other-->
+    <string name="qr_code_hint">二维码请在上车时提供给司机扫描</string>
+    <string name="order_qr_code">订单二维码</string>
+
+
     <!--cancel-->
     <string-array name="great_satisfaction_reason_list">
         <item>车内整洁</item>
@@ -84,7 +98,13 @@
         <item>车太脏</item>
         <item>道路不熟悉</item>
     </string-array>
-
+    <!--cancel-->
+    <string-array name="cancel_reason_list">
+        <item>行程有变</item>
+        <item>航班取消</item>
+        <item>等待时间太长</item>
+        <item>无法取得联系</item>
+    </string-array>
     <!--行程-->
     <string name="travel_complete">行程完成</string>
     <string name="travel_arrive">确认到达</string>

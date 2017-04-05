@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_write_grey"
+    android:orientation="vertical"
+    >
+
+    <include layout="@layout/include_toolbar"></include>
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="227px"
+        android:background="@color/bg_toolbar">
+
+        <TextView
+            android:id="@+id/tv_money"
+            style="@style/common_text_content_style"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40px"
+            android:text="-5.0"
+            android:textColor="@color/white"
+            android:textSize="80px"
+
+            />
+
+        <TextView
+            android:id="@+id/tv_unit"
+            style="@style/common_text_content_style"
+            android:layout_alignBaseline="@+id/tv_money"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/h_fillet"
+            android:layout_marginTop="40px"
+            android:layout_toRightOf="@+id/tv_money"
+            android:text="元"
+            android:textColor="@color/white"
+
+            />
+
+        <TextView
+            style="@style/common_text_content_style"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="60px"
+            android:text="现在取消将会支付5元作为爽约金"
+            android:textColor="@color/white"
+            />
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+    <TextView
+        style="@style/common_text_style"
+        android:layout_marginBottom="@dimen/h_fillet"
+        android:layout_marginLeft="@dimen/h_fillet2"
+        android:layout_marginTop="56px"
+        android:text="@string/cancel_travel_hint"
+        android:textColor="#828282"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_cancel_travel_reason"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        >
+    </android.support.v7.widget.RecyclerView>
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="180px"
+        android:layout_marginTop="@dimen/h_fillet"
+
+        android:background="@color/white"
+
+        >
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="21px"
+            android:layout_marginRight="21px"
+            android:layout_marginTop="16px"
+            android:background="@null"
+            android:gravity="top"
+            android:hint="@string/other_estimate"
+            android:maxLength="50"
+            android:textColor="@color/login_edit"
+            android:textColorHint="@color/login_hint_edit"
+            android:textSize="@dimen/word_content"
+            />
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_determine_cancel"
+        style="@style/button_red_style"
+        android:layout_width="613px"
+        android:layout_height="96px"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/h_fillet2"
+        android:background="@drawable/select_but_champagne"
+        android:text="@string/determine_cancel"
+        >
+    </TextView>
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/h_fillet2"
+        >
+
+        <ImageView
+            android:id="@+id/iv_hint_red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/ic_hint_red"
+            android:layout_centerVertical="true"
+
+            />
+
+        <TextView
+            style="@style/common_text_style"
+            android:layout_marginLeft="@dimen/h_fillet"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/iv_hint_red"
+            android:text="@string/cancel_travel_hint"
+            android:textSize="24px"
+            android:textColor="@color/color_travel_details_font"
+            />
+
+
+    </com.zhy.autolayout.AutoRelativeLayout>
+</com.zhy.autolayout.AutoLinearLayout>

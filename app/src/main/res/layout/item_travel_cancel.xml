@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_travel_cancel"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="112px"
+        android:background="@drawable/select_btn_grey"
+
+        >
+
+        <TextView
+            android:id="@+id/tv_travel_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/h_fillet2"
+            android:textColor="@color/word_already_input"
+            android:textSize="@dimen/word_content"
+            android:visibility="visible"/>
+
+        <ImageView
+            android:id="@+id/iv_travel_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/h_fillet2"
+            android:background="@mipmap/ic_un_selected_grey"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/line_little_grey"></View>
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+</com.zhy.autolayout.AutoRelativeLayout>

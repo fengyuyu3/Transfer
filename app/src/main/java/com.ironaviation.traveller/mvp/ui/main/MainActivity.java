@@ -38,7 +38,7 @@ import com.ironaviation.traveller.mvp.ui.airportoff.AirPortOffFragment;
 import com.ironaviation.traveller.mvp.ui.login.IdentificationActivity;
 import com.ironaviation.traveller.mvp.ui.my.MessageActivity;
 import com.ironaviation.traveller.mvp.ui.my.SettingActivity;
-import com.ironaviation.traveller.mvp.ui.my.TravelActivity;
+import com.ironaviation.traveller.mvp.ui.my.travel.TravelActivity;
 import com.ironaviation.traveller.mvp.ui.widget.AutoSlidingTabLayout;
 import com.ironaviation.traveller.mvp.ui.widget.AutoToolbar;
 import com.jess.arms.utils.UiUtils;

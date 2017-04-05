@@ -1,11 +1,12 @@
-package com.ironaviation.traveller.di.component.my;
+package com.ironaviation.traveller.di.module.my.travel;
 
-import com.ironaviation.traveller.common.AppComponent;
-import com.ironaviation.traveller.di.module.my.TravelDetailsModule;
-import com.ironaviation.traveller.mvp.ui.my.TravelDetailsActivity;
+
+import com.ironaviation.traveller.mvp.contract.my.travel.TravelDetailsContract;
+import com.ironaviation.traveller.mvp.model.my.travel.TravelDetailsModel;
 import com.jess.arms.di.scope.ActivityScope;
 
-import dagger.Component;
+import dagger.Module;
+import dagger.Provides;
 
 /**
  * 通过Template生成对应页面的MVP和Dagger代码,请注意输入框中输入的名字必须相同
@@ -29,8 +30,27 @@ import dagger.Component;
  *
  */
 
-@ActivityScope
-@Component(modules = TravelDetailsModule.class, dependencies = AppComponent.class)
-public interface TravelDetailsComponent {
-    void inject(TravelDetailsActivity activity);
+@Module
+public class TravelDetailsModule {
+    private TravelDetailsContract.View view;
+
+    /**
+     * 构建TravelDetailsModule时,将View的实现类传进来,这样就可以提供View的实现类给presenter
+     * @param view
+     */
+    public TravelDetailsModule(TravelDetailsContract.View view) {
+        this.view = view;
+    }
+
+    @ActivityScope
+    @Provides
+    TravelDetailsContract.View provideTravelDetailsView() {
+        return this.view;
+    }
+
+    @ActivityScope
+    @Provides
+    TravelDetailsContract.Model provideTravelDetailsModel(TravelDetailsModel model) {
+        return model;
+    }
 }

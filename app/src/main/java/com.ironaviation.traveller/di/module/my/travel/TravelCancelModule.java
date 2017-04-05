@@ -1,11 +1,11 @@
-package com.ironaviation.traveller.di.module.my;
+package com.ironaviation.traveller.di.module.my.travel;
 
 import com.google.gson.Gson;
 
 import android.app.Application;
 
-import com.ironaviation.traveller.mvp.contract.my.TravelDetailsContract;
-import com.ironaviation.traveller.mvp.model.my.TravelDetailsModel;
+import com.ironaviation.traveller.mvp.contract.my.travel.TravelCancelContract;
+import com.ironaviation.traveller.mvp.model.my.travel.TravelCancelModel;
 import com.jess.arms.di.scope.ActivityScope;
 
 import dagger.Module;
@@ -22,38 +22,37 @@ import dagger.Provides;
 
 /**
  *
- * 项目名称：Transfer      
+ * 项目名称：Traveller      
  * 类描述：   
- * 创建人：flq  
- * 创建时间：2017/3/29 15:42   
- * 修改人：  
- * 修改时间：2017/3/29 15:42   
+ * 创建人：starRing  
+ * 创建时间：2017-04-05 14:27   
+ * 修改人：starRing  
+ * 修改时间：2017-04-05 14:27   
  * 修改备注：   
  * @version
  *
  */
-
 @Module
-public class TravelDetailsModule {
-    private TravelDetailsContract.View view;
+public class TravelCancelModule {
+    private TravelCancelContract.View view;
 
     /**
-     * 构建TravelDetailsModule时,将View的实现类传进来,这样就可以提供View的实现类给presenter
+     * 构建TravelCancelModule时,将View的实现类传进来,这样就可以提供View的实现类给presenter
      * @param view
      */
-    public TravelDetailsModule(TravelDetailsContract.View view) {
+    public TravelCancelModule(TravelCancelContract.View view) {
         this.view = view;
     }
 
     @ActivityScope
     @Provides
-    TravelDetailsContract.View provideTravelDetailsView() {
+    TravelCancelContract.View provideTravelCancelView() {
         return this.view;
     }
 
     @ActivityScope
     @Provides
-    TravelDetailsContract.Model provideTravelDetailsModel(TravelDetailsModel model) {
+    TravelCancelContract.Model provideTravelCancelModel(TravelCancelModel model) {
         return model;
     }
 }

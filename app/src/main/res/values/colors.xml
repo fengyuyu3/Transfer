@@ -5,6 +5,7 @@
     <color name="colorAccent">#c3c3c3</color>
     <color name="white">#FFFFFF</color>
     <color name="bg_champagne">#c5a981</color>
+    <color name="shadow_champagne">#b99e76</color>
     <color name="bg_champagne_deep">#b79a71</color>
     <color name="bg_write_grey">#f3f3f3</color>
     <!--common-->

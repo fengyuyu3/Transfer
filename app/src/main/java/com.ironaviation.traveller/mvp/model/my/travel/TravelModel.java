@@ -1,9 +1,9 @@
-package com.ironaviation.traveller.mvp.model.my;
+package com.ironaviation.traveller.mvp.model.my.travel;
 
 import android.app.Application;
 
 import com.google.gson.Gson;
-import com.ironaviation.traveller.mvp.contract.my.TravelContract;
+import com.ironaviation.traveller.mvp.contract.my.travel.TravelContract;
 import com.ironaviation.traveller.mvp.model.api.cache.CacheManager;
 import com.ironaviation.traveller.mvp.model.api.service.CommonService;
 import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
@@ -18,8 +18,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import rx.Observable;
-
-import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
 /**
