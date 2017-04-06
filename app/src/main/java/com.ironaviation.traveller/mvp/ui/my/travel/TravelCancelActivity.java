@@ -4,11 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ironaviation.traveller.R;
@@ -17,13 +17,9 @@ import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.my.travel.DaggerTravelCancelComponent;
 import com.ironaviation.traveller.di.module.my.travel.TravelCancelModule;
 import com.ironaviation.traveller.mvp.contract.my.travel.TravelCancelContract;
-import com.ironaviation.traveller.mvp.model.entity.response.EstimateResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.TravelCancelResponse;
 import com.ironaviation.traveller.mvp.presenter.my.travel.TravelCancelPresenter;
-import com.ironaviation.traveller.mvp.ui.manager.FullyLinearLayoutManager;
 import com.ironaviation.traveller.mvp.ui.my.EstimateActivity;
-import com.ironaviation.traveller.mvp.ui.my.EstimateAdapter;
-import com.ironaviation.traveller.mvp.ui.widget.CustomerRatingBar;
 import com.jess.arms.utils.UiUtils;
 
 import java.util.ArrayList;
@@ -31,6 +27,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -57,11 +54,14 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
 
     @BindView(R.id.rv_cancel_travel_reason)
     RecyclerView mRvCancelTravelReason;
+    @BindView(R.id.tv_determine_cancel)
+    TextView mTvDetermineCancel;
     private String[] cancel_reasons;
     private List<TravelCancelResponse> mTravelCancelResponseList = new ArrayList<>();
     private RecyclerView.LayoutManager mLayoutManager;
 
     private TravelCancelAdapter mTravelCancelAdapter;
+
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerTravelCancelComponent
@@ -95,12 +95,14 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
 
 
         mLayoutManager = new LinearLayoutManager(this);
-        mTravelCancelAdapter=new TravelCancelAdapter(R.layout.item_travel_cancel);
+        mTravelCancelAdapter = new TravelCancelAdapter(R.layout.item_travel_cancel);
         mRvCancelTravelReason.setLayoutManager(mLayoutManager);
         mTravelCancelAdapter.setNewData(mTravelCancelResponseList);
-        mTravelCancelAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+
+        mRvCancelTravelReason.setAdapter(mTravelCancelAdapter);
+        mTravelCancelAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public boolean onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 TravelCancelResponse mTravelCancelResponse = (TravelCancelResponse) adapter.getData().get(position);
                 if (mTravelCancelResponse.isType()) {
                     mTravelCancelResponse.setType(false);
@@ -108,11 +110,8 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
                     mTravelCancelResponse.setType(true);
                 }
                 mTravelCancelAdapter.notifyDataSetChanged();
-                return false;
             }
         });
-        mRvCancelTravelReason.setAdapter(mTravelCancelAdapter);
-
     }
 
 
@@ -154,6 +153,15 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+    }
+
+    @OnClick(R.id.tv_determine_cancel)
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_determine_cancel:
+                startActivity(CancelSuccessActivity.class);
+                break;
+        }
     }
 
     static class ViewHolder {

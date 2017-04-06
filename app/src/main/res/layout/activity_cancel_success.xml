@@ -1,7 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<com.zhy.autolayout.AutoRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-</LinearLayout>
+    <include
+        android:id="@+id/id_include_toolbar"
+        layout="@layout/include_toolbar"
+        ></include>
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:id="@+id/rl_head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/id_include_toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="52px"
+        >
+
+        <ImageView
+            android:id="@+id/ic_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/ic_head_grey"/>
+
+        <TextView
+            android:layout_width="172px"
+            android:layout_height="44px"
+            android:layout_below="@+id/ic_head"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-18px"
+            android:background="@drawable/box_grey"
+            android:gravity="center"
+            android:text="银河特快998"
+            />
+
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:id="@+id/rl_driver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_head"
+        android:layout_centerHorizontal="true"
+
+        android:layout_marginTop="14px"
+        >
+
+        <TextView
+            android:id="@+id/it_driver_name"
+            style="@style/common_text_style"
+            android:gravity="center"
+            android:text="李师傅"
+            android:textSize="@dimen/word_title_little"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="12px"
+            android:background="@mipmap/ic_little_star"
+            />
+
+        <TextView
+            android:id="@+id/it_driver_grade"
+            style="@style/common_text_style"
+            android:layout_marginLeft="9px"
+            android:gravity="center"
+            android:text="5.0"
+            android:textSize="@dimen/word_content_little"
+            />
+
+
+    </com.zhy.autolayout.AutoLinearLayout>
+
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:id="@+id/rl_penal_sum"
+        android:layout_width="600px"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_driver"
+
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="88px">
+
+
+        <TextView
+            android:id="@+id/tv_money"
+            style="@style/common_text_content_style"
+            android:layout_centerHorizontal="true"
+            android:text="-5.0"
+            android:textColor="@color/word_red"
+            android:textSize="80px"
+
+            />
+
+        <TextView
+            android:id="@+id/tv_unit"
+            style="@style/common_text_content_style"
+            android:layout_alignBaseline="@+id/tv_money"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/h_fillet"
+            android:layout_marginTop="40px"
+            android:layout_toRightOf="@+id/tv_money"
+            android:text="元"
+            android:textColor="@color/word_middle_grey"
+            />
+
+        <TextView
+            style="@style/common_text_content_style"
+            android:layout_below="@+id/tv_money"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="42px"
+            android:text="@string/penal_sum_hint"
+            />
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_cancel_success"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="66px"
+        android:layout_marginRight="66px"
+        android:layout_below="@+id/rl_penal_sum"
+
+        android:layout_marginTop="40px"/>
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_grey_select"
+        android:layout_below="@+id/rv_cancel_success"
+        android:layout_marginLeft="66px"
+        android:layout_marginRight="66px"
+        android:layout_marginTop="50px"
+        android:padding="10px"
+        >
+
+        <TextView
+            android:id="@+id/tv_travel_cancel"
+            android:layout_width="wrap_content"
+            android:layout_toRightOf="@+id/iv_other_reason"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/h_fillet"
+            android:layout_centerInParent="true"
+            android:textColor="@color/word_already_input"
+            android:textSize="@dimen/word_content"
+            android:text="要求能飞"
+            android:visibility="visible"/>
+
+        <ImageView
+            android:id="@+id/iv_other_reason"
+            android:layout_width="17px"
+            android:layout_height="17px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="22px"
+            android:background="@drawable/dot_white"
+            />
+
+
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="70px"
+        >
+
+        <ImageView
+            android:id="@+id/iv_hint_red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/ic_hint_red"
+
+            />
+
+        <TextView
+            style="@style/common_text_style"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/h_fillet"
+            android:layout_toRightOf="@+id/iv_hint_red"
+            android:text="@string/cancel_rules_hint"
+            android:textColor="@color/color_travel_details_font"
+            android:textSize="24px"
+            />
+
+
+    </com.zhy.autolayout.AutoRelativeLayout>
+</com.zhy.autolayout.AutoRelativeLayout>

@@ -22,8 +22,8 @@
     <color name="word_toolbar_select">#d23930</color>
     <color name="word_red">#e83328</color>
     <color name="word_toolbar_un_select">#9c9c9c</color>
-    <color name="word_grey">#9c9c9c</color>
-
+    <color name="word_deep_grey">#9c9c9c</color>
+    <color name="word_middle_grey">#b2b2b2</color>
 
     <color name="payment_unity">#aeaeae</color>
 

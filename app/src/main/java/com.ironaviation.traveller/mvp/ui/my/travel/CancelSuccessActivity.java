@@ -1,8 +1,12 @@
 package com.ironaviation.traveller.mvp.ui.my.travel;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -12,9 +16,18 @@ import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.my.travel.DaggerCancelSuccessComponent;
 import com.ironaviation.traveller.di.module.my.travel.CancelSuccessModule;
 import com.ironaviation.traveller.mvp.contract.my.travel.CancelSuccessContract;
+import com.ironaviation.traveller.mvp.model.entity.response.CancelSuccessResponse;
+import com.ironaviation.traveller.mvp.model.entity.response.TravelCancelResponse;
 import com.ironaviation.traveller.mvp.presenter.my.travel.CancelSuccessPresenter;
+import com.ironaviation.traveller.mvp.ui.my.EstimateActivity;
+import com.ironaviation.traveller.mvp.ui.widget.SpaceItemDecoration;
 import com.jess.arms.utils.UiUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -28,20 +41,24 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 
 /**
- *
- * 项目名称：Traveller      
- * 类描述：   
- * 创建人：starRing  
- * 创建时间：2017-04-05 14:29   
- * 修改人：starRing  
- * 修改时间：2017-04-05 14:29   
- * 修改备注：   
- * @version
- *
+ * 项目名称：Traveller
+ * 类描述：
+ * 创建人：starRing
+ * 创建时间：2017-04-05 14:29
+ * 修改人：starRing
+ * 修改时间：2017-04-05 14:29
+ * 修改备注：
  */
 public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> implements CancelSuccessContract.View {
 
 
+    @BindView(R.id.rv_cancel_success)
+    RecyclerView mRvCancelSuccess;
+    private String[] cancel_reasons;
+    private List<CancelSuccessResponse> mTravelCancelResponseList = new ArrayList<>();
+    private RecyclerView.LayoutManager mLayoutManager;
+
+    private CancelSussessAdapter mCancelSussessAdapter;
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerCancelSuccessComponent
@@ -59,6 +76,26 @@ public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> im
 
     @Override
     protected void initData() {
+        cancel_reasons = getResources().getStringArray(R.array.cancel_reason_list);
+
+        for (int i = 0; i < cancel_reasons.length; i++) {
+            mTravelCancelResponseList.add(new CancelSuccessResponse(cancel_reasons[i]));
+        }
+        setTitle(getString(R.string.travel_cancel));
+        mToolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_back));
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        //GridLayout 3列
+        GridLayoutManager mgr = new GridLayoutManager(this, 2);
+        mRvCancelSuccess.addItemDecoration(new SpaceItemDecoration(20));
+        mCancelSussessAdapter = new CancelSussessAdapter(R.layout.item_cancel_success);
+        mRvCancelSuccess.setLayoutManager(mgr);
+        mCancelSussessAdapter.setNewData(mTravelCancelResponseList);
+        mRvCancelSuccess.setAdapter(mCancelSussessAdapter);
 
     }
 
@@ -94,5 +131,12 @@ public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> im
     @Override
     protected void nodataRefresh() {
 
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

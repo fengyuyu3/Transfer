@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_item_cancel_success"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    >
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_width="290px"
+        android:layout_height="70px"
+        android:background="@drawable/btn_grey_select"
+        android:layout_marginTop="22px"
+        >
+
+        <TextView
+            android:id="@+id/tv_item_cancel_success"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/word_already_input"
+            android:textSize="@dimen/word_content"
+            android:visibility="visible"/>
+
+        <ImageView
+            android:id="@+id/iv_item_cancel_success"
+            android:layout_width="17px"
+            android:layout_height="17px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="22px"
+            android:background="@drawable/dot_white"
+            />
+
+
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+</com.zhy.autolayout.AutoRelativeLayout>
