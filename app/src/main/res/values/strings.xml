@@ -10,9 +10,11 @@
 
 
     <string name="travel_cancel">取消行程</string>
-
+    <string name="cancel_rules_hint">查看取消规则</string>
     <string name="determine_cancel">确定取消</string>
+    <string name="penal_sum_hint">您取消了本次行程，本次违约金由平台减免</string>
     <string name="cancel_travel_hint">请选择取消原因</string>
+
     <!--common-->
     <string name="cancel">取消</string>
     <!--identification-->

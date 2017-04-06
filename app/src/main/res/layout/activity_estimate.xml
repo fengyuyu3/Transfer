@@ -78,7 +78,7 @@
                 android:layout_below="@+id/ll_name"
                 android:layout_marginLeft="24px"
                 android:layout_marginTop="15px"
-                android:background="@drawable/box_grey"
+                android:background="@drawable/box_red_grey"
                 android:gravity="center"
                 android:text="穿A123456"
                 android:textColor="@color/white"
@@ -149,7 +149,7 @@
         android:layout_marginTop="79px"
         android:gravity="center"
         android:text="@string/anonymous_evaluation"
-        android:textColor="@color/word_grey"
+        android:textColor="@color/word_deep_grey"
         android:textSize="@dimen/word_content_little"
 
         />

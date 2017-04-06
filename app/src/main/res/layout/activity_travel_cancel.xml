@@ -123,7 +123,7 @@
             android:layout_marginLeft="@dimen/h_fillet"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/iv_hint_red"
-            android:text="@string/cancel_travel_hint"
+            android:text="@string/cancel_rules_hint"
             android:textSize="24px"
             android:textColor="@color/color_travel_details_font"
             />
