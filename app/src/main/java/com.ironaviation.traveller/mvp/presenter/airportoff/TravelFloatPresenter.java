@@ -69,7 +69,7 @@ public class TravelFloatPresenter extends BasePresenter<TravelFloatContract.Mode
         this.mApplication = null;
     }
 
-    public void getFlightInfo(String flightNo,String date){
+    public void getFlightInfo(String flightNo, final String date){
         mModel.getFlightInfo(flightNo,date)
                 .compose(RxUtils.<BaseData<Flight>>applySchedulers(mRootView))
                 .subscribe(new ErrorHandleSubscriber<BaseData<Flight>>(mErrorHandler) {
@@ -78,7 +78,7 @@ public class TravelFloatPresenter extends BasePresenter<TravelFloatContract.Mode
                         if(flightBaseData.isSuccess()){
                             if(flightBaseData.getData() != null){
                                 mRootView.showMessage(flightBaseData.getData().getInfo().toString());
-                                Log.e("kkk",flightBaseData.getData().getInfo().toString());
+                                mRootView.setData(flightBaseData.getData(),date);
                             }
                         }
                     }

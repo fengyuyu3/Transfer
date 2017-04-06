@@ -80,13 +80,6 @@
         android:background="@color/white"
         android:visibility="gone">
 
-        <ImageView
-            android:layout_marginLeft="32px"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/ic_time"/>
-
         <TextView
             android:id="@+id/tw_city"
             android:layout_width="match_parent"

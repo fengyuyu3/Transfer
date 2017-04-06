@@ -6,7 +6,8 @@ package com.ironaviation.traveller.app;
  */
 public interface EventBusTags {
 
-    public static final String TRAVEL_DETAILS = "TravelDetailsActivity";
+    String TRAVEL_DETAILS = "TravelDetailsActivity";
+    String DIALOG_EVENT = "dialog";
 
 
 }

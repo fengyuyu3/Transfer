@@ -3,9 +3,11 @@ package com.ironaviation.traveller.mvp.ui.airportoff;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,19 +17,29 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.EventBusTags;
+import com.ironaviation.traveller.app.utils.MyDialog;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.airportoff.DaggerTravelFloatComponent;
 import com.ironaviation.traveller.di.module.airportoff.TravelFloatModule;
 import com.ironaviation.traveller.mvp.contract.airportoff.TravelFloatContract;
+import com.ironaviation.traveller.mvp.model.entity.response.Flight;
 import com.ironaviation.traveller.mvp.presenter.airportoff.TravelFloatPresenter;
+import com.ironaviation.traveller.mvp.ui.my.travel.TravelAdapter;
 import com.ironaviation.traveller.mvp.ui.widget.MyTimePickerView;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
 
+import org.simple.eventbus.Subscriber;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -78,6 +90,9 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
     @BindView(R.id.ll_port)
     AutoLinearLayout mLlPort;
     private MyTimePickerView pvTime;
+    private RecyclerView.LayoutManager  layoutManager;
+    private TravelFloatAdapter mTravelFloatAdapter;
+    private MyDialog mMyDialog;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -96,10 +111,18 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
 
     @Override
     protected void initData() {
+        mMyDialog = new MyDialog(this);
         setTravelNum();
         setEditorAction();
         setFlyTime();
-        initNumPicker();
+        initRecyerView();
+    }
+
+    public void initRecyerView(){
+        layoutManager = new LinearLayoutManager(this);
+        mRwCity.setLayoutManager(layoutManager);
+        mTravelFloatAdapter = new TravelFloatAdapter();
+        mRwCity.setAdapter(mTravelFloatAdapter);
     }
 
 
@@ -176,16 +199,30 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
                     if(mEdtTravelNum.getText().toString().trim().length() <= 2 ){
                         return false;
                     }else{
-                        UiUtils.makeText("pick");
                         setShowTime();
-                        pvTime.show();
-                        //调用pick
+                        mMyDialog.showDialog(getList(),getResources().getString(R.string.airport_fly_time_select));
                         return false;
                     }
                 }
                 return false;
             }
         });
+    }
+
+    //设置集合数据
+    public List<String> getList(){
+        List<String> list = new ArrayList<>();
+        for(int i = 0; i < 7 ; i++) {
+            Date date=new Date();//取时间
+            Calendar calendar = new GregorianCalendar();
+            calendar.setTime(date);
+            calendar.add(calendar.DATE, i-1);//把日期往后增加一天.整数往后推,负数往前移动
+            date = calendar.getTime(); //这个时间就是日期往后推一天的结果
+            SimpleDateFormat formatter = new SimpleDateFormat("MM月-dd日");
+            String dateString = formatter.format(date);
+            list.add(dateString);
+        }
+        return list;
     }
 
     public void setFlyTime(){
@@ -195,8 +232,7 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
             public void onClick(View view) {
                 mRlAirportFlyTime.setVisibility(View.VISIBLE);
                 setShowTime();
-                mPresenter.getFlightInfo("cz3081","2017-04-05");
-                pvTime.show();
+                mMyDialog.showDialog(getList(),getResources().getString(R.string.airport_fly_time_select));
             }
         });
 
@@ -214,28 +250,47 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
         mTwFlyTime.setText(text);
     }
 
-    public void initNumPicker(){
-        pvTime = new MyTimePickerView(this, MyTimePickerView.Type.YEAR_MONTH_DAY);
-
-        pvTime.setTitle("行程时间");
-        pvTime.setCancelable(true);
-        pvTime.setOnTimeSelectListener(new MyTimePickerView.OnTimeSelectListener() {
-
-            @Override
-            public void onTimeSelect(Date date) throws Exception {
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(date);
-            }
-        });
+    public void setFlyTime(String text){
+        mRlAirportFlyTime.setVisibility(View.VISIBLE);
+        mIwTime.setVisibility(View.VISIBLE);
+        mTwFlyTime.setText(text);
     }
 
     @OnClick({R.id.ll_port})
     public void onClick(View view){
         switch (view.getId()) {
             case R.id.ll_port:
-                finish();
+                if(mMyDialog.isShowing()){
+                    mMyDialog.dismiss();
+                }else {
+                    finish();
+                }
             break;
         }
     }
-
+    @Subscriber(tag = EventBusTags.DIALOG_EVENT)
+    public void dialogEvent(int index){
+        Date date=new Date();//取时间
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        calendar.add(calendar.DATE, index-1);//把日期往后增加一天.整数往后推,负数往前移动
+        date = calendar.getTime(); //这个时间就是日期往后推一天的结果
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = formatter.format(date);
+        if(mEdtTravelNum.getText().toString().trim() != null) {
+//            mPresenter.getFlightInfo("cz3081", dateString);
+            mPresenter.getFlightInfo(mEdtTravelNum.getText().toString().trim(),dateString);
+        }else{
+            showMessage("数据为空");
+        }
+    }
+    @Override
+    public void setData(Flight flight,String date) {
+        mMyDialog.dismiss();
+        setFlyTime(date);
+        mRlCity.setVisibility(View.VISIBLE);
+        if(flight.getList() != null) {
+            mTravelFloatAdapter.setList(flight.getList());
+        }
+    }
 }

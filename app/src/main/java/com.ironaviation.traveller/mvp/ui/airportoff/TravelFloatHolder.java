@@ -24,7 +24,6 @@ public class TravelFloatHolder extends RecyclerView.ViewHolder {
         super(itemView);
         ll_city = (AutoLinearLayout) itemView.findViewById(R.id.ll_city);
         twFromToCity = (TextView) itemView.findViewById(R.id.tw_from_to_city);
-        twDate = (TextView) itemView.findViewById(R.id.tw_date);
         twTime = (TextView) itemView.findViewById(R.id.tw_time);
     }
 }

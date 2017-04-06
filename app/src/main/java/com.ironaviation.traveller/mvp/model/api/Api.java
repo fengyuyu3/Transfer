@@ -8,7 +8,7 @@ import retrofit2.http.POST;
  */
 public interface Api {
 //    String APP_DOMAIN = "http://th-api.bestwise.net";// 测试
-    String APP_DOMAIN = "http://192.168.0.189:8051";
+    String APP_DOMAIN = "http://192.168.1.144:8051";
     String LOGIN = "/api/Drivers/SignIn";// 登录
     String Travel = "";
     String MESSAGE = "";

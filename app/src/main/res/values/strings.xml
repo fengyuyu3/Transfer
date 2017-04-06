@@ -73,6 +73,7 @@
     <string name="airport_affirm">确认</string>
     <string name="airport_fly_time">当地起飞时间</string>
     <string name="airport_city">请选择城市</string>
+    <string name="airport_fly_time_select">请选择当地起飞时间</string>
 
     <string name="great_satisfaction">非常满意</string>
     <string name="please_point_out_insufficient">请指出不足...</string>

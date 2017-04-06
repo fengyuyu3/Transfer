@@ -6,6 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.mvp.model.entity.response.FlightDetails;
+import com.ironaviation.traveller.mvp.ui.my.travel.TravelAdapter;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 项目名称：Transfer
@@ -19,8 +25,10 @@ import com.ironaviation.traveller.R;
 
 public class TravelFloatAdapter extends RecyclerView.Adapter<TravelFloatHolder> {
 
-    public void setList(){
-
+    private List<FlightDetails> flightDetailsList;
+    public void setList(List<FlightDetails> flightDetailsList){
+        this.flightDetailsList = flightDetailsList;
+        notifyDataSetChanged();
     }
     @Override
     public TravelFloatHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -31,13 +39,26 @@ public class TravelFloatAdapter extends RecyclerView.Adapter<TravelFloatHolder> 
     @Override
     public void onBindViewHolder(TravelFloatHolder holder, int position) {
 //        holder.ll_city.setOnClickListener();
-        holder.twTime.setText("");
-        holder.twDate.setText("");
-        holder.twFromToCity.setText("");
+
+        holder.twTime.setText(getDate(flightDetailsList.get(position).getTakeOffTime())+":"
+        +getDate(flightDetailsList.get(position).getArriveTime()));
+        holder.twFromToCity.setText(getCity(flightDetailsList.get(position).getTakeOff())+":"
+        +getCity(flightDetailsList.get(position).getTakeOff()));
     }
 
+    public String getDate(long time){
+        Date date = new Date(time);
+        SimpleDateFormat formatter = new SimpleDateFormat("mm:ss");
+        String dateString = formatter.format(date);
+        return dateString;
+    }
+
+    public String getCity(String city){
+        String[] cityArray = city.split(" ");
+        return cityArray[0];
+    }
     @Override
     public int getItemCount() {
-        return 0;
+        return flightDetailsList != null ? flightDetailsList.size() : 0;
     }
 }

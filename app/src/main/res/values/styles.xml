@@ -85,4 +85,8 @@
         <item name="android:maxHeight">36dp</item>
     </style>
 
+    <style name="picker_dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
 </resources>
