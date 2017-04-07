@@ -77,36 +77,31 @@ public abstract class WEActivity<P extends Presenter> extends BaseWEActivity<P> 
     /**
      * 设置右功能键
      */
-    protected void setRightFunctionText(String text) {
+    protected void setRightFunctionText(String text,View.OnClickListener listener) {
         if (!TextUtils.isEmpty(text)) {
             if (mFunctionRight != null) {
                 mFunctionRight.setVisibility(View.VISIBLE);
                 mFunctionRight.setTextColor(ContextCompat.getColor(this, R.color.white));
                 mFunctionRight.setText(text);
+                mFunctionRight.setOnClickListener(listener);
             }
-            if (nodataFunctionRight != null) {
-                nodataFunctionRight.setVisibility(View.VISIBLE);
-                nodataFunctionRight.setText(text);
-            }
+
         }
     }
 
     /**
      * 设置右功能键+颜色
      */
-    protected void setRightFunctionText(String text, int color) {
+    protected void setRightFunctionText(String text, int color,View.OnClickListener listener) {
         if (!TextUtils.isEmpty(text)) {
             if (mFunctionRight != null) {
                 mFunctionRight.setVisibility(View.VISIBLE);
                 mFunctionRight.setTextColor(ContextCompat.getColor(this, color));
                 mFunctionRight.setText(text);
-            }
-            if (noDataIvFunctionRight != null) {
-                nodataFunctionRight.setVisibility(View.VISIBLE);
-                nodataFunctionRight.setText(text);
-                nodataFunctionRight.setTextColor(ContextCompat.getColor(this, color));
+                mFunctionRight.setOnClickListener(listener);
 
             }
+
         }
     }
 

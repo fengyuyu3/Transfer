@@ -7,108 +7,71 @@ package com.ironaviation.traveller.mvp.model.entity;
  * 修改时间：2017-01-11 10:16
  * 修改备注：
  */
-public class LoginEntity {
+public class LoginEntity extends BaseData{
 
-    private String DID;//司机ID
+        private String Name;
 
-    private String Name;//司机名称
+        private String Gender;
 
-    private String Code;//司机工号//百度实体//二维码
+        private long LastLoginDate;
 
-    private String Phone;//手机号码
+        private String AccessToken;
 
-    private String Avatar;//头像地址
+        private String TokenType;
 
-    private String AccessToken;//访问令牌
+        private long ExpiresIn;
 
-    private String TokenType;//令牌类型
+        private long Issued;
 
-    private long ExpiresIn;//还有多久过期
+        private long Expires;
 
-    private long Issued;//令牌发行日期
-
-    private long Expires;//过期时间
-
-
-    public void setDID(String DID) {
-        this.DID = DID;
-    }
-
-    public String getDID() {
-        return this.DID;
-    }
-
-    public void setName(String Name) {
-        this.Name = Name;
-    }
-
-    public String getName() {
-        return this.Name;
-    }
-
-    public void setCode(String Code) {
-        this.Code = Code;
-    }
-
-    public String getCode() {
-        return this.Code;
-    }
-
-    public void setPhone(String Phone) {
-        this.Phone = Phone;
-    }
-
-    public String getPhone() {
-        return this.Phone;
-    }
-
-    public void setAvatar(String Avatar) {
-        this.Avatar = Avatar;
-    }
-
-    public String getAvatar() {
-        return this.Avatar;
-    }
-
-    public void setAccessToken(String AccessToken) {
-        this.AccessToken = AccessToken;
-    }
-
-    public String getAccessToken() {
-        return this.AccessToken;
-    }
-
-    public void setTokenType(String TokenType) {
-        this.TokenType = TokenType;
-    }
-
-    public String getTokenType() {
-        return this.TokenType;
-    }
-
-    public void setExpiresIn(int ExpiresIn) {
-        this.ExpiresIn = ExpiresIn;
-    }
-
-    public long getExpiresIn() {
-        return this.ExpiresIn;
-    }
-
-    public void setIssued(int Issued) {
-        this.Issued = Issued;
-    }
-
-    public long getIssued() {
-        return this.Issued;
-    }
-
-    public void setExpires(int Expires) {
-        this.Expires = Expires;
-    }
-
-    public long getExpires() {
-        return this.Expires;
-    }
-
+        public void setName(String Name){
+            this.Name = Name;
+        }
+        public String getName(){
+            return this.Name;
+        }
+        public void setGender(String Gender){
+            this.Gender = Gender;
+        }
+        public String getGender(){
+            return this.Gender;
+        }
+        public void setLastLoginDate(long LastLoginDate){
+            this.LastLoginDate = LastLoginDate;
+        }
+        public long getLastLoginDate(){
+            return this.LastLoginDate;
+        }
+        public void setAccessToken(String AccessToken){
+            this.AccessToken = AccessToken;
+        }
+        public String getAccessToken(){
+            return this.AccessToken;
+        }
+        public void setTokenType(String TokenType){
+            this.TokenType = TokenType;
+        }
+        public String getTokenType(){
+            return this.TokenType;
+        }
+        public void setExpiresIn(long ExpiresIn){
+            this.ExpiresIn = ExpiresIn;
+        }
+        public long getExpiresIn(){
+            return this.ExpiresIn;
+        }
+        public void setIssued(long Issued){
+            this.Issued = Issued;
+        }
+        public long getIssued(){
+            return this.Issued;
+        }
+        public void setExpires(long Expires){
+            this.Expires = Expires;
+        }
+        public long getExpires(){
+            return this.Expires;
+        }
 
 }

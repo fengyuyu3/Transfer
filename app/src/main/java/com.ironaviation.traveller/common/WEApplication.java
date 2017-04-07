@@ -4,9 +4,12 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.baidu.mapapi.SDKInitializer;
+import com.ironaviation.traveller.mvp.constant.Constant;
+import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
 import com.jess.arms.base.BaseApplication;
 import com.jess.arms.di.module.GlobeConfigModule;
 import com.jess.arms.http.GlobeHttpHandler;
+import com.jess.arms.utils.DataHelper;
 import com.jess.arms.utils.UiUtils;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
@@ -19,6 +22,7 @@ import com.ironaviation.traveller.BuildConfig;
 import com.ironaviation.traveller.di.module.CacheModule;
 import com.ironaviation.traveller.di.module.ServiceModule;
 import com.ironaviation.traveller.mvp.model.api.Api;
+
 import me.jessyan.rxerrorhandler.handler.listener.ResponseErroListener;
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -53,7 +57,7 @@ public class WEApplication extends BaseApplication {
             Timber.plant(new Timber.DebugTree());
         }
 
-        installLeakCanary();//leakCanary内存泄露检查
+        //  installLeakCanary();//leakCanary内存泄露检查
     }
 
 
@@ -87,6 +91,7 @@ public class WEApplication extends BaseApplication {
 
     /**
      * 将AppComponent返回出去,供其它地方使用, AppComponent接口中声明的方法返回的实例,在getAppComponent()拿到对象后都可以直接使用
+     *
      * @return
      */
     public AppComponent getAppComponent() {
@@ -98,6 +103,7 @@ public class WEApplication extends BaseApplication {
      * app的全局配置信息封装进module(使用Dagger注入到需要配置信息的地方)
      * GlobeHttpHandler是在NetworkInterceptor中拦截数据
      * 如果想将请求参数加密,则必须在Interceptor中对参数进行处理,GlobeConfigModule.addInterceptor可以添加Interceptor
+     *
      * @return
      */
     @Override
@@ -111,19 +117,19 @@ public class WEApplication extends BaseApplication {
                     public Response onHttpResultResponse(String httpResult, Interceptor.Chain chain, Response response) {
                         //这里可以先客户端一步拿到每一次http请求的结果,可以解析成json,做一些操作,如检测到token过期后
                         //重新请求token,并重新执行请求
-                        try {
+                        /*try {
                             if (!TextUtils.isEmpty(httpResult)) {
-                                JSONArray array = new JSONArray(httpResult);
-                                JSONObject object = (JSONObject) array.get(0);
-                                String login = object.getString("login");
-                                String avatar_url = object.getString("avatar_url");
-                                Timber.tag(TAG).w("result ------>" + login + "    ||   avatar_url------>" + avatar_url);
+                                //JSONArray array = new JSONArray(httpResult);
+                                //JSONObject object = (JSONObject) array.get(0);
+                                //String login = object.getString("login");
+                                //String avatar_url = object.getString("avatar_url");
+                                // Timber.tag(TAG).w("result ------>" + login + "    ||   avatar_url------>" + avatar_url);
                             }
 
-                        } catch (JSONException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                             return response;
-                        }
+                        }*/
 
 
                         //这里如果发现token过期,可以先请求最新的token,然后在拿新的token放入request里去重新请求
@@ -147,12 +153,17 @@ public class WEApplication extends BaseApplication {
 
                         //return chain.request().newBuilder().header("token", tokenId)
 //                .build();
-                        String key = "Bearer JrC1cA1KtQit9IQOTLCMQ1R-Bt-rRaii_XXf1nZgwlnjmuz80kto6JLSkYFIxfzTNph17MA8dooMyKmOn-UtDXd46mZRllg6UplBZ47rjqTLZGPSG1d9I19BhOBsNqK9nnIsKC3hh-VeUXCBhi0VvwEG7Fo81jLgRxAQoNt4gJlsEavC9ZmSiLCGtUhQ3M38Bd5Lbqytv3_3YNNuUOyL0Uc12FAjuymQV8RkHus5eFf355gUSgSenFVQCuOqDBaPPDP4qqpK-jiwauwdYOJaC_EOiBXFhOt2YRgh0VtmasibVN2-fKBocgrStFC44lkcn39ZJkhbCXMeEOdd-zX8ljzcAeCPFiWN-cYCerhI1u2gSEmleAws8prEca7TyIvsrssZdatn_NMdpc1U-7a-sn_7jWKgFFUASQc0eZVMyv8fC7Z6x7t-0GqilaLZyMyq-h0P2O3QgGFYt889WBi0k0Uxv5T7yJeqz_4z22kW0RbxuLFv";
                         Request.Builder builder = chain.request().newBuilder();
-                        builder.addHeader("Authorization",key);
 
-                        return builder
-                                    .build();
+                        LoginEntity loginEntity = DataHelper.getDeviceData(getApplicationContext(), Constant.LOGIN);
+                        if (loginEntity != null &&
+                                !TextUtils.isEmpty(loginEntity.getTokenType()) &&
+                                !TextUtils.isEmpty(loginEntity.getAccessToken())) {
+                            builder.addHeader("Authorization", loginEntity.getTokenType() + " " + loginEntity.getAccessToken());
+                        } else {
+
+                        }
+                        return builder.build();
 
 //                        return request;
                     }

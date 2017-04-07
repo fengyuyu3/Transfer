@@ -57,6 +57,7 @@
     <string name="login_btn">登陆</string>
     <string name="login_no_userInfo">请输入用户信息</string>
     <string name="login_no_code">请输入验证码</string>
+    <string name="login_no_client_id">初始化中 请稍候</string>
     <string name="login_code_reset">s</string>
 
     <!--错误界面-->
@@ -76,7 +77,7 @@
     <string name="airport_fly_time">当地起飞时间</string>
     <string name="airport_city">请选择城市</string>
     <string name="airport_fly_time_select">请选择当地起飞时间</string>
-
+    <string name="riding_time_select">请选择乘车时间</string>
     <string name="great_satisfaction">非常满意</string>
     <string name="please_point_out_insufficient">请指出不足...</string>
     <!--other-->

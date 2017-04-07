@@ -1,7 +1,13 @@
 package com.ironaviation.traveller.mvp.contract.my;
 
+import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
 import com.jess.arms.mvp.BaseView;
 import com.jess.arms.mvp.IModel;
+
+
+import com.google.gson.JsonObject;
+import rx.Observable;
 
 /**
  * 通过Template生成对应页面的MVP和Dagger代码,请注意输入框中输入的名字必须相同
@@ -13,16 +19,13 @@ import com.jess.arms.mvp.IModel;
  */
 
 /**
- *
- * 项目名称：Traveller      
- * 类描述：   
- * 创建人：starRing  
- * 创建时间：2017-03-27 10:32   
- * 修改人：starRing  
- * 修改时间：2017-03-27 10:32   
- * 修改备注：   
- * @version
- *
+ * 项目名称：Traveller
+ * 类描述：
+ * 创建人：starRing
+ * 创建时间：2017-03-27 10:32
+ * 修改人：starRing
+ * 修改时间：2017-03-27 10:32
+ * 修改备注：
  */
 public interface SettingContract {
     //对于经常使用的关于UI的方法可以定义到BaseView中,如显示隐藏进度条,和显示文字消息
@@ -32,6 +35,6 @@ public interface SettingContract {
 
     //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存
     interface Model extends IModel {
-
+        Observable<BaseData<JsonObject>> singOut();
     }
 }

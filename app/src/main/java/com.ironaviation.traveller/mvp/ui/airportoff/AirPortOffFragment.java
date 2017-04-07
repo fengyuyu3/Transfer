@@ -27,12 +27,15 @@ import com.ironaviation.traveller.mvp.model.entity.request.AirPortRequest;
 import com.ironaviation.traveller.mvp.presenter.airportoff.AirPortOffPresenter;
 import com.ironaviation.traveller.mvp.ui.widget.NumDialog;
 import com.ironaviation.traveller.mvp.ui.widget.PublicTextView;
+import com.ironaviation.traveller.mvp.ui.widget.TimePicker.MyTimePickerView;
 import com.ironaviation.traveller.mvp.ui.widget.TravelPopupwindow;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -102,6 +105,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     private static final int NUM = 6;
     private List<AirPortRequest> list; //这是recylerview 的数据
     private List<AirPortRequest> mAirportRequests;
+    private MyTimePickerView pvTime;
 
     public static AirPortOffFragment newInstance() {
         AirPortOffFragment fragment = new AirPortOffFragment();
@@ -135,6 +139,22 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
 //        setRidTimeHide();
         initEmptyData();
         setPrice();
+        pvTime = new MyTimePickerView(getActivity(), MyTimePickerView.Type.MONTH_DAY_HOUR_TEN_MIN);
+        pvTime.setTime(new Date());
+        Date date=new Date();
+        date.setTime(1491782400000l);
+        pvTime.setEndDate(date);
+        pvTime.setTitle(getResources().getString(R.string.riding_time_select));
+        pvTime.setCancelable(true);
+        pvTime.setOnTimeSelectListener(new MyTimePickerView.OnTimeSelectListener() {
+
+            @Override
+            public void onTimeSelect(Date date) throws Exception {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+
+            }
+        });
     }
 
     /**
@@ -184,7 +204,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     }
 
 
-    @OnClick({R.id.pw_seat, R.id.pw_airport, R.id.pw_flt_no})
+    @OnClick({R.id.pw_seat, R.id.pw_airport, R.id.pw_flt_no, R.id.pw_time})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.pw_seat:
@@ -192,6 +212,9 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
                 break;
             case R.id.pw_airport:
                 mTerminal.show();
+                break;
+            case R.id.pw_time:
+                pvTime.show();
                 break;
             case R.id.pw_flt_no:
                 Intent intent = new Intent(getActivity(), TravelFloatActivity.class);
@@ -393,12 +416,12 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         });
     }
 
-    public void setPrice(){
-        String bestPrice = "<font color='#e83328' font-size=80px>"+"22.04"+"</font>"+"<font color='#b2b2b2' size=40> 元</font>";
+    public void setPrice() {
+        String bestPrice = "<font color='#e83328' font-size=80px>" + "22.04" + "</font>" + "<font color='#b2b2b2' size=40> 元</font>";
         mTwBestPrice.setText(Html.fromHtml(bestPrice));
-        String originalPrice = "<font color='#3a3a3a' font-size=80>"+"22.04"+"</font>"+"<font color='#3a3a3a' size=40> 元</font>";
+        String originalPrice = "<font color='#3a3a3a' font-size=80>" + "22.04" + "</font>" + "<font color='#3a3a3a' size=40> 元</font>";
         mTwOriginalPrice.setText(Html.fromHtml(originalPrice));
-        mTwOriginalPrice.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG );
+        mTwOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
     }
 
     public void clearMoreData(int position) {

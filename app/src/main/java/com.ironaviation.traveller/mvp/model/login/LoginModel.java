@@ -63,10 +63,11 @@ public class LoginModel extends BaseModel<ServiceManager, CacheManager> implemen
     }
 
     @Override
-    public Observable<BaseData<LoginEntity>> getLoginInfo(String userInfo, String code) {
+    public Observable<BaseData<LoginEntity>> getLoginInfo(String phoneNumber, String validateCode,String clientId) {
         Login mLogin = new Login();
-        mLogin.setCode(code);
-        mLogin.setUserName(userInfo);
+        mLogin.setValidateCode(validateCode);
+        mLogin.setPhoneNumber(phoneNumber);
+        mLogin.setClientId(clientId);
         return mCommonService.login(mLogin);
     }
 }

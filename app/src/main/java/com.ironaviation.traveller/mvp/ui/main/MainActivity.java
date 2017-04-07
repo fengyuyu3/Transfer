@@ -16,6 +16,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -116,9 +117,6 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
     };
     private MyPagerAdapter mAdapter;
 
-    // DemoPushService.class 自定义服务名称, 核心服务
-    private Class userPushService = WEPushService.class;
-
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerMainComponent
@@ -155,7 +153,7 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
         tabLayout_7.setViewPager(vp, mTitles);
         vp.setCurrentItem(4);
         setTitle(getString(R.string.app_name));
-        setRightFunctionText("成都", R.color.white);
+        setRightFunctionText("成都", R.color.white, null);
         setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_head));
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,24 +162,7 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
             }
         });
 
-        // com.getui.demo.DemoPushService 为第三方自定义推送服务
-        PackageManager pkgManager = getPackageManager();
 
-        // 读写 sd card 权限非常重要, android6.0默认禁止的, 建议初始化之前就弹窗让用户赋予该权限
-        boolean sdCardWritePermission =
-                pkgManager.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, getPackageName()) == PackageManager.PERMISSION_GRANTED;
-
-        // read phone state用于获取 imei 设备信息
-        boolean phoneSatePermission =
-                pkgManager.checkPermission(Manifest.permission.READ_PHONE_STATE, getPackageName()) == PackageManager.PERMISSION_GRANTED;
-
-        if (Build.VERSION.SDK_INT >= 23 && !sdCardWritePermission || !phoneSatePermission) {
-            requestPermission();
-        } else {
-            PushManager.getInstance().initialize(this.getApplicationContext(), userPushService);
-        }
-        PushManager.getInstance().initialize(this.getApplicationContext(), userPushService);
-        PushManager.getInstance().registerPushIntentService(this.getApplicationContext(), WEGTIntentService.class);
     }
 
     @OnClick({R.id.rl_message, R.id.rl_setting, R.id.rl_trip})
@@ -255,11 +236,18 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
         }
     }
 
-    private void requestPermission() {
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE},
-                REQUEST_PERMISSION);
-    }
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-    private static final int REQUEST_PERMISSION = 0;
+
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+            case KeyEvent.KEYCODE_HOME:
+                if (mPresenter.exit()) {
+                    return true;
+                }
+                break;
+        }
+        return super.onKeyUp(keyCode, event);
+    }
 
 }

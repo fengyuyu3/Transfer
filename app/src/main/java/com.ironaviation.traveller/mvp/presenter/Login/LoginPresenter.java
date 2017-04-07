@@ -1,19 +1,25 @@
 package com.ironaviation.traveller.mvp.presenter.Login;
 
+import android.app.Activity;
 import android.app.Application;
 import android.app.MediaRouteActionProvider;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.widget.TextView;
 
+import com.igexin.sdk.PushManager;
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.common.WEActivity;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.login.LoginContract;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
 import com.ironaviation.traveller.mvp.ui.login.IdentificationActivity;
+import com.ironaviation.traveller.mvp.ui.main.MainActivity;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
+import com.jess.arms.utils.DataHelper;
 import com.jess.arms.utils.RxUtils;
 import com.jess.arms.utils.UiUtils;
 import com.jess.arms.widget.imageloader.BaseImageLoaderStrategy;
@@ -36,16 +42,13 @@ import javax.inject.Inject;
 
 
 /**
- *
- * 项目名称：Transfer      
- * 类描述：   
- * 创建人：flq  
- * 创建时间：2017/3/23 13:29   
- * 修改人：  
- * 修改时间：2017/3/23 13:29   
- * 修改备注：   
- * @version
- *
+ * 项目名称：Transfer
+ * 类描述：
+ * 创建人：flq
+ * 创建时间：2017/3/23 13:29
+ * 修改人：
+ * 修改时间：2017/3/23 13:29
+ * 修改备注：
  */
 
 @ActivityScope
@@ -54,6 +57,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
     private Application mApplication;
     private ImageLoader mImageLoader;
     private AppManager mAppManager;
+    private WEActivity weActivity;
 
     @Inject
     public LoginPresenter(LoginContract.Model model, LoginContract.View rootView
@@ -64,6 +68,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
         this.mApplication = application;
         this.mImageLoader = imageLoader;
         this.mAppManager = appManager;
+        weActivity = (WEActivity) mAppManager.getCurrentActivity();
     }
 
     @Override
@@ -75,26 +80,31 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
         this.mApplication = null;
     }
 
-    public void getLoginInfo(){
-        if(TextUtils.isEmpty(mRootView.getUserInfo())){
+    public void getLoginInfo() {
+        if (TextUtils.isEmpty(mRootView.getUserInfo())) {
             UiUtils.makeText(mApplication.getString(R.string.login_no_userInfo));
-            return ;
+            return;
         }
-        if(TextUtils.isEmpty(mRootView.getCode())){
+        if (TextUtils.isEmpty(mRootView.getCode())) {
             UiUtils.makeText(mApplication.getString(R.string.login_no_code));
-            return ;
+            return;
+        }
+        if (TextUtils.isEmpty(mRootView.getClientId())){
+            UiUtils.makeText(mApplication.getString(R.string.login_no_client_id));
+            mRootView.initClientId();
+            return;
         }
 
-        mModel.getLoginInfo(mRootView.getUserInfo(),mRootView.getCode())
+        mModel.getLoginInfo(mRootView.getUserInfo(), mRootView.getCode(),mRootView.getClientId())
                 .compose(RxUtils.<BaseData<LoginEntity>>applySchedulers(mRootView))
                 .subscribe(new ErrorHandleSubscriber<BaseData<LoginEntity>>(mErrorHandler) {
                     @Override
                     public void onNext(BaseData<LoginEntity> loginEntityBaseData) {
-                        if(loginEntityBaseData.isSuccess()) {
-                            Intent intent = new Intent(mApplication, IdentificationActivity.class);
-                            mRootView.launchActivity(intent);
+                        if (loginEntityBaseData.isSuccess()) {
+                            weActivity.startActivity(IdentificationActivity.class);
                             mRootView.killMyself();
-                        }else{
+                            saveLoginInfo(loginEntityBaseData.getData());
+                        } else {
                             mRootView.showMessage(loginEntityBaseData.getMessage());
                         }
                     }
@@ -103,4 +113,26 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
 
     }
 
+    /*
+     * <p>登录信息本地化
+     * <p>@param loginEntity 登录实体
+     */
+    public void saveLoginInfo(LoginEntity loginEntity) {
+
+        DataHelper.saveDeviceData(mApplication, Constant.LOGIN, loginEntity);
+    }
+
+    /*
+     * <p>判断是否登录成功
+     * <p>@param loginEntity 登录实体
+     */
+    public void loginRegulation() {
+      //  weActivity.startActivity(MainActivity.class);
+
+        if (DataHelper.getDeviceData(mApplication, Constant.LOGIN) != null) {
+            weActivity.startActivity(MainActivity.class);
+        } else {
+
+        }
+    }
 }

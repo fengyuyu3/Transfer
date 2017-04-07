@@ -1,6 +1,7 @@
-package com.ironaviation.traveller.mvp.ui.widget;
+package com.ironaviation.traveller.mvp.ui.widget.TimePicker;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -10,6 +11,9 @@ import com.bigkoo.pickerview.listener.OnItemSelectedListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -39,6 +43,9 @@ public class MyWheelTime {
     private int downYear = DEFULT_END_YEAR;//自动回滚下限
     private int endMonth = 12;
     private int year_num;
+
+    private boolean flag=false;
+    private Calendar mCalendar = Calendar.getInstance();
 
     public MyWheelTime(View view) {
         super();
@@ -105,8 +112,17 @@ public class MyWheelTime {
         wv_hours.setCurrentItem(h);
 
         wv_mins = (WheelView) view.findViewById(com.bigkoo.pickerview.R.id.min);
-        wv_mins.setAdapter(new MyNumericWheelAdapter(0, 59));
         // wv_mins.setAdapter(new CustomNumericWheelAdapter(0,5));
+        // 根据屏幕密度来指定选择器字体的大小(不同屏幕可能不同)
+        switch (type) {
+            case MONTH_DAY_HOUR_TEN_MIN:
+                wv_mins.setAdapter(new TenMinutesNumericWheelAdapter(0, 5));
+                break;
+            default:
+                wv_mins.setAdapter(new MyNumericWheelAdapter(0, 59));
+
+                break;
+        }
         wv_mins.setLabel(context.getString(com.bigkoo.pickerview.R.string.pickerview_minutes));// 添加文字
         wv_mins.setCurrentItem(m);
 
@@ -120,12 +136,12 @@ public class MyWheelTime {
                 // 判断大小月及是否闰年,用来确定"日"的数据
                 wv_month.setAdapter(new MyNumericWheelAdapter(1, 12));
                 if (year_num > downYear) {
-                    wv_year.setCurrentItem(downYear -startYear);
-                    year_num=downYear;
+                    wv_year.setCurrentItem(downYear - startYear);
+                    year_num = downYear;
                     setMonth();
                 } else if (year_num < upYear) {
-                    year_num=upYear;
-                    wv_year.setCurrentItem(upYear- startYear);
+                    year_num = upYear;
+                    wv_year.setCurrentItem(upYear - startYear);
                     setMonth();
                 }
                 if (year_num == downYear) {
@@ -163,15 +179,22 @@ public class MyWheelTime {
         OnItemSelectedListener wheelListener_month = new OnItemSelectedListener() {
             @Override
             public void onItemSelected(int index) {
+               int m=  wv_month.getCurrentItem();
 
 
-                if (year_num == downYear) {
+                if (flag){
+                    if (mCalendar.before(getDate())) {
+                        wv_month.setCurrentItem(getDate().get(Calendar.MONTH));
+                    }
+                }
+
+               /* if (year_num == downYear) {
                     setMonth();
 
                 } else {
 
                 }
-
+*/
 
                 int month_num = index + 1;
                 int maxItem = 30;
@@ -260,6 +283,7 @@ public class MyWheelTime {
                 //                wv_hours.setLayoutParams(marginLayoutParams);
                 break;
             case MONTH_DAY_HOUR_MIN:
+            case MONTH_DAY_HOUR_TEN_MIN:
                 textSize = textSize * 3;
                 wv_year.setVisibility(View.GONE);
                 break;
@@ -300,6 +324,23 @@ public class MyWheelTime {
         return sb.toString();
     }
 
+    public Calendar getDate() {
+        Calendar calendar = new GregorianCalendar();
+        calendar.set(wv_year.getCurrentItem() + startYear
+                , wv_month.getCurrentItem() + 1
+                , wv_day.getCurrentItem() + 1
+                , wv_hours.getCurrentItem()
+                , wv_mins.getCurrentItem());
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int hours = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        Log.i("Time",year+"年"+month+"月"+day+"日"+hours+"点"+minute+"分");
+        return calendar;
+    }
+
     public View getView() {
         return view;
     }
@@ -320,6 +361,11 @@ public class MyWheelTime {
         this.endMonth = endMonth;
     }
 
+    public void setEndDate(Date endDate) {
+        flag=true;
+        mCalendar.setTime(endDate);
+    }
+
     public int getEndYear() {
         return endYear;
     }
@@ -337,7 +383,8 @@ public class MyWheelTime {
         this.downYear = downYear;
         year_num = downYear;
     }
-    public void setMonth(){
+
+    public void setMonth() {
         if (wv_month.getCurrentItem() > endMonth - 1) {
             wv_month.setCurrentItem(endMonth - 1);
         } else {

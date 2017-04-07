@@ -28,11 +28,16 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
         //如果intent包含了此字段,并且为true说明不加入到list
         // 默认为false,如果不需要管理(比如不需要在退出所有activity(killAll)时，退出此activity就在intent加此字段为true)
         boolean isNotAdd = false;
-        if (activity.getIntent() != null)
+        if (activity.getIntent() != null){
             isNotAdd = activity.getIntent().getBooleanExtra(IS_NOT_ADD_ACTIVITY_LIST, false);
 
-        if (!isNotAdd)
+        }
+
+        if (!isNotAdd){
             mAppManager.addActivity(activity);
+            mAppManager.setCurrentActivity(activity);
+        }
+
     }
 
     @Override
@@ -42,7 +47,7 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
 
     @Override
     public void onActivityResumed(Activity activity) {
-        mAppManager.setCurrentActivity(activity);
+        //mAppManager.setCurrentActivity(activity);
     }
 
     @Override

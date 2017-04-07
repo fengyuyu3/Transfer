@@ -81,11 +81,9 @@ public class AppManager {
     private void dispatchStart(Message message) {
         if (message.obj instanceof Intent) {
             startActivity((Intent) message.obj);
-            startAnimation();
         }
         else if (message.obj instanceof Class) {
             startActivity((Class) message.obj);
-            startAnimation();
         }
         return;
     }

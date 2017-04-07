@@ -22,4 +22,9 @@ public interface Constant {
     int AIRPORT_FLY_TIME = 22;
     int TRAVEL_CANCEL = 31;
     int TRAVEL_CUSTOMER = 32;
+
+    int REBACK = 21;
+
+    String LOGIN = "login";//登录信息
+    String ADDRESS_HISTORY = "AddressHistory";//历史
 }

@@ -1,12 +1,21 @@
 package com.ironaviation.traveller.mvp.presenter.my;
 
 import android.app.Application;
+import android.text.TextUtils;
 
+import com.baidu.mapapi.search.core.PoiInfo;
+import com.google.gson.Gson;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.AddressContract;
+import com.ironaviation.traveller.mvp.model.entity.AddressHistory;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
+import com.jess.arms.utils.DataHelper;
 import com.jess.arms.widget.imageloader.ImageLoader;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 
@@ -24,16 +33,13 @@ import javax.inject.Inject;
 
 
 /**
- *
- * 项目名称：Traveller      
- * 类描述：   
- * 创建人：starRing  
- * 创建时间：2017-03-31 11:40   
- * 修改人：starRing  
- * 修改时间：2017-03-31 11:40   
- * 修改备注：   
- * @version
- *
+ * 项目名称：Traveller
+ * 类描述：
+ * 创建人：starRing
+ * 创建时间：2017-03-31 11:40
+ * 修改人：starRing
+ * 修改时间：2017-03-31 11:40
+ * 修改备注：
  */
 @ActivityScope
 public class AddressPresenter extends BasePresenter<AddressContract.Model, AddressContract.View> {
@@ -62,4 +68,39 @@ public class AddressPresenter extends BasePresenter<AddressContract.Model, Addre
         this.mApplication = null;
     }
 
+    public void saveAddress(PoiInfo position) {
+
+        AddressHistory addressHistory = null;
+        position.postCode=Constant.ADDRESS_HISTORY;
+        String history = DataHelper.getStringSF(mApplication, Constant.ADDRESS_HISTORY);
+        if (!TextUtils.isEmpty(history)) {
+            addressHistory = new Gson().fromJson(history, AddressHistory.class);
+
+        } else {
+            addressHistory = new AddressHistory();
+            addressHistory.setPoiInfos(new ArrayList<PoiInfo>());
+        }
+        for (int i=0;i<addressHistory.getPoiInfos().size();i++){
+            if (position.uid.equals(addressHistory.getPoiInfos().get(i).uid)){
+                addressHistory.getPoiInfos().remove(addressHistory.getPoiInfos().get(i));
+                i--;
+            }
+
+        }
+        addressHistory.getPoiInfos().add(0, position);
+        DataHelper.saveDeviceDataToString(mApplication, Constant.ADDRESS_HISTORY, addressHistory);
+    }
+
+    public AddressHistory getAddress() {
+        AddressHistory addressHistory = null;
+        String history = DataHelper.getStringSF(mApplication, Constant.ADDRESS_HISTORY);
+        if (!TextUtils.isEmpty(history)) {
+            addressHistory = new Gson().fromJson(history, AddressHistory.class);
+
+        } else {
+            addressHistory = new AddressHistory();
+            addressHistory.setPoiInfos(new ArrayList<PoiInfo>());
+        }
+        return addressHistory;
+    }
 }

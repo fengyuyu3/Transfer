@@ -1,8 +1,10 @@
 package com.ironaviation.traveller.mvp.presenter;
 
 import android.app.Application;
+import android.content.Intent;
 import android.widget.Toast;
 
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.MainContract;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
@@ -10,6 +12,7 @@ import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.utils.RxUtils;
+import com.jess.arms.utils.UiUtils;
 import com.jess.arms.widget.imageloader.ImageLoader;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
@@ -64,25 +67,22 @@ public class MainPresenter extends BasePresenter<MainContract.Model, MainContrac
         this.mApplication = null;
     }
 
-    public void login(String id, String password) {
-        mModel.login(id, password)
-                .compose(RxUtils.<BaseData<LoginEntity>>applySchedulers(mRootView))
-                .subscribe(new ErrorHandleSubscriber<BaseData<LoginEntity>>(mErrorHandler) {
+    private long firstTime = 0;
 
-                    @Override
-                    public void onNext(BaseData<LoginEntity> loginBeanBaseData) {
-                        if (loginBeanBaseData.isSuccess()) {
-                            if (loginBeanBaseData.getData() != null) {
+    public boolean exit() {
+        boolean reason = false;
+        long secondTime = System.currentTimeMillis();
+        if (secondTime - firstTime > 2000) { // 如果两次按键时间间隔大于2秒，则不退出
 
-                                Toast.makeText(mApplication, "第一次成功", Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            Toast.makeText(mApplication, "第一次shibai", Toast.LENGTH_SHORT).show();
+            UiUtils.makeText("再按一次退出程序");
+            firstTime = secondTime;// 更新firstTime
+            reason = true;
+        } else { // 两次按键小于2秒时，退出应用
 
-
-                        }
-                    }
-                });
+            UiUtils.killAll();
+            reason = false;
+        }
+        return reason;
     }
 
 }

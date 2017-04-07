@@ -120,6 +120,7 @@ public class SettingActivity extends WEActivity<SettingPresenter> implements Set
         UiUtils.startActivity(intent);
     }
 
+
     @Override
     public void killMyself() {
         finish();
@@ -146,9 +147,9 @@ public class SettingActivity extends WEActivity<SettingPresenter> implements Set
 
                 break;
             case R.id.tti_cancellation_account:
-
-                UiUtils.killAll();
-                startActivity(LoginActivity.class);
+                mPresenter.signOut();
+                //UiUtils.killAll();
+               // startActivity(LoginActivity.class);
                 break;
         }
     }
