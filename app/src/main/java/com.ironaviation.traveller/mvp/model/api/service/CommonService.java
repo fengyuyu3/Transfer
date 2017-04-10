@@ -1,5 +1,6 @@
 package com.ironaviation.traveller.mvp.model.api.service;
 
+import com.google.gson.JsonObject;
 import com.ironaviation.traveller.mvp.model.api.Api;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.Login;
@@ -30,6 +31,7 @@ import rx.Observable;
  */
 public interface CommonService {
     // @FormUrlEncoded
+
     @POST(Api.LOGIN)
     Observable<BaseData<LoginEntity>> login(@Body Login params);
 
@@ -40,7 +42,10 @@ public interface CommonService {
     Observable<BaseData<List<MessageResponse>>> getMessageData(@Body MessageRequest params);
 
     @GET(Api.FLIGHT)
-    Observable<BaseData<Flight>> getFlightInfo(@Query("flightNo")String flightNo,@Query("date")String date);
+    Observable<BaseData<Flight>> getFlightInfo(@Query("flightNo") String flightNo, @Query("date") String date);
+
+    @POST(Api.APP_SIGN_OUT)
+    Observable<BaseData<JsonObject>> signOut();
 
     @POST(Api.CLEARANCE_ORDER)
     Observable<BaseData<ClearanceOrderRequest>> getClearanceInfo(@Body ClearanceOrderRequest params);

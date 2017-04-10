@@ -28,6 +28,8 @@ import com.ironaviation.traveller.mvp.model.entity.response.Flight;
 import com.ironaviation.traveller.mvp.model.entity.response.FlightDetails;
 import com.ironaviation.traveller.mvp.presenter.airportoff.TravelFloatPresenter;
 import com.ironaviation.traveller.mvp.ui.widget.MyTimePickerView;
+import com.ironaviation.traveller.mvp.ui.my.travel.TravelAdapter;
+import com.ironaviation.traveller.mvp.ui.widget.TimePicker.MyTimePickerView;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
@@ -87,7 +89,6 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
     RecyclerView mRwCity;
     @BindView(R.id.ll_port)
     AutoLinearLayout mLlPort;
-    private MyTimePickerView pvTime;
     private RecyclerView.LayoutManager  layoutManager;
     private TravelFloatAdapter mTravelFloatAdapter;
     private MyDialog mMyDialog;

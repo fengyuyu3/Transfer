@@ -18,6 +18,7 @@ import com.ironaviation.traveller.di.component.login.DaggerIdentificationCompone
 import com.ironaviation.traveller.di.module.login.IdentificationModule;
 import com.ironaviation.traveller.mvp.contract.login.IdentificationContract;
 import com.ironaviation.traveller.mvp.presenter.Login.IdentificationPresenter;
+import com.ironaviation.traveller.mvp.ui.main.MainActivity;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoRelativeLayout;
 
@@ -84,7 +85,13 @@ public class IdentificationActivity extends WEActivity<IdentificationPresenter> 
     @Override
     protected void initData() {
         setTitle(getString(R.string.title_identification));
-        setRightFunctionText(getString(R.string.function_skip));
+        setRightFunctionText(getString(R.string.function_skip), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(MainActivity.class);
+            }
+        });
         mEtName.setOnFocusChangeListener(this);
 //        mRlIdNumeralgitgit .setOnFocusChangeListeadbner(this);
     }

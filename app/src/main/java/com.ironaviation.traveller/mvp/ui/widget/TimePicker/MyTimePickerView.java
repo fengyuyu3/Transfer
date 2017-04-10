@@ -1,4 +1,4 @@
-package com.ironaviation.traveller.mvp.ui.widget;
+package com.ironaviation.traveller.mvp.ui.widget.TimePicker;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.bigkoo.pickerview.view.BasePickerView;
 import com.bigkoo.pickerview.view.WheelTime;
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.common.WEApplication;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -26,7 +27,7 @@ import java.util.Date;
  */
 public class MyTimePickerView extends BasePickerView implements View.OnClickListener {
     public enum Type {
-        ALL, YEAR_MONTH_DAY, HOURS_MINS, MONTH_DAY_HOUR_MIN, YEAR_MONTH, NINE
+        ALL, YEAR_MONTH_DAY, HOURS_MINS, MONTH_DAY_HOUR_MIN, YEAR_MONTH, NINE,MONTH_DAY_HOUR_TEN_MIN
     }// 四种选择模式，年月日时分，年月日，时分，月日时分
 
     MyWheelTime wheelTime;
@@ -35,11 +36,10 @@ public class MyTimePickerView extends BasePickerView implements View.OnClickList
     private static final String TAG_SUBMIT = "submit";
     private static final String TAG_CANCEL = "cancel";
     private OnTimeSelectListener timeSelectListener;
-    private Context mContext;
 
     public MyTimePickerView(Context context, Type type) {
         super(context);
-        mContext = context;
+
         LayoutInflater.from(context).inflate(R.layout.my_pickerview_time, contentContainer);
         // -----确定和取消按钮
         btnSubmit = findViewById(R.id.btnSubmit);
@@ -123,7 +123,9 @@ public class MyTimePickerView extends BasePickerView implements View.OnClickList
     public void setEndMonth(int endMonth) {
         wheelTime.setEndMonth(endMonth);
     }
-
+    public void setEndDate(Date endMonth) {
+        wheelTime.setEndDate(endMonth);
+    }
     /**
      * 设置选中时间
      *
@@ -182,7 +184,7 @@ public class MyTimePickerView extends BasePickerView implements View.OnClickList
      */
     public void setBGTransparent() {
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.timepicker);
-        linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.play_range_bg));
+        linearLayout.setBackgroundColor(WEApplication.getContext().getResources().getColor(R.color.play_range_bg));
     }
 
     @Override

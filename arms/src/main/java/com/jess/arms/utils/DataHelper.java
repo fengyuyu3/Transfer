@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.os.Environment;
 import android.util.Base64;
 
+import com.google.gson.Gson;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -113,6 +115,27 @@ public class DataHelper {
             String oAuth_Base64 = new String(Base64.encode(baos
                     .toByteArray(), Base64.DEFAULT));
             mSharedPreferences.edit().putString(key, oAuth_Base64).commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    /**
+     * 将对象储存到sharepreference
+     *
+     * @param key
+     * @param device
+     * @param <T>
+     */
+    public static <T> boolean saveDeviceDataToString(Context context, String key, T device) {
+        if (mSharedPreferences == null) {
+            mSharedPreferences = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
+        }
+
+        try {
+            String obj2=new Gson().toJson(device);
+            mSharedPreferences.edit().putString(key, obj2).commit();
             return true;
         } catch (Exception e) {
             e.printStackTrace();

@@ -21,14 +21,17 @@ import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
 import com.baidu.mapapi.search.sug.SuggestionResult;
 import com.baidu.mapapi.search.sug.SuggestionSearch;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.my.DaggerAddressComponent;
 import com.ironaviation.traveller.di.module.my.AddressModule;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.AddressContract;
 import com.ironaviation.traveller.mvp.presenter.my.AddressPresenter;
 import com.ironaviation.traveller.mvp.ui.manager.FullyLinearLayoutManager;
+import com.jess.arms.utils.DataHelper;
 import com.jess.arms.utils.UiUtils;
 
 import java.util.ArrayList;
@@ -97,12 +100,14 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
         // 初始化搜索模块，注册搜索事件监听
         mPoiSearch = PoiSearch.newInstance();
         mPoiSearch.setOnGetPoiSearchResultListener(this);
-        mAddressAdapter=new AddressAdapter(R.layout.item_address);
+        mAddressAdapter = new AddressAdapter(R.layout.item_address);
         mLayoutManager = new FullyLinearLayoutManager(this);
 
         mRvAddress.setLayoutManager(mLayoutManager);
 
         mRvAddress.setAdapter(mAddressAdapter);
+        infos=mPresenter.getAddress().getPoiInfos();
+        mAddressAdapter.setNewData(infos);
         /**
          * 当输入关键字变化时，动态更新建议列表
          */
@@ -123,8 +128,9 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
             public void onTextChanged(CharSequence charSequence, int arg1, int arg2,
                                       int arg3) {
                 if (charSequence.length() <= 0) {
-                    mRvAddress.setVisibility(View.GONE);
-                    infos = null;
+                    //mRvAddress.setVisibility(View.GONE);
+                    //infos = null;
+                    infos= mPresenter.getAddress().getPoiInfos();
                     mAddressAdapter.setNewData(infos);
                     searchRunnable.clear();
                     return;
@@ -133,6 +139,12 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
                 getAllSearchTextFilter(charSequence.toString());
 
 
+            }
+        });
+        mAddressAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                mPresenter.saveAddress(infos.get(position));
             }
         });
     }
@@ -233,6 +245,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
             //rl_passenger_standby_phone.setVisibility(View.VISIBLE);
             // rl_reservation.setVisibility(View.VISIBLE);
         }
+
     }
 
     /**

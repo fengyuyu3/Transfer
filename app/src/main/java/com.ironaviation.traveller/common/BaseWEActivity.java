@@ -102,12 +102,6 @@ public abstract class  BaseWEActivity<P extends Presenter> extends BaseActivity<
 
     }
 
-    public void startActivity(Intent intent){
-        super.startActivity(intent);
-    }
 
-    public void startActivity(Class clazz){
-        super.startActivity(new Intent(this,clazz));
-    }
 
 }

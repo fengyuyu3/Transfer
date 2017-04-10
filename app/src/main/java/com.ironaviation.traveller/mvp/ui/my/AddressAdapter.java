@@ -4,6 +4,7 @@ import com.baidu.mapapi.search.core.PoiInfo;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.model.entity.response.EstimateResponse;
 
 /**
@@ -23,8 +24,16 @@ public class AddressAdapter extends BaseQuickAdapter<PoiInfo, BaseViewHolder> {
 
     @Override
     protected void convert(BaseViewHolder helper, PoiInfo item) {
+
         helper.setText(R.id.tv_item_address, item.name);
         helper.setText(R.id.tv_item_detail_address, item.address);
+        if (item.postCode.equals(Constant.ADDRESS_HISTORY)) {
+            helper.setBackgroundRes(R.id.iv_address, R.mipmap.ic_clock);
+
+        } else {
+            helper.setBackgroundRes(R.id.iv_address, R.mipmap.ic_address);
+
+        }
     }
 
 

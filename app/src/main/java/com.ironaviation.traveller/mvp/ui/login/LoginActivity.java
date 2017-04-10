@@ -1,9 +1,13 @@
 package com.ironaviation.traveller.mvp.ui.login;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +15,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.igexin.sdk.PushManager;
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.service.WEGTIntentService;
+import com.ironaviation.traveller.app.service.WEPushService;
 import com.ironaviation.traveller.app.utils.BarUtils;
 import com.ironaviation.traveller.app.utils.CountTimerUtil;
 import com.ironaviation.traveller.common.AppComponent;
@@ -20,6 +27,7 @@ import com.ironaviation.traveller.di.component.login.DaggerLoginComponent;
 import com.ironaviation.traveller.di.module.login.LoginModule;
 import com.ironaviation.traveller.mvp.contract.login.LoginContract;
 import com.ironaviation.traveller.mvp.presenter.Login.LoginPresenter;
+import com.ironaviation.traveller.mvp.ui.main.MainActivity;
 import com.jess.arms.utils.UiUtils;
 
 import butterknife.BindView;
@@ -58,6 +66,9 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
     @BindView(R.id.tv_code)
     TextView mTvCode;
 
+    // DemoPushService.class 自定义服务名称, 核心服务
+    private Class userPushService = WEPushService.class;
+
     CountTimerUtil mCountTimerUtil;
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -82,24 +93,8 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
     @Override
     protected void initData() {
 
-//        mPresenter.getLoginInfo();
-
-        Log.e("kkk", BarUtils.getStatusBarHeight(this) + "");
-        setTitle("测试");
-        /*mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setResult(RESULT_OK);
-                finish();
-            }
-        });*/
-        showError(true);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                showError(false);
-            }
-        }, 4000);
+        initClientId();
+        mPresenter.loginRegulation();
     }
 
 
@@ -141,12 +136,40 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
         return etphone.getText().toString().trim();
     }
 
+    @Override
+    public String getClientId() {
+        return  PushManager.getInstance().getClientid(getApplicationContext());
+    }
+
+    @Override
+    public void initClientId() {
+
+        // com.getui.demo.DemoPushService 为第三方自定义推送服务
+        PackageManager pkgManager = getPackageManager();
+
+        // 读写 sd card 权限非常重要, android6.0默认禁止的, 建议初始化之前就弹窗让用户赋予该权限
+        boolean sdCardWritePermission =
+                pkgManager.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, getPackageName()) == PackageManager.PERMISSION_GRANTED;
+
+        // read phone state用于获取 imei 设备信息
+        boolean phoneSatePermission =
+                pkgManager.checkPermission(Manifest.permission.READ_PHONE_STATE, getPackageName()) == PackageManager.PERMISSION_GRANTED;
+
+        if (Build.VERSION.SDK_INT >= 23 && !sdCardWritePermission || !phoneSatePermission) {
+            requestPermission();
+        } else {
+            PushManager.getInstance().initialize(this.getApplicationContext(), userPushService);
+        }
+        PushManager.getInstance().initialize(this.getApplicationContext(), userPushService);
+        PushManager.getInstance().registerPushIntentService(this.getApplicationContext(), WEGTIntentService.class);
+    }
+
+
     @OnClick({R.id.btn_login,R.id.tv_code})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
-                startActivity(IdentificationActivity.class);
-                killMyself();
+                mPresenter.getLoginInfo();
                 break;
             case R.id.tv_code:
                 mCountTimerUtil = new CountTimerUtil(60000,1000,mTvCode);
@@ -154,4 +177,10 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
                 break;
         }
     }
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE},
+                REQUEST_PERMISSION);
+    }
+
+    private static final int REQUEST_PERMISSION = 0;
 }

@@ -11,22 +11,33 @@ package com.ironaviation.traveller.mvp.model.entity;
  */
 public class Login {
 
-    String UserName;
-    String Code;
+    private String PhoneNumber;
 
-    public String getUserName() {
-        return UserName;
+    private String ValidateCode;
+    private String ClientId;
+
+    public String getValidateCode() {
+        return ValidateCode;
     }
 
-    public void setUserName(String userName) {
-        UserName = userName;
+    public void setValidateCode(String validateCode) {
+        ValidateCode = validateCode;
     }
 
-    public String getCode() {
-        return Code;
+    public String getPhoneNumber() {
+        return PhoneNumber;
     }
 
-    public void setCode(String code) {
-        Code = code;
+    public void setPhoneNumber(String phoneNumber) {
+        PhoneNumber = phoneNumber;
+    }
+
+
+    public String getClientId() {
+        return ClientId;
+    }
+
+    public void setClientId(String clientId) {
+        ClientId = clientId;
     }
 }

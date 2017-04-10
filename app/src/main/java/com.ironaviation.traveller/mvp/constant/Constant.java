@@ -23,6 +23,11 @@ public interface Constant {
     int TRAVEL_CANCEL = 31;
     int TRAVEL_CUSTOMER = 32;
 
+    int REBACK = 21;
+
+    String LOGIN = "login";//登录信息
+    String ADDRESS_HISTORY = "AddressHistory";//历史
+
     int TRAVEL_DETAILS_GOING = 41;
     int TRAVEL_DETAILS_COMPLETE = 42;
     int TRAVEL_DETAILS_ORDER = 43;

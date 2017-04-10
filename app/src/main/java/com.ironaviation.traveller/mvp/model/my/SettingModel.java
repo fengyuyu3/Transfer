@@ -3,13 +3,19 @@ package com.ironaviation.traveller.mvp.model.my;
 import android.app.Application;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.ironaviation.traveller.mvp.contract.my.SettingContract;
 import com.ironaviation.traveller.mvp.model.api.cache.CacheManager;
+import com.ironaviation.traveller.mvp.model.api.service.CommonService;
 import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
+import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.Login;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BaseModel;
 
 import javax.inject.Inject;
+
+import rx.Observable;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -39,12 +45,13 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
 public class SettingModel extends BaseModel<ServiceManager, CacheManager> implements SettingContract.Model {
     private Gson mGson;
     private Application mApplication;
-
+    private CommonService mCommonService;
     @Inject
     public SettingModel(ServiceManager serviceManager, CacheManager cacheManager, Gson gson, Application application) {
         super(serviceManager, cacheManager);
         this.mGson = gson;
         this.mApplication = application;
+        mCommonService = serviceManager.getCommonService();
     }
 
     @Override
@@ -54,4 +61,9 @@ public class SettingModel extends BaseModel<ServiceManager, CacheManager> implem
         this.mApplication = null;
     }
 
+    @Override
+    public Observable<BaseData<JsonObject>> singOut( ) {
+
+        return mCommonService.signOut();
+    }
 }

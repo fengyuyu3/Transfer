@@ -1,4 +1,4 @@
-package com.ironaviation.traveller.mvp.ui.widget;
+package com.ironaviation.traveller.mvp.ui.widget.TimePicker;
 
 import com.bigkoo.pickerview.adapter.WheelAdapter;
 

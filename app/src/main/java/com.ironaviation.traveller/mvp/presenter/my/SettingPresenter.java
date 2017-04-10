@@ -1,14 +1,26 @@
 package com.ironaviation.traveller.mvp.presenter.my;
 
 import android.app.Application;
+import android.content.Intent;
 
+import com.google.gson.JsonObject;
+import com.ironaviation.traveller.common.WEActivity;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.SettingContract;
+import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
+import com.ironaviation.traveller.mvp.ui.login.IdentificationActivity;
+import com.ironaviation.traveller.mvp.ui.login.LoginActivity;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
+import com.jess.arms.utils.DataHelper;
+import com.jess.arms.utils.RxUtils;
+import com.jess.arms.utils.UiUtils;
 import com.jess.arms.widget.imageloader.ImageLoader;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
 import javax.inject.Inject;
 
@@ -41,6 +53,7 @@ public class SettingPresenter extends BasePresenter<SettingContract.Model, Setti
     private Application mApplication;
     private ImageLoader mImageLoader;
     private AppManager mAppManager;
+    private WEActivity weActivity;
 
     @Inject
     public SettingPresenter(SettingContract.Model model, SettingContract.View rootView
@@ -51,6 +64,8 @@ public class SettingPresenter extends BasePresenter<SettingContract.Model, Setti
         this.mApplication = application;
         this.mImageLoader = imageLoader;
         this.mAppManager = appManager;
+        weActivity = (WEActivity) mAppManager.getCurrentActivity();
+
     }
 
     @Override
@@ -62,4 +77,20 @@ public class SettingPresenter extends BasePresenter<SettingContract.Model, Setti
         this.mApplication = null;
     }
 
+    public void signOut(){
+        mModel.singOut()
+                .compose(RxUtils.<BaseData<JsonObject>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<JsonObject>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<JsonObject> loginEntityBaseData) {
+                        if (loginEntityBaseData.isSuccess()) {
+                            UiUtils.killAll();
+                            DataHelper.removeSF(mApplication, Constant.LOGIN);
+                            weActivity.startActivity(LoginActivity.class);
+                        } else {
+                        }
+                    }
+                });
+
+    }
 }

@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ironaviation.traveller.R;
-import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.app.utils.CheckIdCardUtils;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEFragment;
@@ -30,6 +29,7 @@ import com.ironaviation.traveller.mvp.presenter.airportoff.AirPortOffPresenter;
 import com.ironaviation.traveller.mvp.ui.widget.MyTimeDialog;
 import com.ironaviation.traveller.mvp.ui.widget.NumDialog;
 import com.ironaviation.traveller.mvp.ui.widget.PublicTextView;
+import com.ironaviation.traveller.mvp.ui.widget.TimePicker.MyTimePickerView;
 import com.ironaviation.traveller.mvp.ui.widget.TerminalPopupWindow;
 import com.ironaviation.traveller.mvp.ui.widget.TravelPopupwindow;
 import com.jess.arms.utils.UiUtils;
@@ -39,6 +39,8 @@ import com.zhy.autolayout.AutoRelativeLayout;
 import org.simple.eventbus.Subscriber;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -68,7 +70,7 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 
 public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implements AirPortOffContract.View
-        , NumDialog.CallBackItem, AirPortAdapter.ItemIdCallBack, AirPortAdapter.ItemIdStatusCallBack,TerminalPopupWindow.CallBackItem {
+        , NumDialog.CallBackItem, AirPortAdapter.ItemIdCallBack, AirPortAdapter.ItemIdStatusCallBack {
 
     @BindView(R.id.pw_person)
     PublicTextView mPwPerson;
@@ -97,8 +99,6 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     TextView mTwGoToOrder;
     @BindView(R.id.ll_price)
     AutoLinearLayout mLlPrice;
-    @BindView(R.id.ll_book)
-    AutoLinearLayout mLlbook;
 
     /*@BindView(R.id.pw_id_card)
     PublicView mPwIdCard;*/
@@ -110,6 +110,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     private static final int NUM = 6;
     private List<AirPortRequest> list; //这是recylerview 的数据
     private List<AirPortRequest> mAirportRequests;
+    private MyTimePickerView pvTime;
     private MyTimeDialog mMyTimeDialog;
     private TerminalPopupWindow mTerminalPopupWindow;
     private int terminalNum = -1;
@@ -143,6 +144,23 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         mTerminalPopupWindow = new TerminalPopupWindow(getActivity(),getTerminal(),this);
 //        setRidTimeHide();
         initEmptyData();
+        setPrice();
+        pvTime = new MyTimePickerView(getActivity(), MyTimePickerView.Type.MONTH_DAY_HOUR_TEN_MIN);
+        pvTime.setTime(new Date());
+        Date date=new Date();
+        date.setTime(1491782400000l);
+        pvTime.setEndDate(date);
+        pvTime.setTitle(getResources().getString(R.string.riding_time_select));
+        pvTime.setCancelable(true);
+        pvTime.setOnTimeSelectListener(new MyTimePickerView.OnTimeSelectListener() {
+
+            @Override
+            public void onTimeSelect(Date date) throws Exception {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+
+            }
+        });
 //        setPrice();
     }
 
@@ -203,15 +221,16 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
                     mTerminalPopupWindow.setNum(terminalNum);
                     mTerminalPopupWindow.show(mPwSeat);
                 }
+                mTerminal.show();
+                break;
+            case R.id.pw_time:
+                pvTime.show();
                 break;
             case R.id.pw_flt_no:
                 Intent intent = new Intent(getActivity(), TravelFloatActivity.class);
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.left_in_alpha, R.anim.right_out_alpha);
 //                mTravelPopupwindow.showPopupWindow(mPwPerson);
-                break;
-            case R.id.pw_time:
-                mMyTimeDialog.showDialog("test");
                 break;
         }
     }
@@ -227,7 +246,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     public List<String> getTerminal() {
         List<String> list = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
-            list.add("成都双流国际机场T" + (i + 1) + "航站楼");
+            list.add("T" + (i + 1) + "航站楼");
         }
         return list;
     }
@@ -292,13 +311,13 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         mPwAddress.setVisibility(View.GONE);
         mPwAirport.setVisibility(View.GONE);
         mPwSeat.setVisibility(View.GONE);
-        mLlbook.setVisibility(View.GONE);
     }
 
     public void setRidTimeShow() {
         mPwTime.setVisibility(View.VISIBLE);
         mPwAddress.setVisibility(View.VISIBLE);
         mPwAirport.setVisibility(View.VISIBLE);
+        mPwSeat.setVisibility(View.VISIBLE);
     }
 
     public void addLinearLayout(int position) {
@@ -407,12 +426,12 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         });
     }
 
-    public void setPrice(){
-        String bestPrice = "<font color='#e83328' font-size=80px>"+"22.04"+"</font>"+"<font color='#b2b2b2' size=40> 元</font>";
+    public void setPrice() {
+        String bestPrice = "<font color='#e83328' font-size=80px>" + "22.04" + "</font>" + "<font color='#b2b2b2' size=40> 元</font>";
         mTwBestPrice.setText(Html.fromHtml(bestPrice));
-        String originalPrice = "<font color='#3a3a3a' font-size=80>"+"22.04"+"</font>"+"<font color='#3a3a3a' size=40> 元</font>";
+        String originalPrice = "<font color='#3a3a3a' font-size=80>" + "22.04" + "</font>" + "<font color='#3a3a3a' size=40> 元</font>";
         mTwOriginalPrice.setText(Html.fromHtml(originalPrice));
-        mTwOriginalPrice.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG );
+        mTwOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
     }
 
     public void clearMoreData(int position) {
