@@ -4,6 +4,7 @@ import com.ironaviation.traveller.mvp.model.api.Api;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.Login;
 import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
+import com.ironaviation.traveller.mvp.model.entity.request.ClearanceOrderRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.MessageRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.TravelRequest;
 import com.ironaviation.traveller.mvp.model.entity.response.Flight;
@@ -40,4 +41,7 @@ public interface CommonService {
 
     @GET(Api.FLIGHT)
     Observable<BaseData<Flight>> getFlightInfo(@Query("flightNo")String flightNo,@Query("date")String date);
+
+    @POST(Api.CLEARANCE_ORDER)
+    Observable<BaseData<ClearanceOrderRequest>> getClearanceInfo(@Body ClearanceOrderRequest params);
 }

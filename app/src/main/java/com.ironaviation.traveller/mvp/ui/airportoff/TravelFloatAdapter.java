@@ -6,8 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.mvp.model.entity.response.FlightDetails;
 import com.ironaviation.traveller.mvp.ui.my.travel.TravelAdapter;
+
+import org.simple.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -37,18 +40,24 @@ public class TravelFloatAdapter extends RecyclerView.Adapter<TravelFloatHolder> 
     }
 
     @Override
-    public void onBindViewHolder(TravelFloatHolder holder, int position) {
+    public void onBindViewHolder(TravelFloatHolder holder, final int position) {
 //        holder.ll_city.setOnClickListener();
 
-        holder.twTime.setText(getDate(flightDetailsList.get(position).getTakeOffTime())+":"
+        holder.twTime.setText(getDate(flightDetailsList.get(position).getTakeOffTime())+"-"
         +getDate(flightDetailsList.get(position).getArriveTime()));
-        holder.twFromToCity.setText(getCity(flightDetailsList.get(position).getTakeOff())+":"
-        +getCity(flightDetailsList.get(position).getTakeOff()));
+        holder.twFromToCity.setText(getCity(flightDetailsList.get(position).getTakeOff())+" 至 "
+        +getCity(flightDetailsList.get(position).getArrive()));
+        holder.ll_city.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post(flightDetailsList.get(position), EventBusTags.FLIGHT_INFO);
+            }
+        });
     }
 
     public String getDate(long time){
         Date date = new Date(time);
-        SimpleDateFormat formatter = new SimpleDateFormat("mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("hh:mm");
         String dateString = formatter.format(date);
         return dateString;
     }

@@ -1,4 +1,4 @@
-package com.ironaviation.traveller.app.utils;
+package com.ironaviation.traveller.mvp.ui.widget;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -87,12 +87,16 @@ public class MyDialog{
         }
 
     public void dismiss(){
-        if(mCameraDialog.isShowing()) {
+        if( mCameraDialog != null && mCameraDialog.isShowing()) {
             mCameraDialog.dismiss();
         }
     }
 
     public boolean isShowing(){
-        return mCameraDialog.isShowing();
+        if(mCameraDialog != null) {
+            return mCameraDialog.isShowing();
+        }else{
+            return false;
+        }
     }
 }

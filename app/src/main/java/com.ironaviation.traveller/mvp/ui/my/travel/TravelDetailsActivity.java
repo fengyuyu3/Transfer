@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.ironaviation.traveller.R;
@@ -26,6 +27,7 @@ import com.zhy.autolayout.AutoLinearLayout;
 import org.simple.eventbus.Subscriber;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -76,7 +78,12 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     AutoLinearLayout mLlArrive; // 确认到达
     @BindView(R.id.tw_order_info)
     TextView mTwOrderInfo; //派单中标题
+    @BindView(R.id.iw_zoom)
+    ImageView mIwZoom;
+    @BindView(R.id.iw_zoom_nomal)
+    ImageView mIwZoomNomal;
     private MoreActionPopupWindow mPopupWindow;
+    private int status;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -143,6 +150,34 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         }
     }
 
+    @OnClick({R.id.iw_zoom,R.id.iw_zoom_nomal})
+    public void myOnClick(View view){
+        switch(view.getId()){
+            case R.id.iw_zoom:
+                AllGone();
+            break;
+            case R.id.iw_zoom_nomal:
+                showStatus(status);
+                break;
+        }
+    }
+
+    public void showStatus(int status){
+        switch (status){
+            case Constant.TRAVEL_DETAILS_GOING:
+                going();
+                break;
+            case Constant.TRAVEL_DETAILS_COMPLETE:
+                complete();
+                break;
+            case Constant.TRAVEL_DETAILS_ORDER:
+                order();
+                break;
+            case Constant.TRAVEL_DETAILS_ARRIVE:
+                arrive();
+                break;
+        }
+    }
 
     @Subscriber(tag = EventBusTags.TRAVEL_DETAILS)
     public void onEventMainThread(TravelCancelEvent event) {
@@ -163,8 +198,8 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         mLlDriverInfo.setVisibility(View.VISIBLE); //司机信息
         mLlComplete.setVisibility(View.GONE);//派单成功
         mLlOrdering.setVisibility(View.GONE);//派单中
-        mLlArrive.setVisibility(View.GONE);  // 确认到达
-
+        mLlArrive.setVisibility(View.GONE);  // 确认到达a
+        status = Constant.TRAVEL_DETAILS_GOING;
     }
 
     public void complete() { //派单成功
@@ -173,6 +208,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         mLlOrdering.setVisibility(View.GONE);//派单中
         mLlArrive.setVisibility(View.GONE);  // 确认到达
         mLlGoing.setVisibility(View.GONE); //正在进行中
+        status = Constant.TRAVEL_DETAILS_COMPLETE;
     }
 
     public void order() { //派单中
@@ -181,11 +217,20 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         mLlDriverInfo.setVisibility(View.GONE); //司机信息
         mLlArrive.setVisibility(View.GONE);  // 确认到达
         mLlGoing.setVisibility(View.GONE); //正在进行中
+        status = Constant.TRAVEL_DETAILS_ORDER;
     }
 
     public void arrive() { //确认到达
         mLlArrive.setVisibility(View.VISIBLE);  // 确认到达
         mLlDriverInfo.setVisibility(View.VISIBLE); //司机信息
+        mLlOrdering.setVisibility(View.GONE);//派单中
+        mLlComplete.setVisibility(View.GONE);//派单成功
+        mLlGoing.setVisibility(View.GONE); //正在进行中
+        status = Constant.TRAVEL_DETAILS_ARRIVE;
+    }
+
+    public void AllGone(){
+        mLlArrive.setVisibility(View.GONE);  // 确认到达
         mLlOrdering.setVisibility(View.GONE);//派单中
         mLlComplete.setVisibility(View.GONE);//派单成功
         mLlGoing.setVisibility(View.GONE); //正在进行中

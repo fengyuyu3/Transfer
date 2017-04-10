@@ -2,7 +2,6 @@
 <com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
          android:layout_width="match_parent"
          android:layout_height="match_parent"
-         xmlns:aigestudio="http://schemas.android.com/tools"
          android:background="@color/popwindow_backgound"
          android:id="@+id/ll_port"
          android:orientation="vertical">
@@ -47,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="112px"
             android:visibility="gone">
-
+        <include layout="@layout/include_line_one"/>
             <ImageView
                 android:id="@+id/iw_time"
                 android:visibility="invisible"
@@ -73,37 +72,36 @@
                 android:textSize="30px"/>
         </com.zhy.autolayout.AutoRelativeLayout>
 
-    <com.zhy.autolayout.AutoRelativeLayout
-        android:id="@+id/rl_city"
+    <com.zhy.autolayout.AutoLinearLayout
+        android:orientation="vertical"
+        android:id="@+id/ll_city"
         android:layout_width="match_parent"
-        android:layout_height="112px"
+        android:layout_height="wrap_content"
         android:background="@color/white"
         android:visibility="gone">
-
+        <include layout="@layout/include_line_one"/>
         <TextView
+            android:textColor="@color/word_already_input"
             android:id="@+id/tw_city"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="112px"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="82px"
             android:background="@null"
             android:gravity="center|left"
             android:maxLines="1"
-            android:paddingLeft="10px"
+            android:paddingLeft="32px"
             android:singleLine="true"
             android:text="@string/airport_city"
-            android:textColor="@color/airport_edit_gray"
             android:textSize="30px"/>
-    </com.zhy.autolayout.AutoRelativeLayout>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rw_city"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@color/white"
-        android:visibility="invisible">
-    </android.support.v7.widget.RecyclerView>
-
-
+        <include layout="@layout/include_line_one"/>
+        <android.support.v7.widget.RecyclerView
+            android:paddingLeft="60px"
+            android:paddingRight="60px"
+            android:id="@+id/rw_city"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+        </android.support.v7.widget.RecyclerView>
+    </com.zhy.autolayout.AutoLinearLayout>
 
 </com.zhy.autolayout.AutoLinearLayout>

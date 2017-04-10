@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      android:orientation="horizontal"
+      android:paddingLeft="60px"
+      android:paddingRight="60px"
+      android:id="@+id/ll_terminal"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="112px">
+    <ImageView
+        android:layout_gravity="center"
+        android:id="@+id/iw_point"
+        android:src="@mipmap/ic_blue_point"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:textSize="30px"
+        android:layout_gravity="center"
+        android:textColor="@color/airport_edit_gray"
+        android:layout_marginLeft="32px"
+        android:id="@+id/tw_terminal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    </com.zhy.autolayout.AutoLinearLayout>
+</com.zhy.autolayout.AutoLinearLayout>

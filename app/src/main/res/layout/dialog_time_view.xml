@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <com.zhy.autolayout.AutoLinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="64px"
+        android:layout_marginLeft="32px"
+        android:layout_marginRight="32px">
+        <TextView
+            android:id="@+id/tw_cancel"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="取消"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tw_title"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tw_confirm"
+            android:layout_gravity="center"
+            android:text="确定"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </com.zhy.autolayout.AutoLinearLayout>
+    <com.zhy.autolayout.AutoLinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="300px">
+        <com.weigan.loopview.LoopView
+            android:layout_weight="1"
+            android:id="@+id/loopView_day"
+            android:layout_width="0px"
+            android:layout_height="300px"
+            app:awv_textsize="18"
+            app:awv_centerTextColor="@color/play_range_bg"
+            app:awv_outerTextColor="@color/color_travel_details_font"
+            app:awv_itemsVisibleCount="5"
+            app:awv_lineSpace="4"
+            app:awv_isLoop="false"
+            />
+        <com.weigan.loopview.LoopView
+            android:layout_weight="1"
+            android:id="@+id/loopView_hour"
+            android:layout_width="0px"
+            android:layout_height="300px"
+            app:awv_textsize="18"
+            app:awv_centerTextColor="@color/play_range_bg"
+            app:awv_outerTextColor="@color/color_travel_details_font"
+            app:awv_itemsVisibleCount="5"
+            app:awv_lineSpace="4"
+            app:awv_isLoop="false"
+            />
+        <com.weigan.loopview.LoopView
+            android:layout_weight="1"
+            android:id="@+id/loopView_m"
+            android:layout_width="0px"
+            android:layout_height="300px"
+            app:awv_textsize="18"
+            app:awv_centerTextColor="@color/play_range_bg"
+            app:awv_outerTextColor="@color/color_travel_details_font"
+            app:awv_itemsVisibleCount="5"
+            app:awv_lineSpace="4"
+            app:awv_isLoop="false"
+            />
+    </com.zhy.autolayout.AutoLinearLayout>
+
+</com.zhy.autolayout.AutoLinearLayout>

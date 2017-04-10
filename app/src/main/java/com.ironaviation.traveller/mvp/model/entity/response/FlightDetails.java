@@ -27,10 +27,10 @@ public class FlightDetails {
 
     private String TakeOff;
     private String Arrive;
-    private long TakeOffTime;
-    private long RealityTakeOffTime;
-    private long ArriveTime;
-    private long RealityArriveTime;
+    private Long TakeOffTime;
+    private Long RealityTakeOffTime;
+    private Long ArriveTime;
+    private Long RealityArriveTime;
     private String State;
     private int StateId;
     private String Gate;
@@ -53,35 +53,35 @@ public class FlightDetails {
         this.Arrive = Arrive;
     }
 
-    public long getTakeOffTime() {
+    public Long getTakeOffTime() {
         return TakeOffTime;
     }
 
-    public void setTakeOffTime(long TakeOffTime) {
+    public void setTakeOffTime(Long TakeOffTime) {
         this.TakeOffTime = TakeOffTime;
     }
 
-    public long getRealityTakeOffTime() {
+    public Long getRealityTakeOffTime() {
         return RealityTakeOffTime;
     }
 
-    public void setRealityTakeOffTime(long RealityTakeOffTime) {
+    public void setRealityTakeOffTime(Long RealityTakeOffTime) {
         this.RealityTakeOffTime = RealityTakeOffTime;
     }
 
-    public long getArriveTime() {
+    public Long getArriveTime() {
         return ArriveTime;
     }
 
-    public void setArriveTime(long ArriveTime) {
+    public void setArriveTime(Long ArriveTime) {
         this.ArriveTime = ArriveTime;
     }
 
-    public long getRealityArriveTime() {
+    public Long getRealityArriveTime() {
         return RealityArriveTime;
     }
 
-    public void setRealityArriveTime(long RealityArriveTime) {
+    public void setRealityArriveTime(Long RealityArriveTime) {
         this.RealityArriveTime = RealityArriveTime;
     }
 

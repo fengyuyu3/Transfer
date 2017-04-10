@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.app.utils.CheckIdCardUtils;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEFragment;
@@ -24,13 +25,18 @@ import com.ironaviation.traveller.di.module.airportoff.AirPortOffModule;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.airportoff.AirPortOffContract;
 import com.ironaviation.traveller.mvp.model.entity.request.AirPortRequest;
+import com.ironaviation.traveller.mvp.model.entity.response.FlightDetails;
 import com.ironaviation.traveller.mvp.presenter.airportoff.AirPortOffPresenter;
+import com.ironaviation.traveller.mvp.ui.widget.MyTimeDialog;
 import com.ironaviation.traveller.mvp.ui.widget.NumDialog;
 import com.ironaviation.traveller.mvp.ui.widget.PublicTextView;
+import com.ironaviation.traveller.mvp.ui.widget.TerminalPopupWindow;
 import com.ironaviation.traveller.mvp.ui.widget.TravelPopupwindow;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
+
+import org.simple.eventbus.Subscriber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +68,7 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 
 public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implements AirPortOffContract.View
-        , NumDialog.CallBackItem, AirPortAdapter.ItemIdCallBack, AirPortAdapter.ItemIdStatusCallBack {
+        , NumDialog.CallBackItem, AirPortAdapter.ItemIdCallBack, AirPortAdapter.ItemIdStatusCallBack,TerminalPopupWindow.CallBackItem {
 
     @BindView(R.id.pw_person)
     PublicTextView mPwPerson;
@@ -91,6 +97,8 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     TextView mTwGoToOrder;
     @BindView(R.id.ll_price)
     AutoLinearLayout mLlPrice;
+    @BindView(R.id.ll_book)
+    AutoLinearLayout mLlbook;
 
     /*@BindView(R.id.pw_id_card)
     PublicView mPwIdCard;*/
@@ -102,6 +110,9 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     private static final int NUM = 6;
     private List<AirPortRequest> list; //这是recylerview 的数据
     private List<AirPortRequest> mAirportRequests;
+    private MyTimeDialog mMyTimeDialog;
+    private TerminalPopupWindow mTerminalPopupWindow;
+    private int terminalNum = -1;
 
     public static AirPortOffFragment newInstance() {
         AirPortOffFragment fragment = new AirPortOffFragment();
@@ -125,16 +136,14 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
 
     @Override
     protected void initData() {
+        mMyTimeDialog = new MyTimeDialog(getActivity());
         mTravelPopupwindow = new TravelPopupwindow(getActivity());
-        /*mLayoutManager = new FullyLinearLayoutManager(getActivity());
-        mAirPortAdapter = new AirPortAdapter(this,this);
-        rwAirport.setLayoutManager(mLayoutManager);
-        rwAirport.setAdapter(mAirPortAdapter);*/
         mNumDialog = new NumDialog(getActivity(), getNumsData(), this, Constant.AIRPORT_TYPE_SEAT);
         mTerminal = new NumDialog(getActivity(), getTerminal(), this, Constant.AIRPORT_TYPE_TERMINAL);
+        mTerminalPopupWindow = new TerminalPopupWindow(getActivity(),getTerminal(),this);
 //        setRidTimeHide();
         initEmptyData();
-        setPrice();
+//        setPrice();
     }
 
     /**
@@ -163,7 +172,6 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
 
     @Override
     public void hideLoading() {
-
     }
 
     @Override
@@ -184,20 +192,26 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     }
 
 
-    @OnClick({R.id.pw_seat, R.id.pw_airport, R.id.pw_flt_no})
+    @OnClick({R.id.pw_seat, R.id.pw_airport, R.id.pw_flt_no,R.id.pw_time})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.pw_seat:
                 mNumDialog.show();
                 break;
             case R.id.pw_airport:
-                mTerminal.show();
+                if(mTerminalPopupWindow != null){
+                    mTerminalPopupWindow.setNum(terminalNum);
+                    mTerminalPopupWindow.show(mPwSeat);
+                }
                 break;
             case R.id.pw_flt_no:
                 Intent intent = new Intent(getActivity(), TravelFloatActivity.class);
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.left_in_alpha, R.anim.right_out_alpha);
 //                mTravelPopupwindow.showPopupWindow(mPwPerson);
+                break;
+            case R.id.pw_time:
+                mMyTimeDialog.showDialog("test");
                 break;
         }
     }
@@ -213,7 +227,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     public List<String> getTerminal() {
         List<String> list = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
-            list.add("T" + (i + 1) + "航站楼");
+            list.add("成都双流国际机场T" + (i + 1) + "航站楼");
         }
         return list;
     }
@@ -278,13 +292,13 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         mPwAddress.setVisibility(View.GONE);
         mPwAirport.setVisibility(View.GONE);
         mPwSeat.setVisibility(View.GONE);
+        mLlbook.setVisibility(View.GONE);
     }
 
     public void setRidTimeShow() {
         mPwTime.setVisibility(View.VISIBLE);
         mPwAddress.setVisibility(View.VISIBLE);
         mPwAirport.setVisibility(View.VISIBLE);
-        mPwSeat.setVisibility(View.VISIBLE);
     }
 
     public void addLinearLayout(int position) {
@@ -407,6 +421,13 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
             mAirportRequests.get(i).setStatus(Constant.AIRPORT_NO);
         }
     }
+    //获取航站楼位置
+    @Override
+    public void getItem(int position) {
+        terminalNum = position;
+        mPwAirport.setTextInfo("成都双流国际机场T" + (position + 1) + "航站楼");
+        mTerminalPopupWindow.dismiss();
+    }
 
     public class MyAirportHolder {
         public ImageView mIvLogo;
@@ -415,5 +436,11 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         public EditText mEdtContent;
         public TextView mTvCode;
         public AutoLinearLayout mPwLl;
+    }
+
+    @Subscriber(tag = EventBusTags.FLIGHT_INFO)
+    public void getFlightInfo(FlightDetails flightDetails){
+        setRidTimeShow();
+//        mPwFltNo.setTextInfo(flightDetails.get);
     }
 }

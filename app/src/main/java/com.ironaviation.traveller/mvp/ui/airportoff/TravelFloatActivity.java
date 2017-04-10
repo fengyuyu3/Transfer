@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,15 +17,16 @@ import android.widget.TextView;
 
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
-import com.ironaviation.traveller.app.utils.MyDialog;
+import com.ironaviation.traveller.mvp.ui.widget.MyDialog;
+import com.ironaviation.traveller.app.utils.TimerUtils;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.airportoff.DaggerTravelFloatComponent;
 import com.ironaviation.traveller.di.module.airportoff.TravelFloatModule;
 import com.ironaviation.traveller.mvp.contract.airportoff.TravelFloatContract;
 import com.ironaviation.traveller.mvp.model.entity.response.Flight;
+import com.ironaviation.traveller.mvp.model.entity.response.FlightDetails;
 import com.ironaviation.traveller.mvp.presenter.airportoff.TravelFloatPresenter;
-import com.ironaviation.traveller.mvp.ui.my.travel.TravelAdapter;
 import com.ironaviation.traveller.mvp.ui.widget.MyTimePickerView;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoLinearLayout;
@@ -35,7 +35,6 @@ import com.zhy.autolayout.AutoRelativeLayout;
 import org.simple.eventbus.Subscriber;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -68,7 +67,6 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implements TravelFloatContract.View {
 
-
     @BindView(R.id.iv_logo)
     ImageView mIvLogo;
     @BindView(R.id.edt_travel_num)
@@ -83,8 +81,8 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
     AutoRelativeLayout mRlAirportFlyTime;
     @BindView(R.id.tw_city)
     TextView mTwCity;
-    @BindView(R.id.rl_city)
-    AutoRelativeLayout mRlCity;
+    @BindView(R.id.ll_city)
+    AutoLinearLayout mllCity;
     @BindView(R.id.rw_city)
     RecyclerView mRwCity;
     @BindView(R.id.ll_port)
@@ -116,6 +114,12 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
         setEditorAction();
         setFlyTime();
         initRecyerView();
+        mTwCity.setOnClickListener(new View.OnClickListener() { //获取焦点消费事件
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     public void initRecyerView(){
@@ -156,7 +160,6 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
 
     @Override
     protected void nodataRefresh() {
-
     }
 
     @Override
@@ -170,12 +173,10 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
         mEdtTravelNum.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
@@ -186,12 +187,12 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
                 }else{
                     mRlAirportFlyTime.setVisibility(View.GONE);
                 }
+                hideFlight();
             }
         });
     }
 
     public void setEditorAction(){
-
         mEdtTravelNum.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
@@ -211,18 +212,7 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
 
     //设置集合数据
     public List<String> getList(){
-        List<String> list = new ArrayList<>();
-        for(int i = 0; i < 7 ; i++) {
-            Date date=new Date();//取时间
-            Calendar calendar = new GregorianCalendar();
-            calendar.setTime(date);
-            calendar.add(calendar.DATE, i-1);//把日期往后增加一天.整数往后推,负数往前移动
-            date = calendar.getTime(); //这个时间就是日期往后推一天的结果
-            SimpleDateFormat formatter = new SimpleDateFormat("MM月-dd日");
-            String dateString = formatter.format(date);
-            list.add(dateString);
-        }
-        return list;
+        return TimerUtils.getSevenDate();
     }
 
     public void setFlyTime(){
@@ -232,6 +222,7 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
             public void onClick(View view) {
                 mRlAirportFlyTime.setVisibility(View.VISIBLE);
                 setShowTime();
+                hideFlight();
                 mMyDialog.showDialog(getList(),getResources().getString(R.string.airport_fly_time_select));
             }
         });
@@ -242,6 +233,7 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
         mRlAirportFlyTime.setVisibility(View.VISIBLE);
         mIwTime.setVisibility(View.VISIBLE);
         mTwFlyTime.setText("请选择当地起飞时间");
+        mTwFlyTime.setTextColor(getResources().getColor(R.color.airport_edit_gray));
     }
 
     public void setHideTime(String text){
@@ -254,6 +246,11 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
         mRlAirportFlyTime.setVisibility(View.VISIBLE);
         mIwTime.setVisibility(View.VISIBLE);
         mTwFlyTime.setText(text);
+        mTwFlyTime.setTextColor(getResources().getColor(R.color.word_already_input));
+    }
+
+    public void hideFlight(){
+        mllCity.setVisibility(View.GONE);
     }
 
     @OnClick({R.id.ll_port})
@@ -288,9 +285,17 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
     public void setData(Flight flight,String date) {
         mMyDialog.dismiss();
         setFlyTime(date);
-        mRlCity.setVisibility(View.VISIBLE);
+        mllCity.setVisibility(View.VISIBLE);
+
         if(flight.getList() != null) {
             mTravelFloatAdapter.setList(flight.getList());
+            mTwCity.setText("本航段共有"+(flight.getList().size())+"个航班");
+        }else{
+            mTwCity.setText("本航段无航班");
         }
+    }
+    @Subscriber(tag = EventBusTags.FLIGHT_INFO)
+    public void getFlightInfo(FlightDetails flightDetails){
+        finish();
     }
 }

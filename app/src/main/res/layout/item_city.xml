@@ -1,26 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-      android:orientation="horizontal"
-      android:id="@+id/ll_city"
-      android:paddingLeft="32px"
-      android:paddingRight="32px"
-      android:layout_width="match_parent"
-      android:layout_height="112px">
+    android:id="@+id/ll_city"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
-    <TextView
-        android:textSize="28px"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:id="@+id/tw_from_to_city"
-        android:text="三亚 至 沈阳"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <TextView
-        android:textSize="28px"
-        android:layout_gravity="center"
-        android:layout_marginLeft="78px"
-        android:text="15:50  起飞"
-        android:id="@+id/tw_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="112px"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tw_from_to_city"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center|left"
+            android:text="三亚 至 沈阳"
+            android:textColor="@color/word_already_input"
+            android:textSize="30px" />
+
+        <TextView
+            android:id="@+id/tw_time"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="15:50"
+            android:textColor="@color/bg_champagne"
+            android:textSize="32px" />
+    </com.zhy.autolayout.AutoLinearLayout>
 </com.zhy.autolayout.AutoLinearLayout>

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                     xmlns:app="http://schemas.android.com/apk/res-auto"
-                                     android:layout_width="match_parent"
-                                     android:layout_height="match_parent"
-                                     android:background="@color/id_cord_background"
-                                     android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/id_cord_background"
+    android:orientation="vertical">
 
     <com.ironaviation.traveller.mvp.ui.widget.AutoScrollView
-        android:fillViewport="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="match_parent"
@@ -23,7 +23,7 @@
                 app:hint1="@string/login_input_phone"
                 app:left_logo1="@mipmap/ic_person"
                 app:my_enable1="true"
-                app:right_peroson1="true"/>
+                app:right_peroson1="true" />
 
             <com.ironaviation.traveller.mvp.ui.widget.PublicTextView
                 android:id="@+id/pw_flt_no"
@@ -31,8 +31,7 @@
                 android:layout_height="wrap_content"
                 app:hint1="@string/airport_no"
                 app:left_logo1="@mipmap/ic_airport"
-                app:line1="false"
-                />
+                app:line1="false" />
 
             <com.ironaviation.traveller.mvp.ui.widget.PublicTextView
                 android:id="@+id/pw_time"
@@ -40,8 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16px"
                 app:hint1="@string/airport_time"
-                app:left_logo1="@mipmap/ic_airport_time"
-                />
+                app:left_logo1="@mipmap/ic_airport_time" />
 
             <com.ironaviation.traveller.mvp.ui.widget.PublicTextView
                 android:id="@+id/pw_address"
@@ -49,8 +47,7 @@
                 android:layout_height="wrap_content"
                 app:hint1="@string/airport_address"
                 app:left_logo1="@mipmap/ic_blue_point"
-                app:padding_left1="15"
-                />
+                app:padding_left1="15" />
 
             <com.ironaviation.traveller.mvp.ui.widget.PublicTextView
                 android:id="@+id/pw_airport"
@@ -59,8 +56,7 @@
                 app:hint1="@string/airport_airport"
                 app:left_logo1="@mipmap/ic_green_point"
                 app:line1="false"
-                app:padding_left1="15"
-                />
+                app:padding_left1="15" />
 
             <com.ironaviation.traveller.mvp.ui.widget.PublicTextView
                 android:id="@+id/pw_seat"
@@ -68,86 +64,96 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16px"
                 app:hint1="@string/airport_seat"
-                app:left_logo1="@mipmap/ic_seat"
-                />
+                app:left_logo1="@mipmap/ic_seat" />
 
             <com.zhy.autolayout.AutoLinearLayout
-                android:paddingLeft="15px"
-                android:paddingRight="15px"
                 android:id="@+id/ll_certification"
-                android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingLeft="15px"
+                android:paddingRight="15px">
+
                 <android.support.v7.widget.RecyclerView
-                    android:visibility="gone"
+                    android:id="@+id/rw_airport"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:paddingLeft="15px"
                     android:paddingRight="15px"
-                    android:id="@+id/rw_airport"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                </android.support.v7.widget.RecyclerView>
+                    android:visibility="gone"></android.support.v7.widget.RecyclerView>
 
             </com.zhy.autolayout.AutoLinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="@color/bg_write_grey"></View>
-            <com.zhy.autolayout.AutoRelativeLayout
-                android:id="@+id/ll_state"
-                android:background="@color/white"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="71px">
 
-                <TextView
-                    android:textColor="@color/color_brown"
-                    android:drawablePadding="14px"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:drawableLeft="@mipmap/ic_state"
-                    android:text="@string/travel_explain"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </com.zhy.autolayout.AutoRelativeLayout>
             <com.zhy.autolayout.AutoLinearLayout
-                android:id="@+id/ll_price"
-                android:layout_marginTop="16px"
-                android:background="@color/white"
-                android:orientation="vertical"
+                android:id="@+id/ll_book"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/bg_write_grey"></View>
+
+                <com.zhy.autolayout.AutoRelativeLayout
+                    android:id="@+id/ll_state"
+                    android:layout_width="match_parent"
+                    android:layout_height="71px"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:drawableLeft="@mipmap/ic_state"
+                        android:drawablePadding="14px"
+                        android:text="@string/travel_explain"
+                        android:textColor="@color/color_brown" />
+                </com.zhy.autolayout.AutoRelativeLayout>
 
                 <com.zhy.autolayout.AutoLinearLayout
-                    android:layout_marginTop="74px"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:id="@+id/tw_best_price"
-                        android:textColor="@color/word_red"
-                        android:text="12.00 元"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:text="24.01 元"
-                        android:id="@+id/tw_original_price"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                </com.zhy.autolayout.AutoLinearLayout>
+                    android:id="@+id/ll_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16px"
+                    android:background="@color/white"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tw_go_to_order"
-                    style="@style/button_red_style"
-                    android:layout_width="@dimen/w_input_box"
-                    android:layout_height="@dimen/h_input_box"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="60px"
-                    android:layout_marginBottom="40px"
-                    android:text="@string/travel_order">
-                </TextView>
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="74px"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tw_best_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="12.00 元"
+                            android:textColor="@color/word_red" />
+
+                        <TextView
+                            android:id="@+id/tw_original_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="24.01 元" />
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                    <TextView
+                        android:id="@+id/tw_go_to_order"
+                        style="@style/button_red_style"
+                        android:layout_width="@dimen/w_input_box"
+                        android:layout_height="@dimen/h_input_box"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="40px"
+                        android:layout_marginTop="60px"
+                        android:text="@string/travel_order"></TextView>
+                </com.zhy.autolayout.AutoLinearLayout>
             </com.zhy.autolayout.AutoLinearLayout>
         </com.zhy.autolayout.AutoLinearLayout>
     </com.ironaviation.traveller.mvp.ui.widget.AutoScrollView>
