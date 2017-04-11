@@ -68,4 +68,8 @@ public class UsualAddressModel extends BaseModel<ServiceManager, CacheManager> i
     public Observable<BaseData<List<UpdateAddressBookRequest>>> getUserAddressBook() {
         return mCommonService.getUserAddressBook();
     }
+    @Override
+    public Observable<BaseData<List<JsonObject>>> deleteAddressBook(String uabId) {
+        return mCommonService.deleteAddressBook(uabId);
+    }
 }

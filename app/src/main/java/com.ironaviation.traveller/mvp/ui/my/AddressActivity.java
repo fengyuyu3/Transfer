@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,6 +81,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
     private List<HistoryPoiInfo> infos;
     private int addressType;
     private AddressAdapter mAddressAdapter;
+    private String uabId;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -152,7 +154,10 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 mPresenter.saveAddress(infos.get(position));
 
-                mPresenter.updateAddressBook(infos.get(position),addressType);
+
+                mPresenter.updateAddressBook(uabId, infos.get(position), addressType);
+
+
             }
         });
     }
@@ -328,6 +333,12 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
      */
     private void setView(Bundle bundle) {
         addressType = bundle.getInt(Constant.ADDRESS_TYPE);
+
+        if (!TextUtils.isEmpty(bundle.getString(Constant.UABID))) {
+            uabId = bundle.getString(Constant.UABID);
+        }
+
+
         if (addressType != 0) {
             switch (addressType) {
                 case Constant.ADDRESS_TYPE_COMPANY:

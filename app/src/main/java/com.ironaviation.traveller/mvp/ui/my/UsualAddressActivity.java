@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -178,6 +179,10 @@ public class UsualAddressActivity extends WEActivity<UsualAddressPresenter> impl
                 pBundle.putInt(Constant.ADDRESS_TYPE, Constant.ADDRESS_TYPE_COMPANY);
 
             }
+            if (!TextUtils.isEmpty(mUsualAddressAdapter.getItem(position).getUABID())){
+                pBundle.putString(Constant.UABID,mUsualAddressAdapter.getItem(position).getUABID().toString());
+            }
+
             startActivity(AddressActivity.class, pBundle);
         }
 
@@ -190,7 +195,7 @@ public class UsualAddressActivity extends WEActivity<UsualAddressPresenter> impl
         @Override
         public void onItemClick(Closeable closeable, int adapterPosition, int menuPosition, int direction) {
             closeable.smoothCloseMenu();// 关闭被点击的菜单。
-
+            mPresenter.deleteAddressBook(mUsualAddressAdapter.getItem(adapterPosition).getUABID());
         }
     };
 

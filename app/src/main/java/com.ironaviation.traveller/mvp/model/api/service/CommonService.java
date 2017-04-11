@@ -53,6 +53,6 @@ public interface CommonService {
     @POST(Api.UPDATE_ADDRESS_BOOK)
     Observable<BaseData<List<JsonObject>>> updateAddressBook(@Body UpdateAddressBookRequest params);
 
-
-
+    @POST(Api.DELETE_ADDRESS_BOOK)
+    Observable<BaseData<List<JsonObject>>> deleteAddressBook(@Query("uabId") String uabId);
 }

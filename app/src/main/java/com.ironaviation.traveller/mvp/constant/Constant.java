@@ -29,6 +29,7 @@ public interface Constant {
     String ADDRESS_HISTORY = "AddressHistory";//历史
     /*addressType*/
     String ADDRESS_TYPE="addressType";
+    String UABID="uabid";
     int ADDRESS_TYPE_HOME=991;
     int ADDRESS_TYPE_COMPANY=992;
 

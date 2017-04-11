@@ -16,6 +16,8 @@ public interface Api {
     String APP_SIGN_OUT="/api/Users/AppSignOut";//POST 注销登录
     String GET_USER_ADDRESS_BOOK="/api/Users/GetUserAddressBook";//Get 获取用户常用地址
     String UPDATE_ADDRESS_BOOK="/api/Users/UpdateAddressBook";//POST 更新用户地址
+    String DELETE_ADDRESS_BOOK="/api/Users/DeleteAddressBook";//POST 删除用户常用地址
+
     int RequestSuccess = 1;
 
 

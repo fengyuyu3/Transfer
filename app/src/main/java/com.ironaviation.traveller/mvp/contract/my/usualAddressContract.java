@@ -1,6 +1,7 @@
 package com.ironaviation.traveller.mvp.contract.my;
 
 import com.google.gson.JsonObject;
+import com.ironaviation.traveller.mvp.model.api.Api;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.request.UpdateAddressBookRequest;
 import com.jess.arms.mvp.BaseView;
@@ -8,6 +9,8 @@ import com.jess.arms.mvp.IModel;
 
 import java.util.List;
 
+import retrofit2.http.POST;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -39,6 +42,7 @@ public interface UsualAddressContract {
     interface Model extends IModel {
 
         Observable<BaseData<List<UpdateAddressBookRequest>>> getUserAddressBook();
+        Observable<BaseData<List<JsonObject>>> deleteAddressBook(String uabId);
 
     }
 }

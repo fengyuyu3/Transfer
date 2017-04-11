@@ -88,6 +88,18 @@ public class UsualAddressPresenter extends BasePresenter<UsualAddressContract.Mo
 
     }
 
+    public void deleteAddressBook(String uabId){
+
+        mModel.deleteAddressBook(uabId)
+                .compose(RxUtils.<BaseData<List<JsonObject>>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<List<JsonObject>>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<List<JsonObject>> loginEntityBaseData) {
+
+                        getUserAddressBook();
+                    }
+                });
+    }
     public void setDefaultData(List<UpdateAddressBookRequest> updateAddressBookRequests) {
         if (updateAddressBookRequests == null || updateAddressBookRequests.size() == 0) {
 

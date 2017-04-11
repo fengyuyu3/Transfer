@@ -94,6 +94,9 @@ public class AddressPresenter extends BasePresenter<AddressContract.Model, Addre
 
         }
         addressHistory.getPoiInfos().add(0, position);
+        if (addressHistory.getPoiInfos().size()>10){
+            addressHistory.getPoiInfos().remove(addressHistory.getPoiInfos().size()-1);
+        }
         DataHelper.saveDeviceDataToString(mApplication, Constant.ADDRESS_HISTORY, addressHistory);
     }
 
@@ -110,7 +113,7 @@ public class AddressPresenter extends BasePresenter<AddressContract.Model, Addre
         return addressHistory;
     }
 
-    public void updateAddressBook(HistoryPoiInfo position, int addressType) {
+  /*  public void updateAddressBook(HistoryPoiInfo position, int addressType) {
         switch (addressType) {
             case Constant.ADDRESS_TYPE_COMPANY:
                 updateAddressBook(null, "公司", position.name, position.location.longitude, position.location.latitude);
@@ -123,7 +126,7 @@ public class AddressPresenter extends BasePresenter<AddressContract.Model, Addre
 
         }
 
-    }
+    }*/
 
     public void updateAddressBook(String UABID, HistoryPoiInfo position, int addressType) {
         switch (addressType) {
@@ -153,6 +156,7 @@ public class AddressPresenter extends BasePresenter<AddressContract.Model, Addre
                     public void onNext(BaseData<List<JsonObject>> loginEntityBaseData) {
                         if (loginEntityBaseData.isSuccess()) {
 
+                            mAppManager.getCurrentActivity().finish();
                         } else {
                         }
                     }

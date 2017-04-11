@@ -65,6 +65,10 @@ public class UsualAddressAdapter extends SwipeMenuAdapter<RecyclerView.ViewHolde
         return items.get(position).getViewType();
     }
 
+    public UpdateAddressBookRequest getItem(int position) {
+        return items.get(position);
+    }
+
     @Override
     public View onCreateContentView(ViewGroup parent, int viewType) {
         View view = null;
