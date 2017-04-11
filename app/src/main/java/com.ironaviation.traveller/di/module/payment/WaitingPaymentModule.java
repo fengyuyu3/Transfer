@@ -1,10 +1,11 @@
-package com.ironaviation.traveller.mvp.model.payment;
+package com.ironaviation.traveller.di.module.payment;
 
 import com.google.gson.Gson;
 
 import android.app.Application;
 
-import com.ironaviation.traveller.mvp.contract.payment.PaymentContract;
+import com.ironaviation.traveller.mvp.contract.payment.WaitingPaymentContract;
+import com.ironaviation.traveller.mvp.model.payment.WaitingPaymentModel;
 import com.jess.arms.di.scope.ActivityScope;
 
 import dagger.Module;
@@ -24,34 +25,34 @@ import dagger.Provides;
  * 项目名称：Traveller      
  * 类描述：   
  * 创建人：starRing  
- * 创建时间：2017-03-28 15:59   
+ * 创建时间：2017-04-10 14:55   
  * 修改人：starRing  
- * 修改时间：2017-03-28 15:59   
+ * 修改时间：2017-04-10 14:55   
  * 修改备注：   
  * @version
  *
  */
 @Module
-public class PaymentModule {
-    private PaymentContract.View view;
+public class WaitingPaymentModule {
+    private WaitingPaymentContract.View view;
 
     /**
-     * 构建PaymentModule时,将View的实现类传进来,这样就可以提供View的实现类给presenter
+     * 构建WaitingPaymentModule时,将View的实现类传进来,这样就可以提供View的实现类给presenter
      * @param view
      */
-    public PaymentModule(PaymentContract.View view) {
+    public WaitingPaymentModule(WaitingPaymentContract.View view) {
         this.view = view;
     }
 
     @ActivityScope
     @Provides
-    PaymentContract.View providePaymentView() {
+    WaitingPaymentContract.View provideWaitingPaymentView() {
         return this.view;
     }
 
     @ActivityScope
     @Provides
-    PaymentContract.Model providePaymentModel(PaymentModel model) {
+    WaitingPaymentContract.Model provideWaitingPaymentModel(WaitingPaymentModel model) {
         return model;
     }
 }

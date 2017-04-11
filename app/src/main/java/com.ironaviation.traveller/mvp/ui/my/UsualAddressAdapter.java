@@ -3,6 +3,7 @@ package com.ironaviation.traveller.mvp.ui.my;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.common.WEApplication;
+import com.ironaviation.traveller.mvp.model.entity.request.UpdateAddressBookRequest;
 import com.ironaviation.traveller.mvp.model.entity.response.UsualAddressResponse;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuAdapter;
 import com.zhy.autolayout.AutoRelativeLayout;
@@ -26,9 +29,8 @@ import java.util.List;
  */
 public class UsualAddressAdapter extends SwipeMenuAdapter<RecyclerView.ViewHolder> {
 
-    private UsualAddressResponse mUsualAddressResponse = new UsualAddressResponse();
 
-    private List<UsualAddressResponse.UsualAddress> items = new ArrayList<>();
+    private List<UpdateAddressBookRequest> items = new ArrayList<>();
     private UsualAddressAdapter.OnItemClickListener mOnItemClickListener;
     private Context mContext;
 
@@ -37,10 +39,9 @@ public class UsualAddressAdapter extends SwipeMenuAdapter<RecyclerView.ViewHolde
         mContext = context;
     }
 
-    public void setData(UsualAddressResponse mUsualAddressResponse) {
-        this.mUsualAddressResponse = mUsualAddressResponse;
-        if (mUsualAddressResponse.getUsualAddressList() != null) {
-            items = mUsualAddressResponse.getUsualAddressList();
+    public void setData(List<UpdateAddressBookRequest> mUpdateAddressBookRequests) {
+        if (mUpdateAddressBookRequests != null) {
+            items = mUpdateAddressBookRequests;
         } else {
             items = new ArrayList<>();
 
@@ -84,7 +85,7 @@ public class UsualAddressAdapter extends SwipeMenuAdapter<RecyclerView.ViewHolde
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
         ((DefaultViewHolder) holder).setData(items.get(position));
-        ((DefaultViewHolder) holder).setView(items.get(position).getViewType());
+        ((DefaultViewHolder) holder).setView(items.get(position).getAddressName());
         ((DefaultViewHolder) holder).setOnItemClickListener(mOnItemClickListener);
 
 
@@ -109,24 +110,41 @@ public class UsualAddressAdapter extends SwipeMenuAdapter<RecyclerView.ViewHolde
             this.mOnItemClickListener = onItemClickListener;
         }
 
-        public void setData(UsualAddressResponse.UsualAddress itemModel) {
-            this.tv_usual_address_type.setText(itemModel.getTypeName());
-
-            this.tv_usual_address_address.setText(itemModel.getAddress());
-        }
-
-        public void setView(int itemModel) {
-            switch (itemModel) {
-                case 0:
-                    iv_usual_address_logo.setBackgroundResource(R.mipmap.ic_home);
-                    break;
-                case 1:
-                    iv_usual_address_logo.setBackgroundResource(R.mipmap.ic_business);
-                    break;
-
+        public void setData(UpdateAddressBookRequest itemModel) {
+            //this.tv_usual_address_type.setText(itemModel.getAddressName());
+            if (!TextUtils.isEmpty(itemModel.getAddressName())) {
+                this.tv_usual_address_type.setText(itemModel.getAddressName());
             }
+            if (!TextUtils.isEmpty(itemModel.getAddress())) {
+                this.tv_usual_address_address.setText(itemModel.getAddress());
+                this.tv_usual_address_address.setTextColor(ContextCompat.getColor(WEApplication.getContext(), R.color.word_already_input));
+
+
+            }else {
+                this.tv_usual_address_address.setTextColor(ContextCompat.getColor(WEApplication.getContext(), R.color.word_wait_input));
+                setHint(itemModel.getAddressName());
+            }
+
         }
 
+        public void setView(String itemModel) {
+            if (itemModel.equals(mContext.getString(R.string.home))) {
+                iv_usual_address_logo.setBackgroundResource(R.mipmap.ic_home);
+
+            } else if (itemModel.equals(mContext.getString(R.string.company))) {
+                iv_usual_address_logo.setBackgroundResource(R.mipmap.ic_business);
+            }
+
+        }
+        public void setHint(String itemModel) {
+            if (itemModel.equals(mContext.getString(R.string.home))) {
+                this.tv_usual_address_address.setText(mContext.getString(R.string.hint_home_address));
+
+            } else if (itemModel.equals(mContext.getString(R.string.company))) {
+                this.tv_usual_address_address.setText(mContext.getString(R.string.hint_company_address));
+            }
+
+        }
 
         @Override
         public void onClick(View v) {

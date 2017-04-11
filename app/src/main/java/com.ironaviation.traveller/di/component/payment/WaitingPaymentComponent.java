@@ -1,8 +1,8 @@
 package com.ironaviation.traveller.di.component.payment;
 
 import com.ironaviation.traveller.common.AppComponent;
-import com.ironaviation.traveller.di.module.payment.PaymentModule;
-import com.ironaviation.traveller.mvp.ui.payment.PaymentActivity;
+import com.ironaviation.traveller.di.module.payment.WaitingPaymentModule;
+import com.ironaviation.traveller.mvp.ui.payment.WaitingPaymentActivity;
 import com.jess.arms.di.scope.ActivityScope;
 
 import dagger.Component;
@@ -21,15 +21,15 @@ import dagger.Component;
  * 项目名称：Traveller      
  * 类描述：   
  * 创建人：starRing  
- * 创建时间：2017-03-28 15:57   
+ * 创建时间：2017-04-10 14:56   
  * 修改人：starRing  
- * 修改时间：2017-03-28 15:57   
+ * 修改时间：2017-04-10 14:56   
  * 修改备注：   
  * @version
  *
  */
 @ActivityScope
-@Component(modules = PaymentModule.class, dependencies = AppComponent.class)
-public interface PaymentComponent {
-    void inject(PaymentActivity activity);
+@Component(modules = WaitingPaymentModule.class, dependencies = AppComponent.class)
+public interface WaitingPaymentComponent {
+    void inject(WaitingPaymentActivity activity);
 }

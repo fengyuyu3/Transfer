@@ -43,7 +43,6 @@
             android:layout_marginLeft="23px"
             android:layout_toLeftOf="@+id/tv_cancel"
             android:layout_toRightOf="@+id/v_line"
-            android:hint="@string/hint_home_address"
             android:maxLength="25"
             />
 
@@ -167,6 +166,12 @@
 
 
         </com.zhy.autolayout.AutoRelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/line_little_grey"></View>
     </com.zhy.autolayout.AutoRelativeLayout>
 
     <android.support.v7.widget.RecyclerView

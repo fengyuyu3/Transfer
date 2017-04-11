@@ -19,13 +19,13 @@ import java.util.List;
  * 修改备注：
  */
 public class AddressHistory implements Serializable {
-    private List<PoiInfo>mPoiInfos;
+    private List<HistoryPoiInfo>mPoiInfos;
 
-    public List<PoiInfo> getPoiInfos() {
+    public List<HistoryPoiInfo> getPoiInfos() {
         return mPoiInfos;
     }
 
-    public void setPoiInfos(List<PoiInfo> poiInfos) {
+    public void setPoiInfos(List<HistoryPoiInfo> poiInfos) {
         mPoiInfos = poiInfos;
     }
 }

@@ -92,12 +92,8 @@
 
     <TextView
         android:id="@+id/tv_determine_cancel"
-        style="@style/button_red_style"
-        android:layout_width="613px"
-        android:layout_height="96px"
-        android:layout_gravity="center_horizontal"
+        style="@style/button_champagne_style"
         android:layout_marginTop="@dimen/h_fillet2"
-        android:background="@drawable/select_but_champagne"
         android:text="@string/determine_cancel"
         >
     </TextView>

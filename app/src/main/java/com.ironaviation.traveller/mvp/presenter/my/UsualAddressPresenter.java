@@ -2,13 +2,25 @@ package com.ironaviation.traveller.mvp.presenter.my;
 
 import android.app.Application;
 
+import com.google.gson.JsonObject;
+import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.UsualAddressContract;
+import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.request.UpdateAddressBookRequest;
+import com.ironaviation.traveller.mvp.ui.login.LoginActivity;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
+import com.jess.arms.utils.DataHelper;
+import com.jess.arms.utils.RxUtils;
+import com.jess.arms.utils.UiUtils;
 import com.jess.arms.widget.imageloader.ImageLoader;
 
+import java.util.List;
+
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
 import javax.inject.Inject;
 
@@ -24,16 +36,13 @@ import javax.inject.Inject;
 
 
 /**
- *
- * 项目名称：Traveller      
- * 类描述：   
- * 创建人：starRing  
- * 创建时间：2017-03-29 15:05   
- * 修改人：starRing  
- * 修改时间：2017-03-29 15:05   
- * 修改备注：   
- * @version
- *
+ * 项目名称：Traveller
+ * 类描述：
+ * 创建人：starRing
+ * 创建时间：2017-03-29 15:05
+ * 修改人：starRing
+ * 修改时间：2017-03-29 15:05
+ * 修改备注：
  */
 @ActivityScope
 public class UsualAddressPresenter extends BasePresenter<UsualAddressContract.Model, UsualAddressContract.View> {
@@ -62,4 +71,52 @@ public class UsualAddressPresenter extends BasePresenter<UsualAddressContract.Mo
         this.mApplication = null;
     }
 
+    public void getUserAddressBook() {
+        mModel.getUserAddressBook()
+                .compose(RxUtils.<BaseData<List<UpdateAddressBookRequest>>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<List<UpdateAddressBookRequest>>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<List<UpdateAddressBookRequest>> loginEntityBaseData) {
+
+                        if (loginEntityBaseData.getData() == null || loginEntityBaseData.getData().size() < 2) {
+                            setDefaultData(loginEntityBaseData.getData());
+                        }
+                        mRootView.setView(loginEntityBaseData.getData());
+
+                    }
+                });
+
+    }
+
+    public void setDefaultData(List<UpdateAddressBookRequest> updateAddressBookRequests) {
+        if (updateAddressBookRequests == null || updateAddressBookRequests.size() == 0) {
+
+            UpdateAddressBookRequest home = new UpdateAddressBookRequest();
+            home.setAddressName(mApplication.getString(R.string.home));
+            home.setViewType(1);
+            UpdateAddressBookRequest company = new UpdateAddressBookRequest();
+            company.setViewType(1);
+            company.setAddressName(mApplication.getString(R.string.company));
+            updateAddressBookRequests.add( home);
+            updateAddressBookRequests.add( company);
+
+        } else if (updateAddressBookRequests.size() == 1) {
+            if (updateAddressBookRequests.get(0).getAddressName().equals(mApplication.getString(R.string.home))) {
+
+                UpdateAddressBookRequest company = new UpdateAddressBookRequest();
+                company.setAddressName(mApplication.getString(R.string.company));
+                updateAddressBookRequests.add(1, company);
+                company.setViewType(1);
+
+            }
+            if (updateAddressBookRequests.get(0).getAddressName().equals(mApplication.getString(R.string.company))) {
+
+                UpdateAddressBookRequest home = new UpdateAddressBookRequest();
+                home.setAddressName(mApplication.getString(R.string.home));
+                home.setViewType(1);
+                updateAddressBookRequests.add(0, home);
+            }
+        }
+
+    }
 }

@@ -1,11 +1,11 @@
-package com.ironaviation.traveller.di.component.payment;
+package com.ironaviation.traveller.di.module.payment;
 
-import com.ironaviation.traveller.common.AppComponent;
-import com.ironaviation.traveller.di.module.payment.PaymentModule;
-import com.ironaviation.traveller.mvp.ui.payment.PaymentActivity;
+import com.ironaviation.traveller.mvp.contract.payment.PaymentContract;
+import com.ironaviation.traveller.mvp.model.payment.PaymentModel;
 import com.jess.arms.di.scope.ActivityScope;
 
-import dagger.Component;
+import dagger.Module;
+import dagger.Provides;
 
 /**
  * 通过Template生成对应页面的MVP和Dagger代码,请注意输入框中输入的名字必须相同
@@ -21,15 +21,34 @@ import dagger.Component;
  * 项目名称：Traveller      
  * 类描述：   
  * 创建人：starRing  
- * 创建时间：2017-03-28 15:57   
+ * 创建时间：2017-03-28 15:59   
  * 修改人：starRing  
- * 修改时间：2017-03-28 15:57   
+ * 修改时间：2017-03-28 15:59   
  * 修改备注：   
  * @version
  *
  */
-@ActivityScope
-@Component(modules = PaymentModule.class, dependencies = AppComponent.class)
-public interface PaymentComponent {
-    void inject(PaymentActivity activity);
+@Module
+public class PaymentModule {
+    private PaymentContract.View view;
+
+    /**
+     * 构建PaymentModule时,将View的实现类传进来,这样就可以提供View的实现类给presenter
+     * @param view
+     */
+    public PaymentModule(PaymentContract.View view) {
+        this.view = view;
+    }
+
+    @ActivityScope
+    @Provides
+    PaymentContract.View providePaymentView() {
+        return this.view;
+    }
+
+    @ActivityScope
+    @Provides
+    PaymentContract.Model providePaymentModel(PaymentModel model) {
+        return model;
+    }
 }
