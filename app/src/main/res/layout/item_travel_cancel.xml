@@ -9,7 +9,7 @@
     <com.zhy.autolayout.AutoRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="112px"
-        android:background="@drawable/select_btn_grey"
+        android:background="@color/white"
 
         >
 

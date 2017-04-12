@@ -366,7 +366,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
                 setNomal(holder);
             }
             if (i == position) {
-                holder.mLineEdt.setVisibility(View.GONE);
+             //   holder.mLineEdt.setVisibility(View.GONE);
             }
             setAirportData(holder, mAirportRequests.get(i));
             setlistener(holder, i);
@@ -517,7 +517,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         mPwAddress.setInitInfo(getResources().getString(R.string.airport_address));
         mPwAirport.setInitInfo(getResources().getString(R.string.airport_airport));
         mPwSeat.setTextInfo(getResources().getString(R.string.airport_seat));
-        mPwSeat.setVisibility(View.GONE);
+        //mPwSeat.setVisibility(View.GONE);
         showPrice(false);
         setSeat(Constant.DEFULT_SEAT);
     }
