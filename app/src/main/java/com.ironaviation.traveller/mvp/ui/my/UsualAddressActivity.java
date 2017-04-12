@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +17,9 @@ import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.my.DaggerUsualAddressComponent;
 import com.ironaviation.traveller.di.module.my.UsualAddressModule;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.UsualAddressContract;
-import com.ironaviation.traveller.mvp.model.entity.response.TravelResponse;
-import com.ironaviation.traveller.mvp.model.entity.response.UsualAddressResponse;
+import com.ironaviation.traveller.mvp.model.entity.request.UpdateAddressBookRequest;
 import com.ironaviation.traveller.mvp.presenter.my.UsualAddressPresenter;
 import com.ironaviation.traveller.mvp.ui.widget.AutoSwipeMenuRecyclerView;
 import com.jess.arms.utils.UiUtils;
@@ -101,7 +102,7 @@ public class UsualAddressActivity extends WEActivity<UsualAddressPresenter> impl
         mUsualAddressAdapter = new UsualAddressAdapter(this);
         mUsualAddressAdapter.setOnItemClickListener(onItemClickListener);
         mRecyclerView.setAdapter(mUsualAddressAdapter);
-        mUsualAddressAdapter.setData(getData());
+        mPresenter.getUserAddressBook();
     }
 
 
@@ -171,7 +172,18 @@ public class UsualAddressActivity extends WEActivity<UsualAddressPresenter> impl
     private UsualAddressAdapter.OnItemClickListener onItemClickListener = new UsualAddressAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(int position) {
-            startActivity(AddressActivity.class);
+            Bundle pBundle = new Bundle();
+            if (position == 0) {
+                pBundle.putInt(Constant.ADDRESS_TYPE, Constant.ADDRESS_TYPE_HOME);
+            } else {
+                pBundle.putInt(Constant.ADDRESS_TYPE, Constant.ADDRESS_TYPE_COMPANY);
+
+            }
+            if (!TextUtils.isEmpty(mUsualAddressAdapter.getItem(position).getUABID())){
+                pBundle.putString(Constant.UABID,mUsualAddressAdapter.getItem(position).getUABID().toString());
+            }
+
+            startActivity(AddressActivity.class, pBundle);
         }
 
 
@@ -183,7 +195,7 @@ public class UsualAddressActivity extends WEActivity<UsualAddressPresenter> impl
         @Override
         public void onItemClick(Closeable closeable, int adapterPosition, int menuPosition, int direction) {
             closeable.smoothCloseMenu();// 关闭被点击的菜单。
-
+            mPresenter.deleteAddressBook(mUsualAddressAdapter.getItem(adapterPosition).getUABID());
         }
     };
 
@@ -194,21 +206,11 @@ public class UsualAddressActivity extends WEActivity<UsualAddressPresenter> impl
         ButterKnife.bind(this);
     }
 
-    public UsualAddressResponse getData() {
-        UsualAddressResponse mUsualAddressResponse = new UsualAddressResponse();
-        List<UsualAddressResponse.UsualAddress> mUsualAddressList = new ArrayList<>();
-        mUsualAddressResponse.setUsualAddressList(mUsualAddressList);
-        UsualAddressResponse.UsualAddress home = mUsualAddressResponse.new UsualAddress();
-        home.setAddress("天府5街666号");
-        home.setType(0);
-        home.setTypeName("家");
-        UsualAddressResponse.UsualAddress company = mUsualAddressResponse.new UsualAddress();
-        company.setAddress("吉泰路33号");
-        company.setType(1);
-        company.setTypeName("公司");
-        mUsualAddressList.add(home);
-        mUsualAddressList.add(company);
-        return mUsualAddressResponse;
-    }
 
+    @Override
+    public void setView(List<UpdateAddressBookRequest> mUpdateAddressBookRequests) {
+
+        mUsualAddressAdapter.setData(mUpdateAddressBookRequests);
+
+    }
 }

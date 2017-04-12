@@ -50,7 +50,12 @@
         <attr name="tti_text_color" format="color"/>
         <attr name="tti_title" format="string"/>
     </declare-styleable>
-
+    <declare-styleable name="TextTextView">
+        <attr name="tt_title" format="string"/>
+        <attr name="tt_text" format="string"/>
+        <attr name="tt_text_color" format="color"/>
+        <attr name="tt_title_color" format="color"/>
+    </declare-styleable>
     <declare-styleable name="RatingBar" tools:ignore="ResourceName">
         <!--尺寸值-->
         <attr name="starImageSize" format="dimension"/>

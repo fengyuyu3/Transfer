@@ -208,14 +208,12 @@
 
     <TextView
         android:id="@+id/tv_anonymous_evaluation"
-        style="@style/button_red_style"
+        style="@style/button_champagne_style"
         android:layout_width="match_parent"
         android:layout_height="@dimen/h_input_box"
-        android:layout_gravity="center_horizontal"
         android:layout_marginLeft="52px"
         android:layout_marginRight="52px"
         android:layout_marginTop="44px"
-        android:background="@drawable/select_but_champagne"
         android:text="@string/anonymous_evaluation"
         >
     </TextView>

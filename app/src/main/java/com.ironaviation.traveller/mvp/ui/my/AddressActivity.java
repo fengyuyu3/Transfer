@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +20,6 @@ import com.baidu.mapapi.search.poi.PoiDetailResult;
 import com.baidu.mapapi.search.poi.PoiIndoorResult;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
-import com.baidu.mapapi.search.sug.SuggestionResult;
-import com.baidu.mapapi.search.sug.SuggestionSearch;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.common.AppComponent;
@@ -29,10 +28,11 @@ import com.ironaviation.traveller.di.component.my.DaggerAddressComponent;
 import com.ironaviation.traveller.di.module.my.AddressModule;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.AddressContract;
+import com.ironaviation.traveller.mvp.model.entity.HistoryPoiInfo;
 import com.ironaviation.traveller.mvp.presenter.my.AddressPresenter;
 import com.ironaviation.traveller.mvp.ui.manager.FullyLinearLayoutManager;
-import com.jess.arms.utils.DataHelper;
 import com.jess.arms.utils.UiUtils;
+import com.zhy.autolayout.AutoRelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,15 +70,18 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
     TextView mTvCancel;
     @BindView(R.id.rv_address)
     RecyclerView mRvAddress;
+    @BindView(R.id.rl_usual_address)
+    AutoRelativeLayout mRlUsualAddress;
     private RecyclerView.LayoutManager mLayoutManager;
 
     private PoiSearch mPoiSearch = null;
     private boolean searchFlag = true;
     private boolean searchListFlag = false;
     private PoiInfo result;
-    private List<PoiInfo> infos;
-
+    private List<HistoryPoiInfo> infos;
+    private int addressType;
     private AddressAdapter mAddressAdapter;
+    private String uabId;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -106,8 +109,13 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
         mRvAddress.setLayoutManager(mLayoutManager);
 
         mRvAddress.setAdapter(mAddressAdapter);
-        infos=mPresenter.getAddress().getPoiInfos();
+        infos = mPresenter.getAddress().getPoiInfos();
         mAddressAdapter.setNewData(infos);
+
+        Bundle pBundle = getIntent().getExtras();
+        if (pBundle != null) {
+            setView(pBundle);
+        }
         /**
          * 当输入关键字变化时，动态更新建议列表
          */
@@ -130,7 +138,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
                 if (charSequence.length() <= 0) {
                     //mRvAddress.setVisibility(View.GONE);
                     //infos = null;
-                    infos= mPresenter.getAddress().getPoiInfos();
+                    infos = mPresenter.getAddress().getPoiInfos();
                     mAddressAdapter.setNewData(infos);
                     searchRunnable.clear();
                     return;
@@ -145,6 +153,11 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 mPresenter.saveAddress(infos.get(position));
+
+
+                mPresenter.updateAddressBook(uabId, infos.get(position), addressType);
+
+
             }
         });
     }
@@ -229,7 +242,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
 
         for (PoiInfo info : result.getAllPoi()) {
             if (info.location != null) {
-                infos.add(info);
+                infos.add(new HistoryPoiInfo(info, false));
             }
         }
         mAddressAdapter.setNewData(infos);
@@ -311,5 +324,33 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
     protected void onDestroy() {
         mPoiSearch.destroy();
         super.onDestroy();
+    }
+
+    /**
+     * 设置页面
+     *
+     * @param
+     */
+    private void setView(Bundle bundle) {
+        addressType = bundle.getInt(Constant.ADDRESS_TYPE);
+
+        if (!TextUtils.isEmpty(bundle.getString(Constant.UABID))) {
+            uabId = bundle.getString(Constant.UABID);
+        }
+
+
+        if (addressType != 0) {
+            switch (addressType) {
+                case Constant.ADDRESS_TYPE_COMPANY:
+                    mRlUsualAddress.setVisibility(View.GONE);
+                    mEtAddress.setHint(getString(R.string.hint_company_address));
+                    break;
+                case Constant.ADDRESS_TYPE_HOME:
+                    mRlUsualAddress.setVisibility(View.GONE);
+                    mEtAddress.setHint(getString(R.string.hint_home_address));
+                    break;
+            }
+
+        }
     }
 }

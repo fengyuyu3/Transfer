@@ -5,19 +5,24 @@ import android.text.TextUtils;
 
 import com.baidu.mapapi.search.core.PoiInfo;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.AddressContract;
 import com.ironaviation.traveller.mvp.model.entity.AddressHistory;
+import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.HistoryPoiInfo;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.utils.DataHelper;
+import com.jess.arms.utils.RxUtils;
 import com.jess.arms.widget.imageloader.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
 import javax.inject.Inject;
 
@@ -68,26 +73,30 @@ public class AddressPresenter extends BasePresenter<AddressContract.Model, Addre
         this.mApplication = null;
     }
 
-    public void saveAddress(PoiInfo position) {
+    public void saveAddress(HistoryPoiInfo position) {
 
         AddressHistory addressHistory = null;
-        position.postCode=Constant.ADDRESS_HISTORY;
+        position.setFlagHistory(true);
+        position.postCode = Constant.ADDRESS_HISTORY;
         String history = DataHelper.getStringSF(mApplication, Constant.ADDRESS_HISTORY);
         if (!TextUtils.isEmpty(history)) {
             addressHistory = new Gson().fromJson(history, AddressHistory.class);
 
         } else {
             addressHistory = new AddressHistory();
-            addressHistory.setPoiInfos(new ArrayList<PoiInfo>());
+            addressHistory.setPoiInfos(new ArrayList<HistoryPoiInfo>());
         }
-        for (int i=0;i<addressHistory.getPoiInfos().size();i++){
-            if (position.uid.equals(addressHistory.getPoiInfos().get(i).uid)){
+        for (int i = 0; i < addressHistory.getPoiInfos().size(); i++) {
+            if (position.uid.equals(addressHistory.getPoiInfos().get(i).uid)) {
                 addressHistory.getPoiInfos().remove(addressHistory.getPoiInfos().get(i));
                 i--;
             }
 
         }
         addressHistory.getPoiInfos().add(0, position);
+        if (addressHistory.getPoiInfos().size()>10){
+            addressHistory.getPoiInfos().remove(addressHistory.getPoiInfos().size()-1);
+        }
         DataHelper.saveDeviceDataToString(mApplication, Constant.ADDRESS_HISTORY, addressHistory);
     }
 
@@ -99,8 +108,58 @@ public class AddressPresenter extends BasePresenter<AddressContract.Model, Addre
 
         } else {
             addressHistory = new AddressHistory();
-            addressHistory.setPoiInfos(new ArrayList<PoiInfo>());
+            addressHistory.setPoiInfos(new ArrayList<HistoryPoiInfo>());
         }
         return addressHistory;
+    }
+
+  /*  public void updateAddressBook(HistoryPoiInfo position, int addressType) {
+        switch (addressType) {
+            case Constant.ADDRESS_TYPE_COMPANY:
+                updateAddressBook(null, "公司", position.name, position.location.longitude, position.location.latitude);
+
+                break;
+            case Constant.ADDRESS_TYPE_HOME:
+                updateAddressBook(null, "家", position.name, position.location.longitude, position.location.latitude);
+
+                break;
+
+        }
+
+    }*/
+
+    public void updateAddressBook(String UABID, HistoryPoiInfo position, int addressType) {
+        switch (addressType) {
+            case Constant.ADDRESS_TYPE_COMPANY:
+                updateAddressBook(UABID, "公司", position.name, position.location.longitude, position.location.latitude);
+
+                break;
+            case Constant.ADDRESS_TYPE_HOME:
+                updateAddressBook(UABID, "家", position.name, position.location.longitude, position.location.latitude);
+
+                break;
+
+        }
+
+    }
+
+    private void updateAddressBook(String UABID,
+                                   String AddressName,
+                                   String Address,
+                                   double Longitude,
+                                   double Latitude) {
+
+        mModel.updateAddressBook(UABID, AddressName, Address, Longitude, Latitude)
+                .compose(RxUtils.<BaseData<List<JsonObject>>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<List<JsonObject>>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<List<JsonObject>> loginEntityBaseData) {
+                        if (loginEntityBaseData.isSuccess()) {
+
+                            mAppManager.getCurrentActivity().finish();
+                        } else {
+                        }
+                    }
+                });
     }
 }

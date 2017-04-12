@@ -4,6 +4,10 @@
     <string name="city">成都</string>
     <!--address-->
     <string name="hint_home_address">请输入家庭地址</string>
+    <string name="hint_company_address">请输入公司地址</string>
+    <string name="hint_get_on_the_bus_address">请输入上车地址</string>
+    <string name="hint_get_off_the_bus_address">请输入下车地址</string>
+
     <string name="home">家</string>
     <string name="company">公司</string>
     <!--取消行程-->
@@ -36,6 +40,19 @@
     <string name="ali_pay_payment">支付宝支付</string>
     <string name="we_chat_Payment">微信支付</string>
     <string name="union_payment">银联支付</string>
+    <string name="payment_amount">支付金额</string>
+    <string name="payment_wait_time">支付剩余时间</string>
+    <string name="order_information">订单信息</string>
+    <string name="order_number">订单编号</string>
+    <string name="passengers_telephone">乘客电话</string>
+    <string name="flight_number">航班号</string>
+    <string name="riding_time">乘车时间</string>
+    <string name="get_on_the_bus_address">上车地址</string>
+    <string name="get_off_the_bus_address">下车地址</string>
+    <string name="need">需要</string>
+    <string name="seats">个座位</string>
+
+
     <!--设置-->
     <string name="setting_identification">实名认证</string>
     <string name="usual_address">常用地址</string>

@@ -1,25 +1,15 @@
-package com.ironaviation.traveller.mvp.model.my;
+package com.ironaviation.traveller.mvp.model.payment;
 
 import android.app.Application;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.ironaviation.traveller.mvp.contract.my.UsualAddressContract;
+import com.ironaviation.traveller.mvp.contract.payment.WaitingPaymentContract;
 import com.ironaviation.traveller.mvp.model.api.cache.CacheManager;
-import com.ironaviation.traveller.mvp.model.api.service.CommonService;
 import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
-import com.ironaviation.traveller.mvp.model.entity.BaseData;
-import com.ironaviation.traveller.mvp.model.entity.Login;
-import com.ironaviation.traveller.mvp.model.entity.request.UpdateAddressBookRequest;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BaseModel;
 
-import java.util.List;
-
 import javax.inject.Inject;
-
-import retrofit2.http.Body;
-import rx.Observable;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -34,27 +24,27 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 
 /**
- * 项目名称：Traveller
- * 类描述：
- * 创建人：starRing
- * 创建时间：2017-03-29 15:05
- * 修改人：starRing
- * 修改时间：2017-03-29 15:05
- * 修改备注：
+ *
+ * 项目名称：Traveller      
+ * 类描述：   
+ * 创建人：starRing  
+ * 创建时间：2017-04-10 14:52   
+ * 修改人：starRing  
+ * 修改时间：2017-04-10 14:52   
+ * 修改备注：   
+ * @version
+ *
  */
 @ActivityScope
-public class UsualAddressModel extends BaseModel<ServiceManager, CacheManager> implements UsualAddressContract.Model {
+public class WaitingPaymentModel extends BaseModel<ServiceManager, CacheManager> implements WaitingPaymentContract.Model {
     private Gson mGson;
     private Application mApplication;
-    private CommonService mCommonService;
 
     @Inject
-    public UsualAddressModel(ServiceManager serviceManager, CacheManager cacheManager, Gson gson, Application application) {
+    public WaitingPaymentModel(ServiceManager serviceManager, CacheManager cacheManager, Gson gson, Application application) {
         super(serviceManager, cacheManager);
         this.mGson = gson;
         this.mApplication = application;
-        mCommonService = serviceManager.getCommonService();
-
     }
 
     @Override
@@ -64,12 +54,4 @@ public class UsualAddressModel extends BaseModel<ServiceManager, CacheManager> i
         this.mApplication = null;
     }
 
-    @Override
-    public Observable<BaseData<List<UpdateAddressBookRequest>>> getUserAddressBook() {
-        return mCommonService.getUserAddressBook();
-    }
-    @Override
-    public Observable<BaseData<List<JsonObject>>> deleteAddressBook(String uabId) {
-        return mCommonService.deleteAddressBook(uabId);
-    }
 }

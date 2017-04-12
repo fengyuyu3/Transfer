@@ -21,16 +21,13 @@ import dagger.Provides;
  */
 
 /**
- *
- * 项目名称：Traveller      
- * 类描述：   
- * 创建人：starRing  
- * 创建时间：2017-03-29 15:07   
- * 修改人：starRing  
- * 修改时间：2017-03-29 15:07   
- * 修改备注：   
- * @version
- *
+ * 项目名称：Traveller
+ * 类描述：
+ * 创建人：starRing
+ * 创建时间：2017-03-29 15:07
+ * 修改人：starRing
+ * 修改时间：2017-03-29 15:07
+ * 修改备注：
  */
 @Module
 public class UsualAddressModule {
@@ -38,6 +35,7 @@ public class UsualAddressModule {
 
     /**
      * 构建UsualAddressModule时,将View的实现类传进来,这样就可以提供View的实现类给presenter
+     *
      * @param view
      */
     public UsualAddressModule(UsualAddressContract.View view) {

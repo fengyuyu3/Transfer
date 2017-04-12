@@ -8,6 +8,7 @@ import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
 import com.ironaviation.traveller.mvp.model.entity.request.ClearanceOrderRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.MessageRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.TravelRequest;
+import com.ironaviation.traveller.mvp.model.entity.request.UpdateAddressBookRequest;
 import com.ironaviation.traveller.mvp.model.entity.response.Flight;
 import com.ironaviation.traveller.mvp.model.entity.response.MessageResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.TravelResponse;
@@ -47,6 +48,14 @@ public interface CommonService {
     @POST(Api.APP_SIGN_OUT)
     Observable<BaseData<JsonObject>> signOut();
 
+    @GET(Api.GET_USER_ADDRESS_BOOK)
+    Observable<BaseData<List<UpdateAddressBookRequest>>> getUserAddressBook();
+
+    @POST(Api.UPDATE_ADDRESS_BOOK)
+    Observable<BaseData<List<JsonObject>>> updateAddressBook(@Body UpdateAddressBookRequest params);
+
+    @POST(Api.DELETE_ADDRESS_BOOK)
+    Observable<BaseData<List<JsonObject>>> deleteAddressBook(@Query("uabId") String uabId);
     @POST(Api.CLEARANCE_ORDER)
     Observable<BaseData<ClearanceOrderRequest>> getClearanceInfo(@Body ClearanceOrderRequest params);
 }
