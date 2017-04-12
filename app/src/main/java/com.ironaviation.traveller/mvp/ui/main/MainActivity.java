@@ -36,6 +36,7 @@ import com.ironaviation.traveller.di.module.MainModule;
 import com.ironaviation.traveller.mvp.contract.MainContract;
 import com.ironaviation.traveller.mvp.presenter.MainPresenter;
 import com.ironaviation.traveller.mvp.ui.airportoff.AirPortOffFragment;
+import com.ironaviation.traveller.mvp.ui.airporton.AirPortOnFragment;
 import com.ironaviation.traveller.mvp.ui.login.IdentificationActivity;
 import com.ironaviation.traveller.mvp.ui.my.MessageActivity;
 import com.ironaviation.traveller.mvp.ui.my.SettingActivity;
@@ -140,7 +141,7 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
     @Override
     protected void initData() {
 
-        mFragments.add(SimpleCardFragment.getInstance(mTitles[0]));
+        mFragments.add(new AirPortOnFragment());
         mFragments.add(new AirPortOffFragment());
         /*for (String title : mTitles) {
             mFragments.add(SimpleCardFragment.getInstance(title));
@@ -175,7 +176,6 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
                 startActivity(SettingActivity.class);
                 break;
             case R.id.rl_trip:
-
                 startActivity(TravelActivity.class);
                 break;
         }
@@ -183,12 +183,12 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
 
     @Override
     public void showLoading() {
-
+        showProgressDialog();
     }
 
     @Override
     public void hideLoading() {
-
+        dismissProgressDialog();
     }
 
     @Override
@@ -237,8 +237,6 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
             case KeyEvent.KEYCODE_HOME:

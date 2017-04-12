@@ -34,15 +34,20 @@ public class MyTimeDialog {
         private int indexDay,indexHour,indexMinite;
         private Dialog  mCameraDialog;
         private Context context;
-        private long time = 1492135933000l;
+        private long time;
+        private long currentTime;
         private List<String> list;
         private int status = -1;
         private LoopView lwDay,lwHour,lwSec;
         private boolean isFirst = false;
         private List<String> minites;
         private List<String> hours;
-        public MyTimeDialog(Context context){
+        private ItemCallBack mCallBack;
+        public MyTimeDialog(Context context,ItemCallBack mCallBack,long time){
             this.context = context;
+            this.mCallBack = mCallBack;
+            this.time = time-(60*60*1500);
+            currentTime = time-60*60*24*1000;
         }
         public void showDialog(final String title) {
             mCameraDialog  = new Dialog(context, R.style.picker_dialog_background);
@@ -115,6 +120,8 @@ public class MyTimeDialog {
                 }
             });
             // 设置原始数据
+            hours = getStartHour();
+            minites = getStartMinite();
             lwDay.setItems(getStartDate(time));
             lwHour.setItems(getStartHour());
             lwSec.setItems(getStartMinite());
@@ -135,9 +142,10 @@ public class MyTimeDialog {
                 @Override
                 public void onClick(View v) {
 //                    EventBus.getDefault().post(myIndex, EventBusTags.DIALOG_EVENT);
-                    String date = TimerUtils.getYear(System.currentTimeMillis()+indexDay*24*60*60)
+                    String date = TimerUtils.getYear(currentTime+indexDay*24*60*60)
                     +list.get(indexDay) + hours.get(indexHour)+minites.get(indexMinite);
                     Log.e("kkk",date+"   "+TimerUtils.getTimeMillis(date));
+                    mCallBack.setTime(TimerUtils.getTimeMillis(date));
                     mCameraDialog.dismiss();
                 }
             });
@@ -166,7 +174,7 @@ public class MyTimeDialog {
         }
     }
     public List<String> getStartDate(long times){
-        return TimerUtils.getDays(times);
+        return TimerUtils.getDays(times,currentTime);
     }
 
     public List<String> getStartHour(){
@@ -194,11 +202,11 @@ public class MyTimeDialog {
     }
 
     public List<String> getOneHour(long endTimes){
-        return TimerUtils.getOneHours(endTimes);
+        return TimerUtils.getOneHours(endTimes,currentTime);
     }
 
     public List<String> getOneMinite(long endTimes){
-        return TimerUtils.getOneMinites(endTimes);
+        return TimerUtils.getOneMinites(endTimes,currentTime);
     }
 
     public void setRefreshMinite(int index){
@@ -219,4 +227,7 @@ public class MyTimeDialog {
         indexMinite = 0;
     }
 
+    public interface ItemCallBack{
+        void setTime(long time);
+    }
 }

@@ -46,7 +46,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:left_logo_iti="@mipmap/ic_we_chat"
-        app:right_go_on="@mipmap/ic_radio_button_unchecked_black"
         app:text_iti="@string/we_chat_Payment">
 
     </com.ironaviation.traveller.mvp.ui.widget.ImageTextImageView>
@@ -57,7 +56,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:left_logo_iti="@mipmap/ic_ali_pay"
-        app:right_go_on="@mipmap/ic_radio_button_unchecked_black"
         app:text_iti="@string/ali_pay_payment">
 
     </com.ironaviation.traveller.mvp.ui.widget.ImageTextImageView>
@@ -67,9 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:left_logo_iti="@mipmap/ic_union"
-        app:right_go_on="@mipmap/ic_radio_button_unchecked_black"
         app:text_iti="@string/union_payment">
-
     </com.ironaviation.traveller.mvp.ui.widget.ImageTextImageView>
 
 

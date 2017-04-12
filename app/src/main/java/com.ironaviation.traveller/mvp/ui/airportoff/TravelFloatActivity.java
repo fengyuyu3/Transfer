@@ -14,9 +14,11 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.ui.widget.MyDialog;
 import com.ironaviation.traveller.app.utils.TimerUtils;
 import com.ironaviation.traveller.common.AppComponent;
@@ -27,16 +29,17 @@ import com.ironaviation.traveller.mvp.contract.airportoff.TravelFloatContract;
 import com.ironaviation.traveller.mvp.model.entity.response.Flight;
 import com.ironaviation.traveller.mvp.model.entity.response.FlightDetails;
 import com.ironaviation.traveller.mvp.presenter.airportoff.TravelFloatPresenter;
-import com.ironaviation.traveller.mvp.ui.widget.MyTimePickerView;
 import com.ironaviation.traveller.mvp.ui.my.travel.TravelAdapter;
 import com.ironaviation.traveller.mvp.ui.widget.TimePicker.MyTimePickerView;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
 
+import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -92,6 +95,7 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
     private RecyclerView.LayoutManager  layoutManager;
     private TravelFloatAdapter mTravelFloatAdapter;
     private MyDialog mMyDialog;
+    private Flight mFlight;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -114,7 +118,7 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
         setTravelNum();
         setEditorAction();
         setFlyTime();
-        initRecyerView();
+        initRecyclerView();
         mTwCity.setOnClickListener(new View.OnClickListener() { //获取焦点消费事件
             @Override
             public void onClick(View v) {
@@ -123,22 +127,21 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
         });
     }
 
-    public void initRecyerView(){
+    public void initRecyclerView(){
         layoutManager = new LinearLayoutManager(this);
         mRwCity.setLayoutManager(layoutManager);
-        mTravelFloatAdapter = new TravelFloatAdapter();
+        mTravelFloatAdapter = new TravelFloatAdapter(this);
         mRwCity.setAdapter(mTravelFloatAdapter);
     }
 
-
     @Override
     public void showLoading() {
-
+        showProgressDialog();
     }
 
     @Override
     public void hideLoading() {
-
+        dismissProgressDialog();
     }
 
     @Override
@@ -201,8 +204,14 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
                     if(mEdtTravelNum.getText().toString().trim().length() <= 2 ){
                         return false;
                     }else{
-                        setShowTime();
-                        mMyDialog.showDialog(getList(),getResources().getString(R.string.airport_fly_time_select));
+                        if(mEdtTravelNum.getText().toString().trim().substring(0,2).equalsIgnoreCase(Constant.SC_AIRPORT)) {
+                            mRlAirportFlyTime.setVisibility(View.VISIBLE);
+                            setShowTime();
+                            hideFlight();
+                            mMyDialog.showDialog(getList(),getResources().getString(R.string.airport_fly_time_select));
+                        }else{
+                            showMessage(getResources().getString(R.string.airport_sc));
+                        }
                         return false;
                     }
                 }
@@ -221,10 +230,14 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
         mRlAirportFlyTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mRlAirportFlyTime.setVisibility(View.VISIBLE);
-                setShowTime();
-                hideFlight();
-                mMyDialog.showDialog(getList(),getResources().getString(R.string.airport_fly_time_select));
+                if(mEdtTravelNum.getText().toString().trim().substring(0,2).equalsIgnoreCase(Constant.SC_AIRPORT)) {
+                    mRlAirportFlyTime.setVisibility(View.VISIBLE);
+                    setShowTime();
+                    hideFlight();
+                    mMyDialog.showDialog(getList(),getResources().getString(R.string.airport_fly_time_select));
+                }else{
+                    showMessage(getResources().getString(R.string.airport_sc));
+                }
             }
         });
 
@@ -284,6 +297,8 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
     }
     @Override
     public void setData(Flight flight,String date) {
+        mFlight = new Flight();
+        mFlight.setInfo(flight.getInfo());
         mMyDialog.dismiss();
         setFlyTime(date);
         mllCity.setVisibility(View.VISIBLE);
@@ -297,6 +312,10 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
     }
     @Subscriber(tag = EventBusTags.FLIGHT_INFO)
     public void getFlightInfo(FlightDetails flightDetails){
+        List<FlightDetails> list = new ArrayList<>();
+        list.add(flightDetails);
+        mFlight.setList(list);
+        EventBus.getDefault().post(mFlight, EventBusTags.FLIGHT);
         finish();
     }
 }

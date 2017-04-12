@@ -69,7 +69,7 @@
     <string name="airport_time">乘车时间</string>
     <string name="airport_address">上车地址</string>
     <string name="airport_airport">选择航站楼</string>
-    <string name="airport_seat">需要1个座位数</string>
+    <string name="airport_seat">需要2个座位数</string>
     <string name="airport_validate">请输入身份证号验证</string>
     <string name="airport_fly">请选择起飞时间</string>
     <string name="airport_cancel">取消</string>
@@ -80,6 +80,13 @@
     <string name="riding_time_select">请选择乘车时间</string>
     <string name="great_satisfaction">非常满意</string>
     <string name="please_point_out_insufficient">请指出不足...</string>
+    <string name="airport_validate_text">验证</string>
+    <string name="airport_oneself">本人</string>
+    <string name="airport_arrive_time"></string>
+    <string name="airport_price">元</string>
+    <string name="airport_input_time">请选择乘车时间</string>
+    <string name="airport_sc">现在只支持四川航空</string>
+    <string name="airport_no_open">该城市尚未开通</string>
     <!--other-->
     <string name="qr_code_hint">二维码请在上车时提供给司机扫描</string>
     <string name="order_qr_code">订单二维码</string>
@@ -118,4 +125,8 @@
     <string name="travel_go_out">在您出行前30分钟为您发送司机的信息</string>
     <string name="travel_explain">四川航空免费接送机说明</string>
     <string name="travel_order">确认预约</string>
+    
+    <!--接机-->
+    <string name="meet_address">上车地点</string>
+    <string name="meet_input_address">请输入下车地址</string>
 </resources>

@@ -9,7 +9,6 @@ import retrofit2.http.POST;
 public interface Api {
 //    String APP_DOMAIN = "http://th-api.bestwise.net";// 测试
     String APP_DOMAIN = "http://192.168.0.75:8051";
-    String APP_DOMAIN = "http://192.168.1.144:8051";
     String LOGIN = "/api/Users/LoginWithSMS";// 登录
     String Travel = "";
     String MESSAGE = "";
@@ -18,6 +17,4 @@ public interface Api {
     String CLEARANCE_ORDER = "/api/Booking/PreClearPortBooking"; //预览出港信息
     String APP_SIGN_OUT="/api/Users/AppSignOut";//POST 注销登录
     int RequestSuccess = 1;
-
-
 }

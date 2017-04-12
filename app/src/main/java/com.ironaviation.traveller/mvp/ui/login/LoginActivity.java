@@ -100,12 +100,12 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
 
     @Override
     public void showLoading() {
-
+        showProgressDialog();
     }
 
     @Override
     public void hideLoading() {
-
+        dismissProgressDialog();
     }
 
     @Override

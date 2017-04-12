@@ -32,4 +32,9 @@ public interface Constant {
     int TRAVEL_DETAILS_COMPLETE = 42;
     int TRAVEL_DETAILS_ORDER = 43;
     int TRAVEL_DETAILS_ARRIVE = 44;
+
+    int SEAT_NUM = 6;
+
+    String SC_AIRPORT = "3u";
+    int DEFULT_SEAT = 1;
 }

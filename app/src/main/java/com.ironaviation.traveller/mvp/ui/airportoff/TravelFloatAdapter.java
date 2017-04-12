@@ -1,9 +1,11 @@
 package com.ironaviation.traveller.mvp.ui.airportoff;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
@@ -29,9 +31,14 @@ import java.util.List;
 public class TravelFloatAdapter extends RecyclerView.Adapter<TravelFloatHolder> {
 
     private List<FlightDetails> flightDetailsList;
+    private Context mContext;
     public void setList(List<FlightDetails> flightDetailsList){
         this.flightDetailsList = flightDetailsList;
         notifyDataSetChanged();
+    }
+
+    public TravelFloatAdapter(Context mContext){
+        this.mContext = mContext;
     }
     @Override
     public TravelFloatHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -50,7 +57,13 @@ public class TravelFloatAdapter extends RecyclerView.Adapter<TravelFloatHolder> 
         holder.ll_city.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventBus.getDefault().post(flightDetailsList.get(position), EventBusTags.FLIGHT_INFO);
+                String city = getCity(flightDetailsList.get(position).getTakeOff());
+                boolean flag = city.contains("成都");
+                if(flag) {
+                    EventBus.getDefault().post(flightDetailsList.get(position), EventBusTags.FLIGHT_INFO);
+                }else{
+                    Toast.makeText(mContext,mContext.getResources().getString(R.string.airport_no_open),Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

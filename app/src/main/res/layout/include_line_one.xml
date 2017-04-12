@@ -3,5 +3,4 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:background="@color/line_little_grey"
     android:layout_height="1px">
-
 </com.zhy.autolayout.AutoLinearLayout>

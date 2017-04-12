@@ -126,29 +126,37 @@ public class PaymentActivity extends WEActivity<PaymentPresenter> implements Pay
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ivi_we_chat:
-                mIviWeChat.setGoOn(R.mipmap.ic_radio_button_checked_black);
+               /* mIviWeChat.setGoOn(R.mipmap.ic_radio_button_checked_black);
                 mIviAliPay.setGoOn(R.mipmap.ic_radio_button_unchecked_black);
-                mIviUnionPay.setGoOn(R.mipmap.ic_radio_button_unchecked_black);
+                mIviUnionPay.setGoOn(R.mipmap.ic_radio_button_unchecked_black);*/
+                mIviWeChat.show(true,R.mipmap.ic_pay_select);
+                mIviAliPay.show(false,R.mipmap.ic_pay_select);
+                mIviUnionPay.show(false,R.mipmap.ic_pay_select);
                 mIviAliPay.setBackGround(ContextCompat.getColor(this, R.color.white));
                 mIviWeChat.setBackGround(ContextCompat.getColor(this, R.color.id_cord_background));
                 mIviUnionPay.setBackGround(ContextCompat.getColor(this, R.color.white));
                 break;
             case R.id.ivi_ali_pay:
-                mIviAliPay.setGoOn(R.mipmap.ic_radio_button_checked_black);
+                /*mIviAliPay.setGoOn(R.mipmap.ic_radio_button_checked_black);
                 mIviWeChat.setGoOn(R.mipmap.ic_radio_button_unchecked_black);
-                mIviUnionPay.setGoOn(R.mipmap.ic_radio_button_unchecked_black);
+                mIviUnionPay.setGoOn(R.mipmap.ic_radio_button_unchecked_black);*/
+                mIviAliPay.show(true,R.mipmap.ic_pay_select);
+                mIviWeChat.show(false,R.mipmap.ic_pay_select);
+                mIviUnionPay.show(false,R.mipmap.ic_pay_select);
                 mIviAliPay.setBackGround(ContextCompat.getColor(this, R.color.id_cord_background));
                 mIviWeChat.setBackGround(ContextCompat.getColor(this, R.color.white));
                 mIviUnionPay.setBackGround(ContextCompat.getColor(this, R.color.white));
                 break;
             case R.id.ivi_union_pay:
-                mIviUnionPay.setGoOn(R.mipmap.ic_radio_button_checked_black);
+                /*mIviUnionPay.setGoOn(R.mipmap.ic_radio_button_checked_black);
                 mIviWeChat.setGoOn(R.mipmap.ic_radio_button_unchecked_black);
-                mIviAliPay.setGoOn(R.mipmap.ic_radio_button_unchecked_black);
+                mIviAliPay.setGoOn(R.mipmap.ic_radio_button_unchecked_black);*/
+                mIviUnionPay.show(true,R.mipmap.ic_pay_select);
+                mIviWeChat.show(false,R.mipmap.ic_pay_select);
+                mIviAliPay.show(false,R.mipmap.ic_pay_select);
                 mIviAliPay.setBackGround(ContextCompat.getColor(this, R.color.white));
                 mIviWeChat.setBackGround(ContextCompat.getColor(this, R.color.white));
                 mIviUnionPay.setBackGround(ContextCompat.getColor(this, R.color.id_cord_background));
-
                 break;
             case R.id.rl_go_to_pay:
 

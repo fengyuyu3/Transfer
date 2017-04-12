@@ -97,6 +97,10 @@ public class ImageTextImageView extends AutoLinearLayout {
             ivGoOn.setVisibility(GONE);
         }
     }
+    public void show(boolean show,int resId){
+            ivGoOn.setImageResource(resId);
+            ivGoOn.setVisibility(show == true ? VISIBLE : GONE);
+    }
 
     public void setBackGround(int resId) {
 

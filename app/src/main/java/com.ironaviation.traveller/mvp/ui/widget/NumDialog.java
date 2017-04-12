@@ -38,7 +38,7 @@ public class NumDialog {
         this.context = context;
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_zodiac,null,false);
         builder.setView(view);
-        builder.setCancelable(false);
+        builder.setCancelable(true);
         alert = builder.create();
         listview = (ListView) view.findViewById(R.id.listview_zodiac);
         adapter = new NumAdapter();

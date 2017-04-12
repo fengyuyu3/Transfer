@@ -34,13 +34,22 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="本人"
+            android:text="@string/airport_oneself"
             android:visibility="gone"/>
+        <TextView
+            android:textSize="30px"
+            android:id="@+id/tv_arrive_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="周五"
+            android:visibility="visible"/>
 
         <TextView
             android:gravity="center|left"
             android:paddingLeft="10px"
-            android:textColor="@color/airport_edit_gray"
+            android:textColor="@color/word_middle_grey"
             android:textSize="30px"
             android:layout_marginLeft="50px"
             android:singleLine="true"
@@ -52,17 +61,32 @@
             />
 
         <TextView
-            android:background="@color/color_brown"
+            android:paddingRight="10px"
+            android:paddingLeft="5px"
+            android:drawableLeft="@mipmap/ic_white_address"
+            android:background="@drawable/btn_code_brown"
             android:textColor="@color/white"
             android:gravity="center"
             android:textSize="30px"
-            android:visibility="visible"
+            android:visibility="gone"
+            android:id="@+id/tv_address"
+            android:layout_width="wrap_content"
+            android:layout_height="47px"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="@string/meet_address"/>
+        <TextView
+            android:background="@drawable/btn_code_brown"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:textSize="30px"
+            android:visibility="gone"
             android:id="@+id/tv_code1"
             android:layout_width="116px"
             android:layout_height="47px"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="验证"/>
+            android:text="@string/airport_validate_text"/>
 
     </com.zhy.autolayout.AutoRelativeLayout>
 </com.zhy.autolayout.AutoLinearLayout>

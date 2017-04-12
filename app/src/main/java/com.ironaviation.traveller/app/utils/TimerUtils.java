@@ -35,11 +35,11 @@ public class TimerUtils {
         return list;
     }
 
-    public static List<String> getDays(long times){
-        double minite = times - System.currentTimeMillis();
+    public static List<String> getDays(long times,long currentTime){
+        double minite = times - currentTime;
         int day = (int) Math.ceil(minite/(60*60*1000*24));
         List<String> list = new ArrayList<>();
-        Date date1 = new Date(System.currentTimeMillis());
+        Date date1 = new Date(currentTime);
         if(date1.getMinutes() >= 50 && date1.getHours() == 23){
             for(int i = 1 ; i <= day; i++){
                 Date date=new Date();//取时间
@@ -149,9 +149,9 @@ public class TimerUtils {
         return list;
     }
 
-    public static List<String> getOneHours(long times){
+    public static List<String> getOneHours(long times,long currentTime){
         List<String> list = new ArrayList<>();
-        Date currentDate = new Date(System.currentTimeMillis());
+        Date currentDate = new Date(currentTime);
         Date date = new Date(times);
         int hour = date.getHours();
         int currentHour = currentDate.getHours();
@@ -161,9 +161,9 @@ public class TimerUtils {
         return list;
     }
 
-    public static List<String> getOneMinites(long times){
+    public static List<String> getOneMinites(long times,long currentTime){
         List<String> list = new ArrayList<>();
-        Date currentDate = new Date(System.currentTimeMillis());
+        Date currentDate = new Date(currentTime);
         Date date = new Date(times);
         int currentMinite = currentDate.getMinutes();
         double minite = date.getMinutes();
@@ -194,5 +194,18 @@ public class TimerUtils {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public static String getDateFormat(long time,String format){
+        try {
+            Date date = new Date(time);
+            SimpleDateFormat formatter = new SimpleDateFormat(format);
+            String dateString = formatter.format(date);
+            return dateString;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
     }
 }

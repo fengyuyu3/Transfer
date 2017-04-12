@@ -25,10 +25,10 @@ import com.zhy.autolayout.AutoLinearLayout;
 
 public class PublicTextView extends AutoLinearLayout {
     private String hint,text;
-    private boolean rightPeroson,rightCode,line,enable;
+    private boolean rightPeroson,rightCode,line,enable,rightAddress,rightTime;
     private int leftLogo,padding_left,backColor;
 
-    private TextView tvPerson,tvCode,tvInfo;
+    private TextView tvPerson,tvCode,tvInfo,tvArriveTime,tvAddress;
     private ImageView ivLogo;
     private View lineView;
     private AutoLinearLayout ll;
@@ -60,6 +60,8 @@ public class PublicTextView extends AutoLinearLayout {
         enable = a.getBoolean(R.styleable.PublicTextView_my_enable1,false);
         padding_left = a.getInt(R.styleable.PublicTextView_padding_left1,-1);
         backColor = a.getColor(R.styleable.PublicTextView_textColor,-1);
+        rightAddress = a.getBoolean(R.styleable.PublicTextView_right_address1,false);
+        rightTime = a.getBoolean(R.styleable.PublicTextView_right_time1,false);
 
         a.recycle();
 
@@ -73,6 +75,8 @@ public class PublicTextView extends AutoLinearLayout {
         tvInfo = (TextView) v.findViewById(R.id.edt_content1);
         lineView = v.findViewById(R.id.line_edt1);
         ll = (AutoLinearLayout) v.findViewById(R.id.pw_ll1);
+        tvArriveTime = (TextView) v.findViewById(R.id.tv_arrive_time);
+        tvAddress = (TextView) v.findViewById(R.id.tv_address);
 
         setEditHint(hint);
         setLogo(leftLogo);
@@ -80,6 +84,8 @@ public class PublicTextView extends AutoLinearLayout {
         setCodeVisible(rightCode);
         setLineVisiable(line);
         setPaddingLeft(padding_left);
+        showArriveTime(rightTime);
+        showAddress(rightAddress);
         tvCode.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -93,11 +99,8 @@ public class PublicTextView extends AutoLinearLayout {
     }
 
     public void setLineVisiable(boolean flag){
-        if(flag) {
-            lineView.setVisibility(VISIBLE);
-        }else{
-            lineView.setVisibility(GONE);
-        }
+        lineView.setVisibility(flag == true ? VISIBLE : GONE);
+
     }
 
     public void setEditHint(String text){
@@ -108,6 +111,22 @@ public class PublicTextView extends AutoLinearLayout {
         }
     }
 
+    public void showArriveTime(boolean flag){
+        if(flag){
+            tvArriveTime.setVisibility(VISIBLE);
+        }else{
+            tvArriveTime.setVisibility(GONE);
+        }
+//        tvArriveTime.setVisibility(flag == true ? VISIBLE : GONE);
+    }
+    public void showAddress(boolean flag){
+        if(flag){
+            tvAddress.setVisibility(VISIBLE);
+        }else{
+            tvAddress.setVisibility(GONE);
+        }
+//        tvAddress.setVisibility(flag == true ? VISIBLE : GONE);
+    }
 
     public void setLogo(int resId){
         if(resId != -1) {
@@ -119,11 +138,12 @@ public class PublicTextView extends AutoLinearLayout {
     }
 
     public void setPersonVisible(boolean flag){
-        if(flag) {
+        if(flag){
             tvPerson.setVisibility(VISIBLE);
         }else{
             tvPerson.setVisibility(GONE);
         }
+//         tvPerson.setVisibility(flag == true ? VISIBLE : GONE);
     }
 
     public void setCodeVisible(boolean flag){
@@ -132,6 +152,7 @@ public class PublicTextView extends AutoLinearLayout {
         }else{
             tvCode.setVisibility(GONE);
         }
+//         tvCode.setVisibility(flag == true ? VISIBLE : GONE);
     }
 
     public interface onPublicViewClick{
@@ -150,6 +171,15 @@ public class PublicTextView extends AutoLinearLayout {
         if(text != null){
             tvInfo.setText(text);
             tvInfo.setTextColor(getResources().getColor(R.color.login_edit));
+        }else{
+            tvInfo.setText("");
+        }
+    }
+
+    public void setInitInfo(String text){
+        if(text != null){
+            tvInfo.setText(text);
+            tvInfo.setTextColor(getResources().getColor(R.color.word_middle_grey));
         }else{
             tvInfo.setText("");
         }

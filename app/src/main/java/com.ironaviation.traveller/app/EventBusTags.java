@@ -8,7 +8,9 @@ public interface EventBusTags {
 
     String TRAVEL_DETAILS = "TravelDetailsActivity";
     String DIALOG_EVENT = "dialog";
-    String FLIGHT_INFO = "flight";
+    String FLIGHT_INFO = "flight_info";
+    String FLIGHT = "flight";
+    String AIRPORT_TIME = "airport_time";
 
 
 }

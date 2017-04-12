@@ -31,10 +31,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </com.zhy.autolayout.AutoLinearLayout>
+    <include layout="@layout/include_line_one"/>
     <com.zhy.autolayout.AutoLinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="300px">
+        android:layout_height="400px">
         <com.weigan.loopview.LoopView
             android:layout_weight="1"
             android:id="@+id/loopView_day"
