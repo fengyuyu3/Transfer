@@ -22,6 +22,7 @@ import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.my.DaggerAddressComponent;
@@ -33,6 +34,8 @@ import com.ironaviation.traveller.mvp.presenter.my.AddressPresenter;
 import com.ironaviation.traveller.mvp.ui.manager.FullyLinearLayoutManager;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoRelativeLayout;
+
+import org.simple.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -154,10 +157,12 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 mPresenter.saveAddress(infos.get(position));
 
-
-                mPresenter.updateAddressBook(uabId, infos.get(position), addressType);
-
-
+                if(addressType == Constant.AIRPORT_GO){
+                    EventBus.getDefault().post(infos.get(position), EventBusTags.AIRPORT_GO);
+                    finish();
+                }else {
+                    mPresenter.updateAddressBook(uabId, infos.get(position), addressType);
+                }
             }
         });
     }

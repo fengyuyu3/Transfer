@@ -1,6 +1,9 @@
 package com.ironaviation.traveller.mvp.contract.my.travel;
 
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.request.RouteListMoreRequest;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteListResponse;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.TravelResponse;
 import com.jess.arms.mvp.BaseView;
 import com.jess.arms.mvp.IModel;
@@ -35,16 +38,17 @@ public interface TravelContract {
     //对于经常使用的关于UI的方法可以定义到BaseView中,如显示隐藏进度条,和显示文字消息
     interface View extends BaseView {
 
-        void setDatas(List<TravelResponse> mTravelResponses);
+        void setDatas(RouteListResponse responses);
+        void setMoreDatas(RouteListResponse responses);
         void setNodata();
         void setError();
+        void setRouteStateResponse(RouteStateResponse responses);
 
     }
 
     //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存
     interface Model extends IModel {
-
-        Observable<BaseData<List<TravelResponse>>> getTravelData();
-
+        Observable<BaseData<RouteListResponse>> getRouteListMore(int index);
+        Observable<BaseData<RouteStateResponse>> getRouteStateInfo(String bid);
     }
 }

@@ -66,7 +66,6 @@
         <com.zhy.autolayout.AutoRelativeLayout
             android:layout_width="match_parent"
             android:layout_height="88px"
-
             android:background="@color/white">
 
             <TextView
@@ -90,6 +89,33 @@
                 android:text="@string/payment_wait_time"
                 android:textSize="30px"/>
         </com.zhy.autolayout.AutoRelativeLayout>
+
+        <com.ironaviation.traveller.mvp.ui.widget.ImageTextImageView
+            android:id="@+id/ivi_we_chat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:left_logo_iti="@mipmap/ic_we_chat"
+            app:text_iti="@string/we_chat_Payment">
+
+        </com.ironaviation.traveller.mvp.ui.widget.ImageTextImageView>
+
+        <com.ironaviation.traveller.mvp.ui.widget.ImageTextImageView
+            android:id="@+id/ivi_ali_pay"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:left_logo_iti="@mipmap/ic_ali_pay"
+            app:text_iti="@string/ali_pay_payment">
+
+        </com.ironaviation.traveller.mvp.ui.widget.ImageTextImageView>
+
+        <com.ironaviation.traveller.mvp.ui.widget.ImageTextImageView
+            android:id="@+id/ivi_union_pay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:left_logo_iti="@mipmap/ic_union"
+            app:text_iti="@string/union_payment">
+        </com.ironaviation.traveller.mvp.ui.widget.ImageTextImageView>
 
         <com.ironaviation.traveller.mvp.ui.widget.TextTextView
             android:layout_width="match_parent"

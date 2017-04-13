@@ -4,6 +4,9 @@ import android.app.Application;
 
 import com.ironaviation.traveller.mvp.contract.my.travel.TravelContract;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.request.RouteListMoreRequest;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteListResponse;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.TravelResponse;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
@@ -48,6 +51,7 @@ public class TravelPresenter extends BasePresenter<TravelContract.Model, TravelC
     private Application mApplication;
     private ImageLoader mImageLoader;
     private AppManager mAppManager;
+    private int num;
 
     @Inject
     public TravelPresenter(TravelContract.Model model, TravelContract.View rootView
@@ -69,20 +73,20 @@ public class TravelPresenter extends BasePresenter<TravelContract.Model, TravelC
         this.mApplication = null;
     }
 
-    public void getTravelData(){
-        mModel.getTravelData()
-                .compose(RxUtils.<BaseData<List<TravelResponse>>>applySchedulers(mRootView))
-                .subscribe(new ErrorHandleSubscriber<BaseData<List<TravelResponse>>>(mErrorHandler) {
+   /* public void getTravelData(String bid){
+        mModel.getRouteList(bid)
+                .compose(RxUtils.<BaseData<RouteListResponse>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<RouteListResponse>>(mErrorHandler) {
                     @Override
-                    public void onNext(BaseData<List<TravelResponse>> listBaseData) {
-                        if(listBaseData.isSuccess()){
-                            if(listBaseData.getData() != null) {
-                                mRootView.setDatas(listBaseData.getData());
+                    public void onNext(BaseData<RouteListResponse> responseBaseData) {
+                        if(responseBaseData.isSuccess()){
+                            if(responseBaseData.getData() != null) {
+                                mRootView.setDatas(responseBaseData.getData());
                             }else{
                                 mRootView.setNodata();
                             }
                         }else{
-                            mRootView.showMessage(listBaseData.getMessage());
+                            mRootView.showMessage(responseBaseData.getMessage());
                             mRootView.setError();
                         }
                     }
@@ -93,6 +97,87 @@ public class TravelPresenter extends BasePresenter<TravelContract.Model, TravelC
                         mRootView.setError();
                     }
                 });
+    }*/
+
+    public void getTravelData(int index){
+        mModel.getRouteListMore(index)
+                .compose(RxUtils.<BaseData<RouteListResponse>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<RouteListResponse>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<RouteListResponse> responseBaseData) {
+                        if(responseBaseData.isSuccess()){
+                            if(responseBaseData.getData() != null && responseBaseData.getData().getItems() != null
+                                    && responseBaseData.getData().getItems().size() > 0) {
+                                mRootView.setDatas(responseBaseData.getData());
+                                num = responseBaseData.getData().getCurrentPageIndex()+1;
+                            }else{
+                                mRootView.setNodata();
+                            }
+                        }else{
+                            mRootView.setError();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        mRootView.setError();
+//                        mRootView.showMessage("网络连接失败");
+                    }
+                });
     }
 
+    public void getTravelDataMore(int index){
+        mModel.getRouteListMore(index)
+                .compose(RxUtils.<BaseData<RouteListResponse>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<RouteListResponse>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<RouteListResponse> responseBaseData) {
+                        if(responseBaseData.isSuccess()){
+                            if(responseBaseData.getData() != null && responseBaseData.getData().getItems() != null
+                                    && responseBaseData.getData().getItems().size() > 0) {
+                                mRootView.setMoreDatas(responseBaseData.getData());
+                                num = responseBaseData.getData().getCurrentPageIndex()+1;
+                            }else{
+                                mRootView.showMessage(responseBaseData.getMessage());
+                            }
+                        }else{
+                            mRootView.showMessage(responseBaseData.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        mRootView.showMessage("网络连接失败");
+                    }
+                });
+    }
+
+    public void getRouteState(String bid){
+        mModel.getRouteStateInfo(bid)
+                .compose(RxUtils.<BaseData<RouteStateResponse>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<RouteStateResponse>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<RouteStateResponse> routeStateResponseBaseData) {
+                        if(routeStateResponseBaseData.isSuccess()){
+                            if(routeStateResponseBaseData.getData() != null){
+
+                            }else{
+
+                            }
+                        }else{
+//                            mRootView.showMessage("");
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+                });
+    }
+    public int getPage(){
+        return num;
+    }
 }

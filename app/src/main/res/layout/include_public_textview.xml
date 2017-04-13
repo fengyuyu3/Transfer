@@ -44,7 +44,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:text="周五"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
 
         <TextView
             android:gravity="center|left"

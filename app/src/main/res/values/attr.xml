@@ -30,6 +30,7 @@
         <attr name="textColor" format="color"/>
         <attr name="right_address1" format="boolean" />
         <attr name="right_time1" format="boolean"/>
+        <attr name="right_delete1" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="CircleImageView">

@@ -3,12 +3,16 @@ package com.ironaviation.traveller.mvp.model.my.travel;
 import android.app.Application;
 
 import com.google.gson.Gson;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.travel.TravelContract;
 import com.ironaviation.traveller.mvp.model.api.cache.CacheManager;
 import com.ironaviation.traveller.mvp.model.api.service.CommonService;
 import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.request.RouteListMoreRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.TravelRequest;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteListResponse;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.TravelResponse;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BaseModel;
@@ -63,10 +67,23 @@ public class TravelModel extends BaseModel<ServiceManager, CacheManager> impleme
         this.mApplication = null;
     }
 
-    @Override
+   /* @Override
     public Observable<BaseData<List<TravelResponse>>> getTravelData() {
         TravelRequest travelRequest = new TravelRequest();
 
         return mCommonService.getTravelData(travelRequest);
+    }
+*/
+    @Override
+    public Observable<BaseData<RouteListResponse>> getRouteListMore(int index) {
+        RouteListMoreRequest params = new RouteListMoreRequest();
+        params.setPageIndex(index);
+        params.setPageSize(Constant.INDEX);
+        params.setPaged(true);
+        return mCommonService.getRouteInfoMore(params);
+    }
+    @Override
+    public Observable<BaseData<RouteStateResponse>> getRouteStateInfo(String bid) {
+        return mCommonService.getRouteStateInfo(bid);
     }
 }

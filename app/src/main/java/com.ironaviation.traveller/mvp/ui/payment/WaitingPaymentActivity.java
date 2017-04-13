@@ -3,6 +3,7 @@ package com.ironaviation.traveller.mvp.ui.payment;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -13,8 +14,12 @@ import com.ironaviation.traveller.di.component.payment.DaggerWaitingPaymentCompo
 import com.ironaviation.traveller.di.module.payment.WaitingPaymentModule;
 import com.ironaviation.traveller.mvp.contract.payment.WaitingPaymentContract;
 import com.ironaviation.traveller.mvp.presenter.payment.WaitingPaymentPresenter;
+import com.ironaviation.traveller.mvp.ui.widget.ImageTextImageView;
 import com.jess.arms.utils.UiUtils;
 
+
+import butterknife.BindView;
+import butterknife.OnClick;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -41,6 +46,12 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> implements WaitingPaymentContract.View {
 
+    @BindView(R.id.ivi_we_chat)
+    ImageTextImageView mIviWeChat;
+    @BindView(R.id.ivi_ali_pay)
+    ImageTextImageView mIviAliPay;
+    @BindView(R.id.ivi_union_pay)
+    ImageTextImageView mIviUnionPay;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -61,7 +72,6 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     protected void initData() {
 
     }
-
 
     @Override
     public void showLoading() {
@@ -90,9 +100,47 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
         finish();
     }
 
-
     @Override
     protected void nodataRefresh() {
 
+    }
+
+    @OnClick({R.id.ivi_we_chat, R.id.ivi_ali_pay, R.id.ivi_union_pay})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.ivi_we_chat:
+               /* mIviWeChat.setGoOn(R.mipmap.ic_radio_button_checked_black);
+                mIviAliPay.setGoOn(R.mipmap.ic_radio_button_unchecked_black);
+                mIviUnionPay.setGoOn(R.mipmap.ic_radio_button_unchecked_black);*/
+                mIviWeChat.show(true,R.mipmap.ic_pay_select);
+                mIviAliPay.show(false,R.mipmap.ic_pay_select);
+                mIviUnionPay.show(false,R.mipmap.ic_pay_select);
+                mIviAliPay.setBackGround(ContextCompat.getColor(this, R.color.white));
+                mIviWeChat.setBackGround(ContextCompat.getColor(this, R.color.id_cord_background));
+                mIviUnionPay.setBackGround(ContextCompat.getColor(this, R.color.white));
+                break;
+            case R.id.ivi_ali_pay:
+                /*mIviAliPay.setGoOn(R.mipmap.ic_radio_button_checked_black);
+                mIviWeChat.setGoOn(R.mipmap.ic_radio_button_unchecked_black);
+                mIviUnionPay.setGoOn(R.mipmap.ic_radio_button_unchecked_black);*/
+                mIviAliPay.show(true,R.mipmap.ic_pay_select);
+                mIviWeChat.show(false,R.mipmap.ic_pay_select);
+                mIviUnionPay.show(false,R.mipmap.ic_pay_select);
+                mIviAliPay.setBackGround(ContextCompat.getColor(this, R.color.id_cord_background));
+                mIviWeChat.setBackGround(ContextCompat.getColor(this, R.color.white));
+                mIviUnionPay.setBackGround(ContextCompat.getColor(this, R.color.white));
+                break;
+            case R.id.ivi_union_pay:
+                /*mIviUnionPay.setGoOn(R.mipmap.ic_radio_button_checked_black);
+                mIviWeChat.setGoOn(R.mipmap.ic_radio_button_unchecked_black);
+                mIviAliPay.setGoOn(R.mipmap.ic_radio_button_unchecked_black);*/
+                mIviUnionPay.show(true,R.mipmap.ic_pay_select);
+                mIviWeChat.show(false,R.mipmap.ic_pay_select);
+                mIviAliPay.show(false,R.mipmap.ic_pay_select);
+                mIviAliPay.setBackGround(ContextCompat.getColor(this, R.color.white));
+                mIviWeChat.setBackGround(ContextCompat.getColor(this, R.color.white));
+                mIviUnionPay.setBackGround(ContextCompat.getColor(this, R.color.id_cord_background));
+                break;
+        }
     }
 }

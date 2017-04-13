@@ -19,6 +19,9 @@ public interface Api {
     String GET_USER_ADDRESS_BOOK="/api/Users/GetUserAddressBook";//Get 获取用户常用地址
     String UPDATE_ADDRESS_BOOK="/api/Users/UpdateAddressBook";//POST 更新用户地址
     String DELETE_ADDRESS_BOOK="/api/Users/DeleteAddressBook";//POST 删除用户常用地址
-
+    String PRECLEAR_PORT = "/api/Booking/PreClearPortBooking";//订单
+    String ROUTE_DETAILS = "/api/Booking/GetDetail";
+    String ROUTE_DETAILS_MORE = "/api/Booking/GetBookings"; //行程列表
+    String VALIDREAL_IDCARD ="/api/Users/ValidRealIDCard"; //实名认证
     int RequestSuccess = 1;
 }

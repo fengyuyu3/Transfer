@@ -1,10 +1,12 @@
 package com.ironaviation.traveller.mvp.model.entity.request;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2017/4/10 0010.
  */
 
-public class PassengersRequest {
+public class PassengersRequest implements Serializable{
     /**
      * Name : string
      * IDCardNo : string

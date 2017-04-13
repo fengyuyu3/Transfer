@@ -11,6 +11,8 @@ public interface EventBusTags {
     String FLIGHT_INFO = "flight_info";
     String FLIGHT = "flight";
     String AIRPORT_TIME = "airport_time";
+    String ALIPAY = "alipay";
+    String AIRPORT_GO = "airport_go";
 
 
 }

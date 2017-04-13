@@ -5,21 +5,20 @@ import com.ironaviation.traveller.mvp.model.api.Api;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.Login;
 import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
-import com.ironaviation.traveller.mvp.model.entity.request.ClearanceOrderRequest;
+import com.ironaviation.traveller.mvp.model.entity.request.AirportGoInfoRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.MessageRequest;
+import com.ironaviation.traveller.mvp.model.entity.request.RouteListMoreRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.TravelRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.UpdateAddressBookRequest;
 import com.ironaviation.traveller.mvp.model.entity.response.Flight;
 import com.ironaviation.traveller.mvp.model.entity.response.MessageResponse;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteListResponse;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.TravelResponse;
-
-import org.json.JSONObject;
 
 import java.util.List;
 
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -56,6 +55,16 @@ public interface CommonService {
 
     @POST(Api.DELETE_ADDRESS_BOOK)
     Observable<BaseData<List<JsonObject>>> deleteAddressBook(@Query("uabId") String uabId);
-    @POST(Api.CLEARANCE_ORDER)
-    Observable<BaseData<ClearanceOrderRequest>> getClearanceInfo(@Body ClearanceOrderRequest params);
+
+    @POST(Api.PRECLEAR_PORT)
+    Observable<BaseData<AirportGoInfoRequest>> getAirPortInfo(@Body AirportGoInfoRequest params);
+
+   /* @GET(Api.ROUTE_DETAILS_MORE)
+    Observable<BaseData<RouteListResponse>> getRouteInfo(@Query("bid") String bid);*/
+
+    @POST(Api.ROUTE_DETAILS_MORE)
+    Observable<BaseData<RouteListResponse>> getRouteInfoMore(@Body RouteListMoreRequest params);
+
+    @GET(Api.ROUTE_DETAILS)
+    Observable<BaseData<RouteStateResponse>> getRouteStateInfo(@Query("bid") String bid);
 }

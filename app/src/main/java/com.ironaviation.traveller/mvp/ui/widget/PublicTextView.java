@@ -25,11 +25,11 @@ import com.zhy.autolayout.AutoLinearLayout;
 
 public class PublicTextView extends AutoLinearLayout {
     private String hint,text;
-    private boolean rightPeroson,rightCode,line,enable,rightAddress,rightTime;
+    private boolean rightPeroson,rightCode,line,enable,rightAddress,rightTime,rightDelete;
     private int leftLogo,padding_left,backColor;
 
     private TextView tvPerson,tvCode,tvInfo,tvArriveTime,tvAddress;
-    private ImageView ivLogo;
+    private ImageView ivLogo,iwDelete;
     private View lineView;
     private AutoLinearLayout ll;
 
@@ -62,6 +62,7 @@ public class PublicTextView extends AutoLinearLayout {
         backColor = a.getColor(R.styleable.PublicTextView_textColor,-1);
         rightAddress = a.getBoolean(R.styleable.PublicTextView_right_address1,false);
         rightTime = a.getBoolean(R.styleable.PublicTextView_right_time1,false);
+//        rightDelete = a.getBoolean(R.styleable.PublicTextView_right_delete1,false);
 
         a.recycle();
 
@@ -77,6 +78,7 @@ public class PublicTextView extends AutoLinearLayout {
         ll = (AutoLinearLayout) v.findViewById(R.id.pw_ll1);
         tvArriveTime = (TextView) v.findViewById(R.id.tv_arrive_time);
         tvAddress = (TextView) v.findViewById(R.id.tv_address);
+//        iwDelete = (ImageView) v.findViewById(R.id.iw_delete);
 
         setEditHint(hint);
         setLogo(leftLogo);
@@ -86,6 +88,7 @@ public class PublicTextView extends AutoLinearLayout {
         setPaddingLeft(padding_left);
         showArriveTime(rightTime);
         showAddress(rightAddress);
+//        setDelete(rightDelete);
         tvCode.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -110,6 +113,13 @@ public class PublicTextView extends AutoLinearLayout {
             tvInfo.setText("");
         }
     }
+    /*public void setDelete(boolean flag){
+        if(flag){
+            iwDelete.setVisibility(VISIBLE);
+        }else{
+            iwDelete.setVisibility(GONE);
+        }
+    }*/
 
     public void showArriveTime(boolean flag){
         if(flag){

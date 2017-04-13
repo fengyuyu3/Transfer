@@ -3,12 +3,16 @@ package com.ironaviation.traveller.mvp.presenter.my.travel;
 import android.app.Application;
 
 import com.ironaviation.traveller.mvp.contract.my.travel.TravelDetailsContract;
+import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
+import com.jess.arms.utils.RxUtils;
 import com.jess.arms.widget.imageloader.ImageLoader;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
 import javax.inject.Inject;
 
@@ -61,6 +65,62 @@ public class TravelDetailsPresenter extends BasePresenter<TravelDetailsContract.
         this.mAppManager = null;
         this.mImageLoader = null;
         this.mApplication = null;
+    }
+    public void getRouteState(String bid){
+        mModel.getRouteStateInfo(bid)
+                .compose(RxUtils.<BaseData<RouteStateResponse>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<RouteStateResponse>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<RouteStateResponse> routeStateResponseBaseData) {
+                        if(routeStateResponseBaseData.isSuccess()){
+                              if(routeStateResponseBaseData.getData() != null){
+                                  setRouteStateResponse(routeStateResponseBaseData.getData());
+                              }else{
+
+                              }
+                        }else{
+//                            mRootView.showMessage("");
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+                });
+    }
+
+    /**
+     * void setDriverName(String name);
+     void setDriverRate(String rate);
+     void setDriverPhone(String phone);
+     void setCarModel(String model);
+     void setCarLicense(String liscense);
+     void setCarColor(String carColor);
+     void setStatus(String Status);
+     * @param response
+     */
+
+    public void setRouteStateResponse(RouteStateResponse response){
+        if(response.getDriverName() != null){
+            mRootView.setDriverName(response.getDriverName());
+        }
+        if(response.getDriverRate() != null){
+            mRootView.setDriverRate(response.getDriverRate());
+        }
+        if(response.getDriverPhone() != null){
+            mRootView.setDriverPhone(response.getDriverPhone());
+        }
+        if(response.getCarLicense() != null){
+            mRootView.setCarLicense(response.getCarLicense());
+        }
+        if(response.getCarColor() != null && response.getCarModel() != null){
+            mRootView.setCarColor(response.getCarColor(),response.getCarModel());
+        }
+        if(response.getStatus() != null){
+            mRootView.setStatus(response.getStatus());
+        }
+
     }
 
 }

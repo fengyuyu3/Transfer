@@ -1,9 +1,12 @@
 package com.ironaviation.traveller.mvp.contract.airportoff;
 
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
-import com.ironaviation.traveller.mvp.model.entity.request.ClearanceOrderRequest;
+import com.ironaviation.traveller.mvp.model.entity.request.AirportGoInfoRequest;
+import com.ironaviation.traveller.mvp.model.entity.request.PassengersRequest;
 import com.jess.arms.mvp.BaseView;
 import com.jess.arms.mvp.IModel;
+
+import java.util.List;
 
 import rx.Observable;
 
@@ -32,11 +35,13 @@ import rx.Observable;
 public interface AirPortOffContract {
     //对于经常使用的关于UI的方法可以定义到BaseView中,如显示隐藏进度条,和显示文字消息
     interface View extends BaseView {
-
+        void setAirPortPrice(double price, double myPrice);
+        void setSeatNum(List<PassengersRequest> list);
+        void setBID(String bid);
     }
 
     //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存
     interface Model extends IModel {
-        Observable<BaseData<ClearanceOrderRequest>> getClearanceInfo(ClearanceOrderRequest params);
+        Observable<BaseData<AirportGoInfoRequest>> getAirPortInfo(AirportGoInfoRequest params);
     }
 }

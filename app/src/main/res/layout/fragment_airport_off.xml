@@ -105,14 +105,27 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:layout_marginLeft="32px"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:drawableLeft="@mipmap/ic_state"
                         android:drawablePadding="14px"
                         android:text="@string/travel_explain"
                         android:textColor="@color/color_brown" />
+                    <TextView
+                        android:layout_marginRight="32px"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_width="156px"
+                        android:layout_height="60px"
+                        android:background="@drawable/btn_code_brown"
+                        android:textColor="@color/white"
+                        android:gravity="center"
+                        android:textSize="30px"
+                        android:visibility="visible"
+                        android:id="@+id/tv_code_all"
+                        android:text="@string/airport_validate_text_all"/>
                 </com.zhy.autolayout.AutoRelativeLayout>
 
                 <com.zhy.autolayout.AutoLinearLayout

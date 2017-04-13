@@ -3,21 +3,20 @@ package com.ironaviation.traveller.mvp.model.entity.request;
 import java.util.List;
 
 /**
- * Created by Administrator on 2017/4/10 0010.
+ * Created by Administrator on 2017/4/12 0012.
  */
 
-public class ClearanceOrderRequest {
-
+public class AirportGoInfoRequest {
     /**
      * BID : string
      * FlightNo : string
      * FlightDate : string
-     * TakeOffDateTime : 2017-04-10T02:06:56.310Z
-     * ArriveDateTime : 2017-04-10T02:06:56.310Z
+     * TakeOffDateTime : 2017-04-12T07:52:38.191Z
+     * ArriveDateTime : 2017-04-12T07:52:38.191Z
      * TakeOffAddress : string
      * ArriveAddress : string
      * PickupAddress : string
-     * PickupTime : 2017-04-10T02:06:56.310Z
+     * PickupTime : 2017-04-12T07:52:38.191Z
      * PickupLongitude : 0
      * PickupLatitude : 0
      * DestAddress : string
@@ -25,25 +24,27 @@ public class ClearanceOrderRequest {
      * DestLatitude : 0
      * SeatNum : 0
      * TotalPrice : 0
+     * ActurlPrice : 0
      * Passengers : [{"Name":"string","IDCardNo":"string","IDCardType":"string","Gender":"string","Phone":"string","Notes":"string","Price":0,"IsValid":true}]
      */
 
     private String BID;
     private String FlightNo;
     private String FlightDate;
-    private String TakeOffDateTime;
-    private String ArriveDateTime;
+    private Long TakeOffDateTime;
+    private Long ArriveDateTime;
     private String TakeOffAddress;
     private String ArriveAddress;
     private String PickupAddress;
     private String PickupTime;
-    private int PickupLongitude;
-    private int PickupLatitude;
+    private double PickupLongitude;
+    private double PickupLatitude;
     private String DestAddress;
-    private int DestLongitude;
-    private int DestLatitude;
+    private double DestLongitude;
+    private double DestLatitude;
     private int SeatNum;
     private int TotalPrice;
+    private int ActurlPrice;
     private List<PassengersRequest> Passengers;
 
     public String getBID() {
@@ -70,19 +71,19 @@ public class ClearanceOrderRequest {
         this.FlightDate = FlightDate;
     }
 
-    public String getTakeOffDateTime() {
+    public Long getTakeOffDateTime() {
         return TakeOffDateTime;
     }
 
-    public void setTakeOffDateTime(String TakeOffDateTime) {
+    public void setTakeOffDateTime(Long TakeOffDateTime) {
         this.TakeOffDateTime = TakeOffDateTime;
     }
 
-    public String getArriveDateTime() {
+    public Long getArriveDateTime() {
         return ArriveDateTime;
     }
 
-    public void setArriveDateTime(String ArriveDateTime) {
+    public void setArriveDateTime(Long ArriveDateTime) {
         this.ArriveDateTime = ArriveDateTime;
     }
 
@@ -118,19 +119,19 @@ public class ClearanceOrderRequest {
         this.PickupTime = PickupTime;
     }
 
-    public int getPickupLongitude() {
+    public double getPickupLongitude() {
         return PickupLongitude;
     }
 
-    public void setPickupLongitude(int PickupLongitude) {
+    public void setPickupLongitude(double PickupLongitude) {
         this.PickupLongitude = PickupLongitude;
     }
 
-    public int getPickupLatitude() {
+    public double getPickupLatitude() {
         return PickupLatitude;
     }
 
-    public void setPickupLatitude(int PickupLatitude) {
+    public void setPickupLatitude(double PickupLatitude) {
         this.PickupLatitude = PickupLatitude;
     }
 
@@ -142,19 +143,19 @@ public class ClearanceOrderRequest {
         this.DestAddress = DestAddress;
     }
 
-    public int getDestLongitude() {
+    public double getDestLongitude() {
         return DestLongitude;
     }
 
-    public void setDestLongitude(int DestLongitude) {
+    public void setDestLongitude(double DestLongitude) {
         this.DestLongitude = DestLongitude;
     }
 
-    public int getDestLatitude() {
+    public double getDestLatitude() {
         return DestLatitude;
     }
 
-    public void setDestLatitude(int DestLatitude) {
+    public void setDestLatitude(double DestLatitude) {
         this.DestLatitude = DestLatitude;
     }
 
@@ -174,6 +175,14 @@ public class ClearanceOrderRequest {
         this.TotalPrice = TotalPrice;
     }
 
+    public int getActurlPrice() {
+        return ActurlPrice;
+    }
+
+    public void setActurlPrice(int ActurlPrice) {
+        this.ActurlPrice = ActurlPrice;
+    }
+
     public List<PassengersRequest> getPassengers() {
         return Passengers;
     }
@@ -184,7 +193,7 @@ public class ClearanceOrderRequest {
 
     @Override
     public String toString() {
-        return "ClearanceOrderRequest{" +
+        return "AirportGoInfoRequest{" +
                 "BID='" + BID + '\'' +
                 ", FlightNo='" + FlightNo + '\'' +
                 ", FlightDate='" + FlightDate + '\'' +
@@ -201,6 +210,7 @@ public class ClearanceOrderRequest {
                 ", DestLatitude=" + DestLatitude +
                 ", SeatNum=" + SeatNum +
                 ", TotalPrice=" + TotalPrice +
+                ", ActurlPrice=" + ActurlPrice +
                 ", Passengers=" + Passengers +
                 '}';
     }

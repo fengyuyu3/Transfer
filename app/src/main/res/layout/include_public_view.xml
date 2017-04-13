@@ -59,7 +59,7 @@
             android:textColor="@color/white"
             android:gravity="center"
             android:textSize="30px"
-            android:visibility="visible"
+            android:visibility="gone"
             android:id="@+id/tv_code"
             android:layout_width="116px"
             android:layout_height="47px"
@@ -67,5 +67,13 @@
             android:layout_centerVertical="true"
             android:text="验证"/>
 
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/iw_delete"
+            android:src="@mipmap/ic_delete"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </com.zhy.autolayout.AutoRelativeLayout>
 </com.zhy.autolayout.AutoLinearLayout>

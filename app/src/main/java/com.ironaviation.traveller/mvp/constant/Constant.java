@@ -42,5 +42,26 @@ public interface Constant {
     String UABID="uabid";
     int ADDRESS_TYPE_HOME=991;
     int ADDRESS_TYPE_COMPANY=992;
+    int AIRPORT_GO = 993;
+    double AIRPORT_T1_LONGITUDE=103.965305;
+    double AIRPORT_T1_LATITUDE=30.585158;
+    double AIRPORT_T2_LONGITUDE=103.961509;
+    double AIRPORT_T2_LATITUDE=30.575978;
+    String AIRPORT_T1 = "成都双流国际机场T1航站楼";
+    String AIRPORT_T2 = "成都双流国际机场T2航站楼";
+
+    int INDEX = 10;
+
+    String STATUS = "status";
+    String REGISTERED = "Registered"; // 预约成功
+    String INHAND = "InHand";// 进行中
+    String ARRIVED = "Arrived";// 已到达
+    String CANCEL = "Cancel";// 已取消
+    String BOOKSUCCESS = "BookSuccess";// 派单成功
+    String COMPLETED = "Completed";// 已完成
+    String NOTPAID = "NotPaid"; //未支付
+    String INVALIDATION = "Invalidation"; //已失效
+    String WAIT_APPRAISE = "wait"; //等待评价
+    String BID = "bid";
 
 }

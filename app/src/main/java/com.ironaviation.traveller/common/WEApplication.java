@@ -57,6 +57,10 @@ public class WEApplication extends BaseApplication {
             Timber.plant(new Timber.DebugTree());
         }
 
+        //微信支付
+        //final IWXAPI msgApi = WXAPIFactory.createWXAPI(context, null);
+        // 将该app注册到微信
+//        msgApi.registerApp("wxd930ea5d5a258f4f");
         //  installLeakCanary();//leakCanary内存泄露检查
     }
 
@@ -163,6 +167,7 @@ public class WEApplication extends BaseApplication {
                         } else {
 
                         }
+                        builder.addHeader("ClientType","App");
                         return builder.build();
 
 //                        return request;

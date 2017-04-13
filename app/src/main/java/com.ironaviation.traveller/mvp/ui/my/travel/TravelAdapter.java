@@ -3,6 +3,7 @@ package com.ironaviation.traveller.mvp.ui.my.travel;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteItemResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.TravelResponse;
 
 /**
@@ -15,17 +16,17 @@ import com.ironaviation.traveller.mvp.model.entity.response.TravelResponse;
  * 修改备注：
  */
 
-public class TravelAdapter extends BaseQuickAdapter<TravelResponse,BaseViewHolder> {
+public class TravelAdapter extends BaseQuickAdapter<RouteItemResponse,BaseViewHolder> {
 
     public TravelAdapter(int layoutResId) {
         super(layoutResId);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, TravelResponse item) {
-        helper.setText(R.id.tv_status,"进行中");
-        helper.setText(R.id.tv_time,"time");
-        helper.setText(R.id.tv_airport,"机场");
-        helper.setText(R.id.tv_hotel,"旅店");
+    protected void convert(BaseViewHolder helper, RouteItemResponse item) {
+        helper.setText(R.id.tv_status,item.getStatus());
+        helper.setText(R.id.tv_time,item.getPickupTime());
+        helper.setText(R.id.tv_airport,item.getPickupAddress());
+        helper.setText(R.id.tv_hotel,item.getDestAddress());
     }
 }

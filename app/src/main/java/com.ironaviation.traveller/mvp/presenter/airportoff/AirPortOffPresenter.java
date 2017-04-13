@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.ironaviation.traveller.mvp.contract.airportoff.AirPortOffContract;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
-import com.ironaviation.traveller.mvp.model.entity.request.ClearanceOrderRequest;
+import com.ironaviation.traveller.mvp.model.entity.request.AirportGoInfoRequest;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
@@ -67,13 +67,23 @@ public class AirPortOffPresenter extends BasePresenter<AirPortOffContract.Model,
         this.mApplication = null;
     }
 
-    public void getClearanceInfo(ClearanceOrderRequest params){
-        mModel.getClearanceInfo(params)
-                .compose(RxUtils.<BaseData<ClearanceOrderRequest>>applySchedulers(mRootView))
-                .subscribe(new ErrorHandleSubscriber<BaseData<ClearanceOrderRequest>>(mErrorHandler) {
-                    @Override
-                    public void onNext(BaseData<ClearanceOrderRequest> clearanceOrderRequestBaseData) {
 
+    public void getAirportInfo(AirportGoInfoRequest params){
+        mModel.getAirPortInfo(params)
+                .compose(RxUtils.<BaseData<AirportGoInfoRequest>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<AirportGoInfoRequest>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<AirportGoInfoRequest> airportGoInfoRequestBaseData) {
+                        if(airportGoInfoRequestBaseData.isSuccess()) {
+                            if(airportGoInfoRequestBaseData.getData() != null) {
+                                mRootView.setAirPortPrice(airportGoInfoRequestBaseData.getData().getTotalPrice(),
+                                        airportGoInfoRequestBaseData.getData().getActurlPrice());
+                            }
+                            mRootView.setSeatNum(airportGoInfoRequestBaseData.getData().getPassengers());
+                            if(airportGoInfoRequestBaseData.getData().getBID() != null){
+                                mRootView.setBID(airportGoInfoRequestBaseData.getData().getBID());
+                            }
+                        }
                     }
                 });
     }

@@ -8,7 +8,7 @@ import com.ironaviation.traveller.mvp.model.api.cache.CacheManager;
 import com.ironaviation.traveller.mvp.model.api.service.CommonService;
 import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
-import com.ironaviation.traveller.mvp.model.entity.request.ClearanceOrderRequest;
+import com.ironaviation.traveller.mvp.model.entity.request.AirportGoInfoRequest;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BaseModel;
 
@@ -63,7 +63,7 @@ public class AirPortOffModel extends BaseModel<ServiceManager, CacheManager> imp
     }
 
     @Override
-    public Observable<BaseData<ClearanceOrderRequest>> getClearanceInfo(ClearanceOrderRequest params) {
-        return mCommonService.getClearanceInfo(params);
+    public Observable<BaseData<AirportGoInfoRequest>> getAirPortInfo(AirportGoInfoRequest params) {
+        return mCommonService.getAirPortInfo(params);
     }
 }

@@ -1,6 +1,7 @@
 package com.ironaviation.traveller.mvp.ui.my.travel;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -17,9 +18,17 @@ import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.common.WEApplication;
 import com.ironaviation.traveller.di.component.my.travel.DaggerTravelComponent;
 import com.ironaviation.traveller.di.module.my.travel.TravelModule;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.travel.TravelContract;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteItemResponse;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteListResponse;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.TravelResponse;
 import com.ironaviation.traveller.mvp.presenter.my.travel.TravelPresenter;
+import com.ironaviation.traveller.mvp.ui.my.EstimateActivity;
+import com.ironaviation.traveller.mvp.ui.payment.InvalidationActivity;
+import com.ironaviation.traveller.mvp.ui.payment.PaymentActivity;
+import com.ironaviation.traveller.mvp.ui.payment.WaitingPaymentActivity;
 import com.jess.arms.utils.UiUtils;
 
 import java.util.ArrayList;
@@ -39,7 +48,6 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 
 /**
- * =======
  * <p>
  * 项目名称：Transfer
  * 类描述：
@@ -50,16 +58,17 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  * 修改备注：
  */
 
-public class TravelActivity extends WEActivity<TravelPresenter> implements TravelContract.View, SwipeRefreshLayout.OnRefreshListener {
-
+public class TravelActivity extends WEActivity<TravelPresenter> implements TravelContract.View, SwipeRefreshLayout.OnRefreshListener,BaseQuickAdapter.RequestLoadMoreListener{
 
     @BindView(R.id.sl_travel)
     SwipeRefreshLayout mSlTravel;
     @BindView(R.id.rv_travel)
     RecyclerView mRvTravel;
+    private int defaultIndex = 1;
 
     private TravelAdapter mTravelAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private List<RouteItemResponse> mRouteItemResponses;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -73,25 +82,23 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
 
     @Override
     protected void nodataRefresh() {
-        showMessage("没有数据");
-        mNodataSwipeRefresh.setRefreshing(false);
+        mPresenter.getTravelData(defaultIndex);
     }
 
     @Override
     protected View initView() {
-        return LayoutInflater.from(this).inflate(R.layout.activity_travel, null, false);
+        return LayoutInflater.from(this).inflate(R.layout.activity_travel,null,false);
     }
 
     @Override
     protected void initData() {
-
-        showNodata(true);
+        /*showNodata(true);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 showNodata(false);
             }
-        }, 300);
+        }, 300);*/
         setToolbarColor(R.color.base_color);
         mLayoutManager = new LinearLayoutManager(this);
         mRvTravel.setLayoutManager(mLayoutManager);
@@ -101,16 +108,71 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
                 ContextCompat.getColor(WEApplication.getContext(), R.color.colorPrimaryDark));
         mSlTravel.setOnRefreshListener(this);
         mRvTravel.setAdapter(mTravelAdapter);
-        mTravelAdapter.setNewData(getList());
+//        mTravelAdapter.setNewData(getList());
+        mTravelAdapter.setOnLoadMoreListener(this,mRvTravel);
         mTravelAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                startActivity(EstimateActivity.class);
-                startActivity(TravelDetailsActivity.class);
-                //   startActivity(TravelCancelActivity.class);
-
+                if(mRouteItemResponses != null){
+                    mPresenter.getRouteState(mRouteItemResponses.get(position).getBID());
+                    /*setStatus(mRouteItemResponses.get(position).getStatus()
+                            ,mRouteItemResponses.get(position).getBID());*/
+                }
             }
         });
+        mPresenter.getTravelData(defaultIndex);
+    }
+
+    public void setStatus(String status,RouteStateResponse responses){
+        if(Constant.REGISTERED == status){
+            Intent intent = new Intent();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(Constant.STATUS,responses);
+            intent.putExtra(Constant.STATUS,bundle);
+            startActivity(TravelDetailsActivity.class);
+        }else if(Constant.INHAND == status){
+            Intent intent = new Intent();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(Constant.STATUS,responses);
+            intent.putExtra(Constant.STATUS,bundle);
+            startActivity(TravelDetailsActivity.class);
+        }else if(Constant.ARRIVED == status){
+            Intent intent = new Intent();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(Constant.STATUS,responses);
+            intent.putExtra(Constant.STATUS,bundle);
+            startActivity(TravelDetailsActivity.class);
+        }else if(Constant.CANCEL == status){
+            Intent intent = new Intent();
+            intent.putExtra(Constant.STATUS,status);
+            startActivity(CancelSuccessActivity.class);
+        }else if(Constant.BOOKSUCCESS == status){
+            Intent intent = new Intent();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(Constant.STATUS,responses);
+            intent.putExtra(Constant.STATUS,bundle);
+            startActivity(TravelDetailsActivity.class);
+        }else if(Constant.COMPLETED == status){
+            /*Intent intent = new Intent();
+            intent.putExtra(Constant.STATUS,status);
+            startActivity(TravelDetailsActivity.class);*/
+        }else if(Constant.WAIT_APPRAISE == status){
+            Intent intent = new Intent();
+            intent.putExtra(Constant.STATUS,status);
+            startActivity(EstimateActivity.class);
+        }else if(Constant.NOTPAID == status){ //跳未支付界面
+            Intent intent = new Intent();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(Constant.STATUS,responses);
+            intent.putExtra(Constant.STATUS,bundle);
+            startActivity(WaitingPaymentActivity.class);
+        }else if(Constant.INVALIDATION == status){ //跳失效界面
+            Intent intent = new Intent();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(Constant.STATUS,responses);
+            intent.putExtra(Constant.STATUS,bundle);
+            startActivity(InvalidationActivity.class);
+        }
     }
 
     public List<TravelResponse> getList() {
@@ -123,12 +185,14 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
 
     @Override
     public void showLoading() {
-
+        showProgressDialog();
     }
 
     @Override
     public void hideLoading() {
-
+        dismissProgressDialog();
+        mNodataSwipeRefresh.setRefreshing(false);
+        mSlTravel.setRefreshing(false);
     }
 
     @Override
@@ -149,8 +213,16 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
     }
 
     @Override
-    public void setDatas(List<TravelResponse> mTravelResponses) {
-        mTravelAdapter.setNewData(mTravelResponses);
+    public void setDatas(RouteListResponse responses) {
+        showNodata(false);
+        mTravelAdapter.setNewData(responses.getItems());
+        mRouteItemResponses = mTravelAdapter.getData();
+    }
+
+    @Override
+    public void setMoreDatas(RouteListResponse responses) {
+        mTravelAdapter.addData(responses.getItems());
+        mRouteItemResponses = mTravelAdapter.getData();
     }
 
     @Override
@@ -164,7 +236,18 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
     }
 
     @Override
+    public void setRouteStateResponse(RouteStateResponse responses) {
+        setStatus(responses.getStatus(),responses);
+    }
+
+    @Override
     public void onRefresh() {
-//        mPresenter.getTravelData();//刷新数据
+//      mPresenter.getTravelData();//刷新数据
+        mPresenter.getTravelData(defaultIndex);
+    }
+
+    @Override
+    public void onLoadMoreRequested() {
+        mPresenter.getTravelDataMore(mPresenter.getPage());
     }
 }

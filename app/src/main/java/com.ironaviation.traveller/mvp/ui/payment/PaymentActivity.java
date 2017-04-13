@@ -44,7 +44,6 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 public class PaymentActivity extends WEActivity<PaymentPresenter> implements PaymentContract.View {
 
-
     @BindView(R.id.ivi_we_chat)
     ImageTextImageView mIviWeChat;
     @BindView(R.id.ivi_ali_pay)

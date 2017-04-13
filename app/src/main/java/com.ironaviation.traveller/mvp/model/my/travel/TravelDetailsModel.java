@@ -5,11 +5,16 @@ import android.app.Application;
 import com.google.gson.Gson;
 import com.ironaviation.traveller.mvp.contract.my.travel.TravelDetailsContract;
 import com.ironaviation.traveller.mvp.model.api.cache.CacheManager;
+import com.ironaviation.traveller.mvp.model.api.service.CommonService;
 import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
+import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BaseModel;
 
 import javax.inject.Inject;
+
+import rx.Observable;
 
 
 /**
@@ -38,12 +43,14 @@ import javax.inject.Inject;
 public class TravelDetailsModel extends BaseModel<ServiceManager, CacheManager> implements TravelDetailsContract.Model {
     private Gson mGson;
     private Application mApplication;
+    private CommonService mCommonService;
 
     @Inject
     public TravelDetailsModel(ServiceManager serviceManager, CacheManager cacheManager, Gson gson, Application application) {
         super(serviceManager, cacheManager);
         this.mGson = gson;
         this.mApplication = application;
+        mCommonService = serviceManager.getCommonService();
     }
 
     @Override
@@ -53,4 +60,8 @@ public class TravelDetailsModel extends BaseModel<ServiceManager, CacheManager> 
         this.mApplication = null;
     }
 
+    @Override
+    public Observable<BaseData<RouteStateResponse>> getRouteStateInfo(String bid) {
+        return mCommonService.getRouteStateInfo(bid);
+    }
 }

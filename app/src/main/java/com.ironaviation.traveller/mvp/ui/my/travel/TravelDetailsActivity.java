@@ -1,6 +1,8 @@
 package com.ironaviation.traveller.mvp.ui.my.travel;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import com.ironaviation.traveller.di.module.my.travel.TravelDetailsModule;
 import com.ironaviation.traveller.event.TravelCancelEvent;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.travel.TravelDetailsContract;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.presenter.my.travel.TravelDetailsPresenter;
 import com.ironaviation.traveller.mvp.ui.widget.MoreActionPopupWindow;
 import com.jess.arms.utils.UiUtils;
@@ -53,15 +56,15 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
 public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> implements TravelDetailsContract.View, View.OnClickListener {
 
     @BindView(R.id.tw_name) //司机名字
-            TextView mTwName;
+    TextView mTwName;
     @BindView(R.id.tw_score) //分数
-            TextView mTwScore;
+    TextView mTwScore;
     @BindView(R.id.tw_car_num) //车牌号码
-            TextView mTwCarNum;
+    TextView mTwCarNum;
     @BindView(R.id.yw_car_color) //汽车颜色
-            TextView mYwCarColor;
+    TextView mYwCarColor;
     @BindView(R.id.iw_mobile) //打电话
-            ImageView mIwMobile;
+    ImageView mIwMobile;
     @BindView(R.id.ll_driver_info)
     AutoLinearLayout mLlDriverInfo; //司机信息
     @BindView(R.id.ll_complete)
@@ -84,6 +87,10 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     ImageView mIwZoomNomal;
     private MoreActionPopupWindow mPopupWindow;
     private int status;
+    private String mStatus;
+    private String pStatus;
+    private String phone;
+    private RouteStateResponse responses;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -104,6 +111,9 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     protected void initData() {
         setRightFunction(R.mipmap.ic_airport, this);
         mPopupWindow = new MoreActionPopupWindow(this);
+        Bundle bundle = getIntent().getBundleExtra(Constant.STATUS);
+        responses = (RouteStateResponse) bundle.getSerializable(Constant.STATUS);
+        pStatus = responses.getStatus();
     }
 
 
@@ -150,30 +160,35 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         }
     }
 
-    @OnClick({R.id.iw_zoom,R.id.iw_zoom_nomal})
+    @OnClick({R.id.iw_zoom,R.id.iw_zoom_nomal,R.id.iw_mobile})
     public void myOnClick(View view){
         switch(view.getId()){
             case R.id.iw_zoom:
                 AllGone();
-            break;
+                break;
             case R.id.iw_zoom_nomal:
-                showStatus(status);
+                showStatus(pStatus);
+                break;
+            case R.id.iw_mobile:
+                if(phone != null){
+                    callMobile(phone);
+                }
                 break;
         }
     }
 
-    public void showStatus(int status){
+    public void showStatus(String  status){
         switch (status){
-            case Constant.TRAVEL_DETAILS_GOING:
+            case Constant.INHAND: //派单进行中
                 going();
                 break;
-            case Constant.TRAVEL_DETAILS_COMPLETE:
+            case Constant.BOOKSUCCESS:
                 complete();
                 break;
-            case Constant.TRAVEL_DETAILS_ORDER:
+            case Constant.REGISTERED:
                 order();
                 break;
-            case Constant.TRAVEL_DETAILS_ARRIVE:
+            case Constant.ARRIVED:
                 arrive();
                 break;
         }
@@ -181,7 +196,6 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 
     @Subscriber(tag = EventBusTags.TRAVEL_DETAILS)
     public void onEventMainThread(TravelCancelEvent event) {
-        Log.e("kkk", event.getEvent() + "");
         switch (event.getEvent()) {
             case Constant.TRAVEL_CANCEL:
                 startActivity(TravelCancelActivity.class);
@@ -194,6 +208,8 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 
 
     public void going() {  //派单进行中
+        mIwZoomNomal.setVisibility(View.GONE);
+        mIwZoom.setVisibility(View.VISIBLE);
         mLlGoing.setVisibility(View.VISIBLE); //正在进行中
         mLlDriverInfo.setVisibility(View.VISIBLE); //司机信息
         mLlComplete.setVisibility(View.GONE);//派单成功
@@ -203,6 +219,8 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     }
 
     public void complete() { //派单成功
+        mIwZoomNomal.setVisibility(View.GONE);
+        mIwZoom.setVisibility(View.VISIBLE);
         mLlComplete.setVisibility(View.VISIBLE);//派单成功
         mLlDriverInfo.setVisibility(View.VISIBLE); //司机信息
         mLlOrdering.setVisibility(View.GONE);//派单中
@@ -211,7 +229,9 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         status = Constant.TRAVEL_DETAILS_COMPLETE;
     }
 
-    public void order() { //派单中
+    public void order() { //预约成功
+        mIwZoomNomal.setVisibility(View.GONE);
+        mIwZoom.setVisibility(View.VISIBLE);
         mLlOrdering.setVisibility(View.VISIBLE);//派单中
         mLlComplete.setVisibility(View.GONE);//派单成功
         mLlDriverInfo.setVisibility(View.GONE); //司机信息
@@ -221,6 +241,8 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     }
 
     public void arrive() { //确认到达
+        mIwZoomNomal.setVisibility(View.GONE);
+        mIwZoom.setVisibility(View.VISIBLE);
         mLlArrive.setVisibility(View.VISIBLE);  // 确认到达
         mLlDriverInfo.setVisibility(View.VISIBLE); //司机信息
         mLlOrdering.setVisibility(View.GONE);//派单中
@@ -230,9 +252,48 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     }
 
     public void AllGone(){
+        mIwZoomNomal.setVisibility(View.VISIBLE);
+        mIwZoom.setVisibility(View.GONE);
         mLlArrive.setVisibility(View.GONE);  // 确认到达
         mLlOrdering.setVisibility(View.GONE);//派单中
         mLlComplete.setVisibility(View.GONE);//派单成功
         mLlGoing.setVisibility(View.GONE); //正在进行中
+    }
+
+    @Override
+    public void setDriverName(String name) {
+        mTwName.setText(name);
+    }
+
+    @Override
+    public void setDriverRate(String rate) {
+        mTwScore.setText(rate);
+    }
+
+    @Override
+    public void setDriverPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void callMobile(String phone){
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        Uri data = Uri.parse("tel:" + phone);
+        intent.setData(data);
+        startActivity(intent);
+    }
+
+    @Override
+    public void setCarLicense(String liscense) {
+        mTwCarNum.setText(liscense);
+    }
+
+    @Override
+    public void setCarColor(String carColor,String model) {
+        mYwCarColor.setText(carColor+"."+model);
+    }
+
+    @Override
+    public void setStatus(String status) {
+        pStatus = status;
     }
 }

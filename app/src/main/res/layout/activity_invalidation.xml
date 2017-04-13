@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.ironaviation.traveller.mvp.ui.widget.AutoScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.zhy.autolayout.AutoLinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <include
+            layout="@layout/include_toolbar"
+            ></include>
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="257px"
+            android:background="@color/white">
+
+            <TextView
+                android:layout_gravity="center"
+                android:id="@+id/tv_payment_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="88px"
+                android:text="@string/travel_un_cancel"
+                android:textColor="@color/login_edit"
+                android:textSize="34px"
+                />
+
+            <TextView
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_unit"
+                android:layout_marginTop="50px"
+                android:text="@string/travel_reason"
+                android:textColor="@color/color_993a3a3a"
+                />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+
+        <com.ironaviation.traveller.mvp.ui.widget.TextTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/h_fillet"
+            app:tt_title="@string/order_information"
+            ></com.ironaviation.traveller.mvp.ui.widget.TextTextView>
+
+        <com.ironaviation.traveller.mvp.ui.widget.TextTextView
+            android:id="@+id/tt_order_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tt_text_color="@color/word_middle_grey"
+            app:tt_title="@string/order_number"
+            app:tt_title_color="@color/word_middle_grey"
+            ></com.ironaviation.traveller.mvp.ui.widget.TextTextView>
+
+
+        <com.ironaviation.traveller.mvp.ui.widget.TextTextView
+            android:id="@+id/tt_get_on_the_bus_address"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tt_text_color="@color/word_middle_grey"
+            app:tt_title="@string/get_on_the_bus_address"
+            app:tt_title_color="@color/word_middle_grey"
+            ></com.ironaviation.traveller.mvp.ui.widget.TextTextView>
+
+        <com.ironaviation.traveller.mvp.ui.widget.TextTextView
+            android:id="@+id/tt_get_off_the_bus_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tt_text_color="@color/word_middle_grey"
+            app:tt_title="@string/get_off_the_bus_address"
+            app:tt_title_color="@color/word_middle_grey"
+            ></com.ironaviation.traveller.mvp.ui.widget.TextTextView>
+
+        <com.ironaviation.traveller.mvp.ui.widget.TextTextView
+            android:id="@+id/tt_need_seats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tt_title="需要2个座位"
+            app:tt_title_color="@color/word_middle_grey"
+            ></com.ironaviation.traveller.mvp.ui.widget.TextTextView>
+
+    </com.zhy.autolayout.AutoLinearLayout>
+</com.ironaviation.traveller.mvp.ui.widget.AutoScrollView>
