@@ -26,6 +26,7 @@ public interface Constant {
     int REBACK = 21;
 
     String LOGIN = "login";//登录信息
+    String IDENTIFICATION = "identification";//登录信息
     String ADDRESS_HISTORY = "AddressHistory";//历史
 
     int TRAVEL_DETAILS_GOING = 41;

@@ -32,6 +32,7 @@ import com.ironaviation.traveller.mvp.model.entity.request.AirportGoInfoRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.PassengersRequest;
 import com.ironaviation.traveller.mvp.model.entity.response.Flight;
 import com.ironaviation.traveller.mvp.model.entity.response.FlightDetails;
+import com.ironaviation.traveller.mvp.model.entity.response.IdentificationResponse;
 import com.ironaviation.traveller.mvp.presenter.airportoff.AirPortOffPresenter;
 import com.ironaviation.traveller.mvp.ui.my.AddressActivity;
 import com.ironaviation.traveller.mvp.ui.widget.FontTextView;
@@ -41,6 +42,7 @@ import com.ironaviation.traveller.mvp.ui.widget.PublicTextView;
 import com.ironaviation.traveller.mvp.ui.widget.TimePicker.MyTimePickerView;
 import com.ironaviation.traveller.mvp.ui.widget.TerminalPopupWindow;
 import com.ironaviation.traveller.mvp.ui.widget.TravelPopupwindow;
+import com.jess.arms.utils.DataHelper;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
@@ -286,7 +288,12 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         mAirportRequests = new ArrayList<>();
         for (int i = 0; i < Constant.SEAT_NUM; i++) {
             AirPortRequest request = new AirPortRequest();
-            request.setStatus(Constant.AIRPORT_NO);
+            if(isValid() != null && i == 0){
+                request.setStatus(Constant.AIRPORT_SUCCESS);
+                request.setIdCard(isValid());
+            }else{
+                request.setStatus(Constant.AIRPORT_NO);
+            }
             mAirportRequests.add(request);
         }
     }
@@ -389,7 +396,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
                 setNomal(holder);
             }
             if (i == position) {
-                holder.mLineEdt.setVisibility(View.GONE);
+             //   holder.mLineEdt.setVisibility(View.GONE);
             }
             setAirportData(holder, mAirportRequests.get(i));
             setlistener(holder, i);
@@ -429,7 +436,11 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
 
     //设置数据
     public void setAirportData(MyAirportHolder holder, AirPortRequest request) {
-        holder.mEdtContent.setText(request.getIdCard());
+        if(isValid() != null && request.getIdCard().equalsIgnoreCase(isValid())){
+            holder.mEdtContent.setText(request.getIdCard()+"(本人)");
+        }else{
+            holder.mEdtContent.setText(request.getIdCard());
+        }
         if (request.getStatus() == Constant.AIRPORT_SUCCESS) {
             setSuccess(holder);
         } else if (request.getStatus() == Constant.AIRPORT_FAILURE) {
@@ -586,7 +597,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         mPwAddress.setInitInfo(getResources().getString(R.string.airport_address));
         mPwAirport.setInitInfo(getResources().getString(R.string.airport_airport));
         mPwSeat.setTextInfo(getResources().getString(R.string.airport_seat));
-        mPwSeat.setVisibility(View.GONE);
+        //mPwSeat.setVisibility(View.GONE);
         showPrice(false);
         setSeat(Constant.DEFULT_SEAT);
         addressFlag = false;
@@ -654,8 +665,18 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     }
 
     public void setNewDefaultSeat(int position){
-        for(int i = 0; i <= Constant.DEFULT_SEAT; i++){
+        mPwSeat.setTextInfo("需要" + (position + 1) + "个座位");
+        for(int i = 0; i < position+1; i++){
 
+        }
+    }
+
+    public String isValid(){
+        if(DataHelper.getDeviceData(getActivity(),Constant.IDENTIFICATION) != null) {
+            IdentificationResponse response = DataHelper.getDeviceData(getActivity(), Constant.IDENTIFICATION);
+            return response.getIDCard();
+        }else{
+            return null;
         }
     }
 }

@@ -10,10 +10,11 @@
 
     <string name="home">家</string>
     <string name="company">公司</string>
+
     <!--取消行程-->
 
-
     <string name="travel_cancel">取消行程</string>
+    <string name="refund_Amount">退款金额</string>
     <string name="cancel_rules_hint">查看取消规则</string>
     <string name="determine_cancel">确定取消</string>
     <string name="penal_sum_hint">您取消了本次行程，本次违约金由平台减免</string>
@@ -27,7 +28,7 @@
     <string name="function_skip">跳过</string>
     <string name="hint_name">请输入姓名</string>
     <string name="hint_id_numeral">请输入身份证号</string>
-
+    <string name="hint_id_numeral_rule">请输入合法的身份证号</string>
     <!--个人中心-->
     <string name="personal_center">个人中心</string>
     <string name="message">消息</string>
