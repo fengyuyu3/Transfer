@@ -3,13 +3,21 @@ package com.ironaviation.traveller.mvp.model.login;
 import android.app.Application;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.ironaviation.traveller.mvp.contract.login.IdentificationContract;
 import com.ironaviation.traveller.mvp.model.api.cache.CacheManager;
+import com.ironaviation.traveller.mvp.model.api.service.CommonService;
 import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
+import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.request.IdentificationRequest;
+import com.ironaviation.traveller.mvp.model.entity.response.IdentificationResponse;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BaseModel;
 
 import javax.inject.Inject;
+
+import retrofit2.http.Body;
+import rx.Observable;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -24,27 +32,26 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 
 /**
- *
- * 项目名称：Traveller      
- * 类描述：   
- * 创建人：starRing  
- * 创建时间：2017-03-26 10:02   
- * 修改人：starRing  
- * 修改时间：2017-03-26 10:02   
- * 修改备注：   
- * @version
- *
+ * 项目名称：Traveller
+ * 类描述：
+ * 创建人：starRing
+ * 创建时间：2017-03-26 10:02
+ * 修改人：starRing
+ * 修改时间：2017-03-26 10:02
+ * 修改备注：
  */
 @ActivityScope
 public class IdentificationModel extends BaseModel<ServiceManager, CacheManager> implements IdentificationContract.Model {
     private Gson mGson;
     private Application mApplication;
+    private CommonService mCommonService;
 
     @Inject
     public IdentificationModel(ServiceManager serviceManager, CacheManager cacheManager, Gson gson, Application application) {
         super(serviceManager, cacheManager);
         this.mGson = gson;
         this.mApplication = application;
+        this.mCommonService = serviceManager.getCommonService();
     }
 
     @Override
@@ -52,6 +59,16 @@ public class IdentificationModel extends BaseModel<ServiceManager, CacheManager>
         super.onDestroy();
         this.mGson = null;
         this.mApplication = null;
+        this.mCommonService = null;
     }
 
+
+    @Override
+    public Observable<BaseData<IdentificationResponse>> identification(String Name, String IDCardString) {
+        IdentificationRequest identificationRequest = new IdentificationRequest();
+        identificationRequest.setName(Name);
+        identificationRequest.setIDCard(IDCardString);
+
+        return mCommonService.identification(identificationRequest);
+    }
 }

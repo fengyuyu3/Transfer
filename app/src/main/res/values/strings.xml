@@ -28,7 +28,7 @@
     <string name="function_skip">跳过</string>
     <string name="hint_name">请输入姓名</string>
     <string name="hint_id_numeral">请输入身份证号</string>
-
+    <string name="hint_id_numeral_rule">请输入合法的身份证号</string>
     <!--个人中心-->
     <string name="personal_center">个人中心</string>
     <string name="message">消息</string>

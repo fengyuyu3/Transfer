@@ -2,16 +2,28 @@ package com.ironaviation.traveller.mvp.presenter.Login;
 
 import android.app.Application;
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.google.gson.JsonObject;
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.utils.CheckIdCardUtils;
+import com.ironaviation.traveller.common.WEActivity;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.login.IdentificationContract;
+import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
+import com.ironaviation.traveller.mvp.model.entity.response.IdentificationResponse;
+import com.ironaviation.traveller.mvp.ui.main.MainActivity;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
+import com.jess.arms.utils.DataHelper;
+import com.jess.arms.utils.RxUtils;
 import com.jess.arms.utils.UiUtils;
 import com.jess.arms.widget.imageloader.ImageLoader;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
 import javax.inject.Inject;
 
@@ -41,6 +53,7 @@ public class IdentificationPresenter extends BasePresenter<IdentificationContrac
     private Application mApplication;
     private ImageLoader mImageLoader;
     private AppManager mAppManager;
+    private WEActivity weActivity;
 
     @Inject
     public IdentificationPresenter(IdentificationContract.Model model, IdentificationContract.View rootView
@@ -51,6 +64,8 @@ public class IdentificationPresenter extends BasePresenter<IdentificationContrac
         this.mApplication = application;
         this.mImageLoader = imageLoader;
         this.mAppManager = appManager;
+        this.weActivity = (WEActivity) mAppManager.getCurrentActivity();
+
     }
 
     @Override
@@ -60,6 +75,7 @@ public class IdentificationPresenter extends BasePresenter<IdentificationContrac
         this.mAppManager = null;
         this.mImageLoader = null;
         this.mApplication = null;
+        this.weActivity = null;
     }
 
     public void identification() {
@@ -72,9 +88,34 @@ public class IdentificationPresenter extends BasePresenter<IdentificationContrac
             return;
         }
 
+        if (!CheckIdCardUtils.validateCard(mRootView.getNumeral())) {
+            UiUtils.makeText(mApplication.getString(R.string.hint_id_numeral_rule));
+            return;
+        }
+        mModel.identification(mRootView.getName(), mRootView.getNumeral())
+                .compose(RxUtils.<BaseData<IdentificationResponse>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<IdentificationResponse>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<IdentificationResponse> data) {
+                        if (data.isSuccess()) {
+                            saveIdentificationInfo(data.getData());
+                            weActivity.startActivity(MainActivity.class);
 
+                        } else {
+                            UiUtils.makeText(data.getMessage());
+                        }
 
+                    }
+                });
 
     }
 
+    /*
+     * <p>认证信息本地化
+     * <p>@param Identification
+     */
+    public void saveIdentificationInfo(IdentificationResponse identificationResponse) {
+
+        DataHelper.saveDeviceData(mApplication, Constant.IDENTIFICATION, identificationResponse);
+    }
 }

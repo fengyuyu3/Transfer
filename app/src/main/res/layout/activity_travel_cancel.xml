@@ -54,7 +54,7 @@
         android:layout_marginLeft="@dimen/h_fillet2"
         android:layout_marginTop="56px"
         android:text="@string/cancel_travel_hint"
-        android:textColor="#828282"
+        android:textColor="@color/word_deep_grey"
         />
 
     <android.support.v7.widget.RecyclerView

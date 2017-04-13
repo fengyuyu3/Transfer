@@ -20,5 +20,7 @@ public interface Api {
     String UPDATE_ADDRESS_BOOK="/api/Users/UpdateAddressBook";//POST 更新用户地址
     String DELETE_ADDRESS_BOOK="/api/Users/DeleteAddressBook";//POST 删除用户常用地址
 
+    String VALID_REAL_ID_CARD="/api/Users/ValidRealIDCard";//POST 实名认证
+
     int RequestSuccess = 1;
 }

@@ -51,7 +51,7 @@ public class SettingModel extends BaseModel<ServiceManager, CacheManager> implem
         super(serviceManager, cacheManager);
         this.mGson = gson;
         this.mApplication = application;
-        mCommonService = serviceManager.getCommonService();
+        this.mCommonService = serviceManager.getCommonService();
     }
 
     @Override

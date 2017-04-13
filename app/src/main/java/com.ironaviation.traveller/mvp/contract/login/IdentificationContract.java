@@ -1,7 +1,15 @@
 package com.ironaviation.traveller.mvp.contract.login;
 
+import com.google.gson.JsonObject;
+import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
+import com.ironaviation.traveller.mvp.model.entity.request.IdentificationRequest;
+import com.ironaviation.traveller.mvp.model.entity.response.IdentificationResponse;
 import com.jess.arms.mvp.BaseView;
 import com.jess.arms.mvp.IModel;
+
+import retrofit2.http.Body;
+import rx.Observable;
 
 /**
  * 通过Template生成对应页面的MVP和Dagger代码,请注意输入框中输入的名字必须相同
@@ -13,26 +21,25 @@ import com.jess.arms.mvp.IModel;
  */
 
 /**
- *
- * 项目名称：Traveller      
- * 类描述：   
- * 创建人：starRing  
- * 创建时间：2017-03-26 10:02   
- * 修改人：starRing  
- * 修改时间：2017-03-26 10:02   
- * 修改备注：   
- * @version
- *
+ * 项目名称：Traveller
+ * 类描述：
+ * 创建人：starRing
+ * 创建时间：2017-03-26 10:02
+ * 修改人：starRing
+ * 修改时间：2017-03-26 10:02
+ * 修改备注：
  */
 public interface IdentificationContract {
     //对于经常使用的关于UI的方法可以定义到BaseView中,如显示隐藏进度条,和显示文字消息
     interface View extends BaseView {
         String getName();
+
         String getNumeral();
     }
 
     //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存
     interface Model extends IModel {
+        Observable<BaseData<IdentificationResponse>> identification(String Name, String IDCardString);
 
     }
 }

@@ -18,7 +18,6 @@ import javax.inject.Inject;
 import rx.Observable;
 
 
-
 /**
  * 通过Template生成对应页面的MVP和Dagger代码,请注意输入框中输入的名字必须相同
  * 由于每个项目包结构都不一定相同,所以每生成一个文件需要自己导入import包名,可以在设置中设置自动导入包名
@@ -29,16 +28,13 @@ import rx.Observable;
  */
 
 /**
- *
- * 项目名称：Transfer      
- * 类描述：   
- * 创建人：flq  
- * 创建时间：2017/3/23 13:29   
- * 修改人：  
- * 修改时间：2017/3/23 13:29   
- * 修改备注：   
- * @version
- *
+ * 项目名称：Transfer
+ * 类描述：
+ * 创建人：flq
+ * 创建时间：2017/3/23 13:29
+ * 修改人：
+ * 修改时间：2017/3/23 13:29
+ * 修改备注：
  */
 
 @ActivityScope
@@ -52,7 +48,7 @@ public class LoginModel extends BaseModel<ServiceManager, CacheManager> implemen
         super(serviceManager, cacheManager);
         this.mGson = gson;
         this.mApplication = application;
-        mCommonService = serviceManager.getCommonService();
+        this.mCommonService = serviceManager.getCommonService();
     }
 
     @Override
@@ -60,10 +56,11 @@ public class LoginModel extends BaseModel<ServiceManager, CacheManager> implemen
         super.onDestroy();
         this.mGson = null;
         this.mApplication = null;
+        this.mCommonService = null;
     }
 
     @Override
-    public Observable<BaseData<LoginEntity>> getLoginInfo(String phoneNumber, String validateCode,String clientId) {
+    public Observable<BaseData<LoginEntity>> getLoginInfo(String phoneNumber, String validateCode, String clientId) {
         Login mLogin = new Login();
         mLogin.setValidateCode(validateCode);
         mLogin.setPhoneNumber(phoneNumber);
