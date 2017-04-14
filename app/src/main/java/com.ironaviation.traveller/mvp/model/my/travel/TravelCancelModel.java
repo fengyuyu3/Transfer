@@ -68,7 +68,7 @@ public class TravelCancelModel extends BaseModel<ServiceManager, CacheManager> i
     }
 
     @Override
-    public Observable<BaseData<JsonObject>> cancelBooking(String bid, String reason) {
+    public Observable<BaseData<Boolean>> cancelBooking(String bid, String reason) {
         CancelBookingRequest cancelBookingRequest = new CancelBookingRequest();
         cancelBookingRequest.setReason(reason);
         return mCommonService.cancelBooking(bid, cancelBookingRequest);

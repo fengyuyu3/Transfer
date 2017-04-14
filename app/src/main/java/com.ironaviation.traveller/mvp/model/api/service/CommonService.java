@@ -82,7 +82,7 @@ public interface CommonService {
     Observable<BaseData<CancelBookingInfo>> getCancelBookInfo(@Path("bid") String bid);
 
     @POST(Api.CANCEL_BOOKING)
-    Observable<BaseData<JsonObject>> cancelBooking(@Path("bid") String bid,@Body CancelBookingRequest params);
+    Observable<BaseData<Boolean>> cancelBooking(@Path("bid") String bid,@Body CancelBookingRequest params);
 
 
 }

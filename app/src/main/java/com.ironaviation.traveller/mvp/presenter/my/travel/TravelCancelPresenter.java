@@ -1,15 +1,19 @@
 package com.ironaviation.traveller.mvp.presenter.my.travel;
 
 import android.app.Application;
+import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.google.gson.JsonObject;
+import com.ironaviation.traveller.common.WEActivity;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.travel.TravelCancelContract;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.request.CancelBookingRequest;
 import com.ironaviation.traveller.mvp.model.entity.response.CancelBookingInfo;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.TravelCancelReason;
+import com.ironaviation.traveller.mvp.ui.my.travel.CancelSuccessActivity;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
@@ -50,6 +54,7 @@ public class TravelCancelPresenter extends BasePresenter<TravelCancelContract.Mo
     private Application mApplication;
     private ImageLoader mImageLoader;
     private AppManager mAppManager;
+    private WEActivity weActivity;
 
     @Inject
     public TravelCancelPresenter(TravelCancelContract.Model model, TravelCancelContract.View rootView
@@ -60,6 +65,8 @@ public class TravelCancelPresenter extends BasePresenter<TravelCancelContract.Mo
         this.mApplication = application;
         this.mImageLoader = imageLoader;
         this.mAppManager = appManager;
+        this.weActivity = (WEActivity) mAppManager.getCurrentActivity();
+
     }
 
     @Override
@@ -69,6 +76,7 @@ public class TravelCancelPresenter extends BasePresenter<TravelCancelContract.Mo
         this.mAppManager = null;
         this.mImageLoader = null;
         this.mApplication = null;
+        this.weActivity = null;
     }
 
     public void getCancelBookInfo(String bid) {
@@ -86,14 +94,22 @@ public class TravelCancelPresenter extends BasePresenter<TravelCancelContract.Mo
                 });
     }
 
-    public void cancelBook(String bid, List<TravelCancelReason> travelCancelReasons, String otherReason) {
+    public void cancelBook(final String bid, List<TravelCancelReason> travelCancelReasons, String otherReason) {
 
         mModel.cancelBooking(bid, setCancelBookingRequest(travelCancelReasons, otherReason))
-                .compose(RxUtils.<BaseData<JsonObject>>applySchedulers(mRootView))
-                .subscribe(new ErrorHandleSubscriber<BaseData<JsonObject>>(mErrorHandler) {
+                .compose(RxUtils.<BaseData<Boolean>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<Boolean>>(mErrorHandler) {
                     @Override
-                    public void onNext(BaseData<JsonObject> data) {
+                    public void onNext(BaseData<Boolean> data) {
 
+                        if (data.getData()) {
+                            Bundle pBundle = new Bundle();
+                            pBundle.putString(Constant.BID, bid);
+                            weActivity.startActivity(CancelSuccessActivity.class, pBundle);
+                            weActivity.finish();
+                        } else {
+
+                        }
                     }
                 });
     }

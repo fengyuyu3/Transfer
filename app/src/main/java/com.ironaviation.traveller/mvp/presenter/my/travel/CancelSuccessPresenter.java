@@ -1,14 +1,23 @@
 package com.ironaviation.traveller.mvp.presenter.my.travel;
 
 import android.app.Application;
+import android.text.TextUtils;
 
 import com.ironaviation.traveller.mvp.contract.my.travel.CancelSuccessContract;
+import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.response.CancelBookingInfo;
+import com.ironaviation.traveller.mvp.model.entity.response.TravelCancelReason;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
+import com.jess.arms.utils.RxUtils;
 import com.jess.arms.widget.imageloader.ImageLoader;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
 import javax.inject.Inject;
 
@@ -24,16 +33,13 @@ import javax.inject.Inject;
 
 
 /**
- *
- * 项目名称：Traveller      
- * 类描述：   
- * 创建人：starRing  
- * 创建时间：2017-04-05 14:29   
- * 修改人：starRing  
- * 修改时间：2017-04-05 14:29   
- * 修改备注：   
- * @version
- *
+ * 项目名称：Traveller
+ * 类描述：
+ * 创建人：starRing
+ * 创建时间：2017-04-05 14:29
+ * 修改人：starRing
+ * 修改时间：2017-04-05 14:29
+ * 修改备注：
  */
 @ActivityScope
 public class CancelSuccessPresenter extends BasePresenter<CancelSuccessContract.Model, CancelSuccessContract.View> {
@@ -62,4 +68,27 @@ public class CancelSuccessPresenter extends BasePresenter<CancelSuccessContract.
         this.mApplication = null;
     }
 
+    public void getCancelBookInfo(String bid) {
+        mModel.getCancelBookInfo(bid)
+                .compose(RxUtils.<BaseData<CancelBookingInfo>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<CancelBookingInfo>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<CancelBookingInfo> data) {
+                        if (data.getData() != null) {
+                            mRootView.setResponsibilityView(data.getData().getIsFreeCancel(), data.getData().getCancelPrice());
+                            mRootView.setReasonView(setTravelCancelReason(data.getData().getString()));
+                        }
+
+                    }
+                });
+    }
+
+    private List<TravelCancelReason> setTravelCancelReason(List<String> reasons) {
+        List<TravelCancelReason> mTravelCancelResponseList = new ArrayList<>();
+
+        for (int i = 0; i < reasons.size(); i++) {
+            mTravelCancelResponseList.add(new TravelCancelReason(reasons.get(i)));
+        }
+        return mTravelCancelResponseList;
+    }
 }

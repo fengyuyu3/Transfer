@@ -17,6 +17,7 @@ import com.ironaviation.traveller.di.component.my.travel.DaggerCancelSuccessComp
 import com.ironaviation.traveller.di.module.my.travel.CancelSuccessModule;
 import com.ironaviation.traveller.mvp.contract.my.travel.CancelSuccessContract;
 import com.ironaviation.traveller.mvp.model.entity.response.CancelSuccessResponse;
+import com.ironaviation.traveller.mvp.model.entity.response.TravelCancelReason;
 import com.ironaviation.traveller.mvp.presenter.my.travel.CancelSuccessPresenter;
 import com.ironaviation.traveller.mvp.ui.my.EstimateActivity;
 import com.ironaviation.traveller.mvp.ui.widget.SpaceItemDecoration;
@@ -57,7 +58,8 @@ public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> im
     private List<CancelSuccessResponse> mTravelCancelResponseList = new ArrayList<>();
     private RecyclerView.LayoutManager mLayoutManager;
 
-    private CancelSussessAdapter mCancelSussessAdapter;
+    private CancelSuccessAdapter mCancelSuccessAdapter;
+
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerCancelSuccessComponent
@@ -75,11 +77,7 @@ public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> im
 
     @Override
     protected void initData() {
-        cancel_reasons = getResources().getStringArray(R.array.cancel_reason_list);
 
-        for (int i = 0; i < cancel_reasons.length; i++) {
-            mTravelCancelResponseList.add(new CancelSuccessResponse(cancel_reasons[i]));
-        }
         setTitle(getString(R.string.travel_cancel));
         mToolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_back));
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -91,10 +89,9 @@ public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> im
         //GridLayout 3列
         GridLayoutManager mgr = new GridLayoutManager(this, 2);
         mRvCancelSuccess.addItemDecoration(new SpaceItemDecoration(20));
-        mCancelSussessAdapter = new CancelSussessAdapter(R.layout.item_cancel_success);
+        mCancelSuccessAdapter = new CancelSuccessAdapter(R.layout.item_cancel_success);
         mRvCancelSuccess.setLayoutManager(mgr);
-        mCancelSussessAdapter.setNewData(mTravelCancelResponseList);
-        mRvCancelSuccess.setAdapter(mCancelSussessAdapter);
+        mRvCancelSuccess.setAdapter(mCancelSuccessAdapter);
 
     }
 
@@ -137,5 +134,16 @@ public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> im
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+    }
+
+    @Override
+    public void setResponsibilityView(boolean flag, double CancelPrice) {
+
+    }
+
+    @Override
+    public void setReasonView(List<TravelCancelReason> strings) {
+        mCancelSuccessAdapter.setNewData(strings);
+
     }
 }
