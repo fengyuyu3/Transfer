@@ -59,6 +59,7 @@ public interface CommonService {
     @POST(Api.DELETE_ADDRESS_BOOK)
     Observable<BaseData<List<JsonObject>>> deleteAddressBook(@Query("uabId") String uabId);
 
+
     @POST(Api.VALID_REAL_ID_CARD)
     Observable<BaseData<IdentificationResponse>> identification(@Body IdentificationRequest params);
 
@@ -76,4 +77,7 @@ public interface CommonService {
 
     @POST(Api.ADD_ORDER)
     Observable<BaseData<Boolean>> isOrderSuccess(@Body BIDRequest params);
+
+    @GET(Api.PAYMENT)
+    Observable<BaseData<JsonObject>> getPayment(@Query("bid") String bid,@Query("payMethod") String payMethod);
 }

@@ -65,4 +65,8 @@ public interface Constant {
     String WAIT_APPRAISE = "wait"; //等待评价
     String BID = "bid";
 
+    String WECHAT = "WeChat";
+    String ALIPAY = "AliPay";
+    String UPAY = "UPay";
+
 }

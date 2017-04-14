@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.ironaviation.traveller.mvp.ui.widget.AutoScrollView
+<com.zhy.autolayout.AutoLinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+<com.ironaviation.traveller.mvp.ui.widget.AutoScrollView
+    android:layout_weight="1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <com.zhy.autolayout.AutoLinearLayout
 
         android:layout_width="match_parent"
@@ -33,7 +38,7 @@
                 android:textSize="26px"
                 />
 
-            <TextView
+            <com.ironaviation.traveller.mvp.ui.widget.FontTextView
                 android:id="@+id/tv_money"
                 style="@style/common_text_content_style"
                 android:layout_below="@+id/tv_payment_amount"
@@ -196,13 +201,16 @@
             app:tt_title_color="@color/word_middle_grey"
             ></com.ironaviation.traveller.mvp.ui.widget.TextTextView>
 
-        <TextView
-            android:id="@+id/tv_determine_cancel"
-            style="@style/button_champagne_style"
-            android:layout_marginTop="@dimen/h_fillet2"
-            android:layout_marginBottom="@dimen/h_fillet2"
-            android:text="@string/go_to_pay"
-            ></TextView>
-
     </com.zhy.autolayout.AutoLinearLayout>
 </com.ironaviation.traveller.mvp.ui.widget.AutoScrollView>
+    <TextView
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="32px"
+        android:layout_width="match_parent"
+        android:layout_height="96px"
+        android:background="@drawable/select_but_champagne"
+        android:id="@+id/tv_determine_cancel"
+        android:text="@string/go_to_pay"
+        ></TextView>
+</com.zhy.autolayout.AutoLinearLayout>

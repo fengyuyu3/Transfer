@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.utils.TimerUtils;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.payment.DaggerWaitingPaymentComponent;
@@ -17,7 +18,10 @@ import com.ironaviation.traveller.di.module.payment.WaitingPaymentModule;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.payment.WaitingPaymentContract;
 import com.ironaviation.traveller.mvp.presenter.payment.WaitingPaymentPresenter;
+import com.ironaviation.traveller.mvp.ui.my.travel.TravelActivity;
+import com.ironaviation.traveller.mvp.ui.my.travel.TravelDetailsActivity;
 import com.ironaviation.traveller.mvp.ui.widget.AutoToolbar;
+import com.ironaviation.traveller.mvp.ui.widget.FontTextView;
 import com.ironaviation.traveller.mvp.ui.widget.ImageTextImageView;
 import com.ironaviation.traveller.mvp.ui.widget.TextTextView;
 import com.jess.arms.utils.UiUtils;
@@ -67,7 +71,7 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     @BindView(R.id.tv_payment_amount)
     TextView mTvPaymentAmount;
     @BindView(R.id.tv_money)
-    TextView mTvMoney;
+    FontTextView mTvMoney;
     @BindView(R.id.tv_unit)
     TextView mTvUnit;
     @BindView(R.id.tv_money_unit)
@@ -92,6 +96,9 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     TextTextView mTtNeedSeats;
     @BindView(R.id.tv_determine_cancel)
     TextView mTvDetermineCancel;
+    private String format = "MM月dd日 HH点mm分";
+    private String status;
+    private String bid;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -110,7 +117,7 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
 
     @Override
     protected void initData() {
-        String bid =  getIntent().getStringExtra(Constant.BID);
+        bid =  getIntent().getStringExtra(Constant.BID);
         mPresenter.getRouteStateInfo(bid);
     }
 
@@ -146,7 +153,7 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
 
     }
 
-    @OnClick({R.id.ivi_we_chat, R.id.ivi_ali_pay, R.id.ivi_union_pay})
+    @OnClick({R.id.ivi_we_chat, R.id.ivi_ali_pay, R.id.ivi_union_pay,R.id.tv_determine_cancel})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ivi_we_chat:
@@ -159,6 +166,7 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
                 mIviAliPay.setBackGround(ContextCompat.getColor(this, R.color.white));
                 mIviWeChat.setBackGround(ContextCompat.getColor(this, R.color.id_cord_background));
                 mIviUnionPay.setBackGround(ContextCompat.getColor(this, R.color.white));
+                status = Constant.WECHAT;
                 break;
             case R.id.ivi_ali_pay:
                 /*mIviAliPay.setGoOn(R.mipmap.ic_radio_button_checked_black);
@@ -170,6 +178,7 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
                 mIviAliPay.setBackGround(ContextCompat.getColor(this, R.color.id_cord_background));
                 mIviWeChat.setBackGround(ContextCompat.getColor(this, R.color.white));
                 mIviUnionPay.setBackGround(ContextCompat.getColor(this, R.color.white));
+                status = Constant.ALIPAY;
                 break;
             case R.id.ivi_union_pay:
                 /*mIviUnionPay.setGoOn(R.mipmap.ic_radio_button_checked_black);
@@ -181,6 +190,14 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
                 mIviAliPay.setBackGround(ContextCompat.getColor(this, R.color.white));
                 mIviWeChat.setBackGround(ContextCompat.getColor(this, R.color.white));
                 mIviUnionPay.setBackGround(ContextCompat.getColor(this, R.color.id_cord_background));
+                status = Constant.UPAY;
+                break;
+            case R.id.tv_determine_cancel:
+                if(status !=null) {
+                    mPresenter.setPayment(bid, status);
+                }else{
+                    showMessage("请选择支付方式");
+                }
                 break;
         }
     }
@@ -201,8 +218,8 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     }
 
     @Override
-    public void setTime(String time) {
-        mTtRidingTime.setText(time);
+    public void setTime(long time) {
+        mTtRidingTime.setText(TimerUtils.getDateFormat(time,format));
     }
 
     @Override
@@ -218,6 +235,20 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     @Override
     public void setSeatNum(int num) {
         mTtNeedSeats.setTitle("需要"+num+"个座位数");
+    }
+    @Override
+    public void setPrice(int num) {
+        mTvMoney.setTextType(num+"");
+    }
+
+    @Override
+    public void setCountdown(long time) {
+
+    }
+
+    @Override
+    public void setSuccess() {
+        startActivity(new Intent(this, TravelDetailsActivity.class));
     }
 
     @Override

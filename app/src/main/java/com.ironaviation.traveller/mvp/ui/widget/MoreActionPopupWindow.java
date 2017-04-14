@@ -34,8 +34,8 @@ public class MoreActionPopupWindow extends PopupWindow implements View.OnClickLi
     AutoLinearLayout llCustomer;
     AutoLinearLayout llCancel;
     private Context mContext;
-
-    public MoreActionPopupWindow(Context context) {
+    private String tags;
+    public MoreActionPopupWindow(Context context,String tags) {
         this.mContext = context;
         View v = LayoutInflater.from(context).inflate(R.layout.pop_action_more,null,false);
         llCustomer = (AutoLinearLayout) v.findViewById(R.id.ll_customer);
@@ -63,10 +63,10 @@ public class MoreActionPopupWindow extends PopupWindow implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_cancel:
-                EventBus.getDefault().post(new TravelCancelEvent(Constant.TRAVEL_CANCEL), EventBusTags.TRAVEL_DETAILS);
+                EventBus.getDefault().post(new TravelCancelEvent(Constant.TRAVEL_CANCEL), tags);
                 break;
             case R.id.ll_customer:
-                EventBus.getDefault().post(new TravelCancelEvent(Constant.TRAVEL_CUSTOMER), EventBusTags.TRAVEL_DETAILS);
+                EventBus.getDefault().post(new TravelCancelEvent(Constant.TRAVEL_CUSTOMER), tags);
                 break;
         }
         dismiss();

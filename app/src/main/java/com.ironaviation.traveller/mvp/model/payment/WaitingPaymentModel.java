@@ -3,6 +3,7 @@ package com.ironaviation.traveller.mvp.model.payment;
 import android.app.Application;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.ironaviation.traveller.mvp.contract.payment.WaitingPaymentContract;
 import com.ironaviation.traveller.mvp.model.api.cache.CacheManager;
 import com.ironaviation.traveller.mvp.model.api.service.CommonService;
@@ -64,5 +65,10 @@ public class WaitingPaymentModel extends BaseModel<ServiceManager, CacheManager>
     @Override
     public Observable<BaseData<RouteStateResponse>> getRouteStateInfo(String bid) {
         return mCommonService.getRouteStateInfo(bid);
+    }
+
+    @Override
+    public Observable<BaseData<JsonObject>> getPayment(String bid, String payMethod) {
+        return mCommonService.getPayment(bid,payMethod);
     }
 }

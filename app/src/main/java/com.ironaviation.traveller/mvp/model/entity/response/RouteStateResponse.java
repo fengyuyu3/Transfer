@@ -1,15 +1,19 @@
 package com.ironaviation.traveller.mvp.model.entity.response;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.ironaviation.traveller.mvp.model.entity.request.PassengersRequest;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Administrator on 2017/4/12 0012.
  */
 
-public class RouteStateResponse implements Serializable{
+public class RouteStateResponse implements Parcelable{
 
     /**
      * DriverName : string
@@ -48,10 +52,10 @@ public class RouteStateResponse implements Serializable{
     private String CarModel;
     private String CarLicense;
     private String CarColor;
-    private int PickupLongitude;
-    private int PickupLatitude;
-    private int DestLongitude;
-    private int DestLagitude;
+    private double PickupLongitude;
+    private double PickupLatitude;
+    private double DestLongitude;
+    private double DestLagitude;
     private String BID;
     private String UID;
     private int SeqNum;
@@ -171,35 +175,35 @@ public class RouteStateResponse implements Serializable{
         this.CarColor = CarColor;
     }
 
-    public int getPickupLongitude() {
+    public double getPickupLongitude() {
         return PickupLongitude;
     }
 
-    public void setPickupLongitude(int PickupLongitude) {
+    public void setPickupLongitude(double PickupLongitude) {
         this.PickupLongitude = PickupLongitude;
     }
 
-    public int getPickupLatitude() {
+    public double getPickupLatitude() {
         return PickupLatitude;
     }
 
-    public void setPickupLatitude(int PickupLatitude) {
+    public void setPickupLatitude(double PickupLatitude) {
         this.PickupLatitude = PickupLatitude;
     }
 
-    public int getDestLongitude() {
+    public double getDestLongitude() {
         return DestLongitude;
     }
 
-    public void setDestLongitude(int DestLongitude) {
+    public void setDestLongitude(double DestLongitude) {
         this.DestLongitude = DestLongitude;
     }
 
-    public int getDestLagitude() {
+    public double getDestLagitude() {
         return DestLagitude;
     }
 
-    public void setDestLagitude(int DestLagitude) {
+    public void setDestLagitude(double DestLagitude) {
         this.DestLagitude = DestLagitude;
     }
 
@@ -347,4 +351,93 @@ public class RouteStateResponse implements Serializable{
         this.Passengers = Passengers;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.DriverName);
+        dest.writeString(this.DriverRate);
+        dest.writeString(this.DriverPhone);
+        dest.writeString(this.CarModel);
+        dest.writeString(this.CarLicense);
+        dest.writeString(this.CarColor);
+        dest.writeDouble(this.PickupLongitude);
+        dest.writeDouble(this.PickupLatitude);
+        dest.writeDouble(this.DestLongitude);
+        dest.writeDouble(this.DestLagitude);
+        dest.writeString(this.BID);
+        dest.writeString(this.UID);
+        dest.writeInt(this.SeqNum);
+        dest.writeString(this.OrderNo);
+        dest.writeString(this.Channel);
+        dest.writeString(this.PickupAddress);
+        dest.writeString(this.DestAddress);
+        dest.writeInt(this.SeatNum);
+        dest.writeInt(this.ActualPrice);
+        dest.writeInt(this.TotalPrice);
+        dest.writeString(this.Status);
+        dest.writeByte(this.IsDeleted ? (byte) 1 : (byte) 0);
+        dest.writeString(this.TripType);
+        dest.writeString(this.PickupTime);
+        dest.writeString(this.Cdt);
+        dest.writeByte(this.IsComment ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.IsPaied ? (byte) 1 : (byte) 0);
+        dest.writeString(this.Phone);
+        dest.writeString(this.FlightNo);
+        dest.writeString(this.FlightDate);
+        dest.writeList(this.Passengers);
+    }
+
+    public RouteStateResponse() {
+    }
+
+    protected RouteStateResponse(Parcel in) {
+        this.DriverName = in.readString();
+        this.DriverRate = in.readString();
+        this.DriverPhone = in.readString();
+        this.CarModel = in.readString();
+        this.CarLicense = in.readString();
+        this.CarColor = in.readString();
+        this.PickupLongitude = in.readDouble();
+        this.PickupLatitude = in.readDouble();
+        this.DestLongitude = in.readDouble();
+        this.DestLagitude = in.readDouble();
+        this.BID = in.readString();
+        this.UID = in.readString();
+        this.SeqNum = in.readInt();
+        this.OrderNo = in.readString();
+        this.Channel = in.readString();
+        this.PickupAddress = in.readString();
+        this.DestAddress = in.readString();
+        this.SeatNum = in.readInt();
+        this.ActualPrice = in.readInt();
+        this.TotalPrice = in.readInt();
+        this.Status = in.readString();
+        this.IsDeleted = in.readByte() != 0;
+        this.TripType = in.readString();
+        this.PickupTime = in.readString();
+        this.Cdt = in.readString();
+        this.IsComment = in.readByte() != 0;
+        this.IsPaied = in.readByte() != 0;
+        this.Phone = in.readString();
+        this.FlightNo = in.readString();
+        this.FlightDate = in.readString();
+        this.Passengers = new ArrayList<PassengersRequest>();
+        in.readList(this.Passengers, PassengersRequest.class.getClassLoader());
+    }
+
+    public static final Creator<RouteStateResponse> CREATOR = new Creator<RouteStateResponse>() {
+        @Override
+        public RouteStateResponse createFromParcel(Parcel source) {
+            return new RouteStateResponse(source);
+        }
+
+        @Override
+        public RouteStateResponse[] newArray(int size) {
+            return new RouteStateResponse[size];
+        }
+    };
 }

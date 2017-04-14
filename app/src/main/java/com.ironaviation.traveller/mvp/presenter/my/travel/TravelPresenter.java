@@ -138,11 +138,14 @@ public class TravelPresenter extends BasePresenter<TravelContract.Model, TravelC
                                     && responseBaseData.getData().getItems().size() > 0) {
                                 mRootView.setMoreDatas(responseBaseData.getData());
                                 num = responseBaseData.getData().getCurrentPageIndex()+1;
+                                if(responseBaseData.getData().getItems().size() < 10){
+                                    mRootView.setMoreComplete();
+                                }
                             }else{
                                 mRootView.showMessage(responseBaseData.getMessage());
                             }
                         }else{
-                            mRootView.showMessage(responseBaseData.getMessage());
+//                            mRootView.showMessage(responseBaseData.getMessage());
                         }
                     }
 
@@ -162,7 +165,7 @@ public class TravelPresenter extends BasePresenter<TravelContract.Model, TravelC
                     public void onNext(BaseData<RouteStateResponse> routeStateResponseBaseData) {
                         if(routeStateResponseBaseData.isSuccess()){
                             if(routeStateResponseBaseData.getData() != null){
-
+                                mRootView.getState(routeStateResponseBaseData.getData());
                             }else{
 
                             }
@@ -179,5 +182,10 @@ public class TravelPresenter extends BasePresenter<TravelContract.Model, TravelC
     }
     public int getPage(){
         return num;
+    }
+
+
+    public void getData(RouteStateResponse r){
+
     }
 }

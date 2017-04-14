@@ -2,6 +2,7 @@ package com.ironaviation.traveller.mvp.presenter.payment;
 
 import android.app.Application;
 
+import com.google.gson.JsonObject;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.mvp.contract.payment.WaitingPaymentContract;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
@@ -86,16 +87,20 @@ public class WaitingPaymentPresenter extends BasePresenter<WaitingPaymentContrac
                 });
     }
 
-    /**
-     * void setOrderNum(String num);
-     void setMobile(String mobile);
-     void setTravelNO(String travelNO);
-     void setTime(String time);
-     void setPickUpAddress(String address);
-     void setDestAddress(String address);
-     void setSeatNum(int num);
-     * @param response
-     */
+    public void setPayment(String bid,String payment){
+        mModel.getPayment(bid,payment)
+                .compose(RxUtils.<BaseData<JsonObject>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<JsonObject>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<JsonObject> jsonObjectBaseData) {
+                        if(jsonObjectBaseData.isSuccess()){
+                            mRootView.setSuccess();
+                        }
+                    }
+                });
+    }
+
+
     public void setValue(RouteStateResponse response){
         if(response.getOrderNo() != null){
             mRootView.setOrderNum(response.getOrderNo());
@@ -107,7 +112,13 @@ public class WaitingPaymentPresenter extends BasePresenter<WaitingPaymentContrac
             mRootView.setTravelNO(response.getFlightNo());
         }
         if(response.getFlightDate() != null){
-            mRootView.setTime(response.getFlightDate());
+            long time ;
+            try{
+                time = Long.parseLong(response.getFlightDate());
+            }catch (Exception e){
+                time = 0;
+            }
+            mRootView.setTime(time);
         }
         if(response.getPickupAddress() != null){
             mRootView.setPickUpAddress(response.getPickupAddress());
@@ -118,5 +129,9 @@ public class WaitingPaymentPresenter extends BasePresenter<WaitingPaymentContrac
         if(response.getSeatNum() != 0){
             mRootView.setSeatNum(response.getSeatNum());
         }
+        if(response.getActualPrice() != -1){
+            mRootView.setPrice(response.getActualPrice());
+        }
+//        mRootView.setCountdown(); //倒计时
     }
 }
