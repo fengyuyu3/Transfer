@@ -69,6 +69,58 @@ public class RouteStateResponse implements Serializable{
     private String Cdt;
     private boolean IsComment;
     private boolean IsPaied;
+    private String Phone;
+    private String FlightNo;
+    private String FlightDate;
+
+    public String getFlightNo() {
+        return FlightNo;
+    }
+
+    public void setFlightNo(String flightNo) {
+        FlightNo = flightNo;
+    }
+
+    public String getFlightDate() {
+        return FlightDate;
+    }
+
+    public void setFlightDate(String flightDate) {
+        FlightDate = flightDate;
+    }
+
+    public boolean isDeleted() {
+        return IsDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        IsDeleted = deleted;
+    }
+
+    public boolean isComment() {
+        return IsComment;
+    }
+
+    public void setComment(boolean comment) {
+        IsComment = comment;
+    }
+
+    public boolean isPaied() {
+        return IsPaied;
+    }
+
+    public void setPaied(boolean paied) {
+        IsPaied = paied;
+    }
+
+    public String getPhone() {
+        return Phone;
+    }
+
+    public void setPhone(String phone) {
+        Phone = phone;
+    }
+
     private List<PassengersRequest> Passengers;
 
     public String getDriverName() {

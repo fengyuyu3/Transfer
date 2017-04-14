@@ -4,12 +4,16 @@ import android.app.Application;
 
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.mvp.contract.payment.WaitingPaymentContract;
+import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
+import com.jess.arms.utils.RxUtils;
 import com.jess.arms.widget.imageloader.ImageLoader;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
 import javax.inject.Inject;
 
@@ -65,4 +69,54 @@ public class WaitingPaymentPresenter extends BasePresenter<WaitingPaymentContrac
         this.mApplication = null;
     }
 
+    public void getRouteStateInfo(String bid){
+        mModel.getRouteStateInfo(bid)
+                .compose(RxUtils.<BaseData<RouteStateResponse>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<RouteStateResponse>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<RouteStateResponse> routeStateResponseBaseData) {
+                        if(routeStateResponseBaseData.isSuccess()){
+                            if(routeStateResponseBaseData.getData()!= null){
+                                setValue(routeStateResponseBaseData.getData());
+                            }
+                        }else{
+
+                        }
+                    }
+                });
+    }
+
+    /**
+     * void setOrderNum(String num);
+     void setMobile(String mobile);
+     void setTravelNO(String travelNO);
+     void setTime(String time);
+     void setPickUpAddress(String address);
+     void setDestAddress(String address);
+     void setSeatNum(int num);
+     * @param response
+     */
+    public void setValue(RouteStateResponse response){
+        if(response.getOrderNo() != null){
+            mRootView.setOrderNum(response.getOrderNo());
+        }
+        if(response.getPhone() != null){
+            mRootView.setMobile(response.getPhone());
+        }
+        if(response.getFlightNo() != null) {//航班号
+            mRootView.setTravelNO(response.getFlightNo());
+        }
+        if(response.getFlightDate() != null){
+            mRootView.setTime(response.getFlightDate());
+        }
+        if(response.getPickupAddress() != null){
+            mRootView.setPickUpAddress(response.getPickupAddress());
+        }
+        if(response.getDestAddress() != null){
+            mRootView.setDestAddress(response.getDestAddress());
+        }
+        if(response.getSeatNum() != 0){
+            mRootView.setSeatNum(response.getSeatNum());
+        }
+    }
 }

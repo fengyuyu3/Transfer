@@ -5,6 +5,7 @@ import android.app.Application;
 import com.google.gson.Gson;
 import com.ironaviation.traveller.mvp.contract.payment.PaymentContract;
 import com.ironaviation.traveller.mvp.model.api.cache.CacheManager;
+import com.ironaviation.traveller.mvp.model.api.service.CommonService;
 import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BaseModel;
@@ -39,12 +40,14 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
 public class PaymentModel extends BaseModel<ServiceManager, CacheManager> implements PaymentContract.Model {
     private Gson mGson;
     private Application mApplication;
+    private CommonService mCommonService;
 
     @Inject
     public PaymentModel(ServiceManager serviceManager, CacheManager cacheManager, Gson gson, Application application) {
         super(serviceManager, cacheManager);
         this.mGson = gson;
         this.mApplication = application;
+        mCommonService = serviceManager.getCommonService();
     }
 
     @Override

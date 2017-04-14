@@ -1,24 +1,29 @@
 package com.ironaviation.traveller.mvp.ui.payment;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.payment.DaggerWaitingPaymentComponent;
 import com.ironaviation.traveller.di.module.payment.WaitingPaymentModule;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.payment.WaitingPaymentContract;
 import com.ironaviation.traveller.mvp.presenter.payment.WaitingPaymentPresenter;
+import com.ironaviation.traveller.mvp.ui.widget.AutoToolbar;
 import com.ironaviation.traveller.mvp.ui.widget.ImageTextImageView;
+import com.ironaviation.traveller.mvp.ui.widget.TextTextView;
 import com.jess.arms.utils.UiUtils;
 
-
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
@@ -33,16 +38,13 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 
 /**
- *
- * 项目名称：Traveller      
- * 类描述：   
- * 创建人：starRing  
- * 创建时间：2017-04-10 14:53   
- * 修改人：starRing  
- * 修改时间：2017-04-10 14:53   
- * 修改备注：   
- * @version
- *
+ * 项目名称：Traveller
+ * 类描述：
+ * 创建人：starRing
+ * 创建时间：2017-04-10 14:53
+ * 修改人：starRing
+ * 修改时间：2017-04-10 14:53
+ * 修改备注：
  */
 public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> implements WaitingPaymentContract.View {
 
@@ -52,6 +54,44 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     ImageTextImageView mIviAliPay;
     @BindView(R.id.ivi_union_pay)
     ImageTextImageView mIviUnionPay;
+    @BindView(R.id.iv_function_left)
+    ImageView mIvFunctionLeft;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.tv_function_right)
+    TextView mTvFunctionRight;
+    @BindView(R.id.iv_function_right)
+    ImageView mIvFunctionRight;
+    @BindView(R.id.toolbar)
+    AutoToolbar mToolbar;
+    @BindView(R.id.tv_payment_amount)
+    TextView mTvPaymentAmount;
+    @BindView(R.id.tv_money)
+    TextView mTvMoney;
+    @BindView(R.id.tv_unit)
+    TextView mTvUnit;
+    @BindView(R.id.tv_money_unit)
+    TextView mTvMoneyUnit;
+    @BindView(R.id.tv_tt_title)
+    TextView mTvTtTitle;
+    @BindView(R.id.tt_order_number)
+    TextTextView mTtOrderNumber;
+    @BindView(R.id.tt_passengers_telephone)
+    TextTextView mTtPassengersTelephone;
+    @BindView(R.id.v_1)
+    View mV1;
+    @BindView(R.id.tt_flight_number)
+    TextTextView mTtFlightNumber;
+    @BindView(R.id.tt_riding_time)
+    TextTextView mTtRidingTime;
+    @BindView(R.id.tt_get_on_the_bus_address)
+    TextTextView mTtGetOnTheBusAddress;
+    @BindView(R.id.tt_get_off_the_bus_address)
+    TextTextView mTtGetOffTheBusAddress;
+    @BindView(R.id.tt_need_seats)
+    TextTextView mTtNeedSeats;
+    @BindView(R.id.tv_determine_cancel)
+    TextView mTvDetermineCancel;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -70,7 +110,8 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
 
     @Override
     protected void initData() {
-
+        String bid =  getIntent().getStringExtra(Constant.BID);
+        mPresenter.getRouteStateInfo(bid);
     }
 
     @Override
@@ -112,9 +153,9 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
                /* mIviWeChat.setGoOn(R.mipmap.ic_radio_button_checked_black);
                 mIviAliPay.setGoOn(R.mipmap.ic_radio_button_unchecked_black);
                 mIviUnionPay.setGoOn(R.mipmap.ic_radio_button_unchecked_black);*/
-                mIviWeChat.show(true,R.mipmap.ic_pay_select);
-                mIviAliPay.show(false,R.mipmap.ic_pay_select);
-                mIviUnionPay.show(false,R.mipmap.ic_pay_select);
+                mIviWeChat.show(true, R.mipmap.ic_pay_select);
+                mIviAliPay.show(false, R.mipmap.ic_pay_select);
+                mIviUnionPay.show(false, R.mipmap.ic_pay_select);
                 mIviAliPay.setBackGround(ContextCompat.getColor(this, R.color.white));
                 mIviWeChat.setBackGround(ContextCompat.getColor(this, R.color.id_cord_background));
                 mIviUnionPay.setBackGround(ContextCompat.getColor(this, R.color.white));
@@ -123,9 +164,9 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
                 /*mIviAliPay.setGoOn(R.mipmap.ic_radio_button_checked_black);
                 mIviWeChat.setGoOn(R.mipmap.ic_radio_button_unchecked_black);
                 mIviUnionPay.setGoOn(R.mipmap.ic_radio_button_unchecked_black);*/
-                mIviAliPay.show(true,R.mipmap.ic_pay_select);
-                mIviWeChat.show(false,R.mipmap.ic_pay_select);
-                mIviUnionPay.show(false,R.mipmap.ic_pay_select);
+                mIviAliPay.show(true, R.mipmap.ic_pay_select);
+                mIviWeChat.show(false, R.mipmap.ic_pay_select);
+                mIviUnionPay.show(false, R.mipmap.ic_pay_select);
                 mIviAliPay.setBackGround(ContextCompat.getColor(this, R.color.id_cord_background));
                 mIviWeChat.setBackGround(ContextCompat.getColor(this, R.color.white));
                 mIviUnionPay.setBackGround(ContextCompat.getColor(this, R.color.white));
@@ -134,13 +175,55 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
                 /*mIviUnionPay.setGoOn(R.mipmap.ic_radio_button_checked_black);
                 mIviWeChat.setGoOn(R.mipmap.ic_radio_button_unchecked_black);
                 mIviAliPay.setGoOn(R.mipmap.ic_radio_button_unchecked_black);*/
-                mIviUnionPay.show(true,R.mipmap.ic_pay_select);
-                mIviWeChat.show(false,R.mipmap.ic_pay_select);
-                mIviAliPay.show(false,R.mipmap.ic_pay_select);
+                mIviUnionPay.show(true, R.mipmap.ic_pay_select);
+                mIviWeChat.show(false, R.mipmap.ic_pay_select);
+                mIviAliPay.show(false, R.mipmap.ic_pay_select);
                 mIviAliPay.setBackGround(ContextCompat.getColor(this, R.color.white));
                 mIviWeChat.setBackGround(ContextCompat.getColor(this, R.color.white));
                 mIviUnionPay.setBackGround(ContextCompat.getColor(this, R.color.id_cord_background));
                 break;
         }
+    }
+
+    @Override
+    public void setOrderNum(String num) {
+        mTtOrderNumber.setText(num);
+    }
+
+    @Override
+    public void setMobile(String mobile) {
+        mTtOrderNumber.setText(mobile);
+    }
+
+    @Override
+    public void setTravelNO(String travelNO) {
+        mTtFlightNumber.setText(travelNO);
+    }
+
+    @Override
+    public void setTime(String time) {
+        mTtRidingTime.setText(time);
+    }
+
+    @Override
+    public void setPickUpAddress(String address) {
+        mTtGetOnTheBusAddress.setText(address);
+    }
+
+    @Override
+    public void setDestAddress(String address) {
+        mTtGetOffTheBusAddress.setText(address);
+    }
+
+    @Override
+    public void setSeatNum(int num) {
+        mTtNeedSeats.setTitle("需要"+num+"个座位数");
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }
