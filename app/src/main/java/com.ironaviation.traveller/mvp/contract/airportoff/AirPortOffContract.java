@@ -3,7 +3,6 @@ package com.ironaviation.traveller.mvp.contract.airportoff;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.request.AirportGoInfoRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.PassengersRequest;
-import com.ironaviation.traveller.mvp.model.entity.response.IsOrderSuccess;
 import com.jess.arms.mvp.BaseView;
 import com.jess.arms.mvp.IModel;
 

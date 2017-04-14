@@ -14,7 +14,6 @@ import com.ironaviation.traveller.mvp.model.entity.request.TravelRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.UpdateAddressBookRequest;
 import com.ironaviation.traveller.mvp.model.entity.response.Flight;
 import com.ironaviation.traveller.mvp.model.entity.response.IdentificationResponse;
-import com.ironaviation.traveller.mvp.model.entity.response.IsOrderSuccess;
 import com.ironaviation.traveller.mvp.model.entity.response.MessageResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteListResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
