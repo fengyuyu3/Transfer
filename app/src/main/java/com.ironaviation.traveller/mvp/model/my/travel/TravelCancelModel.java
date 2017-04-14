@@ -3,13 +3,21 @@ package com.ironaviation.traveller.mvp.model.my.travel;
 import android.app.Application;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.ironaviation.traveller.mvp.contract.my.travel.TravelCancelContract;
 import com.ironaviation.traveller.mvp.model.api.cache.CacheManager;
+import com.ironaviation.traveller.mvp.model.api.service.CommonService;
 import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
+import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.request.CancelBookingRequest;
+import com.ironaviation.traveller.mvp.model.entity.response.CancelBookingInfo;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BaseModel;
 
 import javax.inject.Inject;
+
+import rx.Observable;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -24,27 +32,26 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 
 /**
- *
- * 项目名称：Traveller      
- * 类描述：   
- * 创建人：starRing  
- * 创建时间：2017-04-05 14:25   
- * 修改人：starRing  
- * 修改时间：2017-04-05 14:25   
- * 修改备注：   
- * @version
- *
+ * 项目名称：Traveller
+ * 类描述：
+ * 创建人：starRing
+ * 创建时间：2017-04-05 14:25
+ * 修改人：starRing
+ * 修改时间：2017-04-05 14:25
+ * 修改备注：
  */
 @ActivityScope
 public class TravelCancelModel extends BaseModel<ServiceManager, CacheManager> implements TravelCancelContract.Model {
     private Gson mGson;
     private Application mApplication;
+    private CommonService mCommonService;
 
     @Inject
     public TravelCancelModel(ServiceManager serviceManager, CacheManager cacheManager, Gson gson, Application application) {
         super(serviceManager, cacheManager);
         this.mGson = gson;
         this.mApplication = application;
+        this.mCommonService = serviceManager.getCommonService();
     }
 
     @Override
@@ -52,6 +59,18 @@ public class TravelCancelModel extends BaseModel<ServiceManager, CacheManager> i
         super.onDestroy();
         this.mGson = null;
         this.mApplication = null;
+        this.mCommonService = null;
     }
 
+    @Override
+    public Observable<BaseData<CancelBookingInfo>> getCancelBookInfo(String bid) {
+        return mCommonService.getCancelBookInfo(bid);
+    }
+
+    @Override
+    public Observable<BaseData<JsonObject>> cancelBooking(String bid, String reason) {
+        CancelBookingRequest cancelBookingRequest = new CancelBookingRequest();
+        cancelBookingRequest.setReason(reason);
+        return mCommonService.cancelBooking(bid, cancelBookingRequest);
+    }
 }

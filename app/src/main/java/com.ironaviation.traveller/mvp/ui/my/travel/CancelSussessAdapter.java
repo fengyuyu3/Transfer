@@ -4,7 +4,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.mvp.model.entity.response.CancelSuccessResponse;
-import com.ironaviation.traveller.mvp.model.entity.response.TravelCancelResponse;
 
 /**
  * 项目名称：Traveller

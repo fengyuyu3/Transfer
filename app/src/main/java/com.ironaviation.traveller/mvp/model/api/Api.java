@@ -28,5 +28,7 @@ public interface Api {
     String ADD_ORDER="/api/Booking/AddClearPortBooking";   //添加订单
     String PAYMENT = "/api/Booking/PayBooking";
 
+    String CANCEL_BOOKING="/api/Booking/CancelBooking/{bid}";//GET {bid} 获取取消预约详情
+                                                       //POST {bid} 获取取消预约详情
     int RequestSuccess = 1;
 }

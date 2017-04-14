@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -110,10 +111,21 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     @Override
     protected void initData() {
         setRightFunction(R.mipmap.ic_airport, this);
-        mPopupWindow = new MoreActionPopupWindow(this,EventBusTags.TRAVEL_DETAILS);
+        Bundle pBundle = getIntent().getExtras();
+        if (pBundle != null) {
+            RouteStateResponse responses = (RouteStateResponse) pBundle.getSerializable(Constant.STATUS);
+            if (responses!=null&&!TextUtils.isEmpty(responses.getBID())){
+                mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.WAITING_PAYMENT,responses.getBID());
+
+            }
+        }
         Bundle bundle = getIntent().getBundleExtra(Constant.STATUS);
-        responses = (RouteStateResponse) bundle.getSerializable(Constant.STATUS);
-        pStatus = responses.getStatus();
+        responses = (RouteStateResponse) bundle.getParcelable(Constant.STATUS);
+        if(responses != null) {
+            pStatus = responses.getStatus();
+        }else{
+//            mPresenter.getRouteState();
+        }
     }
 
 

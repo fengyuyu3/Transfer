@@ -12,8 +12,14 @@ package com.ironaviation.traveller.event;
 
 public class TravelCancelEvent {
     public int event;
+    private String bid;
     public TravelCancelEvent(int event){
         this.event = event;
+    }
+
+    public TravelCancelEvent(int event, String bid) {
+        this.event = event;
+        this.bid = bid;
     }
 
     public int getEvent() {
@@ -22,5 +28,13 @@ public class TravelCancelEvent {
 
     public void setEvent(int event) {
         this.event = event;
+    }
+
+    public String getBid() {
+        return bid;
+    }
+
+    public void setBid(String bid) {
+        this.bid = bid;
     }
 }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,20 +12,30 @@ import android.widget.TextView;
 
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.utils.TimerUtils;
+import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.payment.DaggerWaitingPaymentComponent;
 import com.ironaviation.traveller.di.module.payment.WaitingPaymentModule;
 import com.ironaviation.traveller.mvp.constant.Constant;
+import com.ironaviation.traveller.event.TravelCancelEvent;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.payment.WaitingPaymentContract;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.presenter.payment.WaitingPaymentPresenter;
 import com.ironaviation.traveller.mvp.ui.my.travel.TravelActivity;
 import com.ironaviation.traveller.mvp.ui.my.travel.TravelDetailsActivity;
 import com.ironaviation.traveller.mvp.ui.widget.AutoToolbar;
 import com.ironaviation.traveller.mvp.ui.widget.FontTextView;
+import com.ironaviation.traveller.mvp.ui.my.travel.TravelCancelActivity;
 import com.ironaviation.traveller.mvp.ui.widget.ImageTextImageView;
 import com.ironaviation.traveller.mvp.ui.widget.TextTextView;
+import com.ironaviation.traveller.mvp.ui.widget.MoreActionPopupWindow;
 import com.jess.arms.utils.UiUtils;
+import com.zhy.autolayout.AutoRelativeLayout;
+
+import org.simple.eventbus.EventBus;
+import org.simple.eventbus.Subscriber;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,7 +61,7 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  * 修改时间：2017-04-10 14:53
  * 修改备注：
  */
-public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> implements WaitingPaymentContract.View {
+public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> implements WaitingPaymentContract.View, View.OnClickListener {
 
     @BindView(R.id.ivi_we_chat)
     ImageTextImageView mIviWeChat;
@@ -100,6 +111,11 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     private String status;
     private String bid;
 
+
+    @BindView(R.id.id_line)
+    View idLine;
+    private MoreActionPopupWindow mPopupWindow;
+
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerWaitingPaymentComponent
@@ -119,6 +135,16 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     protected void initData() {
         bid =  getIntent().getStringExtra(Constant.BID);
         mPresenter.getRouteStateInfo(bid);
+        Bundle pBundle = getIntent().getExtras();
+        if (pBundle != null) {
+            RouteStateResponse responses = (RouteStateResponse) pBundle.getSerializable(Constant.STATUS);
+            if (responses!=null&&!TextUtils.isEmpty(responses.getBID())){
+                mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.WAITING_PAYMENT,responses.getBID());
+
+            }
+        }
+        setRightFunction(R.mipmap.ic_more, this);
+
     }
 
     @Override
@@ -156,6 +182,12 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     @OnClick({R.id.ivi_we_chat, R.id.ivi_ali_pay, R.id.ivi_union_pay,R.id.tv_determine_cancel})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.iv_function_right:
+                if (mPopupWindow != null) {
+                    mPopupWindow.showPopupWindow(idLine);
+                }
+                break;
+
             case R.id.ivi_we_chat:
                /* mIviWeChat.setGoOn(R.mipmap.ic_radio_button_checked_black);
                 mIviAliPay.setGoOn(R.mipmap.ic_radio_button_unchecked_black);
@@ -249,6 +281,8 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     @Override
     public void setSuccess() {
         startActivity(new Intent(this, TravelDetailsActivity.class));
+        EventBus.getDefault().post(bid,EventBusTags.PAYMENT);
+        finish();
     }
 
     @Override
@@ -256,5 +290,19 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+    }
+
+    @Subscriber(tag = EventBusTags.WAITING_PAYMENT)
+    public void onEventMainThread(TravelCancelEvent event) {
+        switch (event.getEvent()) {
+            case Constant.TRAVEL_CANCEL:
+                Bundle pBundle=new Bundle();
+                pBundle.putString(Constant.BID,event.getBid());
+                startActivity(TravelCancelActivity.class,pBundle);
+                break;
+            case Constant.TRAVEL_CUSTOMER:
+                showMessage("联系客户");
+                break;
+        }
     }
 }

@@ -126,54 +126,40 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
 
     public void setStatus(String status,RouteStateResponse responses){
         if(Constant.REGISTERED .equals(status)){
-            Intent intent = new Intent();
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(Constant.STATUS,responses);
-            intent.putExtra(Constant.STATUS,bundle);
-            startActivity(TravelDetailsActivity.class);
+            setTravelDetailsActivity(responses);
         }else if(Constant.INHAND .equals(status)){
-            Intent intent = new Intent();
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(Constant.STATUS,responses);
-            intent.putExtra(Constant.STATUS,bundle);
-            startActivity(TravelDetailsActivity.class);
+            setTravelDetailsActivity(responses);
         }else if(Constant.ARRIVED .equals(status)){
-            Intent intent = new Intent();
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(Constant.STATUS,responses);
-            intent.putExtra(Constant.STATUS,bundle);
-            startActivity(TravelDetailsActivity.class);
+            setTravelDetailsActivity(responses);
         }else if(Constant.CANCEL .equals(status)){
             Intent intent = new Intent();
             intent.putExtra(Constant.STATUS,status);
             startActivity(CancelSuccessActivity.class);
         }else if(Constant.BOOKSUCCESS .equals(status)){
-            Intent intent = new Intent();
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(Constant.STATUS,responses);
-            intent.putExtra(Constant.STATUS,bundle);
-            startActivity(TravelDetailsActivity.class);
+            setTravelDetailsActivity(responses);
         }else if(Constant.COMPLETED .equals(status)){
             /*Intent intent = new Intent();
             intent.putExtra(Constant.STATUS,status);
             startActivity(TravelDetailsActivity.class);*/
         }else if(Constant.WAIT_APPRAISE .equals(status)){
-            Intent intent = new Intent();
+            Intent intent = new Intent(this,EstimateActivity.class);
             intent.putExtra(Constant.STATUS,status);
-            startActivity(EstimateActivity.class);
+            startActivity(intent);
         }else if(Constant.NOTPAID .equals(status)){ //跳未支付界面
-            Intent intent = new Intent();
             Bundle bundle = new Bundle();
             bundle.putParcelable(Constant.STATUS,responses);
-            intent.putExtra(Constant.STATUS,bundle);
-            startActivity(WaitingPaymentActivity.class);
+            startActivity(WaitingPaymentActivity.class,bundle);
         }else if(Constant.INVALIDATION .equals(status) ){ //跳失效界面
-            Intent intent = new Intent();
             Bundle bundle = new Bundle();
             bundle.putParcelable(Constant.STATUS,responses);
-            intent.putExtra(Constant.STATUS,bundle);
-            startActivity(InvalidationActivity.class);
+            startActivity(InvalidationActivity.class,bundle);
         }
+    }
+
+    public void setTravelDetailsActivity(RouteStateResponse responses){
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constant.STATUS,responses);
+        startActivity(TravelDetailsActivity.class,bundle);
     }
 
     public List<TravelResponse> getList() {
