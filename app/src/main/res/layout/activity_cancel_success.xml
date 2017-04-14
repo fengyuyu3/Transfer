@@ -137,6 +137,7 @@
         </com.zhy.autolayout.AutoRelativeLayout>
 
         <TextView
+            android:id="@+id/tv_responsibility"
             style="@style/common_text_content_style"
             android:layout_below="@+id/rl_money"
             android:layout_centerHorizontal="true"
