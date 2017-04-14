@@ -5,10 +5,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.common.AppComponent;
@@ -19,7 +19,6 @@ import com.ironaviation.traveller.mvp.contract.my.travel.CancelSuccessContract;
 import com.ironaviation.traveller.mvp.model.entity.response.CancelSuccessResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.TravelCancelReason;
 import com.ironaviation.traveller.mvp.presenter.my.travel.CancelSuccessPresenter;
-import com.ironaviation.traveller.mvp.ui.my.EstimateActivity;
 import com.ironaviation.traveller.mvp.ui.widget.SpaceItemDecoration;
 import com.jess.arms.utils.UiUtils;
 
@@ -54,6 +53,10 @@ public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> im
 
     @BindView(R.id.rv_cancel_success)
     RecyclerView mRvCancelSuccess;
+    @BindView(R.id.tv_money)
+    TextView mTvMoney;
+    @BindView(R.id.tv_responsibility)
+    TextView mTvResponsibility;
     private String[] cancel_reasons;
     private List<CancelSuccessResponse> mTravelCancelResponseList = new ArrayList<>();
     private RecyclerView.LayoutManager mLayoutManager;
@@ -138,6 +141,13 @@ public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> im
 
     @Override
     public void setResponsibilityView(boolean flag, double CancelPrice) {
+
+
+        if (flag){
+            /*
+            *  mTvMoney;
+         mTvResponsibility;*/
+        }
 
     }
 
