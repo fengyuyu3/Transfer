@@ -18,10 +18,19 @@
             ></include>
 
         <com.zhy.autolayout.AutoRelativeLayout
+            android:id="@+id/rl_waiting_payment_money"
             android:layout_width="match_parent"
             android:layout_height="194px"
             android:background="@color/white">
 
+            <View
+                android:id="@+id/id_line"
+                android:layout_width="1px"
+                android:layout_height="1px"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="260px"
+                android:layout_marginTop="5px"
+                android:background="@color/color_transparent"></View>
             <TextView
                 android:id="@+id/tv_payment_amount"
                 android:layout_width="wrap_content"

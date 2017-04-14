@@ -17,7 +17,6 @@ import com.ironaviation.traveller.di.component.my.travel.DaggerCancelSuccessComp
 import com.ironaviation.traveller.di.module.my.travel.CancelSuccessModule;
 import com.ironaviation.traveller.mvp.contract.my.travel.CancelSuccessContract;
 import com.ironaviation.traveller.mvp.model.entity.response.CancelSuccessResponse;
-import com.ironaviation.traveller.mvp.model.entity.response.TravelCancelResponse;
 import com.ironaviation.traveller.mvp.presenter.my.travel.CancelSuccessPresenter;
 import com.ironaviation.traveller.mvp.ui.my.EstimateActivity;
 import com.ironaviation.traveller.mvp.ui.widget.SpaceItemDecoration;

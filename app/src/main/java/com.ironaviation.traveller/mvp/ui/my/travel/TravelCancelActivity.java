@@ -16,11 +16,12 @@ import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.my.travel.DaggerTravelCancelComponent;
 import com.ironaviation.traveller.di.module.my.travel.TravelCancelModule;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.travel.TravelCancelContract;
-import com.ironaviation.traveller.mvp.model.entity.response.TravelCancelResponse;
+import com.ironaviation.traveller.mvp.model.entity.response.TravelCancelReason;
 import com.ironaviation.traveller.mvp.presenter.my.travel.TravelCancelPresenter;
-import com.ironaviation.traveller.mvp.ui.my.EstimateActivity;
 import com.jess.arms.utils.UiUtils;
+import com.zhy.autolayout.AutoRelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,11 +57,15 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
     RecyclerView mRvCancelTravelReason;
     @BindView(R.id.tv_determine_cancel)
     TextView mTvDetermineCancel;
+    @BindView(R.id.rl_free_view)
+    AutoRelativeLayout mRlFreeView;
+    @BindView(R.id.tv_money)
+    TextView mTvMoney;
     private String[] cancel_reasons;
-    private List<TravelCancelResponse> mTravelCancelResponseList = new ArrayList<>();
     private RecyclerView.LayoutManager mLayoutManager;
 
     private TravelCancelAdapter mTravelCancelAdapter;
+    private String bid;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -81,9 +86,7 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
     protected void initData() {
         cancel_reasons = getResources().getStringArray(R.array.cancel_reason_list);
 
-        for (int i = 0; i < cancel_reasons.length; i++) {
-            mTravelCancelResponseList.add(new TravelCancelResponse(cancel_reasons[i]));
-        }
+
         setTitle(getString(R.string.travel_cancel));
         mToolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_back));
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -92,20 +95,22 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
                 finish();
             }
         });
+        Bundle bundle = getIntent().getExtras();
+        bid = bundle.getString(Constant.BID);
 
-
+        mPresenter.getCancelBookInfo(bid);
         mLayoutManager = new LinearLayoutManager(this);
         mTravelCancelAdapter = new TravelCancelAdapter(R.layout.item_travel_cancel);
         mRvCancelTravelReason.setLayoutManager(mLayoutManager);
-        mTravelCancelAdapter.setNewData(mTravelCancelResponseList);
 
         mRvCancelTravelReason.setAdapter(mTravelCancelAdapter);
         mTravelCancelAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                TravelCancelResponse mTravelCancelResponse = (TravelCancelResponse) adapter.getData().get(position);
+                TravelCancelReason mTravelCancelResponse = (TravelCancelReason) adapter.getData().get(position);
                 if (mTravelCancelResponse.isType()) {
                     mTravelCancelResponse.setType(false);
+
                 } else {
                     mTravelCancelResponse.setType(true);
                 }
@@ -162,6 +167,23 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
                 startActivity(CancelSuccessActivity.class);
                 break;
         }
+    }
+
+    @Override
+    public void setFreeView(boolean IsFreeCancel, double CancelPrice) {
+        if (!IsFreeCancel) {
+            mRlFreeView.setVisibility(View.VISIBLE);
+            mTvMoney.setText(CancelPrice + "");
+        } else {
+            mRlFreeView.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+    @Override
+    public void setReasonView(List<TravelCancelReason> strings) {
+        mTravelCancelAdapter.setNewData(strings);
+
     }
 
     static class ViewHolder {

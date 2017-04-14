@@ -7,6 +7,8 @@ package com.ironaviation.traveller.app;
 public interface EventBusTags {
 
     String TRAVEL_DETAILS = "TravelDetailsActivity";
+    String WAITING_PAYMENT = "WaitingPaymentActivity";
+
     String DIALOG_EVENT = "dialog";
     String FLIGHT_INFO = "flight_info";
     String FLIGHT = "flight";

@@ -129,19 +129,19 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
             Bundle bundle = new Bundle();
             bundle.putSerializable(Constant.STATUS,responses);
             intent.putExtra(Constant.STATUS,bundle);
-            startActivity(TravelDetailsActivity.class);
+            startActivity(TravelDetailsActivity.class,bundle);
         }else if(Constant.INHAND .equals(status)){
             Intent intent = new Intent();
             Bundle bundle = new Bundle();
             bundle.putSerializable(Constant.STATUS,responses);
             intent.putExtra(Constant.STATUS,bundle);
-            startActivity(TravelDetailsActivity.class);
+            startActivity(TravelDetailsActivity.class,bundle);
         }else if(Constant.ARRIVED .equals(status)){
             Intent intent = new Intent();
             Bundle bundle = new Bundle();
             bundle.putSerializable(Constant.STATUS,responses);
             intent.putExtra(Constant.STATUS,bundle);
-            startActivity(TravelDetailsActivity.class);
+            startActivity(TravelDetailsActivity.class,bundle);
         }else if(Constant.CANCEL .equals(status)){
             Intent intent = new Intent();
             intent.putExtra(Constant.STATUS,status);
@@ -151,7 +151,7 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
             Bundle bundle = new Bundle();
             bundle.putSerializable(Constant.STATUS,responses);
             intent.putExtra(Constant.STATUS,bundle);
-            startActivity(TravelDetailsActivity.class);
+            startActivity(TravelDetailsActivity.class,bundle);
         }else if(Constant.COMPLETED .equals(status)){
             /*Intent intent = new Intent();
             intent.putExtra(Constant.STATUS,status);
@@ -165,7 +165,7 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
             Bundle bundle = new Bundle();
             bundle.putSerializable(Constant.STATUS,responses);
             intent.putExtra(Constant.STATUS,bundle);
-            startActivity(WaitingPaymentActivity.class);
+            startActivity(WaitingPaymentActivity.class,bundle);
         }else if(Constant.INVALIDATION .equals(status) ){ //跳失效界面
             Intent intent = new Intent();
             Bundle bundle = new Bundle();

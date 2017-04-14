@@ -30,19 +30,22 @@ import static com.jess.arms.base.AppManager.APPMANAGER_MESSAGE;
  * 修改备注：
  */
 
-public class MoreActionPopupWindow extends PopupWindow implements View.OnClickListener{
+public class MoreActionPopupWindow extends PopupWindow implements View.OnClickListener {
     AutoLinearLayout llCustomer;
     AutoLinearLayout llCancel;
     private Context mContext;
     private String tags;
-    public MoreActionPopupWindow(Context context,String tags) {
+    private String bid;
+
+    public MoreActionPopupWindow(Context context, String tags, String bid) {
         this.mContext = context;
-        View v = LayoutInflater.from(context).inflate(R.layout.pop_action_more,null,false);
+        View v = LayoutInflater.from(context).inflate(R.layout.pop_action_more, null, false);
         llCustomer = (AutoLinearLayout) v.findViewById(R.id.ll_customer);
         llCancel = (AutoLinearLayout) v.findViewById(R.id.ll_cancel);
         llCustomer.setOnClickListener(this);
         llCancel.setOnClickListener(this);
-
+        this.tags = tags;
+        this.bid = bid;
         setContentView(v);
         setHeight(380);
         setWidth(450);
@@ -63,10 +66,10 @@ public class MoreActionPopupWindow extends PopupWindow implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_cancel:
-                EventBus.getDefault().post(new TravelCancelEvent(Constant.TRAVEL_CANCEL), tags);
+                EventBus.getDefault().post(new TravelCancelEvent(Constant.TRAVEL_CANCEL, bid), tags);
                 break;
             case R.id.ll_customer:
-                EventBus.getDefault().post(new TravelCancelEvent(Constant.TRAVEL_CUSTOMER), tags);
+                EventBus.getDefault().post(new TravelCancelEvent(Constant.TRAVEL_CUSTOMER, bid), tags);
                 break;
         }
         dismiss();

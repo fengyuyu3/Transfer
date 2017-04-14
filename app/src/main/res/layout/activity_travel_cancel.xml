@@ -10,6 +10,7 @@
     <include layout="@layout/include_toolbar"></include>
 
     <com.zhy.autolayout.AutoRelativeLayout
+        android:id="@+id/rl_free_view"
         android:layout_width="match_parent"
         android:layout_height="227px"
         android:background="@color/bg_toolbar">

@@ -9,11 +9,11 @@ package com.ironaviation.traveller.mvp.model.entity.response;
  * 修改时间：2017-03-31 11:02
  * 修改备注：
  */
-public class TravelCancelResponse {
+public class TravelCancelReason {
     private String name;
     private boolean type;
 
-    public TravelCancelResponse(String name) {
+    public TravelCancelReason(String name) {
         this.name = name;
     }
 

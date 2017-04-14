@@ -6,11 +6,13 @@ import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.Login;
 import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
 import com.ironaviation.traveller.mvp.model.entity.request.AirportGoInfoRequest;
+import com.ironaviation.traveller.mvp.model.entity.request.CancelBookingRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.IdentificationRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.MessageRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.RouteListMoreRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.TravelRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.UpdateAddressBookRequest;
+import com.ironaviation.traveller.mvp.model.entity.response.CancelBookingInfo;
 import com.ironaviation.traveller.mvp.model.entity.response.Flight;
 import com.ironaviation.traveller.mvp.model.entity.response.IdentificationResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.MessageResponse;
@@ -23,6 +25,7 @@ import java.util.List;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -74,4 +77,12 @@ public interface CommonService {
 
     @GET(Api.ROUTE_DETAILS)
     Observable<BaseData<RouteStateResponse>> getRouteStateInfo(@Query("bid") String bid);
+
+    @GET(Api.CANCEL_BOOKING)
+    Observable<BaseData<CancelBookingInfo>> getCancelBookInfo(@Path("bid") String bid);
+
+    @POST(Api.CANCEL_BOOKING)
+    Observable<BaseData<JsonObject>> cancelBooking(@Path("bid") String bid,@Body CancelBookingRequest params);
+
+
 }

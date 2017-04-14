@@ -25,5 +25,7 @@ public interface Api {
     String VALIDREAL_IDCARD ="/api/Users/ValidRealIDCard"; //实名认证
     String VALID_REAL_ID_CARD="/api/Users/ValidRealIDCard";//POST 实名认证
 
+    String CANCEL_BOOKING="/api/Booking/CancelBooking/{bid}";//GET {bid} 获取取消预约详情
+                                                       //POST {bid} 获取取消预约详情
     int RequestSuccess = 1;
 }
