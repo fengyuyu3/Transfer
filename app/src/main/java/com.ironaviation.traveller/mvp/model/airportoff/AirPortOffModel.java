@@ -9,6 +9,8 @@ import com.ironaviation.traveller.mvp.model.api.service.CommonService;
 import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.request.AirportGoInfoRequest;
+import com.ironaviation.traveller.mvp.model.entity.request.BIDRequest;
+import com.ironaviation.traveller.mvp.model.entity.response.IsOrderSuccess;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BaseModel;
 
@@ -65,5 +67,12 @@ public class AirPortOffModel extends BaseModel<ServiceManager, CacheManager> imp
     @Override
     public Observable<BaseData<AirportGoInfoRequest>> getAirPortInfo(AirportGoInfoRequest params) {
         return mCommonService.getAirPortInfo(params);
+    }
+
+    @Override
+    public Observable<BaseData<Boolean>> isOrderSuccess(String bid) {
+        BIDRequest params = new BIDRequest();
+        params.setBID(bid);
+        return mCommonService.isOrderSuccess(params);
     }
 }

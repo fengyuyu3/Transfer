@@ -37,7 +37,7 @@ public interface Constant {
     int SEAT_NUM = 6;
 
     String SC_AIRPORT = "3u";
-    int DEFULT_SEAT = 1;
+    int DEFULT_SEAT = 2;
     /*addressType*/
     String ADDRESS_TYPE="addressType";
     String UABID="uabid";

@@ -35,6 +35,7 @@ import com.ironaviation.traveller.mvp.model.entity.response.FlightDetails;
 import com.ironaviation.traveller.mvp.model.entity.response.IdentificationResponse;
 import com.ironaviation.traveller.mvp.presenter.airportoff.AirPortOffPresenter;
 import com.ironaviation.traveller.mvp.ui.my.AddressActivity;
+import com.ironaviation.traveller.mvp.ui.payment.WaitingPaymentActivity;
 import com.ironaviation.traveller.mvp.ui.widget.FontTextView;
 import com.ironaviation.traveller.mvp.ui.widget.MyTimeDialog;
 import com.ironaviation.traveller.mvp.ui.widget.NumDialog;
@@ -135,7 +136,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     private Flight flight;
     private String formatDate = "yyyy-MM-dd";
     private long time;
-    private int seatNum;
+    private int seatNum = 2;
     private String bid;
 
     public static AirPortOffFragment newInstance() {
@@ -232,7 +233,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
 
     }
 
-    @OnClick({R.id.pw_seat, R.id.pw_airport, R.id.pw_flt,R.id.pw_time,R.id.pw_address,R.id.tv_code_all})
+    @OnClick({R.id.pw_seat, R.id.pw_airport, R.id.pw_flt,R.id.pw_time,R.id.pw_address,R.id.tv_code_all,R.id.tw_go_to_order})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.pw_seat:
@@ -264,6 +265,9 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
                 break;
             case R.id.tv_code_all:
                 mPresenter.getAirportInfo(getAirPortInfo());
+                break;
+            case R.id.tw_go_to_order:
+                mPresenter.isOrderSuccess(bid);
                 break;
         }
     }
@@ -309,14 +313,13 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     }
 
     public void setSeat(int position){
-        mPwSeat.setTextInfo("需要" + (position + 1) + "个座位");
+        mPwSeat.setTextInfo("需要" + (position) + "个座位");
         clearMoreData(position);
         if(mPwFltNo.getTextInfo().substring(0,2).equalsIgnoreCase(Constant.SC_AIRPORT)) {
             List<AirPortRequest> list = new ArrayList<>();
             for (int i = 0; i < position; i++) {
                 list.add(mAirportRequests.get(i));
             }
-            myList = list;
             addLinearLayout(position);
             mPwSeat.setLineVisiable(true);
         }else{
@@ -378,7 +381,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     public void addLinearLayout(int position) {
 //        llCertification
         llCertification.removeAllViews();
-        for (int i = 0; i < position + 1; i++) {
+        for (int i = 0; i < position; i++) {
             MyAirportHolder holder = new MyAirportHolder();
             View view = LayoutInflater.from(getActivity()).inflate(R.layout.include_public_view, null, false);
             holder.mIvLogo = (ImageView) view.findViewById(R.id.iv_logo); //右边的图标
@@ -519,7 +522,6 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         mPwTime.setTextInfo(TimerUtils.getDateFormat(time,format));
         timeFlag = true;
         if(timeFlag && addressFlag ){
-            setSeat(Constant.DEFULT_SEAT);
             mPresenter.getAirportInfo(getAirPortInfo());
         }
     }
@@ -535,7 +537,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         //seatNum 座位数
         for(int i = 0 ; i < list.size(); i++){
             for(int j = 0; j < mAirportRequests.size();j++){
-                if(list.get(i).getIDCardNo().equals(mAirportRequests.get(j).getIdCard())){
+                if(list.get(i).getIDCardNo() != null && list.get(i).getIDCardNo().equals(mAirportRequests.get(j).getIdCard())){
                     if(list.get(i).isIsValid()){
                         mAirportRequests.get(j).setStatus(Constant.AIRPORT_SUCCESS);
                     }else{
@@ -550,6 +552,15 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     @Override
     public void setBID(String bid) {
         this.bid = bid;
+    }
+
+    @Override
+    public void isOrderSuccess(boolean flag) {
+        if(flag){
+            Intent intent = new Intent(getActivity(), WaitingPaymentActivity.class);
+            intent.putExtra(Constant.BID,bid);
+            startActivity(intent);
+        }
     }
 
     public class MyAirportHolder {
@@ -582,7 +593,6 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         mPwAddress.setTextInfo(info.address);
         //getAirPortInfo
         if(timeFlag && addressFlag ){
-            setSeat(Constant.DEFULT_SEAT);
             mPresenter.getAirportInfo(getAirPortInfo());
         }
     }
@@ -650,9 +660,11 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         for(int i = 0; i< seatNum;i++){
             PassengersRequest request1 = new PassengersRequest();
             if(mAirportRequests.get(i) != null  &&
-                    TextUtils.isEmpty(mAirportRequests.get(i).getIdCard())) {
+                    !TextUtils.isEmpty(mAirportRequests.get(i).getIdCard())) {
                 request1.setIDCardNo(mAirportRequests.get(i).getIdCard());
                 list.add(request1);
+            }else{
+                mAirportRequests.get(i).setStatus(Constant.AIRPORT_NO);
             }
         }
         if(list.size() > 0){
@@ -664,10 +676,18 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         return request;
     }
 
-    public void setNewDefaultSeat(int position){
+    public void setNewSeat(int position){
         mPwSeat.setTextInfo("需要" + (position + 1) + "个座位");
-        for(int i = 0; i < position+1; i++){
-
+        clearMoreData(position);
+        if(mPwFltNo.getTextInfo().substring(0,2).equalsIgnoreCase(Constant.SC_AIRPORT)) {
+            List<AirPortRequest> list = new ArrayList<>();
+            for (int i = 0; i < position+1; i++) {
+                list.add(mAirportRequests.get(i));
+            }
+            addLinearLayout(position);
+            mPwSeat.setLineVisiable(true);
+        }else{
+            mPwSeat.setLineVisiable(false);
         }
     }
 

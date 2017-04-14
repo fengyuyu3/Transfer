@@ -22,9 +22,10 @@ public interface Api {
     String PRECLEAR_PORT = "/api/Booking/PreClearPortBooking";//订单
     String ROUTE_DETAILS = "/api/Booking/GetDetail";
     String ROUTE_DETAILS_MORE = "/api/Booking/GetBookings"; //行程列表
-    String VALIDREAL_IDCARD ="/api/Users/ValidRealIDCard"; //实名认证
+    String VALIDREAL_IDCARD ="/api/Users/ValidRealIDCard";  //实名认证
 
     String VALID_REAL_ID_CARD="/api/Users/ValidRealIDCard";//POST 实名认证
+    String ADD_ORDER="/api/Booking/AddClearPortBooking";   //添加订单
 
     int RequestSuccess = 1;
 }

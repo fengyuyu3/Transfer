@@ -3,6 +3,7 @@ package com.ironaviation.traveller.mvp.contract.airportoff;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.request.AirportGoInfoRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.PassengersRequest;
+import com.ironaviation.traveller.mvp.model.entity.response.IsOrderSuccess;
 import com.jess.arms.mvp.BaseView;
 import com.jess.arms.mvp.IModel;
 
@@ -38,10 +39,12 @@ public interface AirPortOffContract {
         void setAirPortPrice(double price, double myPrice);
         void setSeatNum(List<PassengersRequest> list);
         void setBID(String bid);
+        void isOrderSuccess(boolean flag);
     }
 
     //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存
     interface Model extends IModel {
         Observable<BaseData<AirportGoInfoRequest>> getAirPortInfo(AirportGoInfoRequest params);
+        Observable<BaseData<Boolean>> isOrderSuccess(String bid);
     }
 }

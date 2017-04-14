@@ -5,6 +5,7 @@ import android.app.Application;
 import com.ironaviation.traveller.mvp.contract.airportoff.AirPortOffContract;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.request.AirportGoInfoRequest;
+import com.ironaviation.traveller.mvp.model.entity.response.IsOrderSuccess;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
@@ -82,6 +83,21 @@ public class AirPortOffPresenter extends BasePresenter<AirPortOffContract.Model,
                             mRootView.setSeatNum(airportGoInfoRequestBaseData.getData().getPassengers());
                             if(airportGoInfoRequestBaseData.getData().getBID() != null){
                                 mRootView.setBID(airportGoInfoRequestBaseData.getData().getBID());
+                            }
+                        }
+                    }
+                });
+    }
+
+    public void isOrderSuccess(String bid){
+        mModel.isOrderSuccess(bid)
+                .compose(RxUtils.<BaseData<Boolean>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<Boolean>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<Boolean> booleanBaseData) {
+                        if(booleanBaseData.isSuccess()){
+                            if(booleanBaseData.getData() != null) {
+                                mRootView.isOrderSuccess(booleanBaseData.getData());
                             }
                         }
                     }
