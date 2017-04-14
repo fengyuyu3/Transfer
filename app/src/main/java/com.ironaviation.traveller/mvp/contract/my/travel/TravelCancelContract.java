@@ -38,6 +38,8 @@ public interface TravelCancelContract {
         void setFreeView(boolean flag, double CancelPrice);
 
         void setReasonView(List<TravelCancelReason> strings);
+
+        String getOtherReason();
     }
 
     //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存
@@ -46,7 +48,7 @@ public interface TravelCancelContract {
 
         Observable<BaseData<CancelBookingInfo>> getCancelBookInfo(String bid);
 
-        Observable<BaseData<JsonObject>> cancelBooking(String bid, String reason);
+        Observable<BaseData<Boolean>> cancelBooking(String bid, String reason);
 
     }
 }

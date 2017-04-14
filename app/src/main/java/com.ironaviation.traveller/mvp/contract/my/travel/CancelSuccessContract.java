@@ -1,7 +1,14 @@
 package com.ironaviation.traveller.mvp.contract.my.travel;
 
+import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.response.CancelBookingInfo;
+import com.ironaviation.traveller.mvp.model.entity.response.TravelCancelReason;
 import com.jess.arms.mvp.BaseView;
 import com.jess.arms.mvp.IModel;
+
+import java.util.List;
+
+import rx.Observable;
 
 /**
  * 通过Template生成对应页面的MVP和Dagger代码,请注意输入框中输入的名字必须相同
@@ -13,25 +20,25 @@ import com.jess.arms.mvp.IModel;
  */
 
 /**
- *
- * 项目名称：Traveller      
- * 类描述：   
- * 创建人：starRing  
- * 创建时间：2017-04-05 14:28   
- * 修改人：starRing  
- * 修改时间：2017-04-05 14:28   
- * 修改备注：   
- * @version
- *
+ * 项目名称：Traveller
+ * 类描述：
+ * 创建人：starRing
+ * 创建时间：2017-04-05 14:28
+ * 修改人：starRing
+ * 修改时间：2017-04-05 14:28
+ * 修改备注：
  */
 public interface CancelSuccessContract {
     //对于经常使用的关于UI的方法可以定义到BaseView中,如显示隐藏进度条,和显示文字消息
     interface View extends BaseView {
+        void setResponsibilityView(boolean flag, double CancelPrice);
 
+        void setReasonView(List<TravelCancelReason> strings);
     }
 
     //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存
     interface Model extends IModel {
 
+        Observable<BaseData<CancelBookingInfo>> getCancelBookInfo(String bid);
     }
 }

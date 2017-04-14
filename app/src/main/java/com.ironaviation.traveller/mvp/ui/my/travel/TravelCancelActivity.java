@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -23,7 +24,6 @@ import com.ironaviation.traveller.mvp.presenter.my.travel.TravelCancelPresenter;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoRelativeLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -61,6 +61,8 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
     AutoRelativeLayout mRlFreeView;
     @BindView(R.id.tv_money)
     TextView mTvMoney;
+    @BindView(R.id.et_other_reason)
+    EditText mEtOtherReason;
     private String[] cancel_reasons;
     private RecyclerView.LayoutManager mLayoutManager;
 
@@ -164,7 +166,8 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_determine_cancel:
-                startActivity(CancelSuccessActivity.class);
+                mPresenter.cancelBook(bid, mTravelCancelAdapter.getData(), getOtherReason());
+                //startActivity(CancelSuccessActivity.class);
                 break;
         }
     }
@@ -184,6 +187,11 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
     public void setReasonView(List<TravelCancelReason> strings) {
         mTravelCancelAdapter.setNewData(strings);
 
+    }
+
+    @Override
+    public String getOtherReason() {
+        return mEtOtherReason.getText().toString();
     }
 
     static class ViewHolder {
