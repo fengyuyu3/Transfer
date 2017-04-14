@@ -124,49 +124,49 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
     }
 
     public void setStatus(String status,RouteStateResponse responses){
-        if(Constant.REGISTERED == status){
+        if(Constant.REGISTERED .equals(status)){
             Intent intent = new Intent();
             Bundle bundle = new Bundle();
             bundle.putSerializable(Constant.STATUS,responses);
             intent.putExtra(Constant.STATUS,bundle);
             startActivity(TravelDetailsActivity.class);
-        }else if(Constant.INHAND == status){
+        }else if(Constant.INHAND .equals(status)){
             Intent intent = new Intent();
             Bundle bundle = new Bundle();
             bundle.putSerializable(Constant.STATUS,responses);
             intent.putExtra(Constant.STATUS,bundle);
             startActivity(TravelDetailsActivity.class);
-        }else if(Constant.ARRIVED == status){
+        }else if(Constant.ARRIVED .equals(status)){
             Intent intent = new Intent();
             Bundle bundle = new Bundle();
             bundle.putSerializable(Constant.STATUS,responses);
             intent.putExtra(Constant.STATUS,bundle);
             startActivity(TravelDetailsActivity.class);
-        }else if(Constant.CANCEL == status){
+        }else if(Constant.CANCEL .equals(status)){
             Intent intent = new Intent();
             intent.putExtra(Constant.STATUS,status);
             startActivity(CancelSuccessActivity.class);
-        }else if(Constant.BOOKSUCCESS == status){
+        }else if(Constant.BOOKSUCCESS .equals(status)){
             Intent intent = new Intent();
             Bundle bundle = new Bundle();
             bundle.putSerializable(Constant.STATUS,responses);
             intent.putExtra(Constant.STATUS,bundle);
             startActivity(TravelDetailsActivity.class);
-        }else if(Constant.COMPLETED == status){
+        }else if(Constant.COMPLETED .equals(status)){
             /*Intent intent = new Intent();
             intent.putExtra(Constant.STATUS,status);
             startActivity(TravelDetailsActivity.class);*/
-        }else if(Constant.WAIT_APPRAISE == status){
+        }else if(Constant.WAIT_APPRAISE .equals(status)){
             Intent intent = new Intent();
             intent.putExtra(Constant.STATUS,status);
             startActivity(EstimateActivity.class);
-        }else if(Constant.NOTPAID == status){ //跳未支付界面
+        }else if(Constant.NOTPAID .equals(status)){ //跳未支付界面
             Intent intent = new Intent();
             Bundle bundle = new Bundle();
             bundle.putSerializable(Constant.STATUS,responses);
             intent.putExtra(Constant.STATUS,bundle);
             startActivity(WaitingPaymentActivity.class);
-        }else if(Constant.INVALIDATION == status){ //跳失效界面
+        }else if(Constant.INVALIDATION .equals(status) ){ //跳失效界面
             Intent intent = new Intent();
             Bundle bundle = new Bundle();
             bundle.putSerializable(Constant.STATUS,responses);
@@ -238,6 +238,11 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
     @Override
     public void setRouteStateResponse(RouteStateResponse responses) {
         setStatus(responses.getStatus(),responses);
+    }
+
+    @Override
+    public void getState(RouteStateResponse routeStateResponse) {
+        setStatus(routeStateResponse.getStatus(),routeStateResponse);
     }
 
     @Override

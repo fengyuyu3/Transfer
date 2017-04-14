@@ -23,7 +23,6 @@ public interface Api {
     String ROUTE_DETAILS = "/api/Booking/GetDetail";
     String ROUTE_DETAILS_MORE = "/api/Booking/GetBookings"; //行程列表
     String VALIDREAL_IDCARD ="/api/Users/ValidRealIDCard"; //实名认证
-
     String VALID_REAL_ID_CARD="/api/Users/ValidRealIDCard";//POST 实名认证
 
     int RequestSuccess = 1;

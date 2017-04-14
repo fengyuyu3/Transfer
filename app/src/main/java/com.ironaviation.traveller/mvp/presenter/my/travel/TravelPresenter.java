@@ -162,7 +162,7 @@ public class TravelPresenter extends BasePresenter<TravelContract.Model, TravelC
                     public void onNext(BaseData<RouteStateResponse> routeStateResponseBaseData) {
                         if(routeStateResponseBaseData.isSuccess()){
                             if(routeStateResponseBaseData.getData() != null){
-
+                                mRootView.getState(routeStateResponseBaseData.getData());
                             }else{
 
                             }
@@ -179,5 +179,10 @@ public class TravelPresenter extends BasePresenter<TravelContract.Model, TravelC
     }
     public int getPage(){
         return num;
+    }
+
+
+    public void getData(RouteStateResponse r){
+
     }
 }

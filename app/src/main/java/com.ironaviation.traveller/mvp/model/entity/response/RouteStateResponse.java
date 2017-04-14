@@ -48,10 +48,10 @@ public class RouteStateResponse implements Serializable{
     private String CarModel;
     private String CarLicense;
     private String CarColor;
-    private int PickupLongitude;
-    private int PickupLatitude;
-    private int DestLongitude;
-    private int DestLagitude;
+    private double PickupLongitude;
+    private double PickupLatitude;
+    private double DestLongitude;
+    private double DestLagitude;
     private String BID;
     private String UID;
     private int SeqNum;
@@ -119,35 +119,35 @@ public class RouteStateResponse implements Serializable{
         this.CarColor = CarColor;
     }
 
-    public int getPickupLongitude() {
+    public double getPickupLongitude() {
         return PickupLongitude;
     }
 
-    public void setPickupLongitude(int PickupLongitude) {
+    public void setPickupLongitude(double PickupLongitude) {
         this.PickupLongitude = PickupLongitude;
     }
 
-    public int getPickupLatitude() {
+    public double getPickupLatitude() {
         return PickupLatitude;
     }
 
-    public void setPickupLatitude(int PickupLatitude) {
+    public void setPickupLatitude(double PickupLatitude) {
         this.PickupLatitude = PickupLatitude;
     }
 
-    public int getDestLongitude() {
+    public double getDestLongitude() {
         return DestLongitude;
     }
 
-    public void setDestLongitude(int DestLongitude) {
+    public void setDestLongitude(double DestLongitude) {
         this.DestLongitude = DestLongitude;
     }
 
-    public int getDestLagitude() {
+    public double getDestLagitude() {
         return DestLagitude;
     }
 
-    public void setDestLagitude(int DestLagitude) {
+    public void setDestLagitude(double DestLagitude) {
         this.DestLagitude = DestLagitude;
     }
 

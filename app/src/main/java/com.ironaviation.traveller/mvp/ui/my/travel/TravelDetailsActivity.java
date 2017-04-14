@@ -110,7 +110,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     @Override
     protected void initData() {
         setRightFunction(R.mipmap.ic_airport, this);
-        mPopupWindow = new MoreActionPopupWindow(this);
+        mPopupWindow = new MoreActionPopupWindow(this,EventBusTags.TRAVEL_DETAILS);
         Bundle bundle = getIntent().getBundleExtra(Constant.STATUS);
         responses = (RouteStateResponse) bundle.getSerializable(Constant.STATUS);
         pStatus = responses.getStatus();
