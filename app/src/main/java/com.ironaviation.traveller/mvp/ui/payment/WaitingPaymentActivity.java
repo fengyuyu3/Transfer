@@ -110,6 +110,7 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     private String format = "MM月dd日 HH点mm分";
     private String status;
     private String bid;
+    private RouteStateResponse responses;
 
 
     @BindView(R.id.id_line)
@@ -134,19 +135,42 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     @Override
     protected void initData() {
         bid =  getIntent().getStringExtra(Constant.BID);
-        mPresenter.getRouteStateInfo(bid);
-        Bundle pBundle = getIntent().getExtras();
-        if (pBundle != null) {
-            RouteStateResponse responses = (RouteStateResponse) pBundle.getSerializable(Constant.STATUS);
-            if (responses!=null&&!TextUtils.isEmpty(responses.getBID())){
-                mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.WAITING_PAYMENT,responses.getBID());
-
+        if(bid != null) {
+            mPresenter.getRouteStateInfo(bid);
+            mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.WAITING_PAYMENT,bid);
+        }else{
+            Bundle pBundle = getIntent().getExtras();
+            if (pBundle != null) {
+                responses = pBundle.getParcelable(Constant.STATUS);
+                if (responses!=null&&!TextUtils.isEmpty(responses.getBID())){
+                    mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.WAITING_PAYMENT,responses.getBID());
+                    bid = responses.getBID();
+                    setResponsesData(responses);
+                }
             }
         }
         setRightFunction(R.mipmap.ic_more, this);
 
     }
 
+
+    public void setResponsesData(RouteStateResponse responses){
+        setOrderNum(responses.getOrderNo());
+        setMobile(responses.getPhone());
+        setTravelNO(responses.getFlightNo());
+        long time ;
+        try{
+            time = Long.parseLong(responses.getFlightDate());
+        }catch (Exception e){
+            time = 0;
+        }
+        setTime(time);
+        setPickUpAddress(responses.getPickupAddress());
+        setDestAddress(responses.getDestAddress());
+        setSeatNum(responses.getSeatNum());
+        setPrice(responses.getActualPrice());
+//        setCountdown();
+    }
     @Override
     public void showLoading() {
 
@@ -280,7 +304,7 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
 
     @Override
     public void setSuccess() {
-        startActivity(new Intent(this, TravelDetailsActivity.class));
+//        startActivity(new Intent(this, TravelDetailsActivity.class));
         EventBus.getDefault().post(bid,EventBusTags.PAYMENT);
         finish();
     }

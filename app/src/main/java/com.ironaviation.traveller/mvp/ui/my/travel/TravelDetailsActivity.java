@@ -110,22 +110,22 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 
     @Override
     protected void initData() {
-        setRightFunction(R.mipmap.ic_airport, this);
+        setRightFunction(R.mipmap.ic_more, this);
         Bundle pBundle = getIntent().getExtras();
         if (pBundle != null) {
-            RouteStateResponse responses = (RouteStateResponse) pBundle.getSerializable(Constant.STATUS);
+            responses = pBundle.getParcelable(Constant.STATUS);
             if (responses!=null&&!TextUtils.isEmpty(responses.getBID())){
                 mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.WAITING_PAYMENT,responses.getBID());
-
+                showStatus(responses.getStatus());
             }
         }
-        Bundle bundle = getIntent().getBundleExtra(Constant.STATUS);
-        responses = (RouteStateResponse) bundle.getParcelable(Constant.STATUS);
+        /*Bundle bundle = getIntent().getExtras();
+        responses = bundle.getParcelable(Constant.STATUS);
         if(responses != null) {
             pStatus = responses.getStatus();
         }else{
 //            mPresenter.getRouteState();
-        }
+        }*/
     }
 
 

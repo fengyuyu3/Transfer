@@ -14,6 +14,7 @@ import android.view.View;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.loadmore.LoadMoreView;
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.common.WEApplication;
@@ -31,6 +32,8 @@ import com.ironaviation.traveller.mvp.ui.payment.InvalidationActivity;
 import com.ironaviation.traveller.mvp.ui.payment.PaymentActivity;
 import com.ironaviation.traveller.mvp.ui.payment.WaitingPaymentActivity;
 import com.jess.arms.utils.UiUtils;
+
+import org.simple.eventbus.Subscriber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -172,12 +175,12 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
 
     @Override
     public void showLoading() {
-        showProgressDialog();
+//        showProgressDialog();
     }
 
     @Override
     public void hideLoading() {
-        dismissProgressDialog();
+//        dismissProgressDialog();
         mNodataSwipeRefresh.setRefreshing(false);
         mSlTravel.setRefreshing(false);
     }
@@ -247,5 +250,9 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
     @Override
     public void onLoadMoreRequested() {
         mPresenter.getTravelDataMore(mPresenter.getPage());
+    }
+    @Subscriber(tag = EventBusTags.PAYMENT)
+    public void refresh(String bid){
+        mPresenter.getTravelData(defaultIndex);
     }
 }

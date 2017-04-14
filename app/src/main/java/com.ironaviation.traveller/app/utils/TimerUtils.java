@@ -20,6 +20,7 @@ public class TimerUtils {
     private int day;
     private int hour;
     private int sec;
+    private static String format ="MM月dd日 HH点mm分";
     public static List<String> getSevenDate(){
         List<String> list = new ArrayList<>();
         for(int i = 0; i < WEEKS ; i++) {
@@ -206,5 +207,19 @@ public class TimerUtils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static String getDayHour(long time){
+        return getDateFormat(time,format);
+    }
+
+    public static long getTime(String time){
+        long t;
+        try{
+            t = Long.parseLong(time);
+        }catch (Exception e){
+            t = 0;
+        }
+        return t;
     }
 }

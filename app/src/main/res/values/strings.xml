@@ -160,4 +160,14 @@
 
     <string name="travel_un_cancel">本次行程已失效!</string>
     <string name="travel_reason">失效原因：未支付订单</string>
+
+    <string name="travel_status_registered">预约成功</string>
+    <string name="travel_status_inhand">进行中</string>
+    <string name="travel_status_arrived">已到达</string>
+    <string name="travel_status_cancel">已取消</string>
+    <string name="travel_status_booksuccess">派单成功</string>
+    <string name="travel_status_NotPaid">未支付</string>
+    <string name="travel_status_invalidation">已失效</string>
+    <string name="travel_status_wait">等待评价</string>
+    <string name="travel_status_completed">已完成</string>
 </resources>
