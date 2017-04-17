@@ -276,10 +276,10 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
 
     }
 
-  /*  @Override
+    @Override
     public void onGetPoiIndoorResult(PoiIndoorResult result) {
 
-    }*/
+    }
 
     class SearchRunnable implements Runnable {
         String keyWord;
