@@ -40,10 +40,10 @@ public class TimerUtils {
         double minite = times - currentTime;
         int day = (int) Math.ceil(minite/(60*60*1000*24));
         List<String> list = new ArrayList<>();
-        Date date1 = new Date(currentTime);
+        Date date1 = new Date(times);
         if(date1.getMinutes() >= 50 && date1.getHours() == 23){
             for(int i = 1 ; i <= day; i++){
-                Date date=new Date();//取时间
+                Date date=new Date(currentTime);//取时间
                 Calendar calendar = new GregorianCalendar();
                 calendar.setTime(date);
                 calendar.add(calendar.DATE, i);//把日期往后增加一天.整数往后推,负数往前移动
@@ -54,7 +54,7 @@ public class TimerUtils {
             }
         }else {
             for (int i = 0; i <= day; i++) {
-                Date date = new Date();//取时间
+                Date date = new Date(currentTime);//取时间
                 Calendar calendar = new GregorianCalendar();
                 calendar.setTime(date);
                 calendar.add(calendar.DATE, i);//把日期往后增加一天.整数往后推,负数往前移动
@@ -67,9 +67,9 @@ public class TimerUtils {
         return list;
     }
 
-    public static List<String> getStartHours(){
+    public static List<String> getStartHours(long time){
         List<String> list = new ArrayList<>();
-        Date date = new Date();
+        Date date = new Date(time);
         int currentHour = 0;
         if(date.getMinutes()/10 == 5){
             currentHour = date.getHours()+1;
@@ -82,12 +82,12 @@ public class TimerUtils {
         return list;
     }
 
-    public static List<String> getStartMins(){
+    public static List<String> getStartMins(long time){
         List<String> list = new ArrayList<>();
-        Date date = new Date();
+        Date date = new Date(time);
         double currentSec = date.getMinutes();
         if(currentSec >= 50){
-            for(int i = 0 ; i < MINITES; i++){
+            for(int i = 0 ; i <= MINITES; i++){
                 if(i == 0){
                     list.add("00分");
                 }else {
@@ -108,7 +108,7 @@ public class TimerUtils {
 
     public static List<String> getMidHours(){
         List<String> list = new ArrayList<>();
-        for(int i = 0 ; i< HOURS; i++){
+        for(int i = 0 ; i < HOURS; i++){
             list.add((i)+"点");
         }
         return list;
@@ -130,7 +130,7 @@ public class TimerUtils {
         List<String> list = new ArrayList<>();
         Date date = new Date(times);
         int hour = date.getHours();
-        for(int i = 0 ; i< hour; i++){
+        for(int i = 0 ; i <= hour; i++){
             list.add(i+"点");
         }
         return list;
@@ -156,7 +156,7 @@ public class TimerUtils {
         Date date = new Date(times);
         int hour = date.getHours();
         int currentHour = currentDate.getHours();
-        for(int i = currentHour ; i< hour; i++){
+        for(int i = currentHour ; i<= hour; i++){
             list.add(i+"点");
         }
         return list;
@@ -187,7 +187,6 @@ public class TimerUtils {
 
     public static long getTimeMillis(String date){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月-dd日hh点mm分");
-
         try {
             long millionSeconds = sdf.parse(date).getTime();//毫秒
             return millionSeconds;

@@ -46,6 +46,7 @@ public class TravelDetailsPresenter extends BasePresenter<TravelDetailsContract.
     private Application mApplication;
     private ImageLoader mImageLoader;
     private AppManager mAppManager;
+    private RouteStateResponse mRouteStateResponse;
 
     @Inject
     public TravelDetailsPresenter(TravelDetailsContract.Model model, TravelDetailsContract.View rootView
@@ -75,6 +76,7 @@ public class TravelDetailsPresenter extends BasePresenter<TravelDetailsContract.
                         if(routeStateResponseBaseData.isSuccess()){
                               if(routeStateResponseBaseData.getData() != null){
                                   setRouteStateResponse(routeStateResponseBaseData.getData());
+                                  mRouteStateResponse = routeStateResponseBaseData.getData();
                               }else{
 
                               }
@@ -90,16 +92,10 @@ public class TravelDetailsPresenter extends BasePresenter<TravelDetailsContract.
                 });
     }
 
-    /**
-     * void setDriverName(String name);
-     void setDriverRate(String rate);
-     void setDriverPhone(String phone);
-     void setCarModel(String model);
-     void setCarLicense(String liscense);
-     void setCarColor(String carColor);
-     void setStatus(String Status);
-     * @param response
-     */
+    public RouteStateResponse getData(){
+        return mRouteStateResponse;
+    }
+
 
     public void setRouteStateResponse(RouteStateResponse response){
         if(response.getDriverName() != null){

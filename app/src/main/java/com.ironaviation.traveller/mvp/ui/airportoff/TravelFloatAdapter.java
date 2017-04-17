@@ -70,7 +70,7 @@ public class TravelFloatAdapter extends RecyclerView.Adapter<TravelFloatHolder> 
 
     public String getDate(long time){
         Date date = new Date(time);
-        SimpleDateFormat formatter = new SimpleDateFormat("hh:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
         String dateString = formatter.format(date);
         return dateString;
     }

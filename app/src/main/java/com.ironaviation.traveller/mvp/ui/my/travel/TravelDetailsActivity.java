@@ -23,6 +23,7 @@ import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.travel.TravelDetailsContract;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.presenter.my.travel.TravelDetailsPresenter;
+import com.ironaviation.traveller.mvp.ui.my.EstimateActivity;
 import com.ironaviation.traveller.mvp.ui.widget.MoreActionPopupWindow;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoLinearLayout;
@@ -87,11 +88,9 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     @BindView(R.id.iw_zoom_nomal)
     ImageView mIwZoomNomal;
     private MoreActionPopupWindow mPopupWindow;
-    private int status;
-    private String mStatus;
-    private String pStatus;
     private String phone;
     private RouteStateResponse responses;
+    private String status;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -116,8 +115,24 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
             responses = pBundle.getParcelable(Constant.STATUS);
             if (responses!=null&&!TextUtils.isEmpty(responses.getBID())){
                 mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.WAITING_PAYMENT,responses.getBID());
-                showStatus(responses.getStatus());
+//                status = responses.getStatus();
+                mPresenter.setRouteStateResponse(responses);
+                /**
+                 *  String REGISTERED = "Registered"; // 预约成功
+                 String INHAND = "InHand";// 进行中
+                 String ARRIVED = "Arrived";// 已到达
+                 String CANCEL = "Cancel";// 已取消
+                 String BOOKSUCCESS = "BookSuccess";// 派单成功
+                 String COMPLETED = "Completed";// 已完成
+                 String NOTPAID = "NotPaid"; //未支付
+                 String INVALIDATION = "Invalidation"; //已失效
+                 String WAIT_APPRAISE = "wait"; //等待评价
+                 */
+                status = Constant.ARRIVED;
+                showStatus(status);
             }
+        }else{
+//            mPresenter.getRouteState();
         }
         /*Bundle bundle = getIntent().getExtras();
         responses = bundle.getParcelable(Constant.STATUS);
@@ -127,7 +142,6 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 //            mPresenter.getRouteState();
         }*/
     }
-
 
     @Override
     public void showLoading() {
@@ -172,19 +186,25 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         }
     }
 
-    @OnClick({R.id.iw_zoom,R.id.iw_zoom_nomal,R.id.iw_mobile})
+    @OnClick({R.id.iw_zoom,R.id.iw_zoom_nomal,R.id.iw_mobile,R.id.rl_go_to_pay})
     public void myOnClick(View view){
         switch(view.getId()){
             case R.id.iw_zoom:
                 AllGone();
                 break;
             case R.id.iw_zoom_nomal:
-                showStatus(pStatus);
+                showStatus(status);
                 break;
             case R.id.iw_mobile:
                 if(phone != null){
                     callMobile(phone);
                 }
+                break;
+            case R.id.rl_go_to_pay:
+                Bundle bundle = new Bundle();
+                responses = mPresenter.getData();
+                bundle.putParcelable(Constant.STATUS,responses);
+                startActivity(EstimateActivity.class,bundle);
                 break;
         }
     }
@@ -227,7 +247,6 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         mLlComplete.setVisibility(View.GONE);//派单成功
         mLlOrdering.setVisibility(View.GONE);//派单中
         mLlArrive.setVisibility(View.GONE);  // 确认到达a
-        status = Constant.TRAVEL_DETAILS_GOING;
     }
 
     public void complete() { //派单成功
@@ -238,7 +257,6 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         mLlOrdering.setVisibility(View.GONE);//派单中
         mLlArrive.setVisibility(View.GONE);  // 确认到达
         mLlGoing.setVisibility(View.GONE); //正在进行中
-        status = Constant.TRAVEL_DETAILS_COMPLETE;
     }
 
     public void order() { //预约成功
@@ -249,7 +267,6 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         mLlDriverInfo.setVisibility(View.GONE); //司机信息
         mLlArrive.setVisibility(View.GONE);  // 确认到达
         mLlGoing.setVisibility(View.GONE); //正在进行中
-        status = Constant.TRAVEL_DETAILS_ORDER;
     }
 
     public void arrive() { //确认到达
@@ -260,7 +277,6 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         mLlOrdering.setVisibility(View.GONE);//派单中
         mLlComplete.setVisibility(View.GONE);//派单成功
         mLlGoing.setVisibility(View.GONE); //正在进行中
-        status = Constant.TRAVEL_DETAILS_ARRIVE;
     }
 
     public void AllGone(){
@@ -306,6 +322,6 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 
     @Override
     public void setStatus(String status) {
-        pStatus = status;
+        this.status = status;
     }
 }

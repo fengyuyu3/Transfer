@@ -178,11 +178,11 @@ public class MyTimeDialog {
     }
 
     public List<String> getStartHour(){
-        return TimerUtils.getStartHours();
+        return TimerUtils.getStartHours(currentTime);
     }
 
     public List<String> getStartMinite(){
-        return TimerUtils.getStartMins();
+        return TimerUtils.getStartMins(currentTime);
     }
 
     public List<String> getMidHour(){
