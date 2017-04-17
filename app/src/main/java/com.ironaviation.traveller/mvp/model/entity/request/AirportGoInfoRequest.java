@@ -45,7 +45,16 @@ public class AirportGoInfoRequest {
     private int SeatNum;
     private int TotalPrice;
     private int ActurlPrice;
+    private String CallNumber;
     private List<PassengersRequest> Passengers;
+
+    public String getCallNumber() {
+        return CallNumber;
+    }
+
+    public void setCallNumber(String callNumber) {
+        CallNumber = callNumber;
+    }
 
     public String getBID() {
         return BID;

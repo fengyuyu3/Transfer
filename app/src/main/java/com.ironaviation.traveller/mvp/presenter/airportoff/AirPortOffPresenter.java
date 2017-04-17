@@ -83,6 +83,8 @@ public class AirPortOffPresenter extends BasePresenter<AirPortOffContract.Model,
                             if(airportGoInfoRequestBaseData.getData().getBID() != null){
                                 mRootView.setBID(airportGoInfoRequestBaseData.getData().getBID());
                             }
+                        }else{
+                            mRootView.showMessage(airportGoInfoRequestBaseData.getMessage());
                         }
                     }
                 });
@@ -98,6 +100,8 @@ public class AirPortOffPresenter extends BasePresenter<AirPortOffContract.Model,
                             if(booleanBaseData.getData() != null) {
                                 mRootView.isOrderSuccess(booleanBaseData.getData());
                             }
+                        }else{
+                            mRootView.showMessage(booleanBaseData.getMessage());
                         }
                     }
                 });

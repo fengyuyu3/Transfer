@@ -25,6 +25,16 @@ public class LoginEntity extends BaseData{
 
         private long Expires;
 
+        private String phone;
+
+        public String getPhone() {
+            return phone;
+        }
+
+        public void setPhone(String phone) {
+            this.phone = phone;
+        }
+
         public void setName(String Name){
             this.Name = Name;
         }

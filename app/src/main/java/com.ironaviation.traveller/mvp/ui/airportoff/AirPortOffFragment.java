@@ -14,12 +14,17 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.app.utils.CheckIdCardUtils;
+import com.ironaviation.traveller.app.utils.LocationService;
 import com.ironaviation.traveller.app.utils.TimerUtils;
 import com.ironaviation.traveller.app.utils.TypefaceUtils;
+import com.ironaviation.traveller.app.utils.UserInfoUtils;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEFragment;
 import com.ironaviation.traveller.di.component.airportoff.DaggerAirPortOffComponent;
@@ -138,6 +143,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     private long time;
     private int seatNum = 2;
     private String bid;
+    private String phone;
 
     public static AirPortOffFragment newInstance() {
         AirPortOffFragment fragment = new AirPortOffFragment();
@@ -161,10 +167,16 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
 
     @Override
     protected void initData() {
+        if(UserInfoUtils.getInstance().getInfo(getActivity()) != null
+                && UserInfoUtils.getInstance().getInfo(getActivity()).getPhone() != null){
+            phone = UserInfoUtils.getInstance().getInfo(getActivity()).getPhone();
+            mPwPerson.setTextInfo(phone);
+        }
         mTravelPopupwindow = new TravelPopupwindow(getActivity());
         mNumDialog = new NumDialog(getActivity(), getNumsData(), this, Constant.AIRPORT_TYPE_SEAT);
         mTerminal = new NumDialog(getActivity(), getTerminal(), this, Constant.AIRPORT_TYPE_TERMINAL);
         mTerminalPopupWindow = new TerminalPopupWindow(getActivity(),getTerminal(),this);
+
         setRidTimeHide();
         initEmptyData();
 //        setPrice();
@@ -248,7 +260,13 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
                 break;
             case R.id.pw_time:
 //                pvTime.show();
-                mMyTimeDialog.showDialog(getResources().getString(R.string.airport_input_time));
+                long num = (flight.getList().get(0).getTakeOffTime()-System.currentTimeMillis())
+                        /60*60*4*1000;
+                if(num < 4){
+                    showMessage("离起飞时间小于4小时");
+                }else{
+                    mMyTimeDialog.showDialog(getResources().getString(R.string.airport_input_time));
+                }
                 break;
             case R.id.pw_flt:
                 Intent intent = new Intent(getActivity(), TravelFloatActivity.class);
@@ -293,8 +311,9 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         for (int i = 0; i < Constant.SEAT_NUM; i++) {
             AirPortRequest request = new AirPortRequest();
             if(isValid() != null && i == 0){
-                request.setStatus(Constant.AIRPORT_SUCCESS);
+//                request.setStatus(Constant.AIRPORT_SUCCESS);
                 request.setIdCard(isValid());
+                request.setStatus(Constant.AIRPORT_NO);
             }else{
                 request.setStatus(Constant.AIRPORT_NO);
             }
@@ -646,6 +665,9 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         request.setPickupLatitude(info.location.latitude);
         request.setPickupLongitude(info.location.longitude);
         request.setPickupTime(TimerUtils.getDateFormat(time,formatDate));
+        if(phone != null){
+            request.setCallNumber(phone);
+        }
         if(terminalNum == 1) {
                 request.setDestAddress(Constant.AIRPORT_T2);
                 request.setDestLatitude(Constant.AIRPORT_T2_LATITUDE);
@@ -676,7 +698,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         return request;
     }
 
-    public void setNewSeat(int position){
+    /*public void setNewSeat(int position){
         mPwSeat.setTextInfo("需要" + (position + 1) + "个座位");
         clearMoreData(position);
         if(mPwFltNo.getTextInfo().substring(0,2).equalsIgnoreCase(Constant.SC_AIRPORT)) {
@@ -689,7 +711,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         }else{
             mPwSeat.setLineVisiable(false);
         }
-    }
+    }*/
 
     public String isValid(){
         if(DataHelper.getDeviceData(getActivity(),Constant.IDENTIFICATION) != null) {
@@ -699,4 +721,29 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
             return null;
         }
     }
+
+    private LocationService locationService;
+    /***
+     * 初始化定位sdk
+     */
+    private void initLocation() {
+        if (locationService == null) {
+            locationService = new LocationService(getActivity());
+            locationService.registerListener(mListener);
+            locationService.setLocationOption(locationService.getDefaultLocationClientOption());
+            locationService.start();
+        }
+    }
+
+    private BDLocationListener mListener = new BDLocationListener() {
+        double longitude = 0;
+        double latitude = 0;
+
+        @Override
+        public void onReceiveLocation(BDLocation location) {
+            if (null != location && location.getLocType() != BDLocation.TypeServerError) {
+
+            }
+        }
+    };
 }

@@ -69,4 +69,6 @@ public interface Constant {
     String ALIPAY = "AliPay";
     String UPAY = "UPay";
 
+    String PHONE = "phone";
+
 }
