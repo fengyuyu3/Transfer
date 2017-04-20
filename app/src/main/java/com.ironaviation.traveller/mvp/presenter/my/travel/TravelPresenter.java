@@ -36,16 +36,13 @@ import rx.schedulers.Schedulers;
 
 
 /**
- *
- * 项目名称：Transfer      
- * 类描述：   
- * 创建人：flq  
- * 创建时间：2017/3/26 17:28   
- * 修改人：  
- * 修改时间：2017/3/26 17:28   
- * 修改备注：   
- * @version
- *
+ * 项目名称：Transfer
+ * 类描述：
+ * 创建人：flq
+ * 创建时间：2017/3/26 17:28
+ * 修改人：
+ * 修改时间：2017/3/26 17:28
+ * 修改备注：
  */
 
 @ActivityScope
@@ -103,98 +100,102 @@ public class TravelPresenter extends BasePresenter<TravelContract.Model, TravelC
                 });
     }*/
 
-    public void getTravelData(int index){
-        mModel.getRouteListMore(index)
-                .subscribeOn(Schedulers.io())
-                .doOnSubscribe(new Action0() {
-                    @Override
-                    public void call() {//显示进度条
-                        if(!flag) {
-                            mRootView.showDialog();
-                        }
-                    }
-                })
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doAfterTerminate(new Action0() {
-                    @Override
-                    public void call() {
-                        if(!flag) {
-                            flag = true;
-                        }
-                        mRootView.dismissDialog();//隐藏进度条
-                    }
-                })
-                .subscribe(new ErrorHandleSubscriber<BaseData<RouteListResponse>>(mErrorHandler) {
-                    @Override
-                    public void onNext(BaseData<RouteListResponse> responseBaseData) {
-                        if(responseBaseData.isSuccess()){
-                            if(responseBaseData.getData() != null && responseBaseData.getData().getItems() != null
-                                    && responseBaseData.getData().getItems().size() > 0) {
-                                mRootView.setDatas(responseBaseData.getData());
-                                num = responseBaseData.getData().getCurrentPageIndex()+1;
-                            }else{
-                                mRootView.setNodata();
-                            }
-                        }else{
-                            mRootView.setError();
-                        }
-                    }
-                });
-    }
-
-    public void getTravelDataMore(int index){
+    public void getTravelData(int index) {
         mModel.getRouteListMore(index)
                 .compose(RxUtils.<BaseData<RouteListResponse>>applySchedulers(mRootView))
                 .subscribe(new ErrorHandleSubscriber<BaseData<RouteListResponse>>(mErrorHandler) {
                     @Override
                     public void onNext(BaseData<RouteListResponse> responseBaseData) {
-                        if(responseBaseData.isSuccess()){
-                            if(responseBaseData.getData() != null && responseBaseData.getData().getItems() != null
+                        if (responseBaseData.isSuccess()) {
+                            if (responseBaseData.getData() != null && responseBaseData.getData().getItems() != null
+                                    && responseBaseData.getData().getItems().size() > 0) {
+                                mRootView.setDatas(responseBaseData.getData());
+                                num = responseBaseData.getData().getCurrentPageIndex() + 1;
+                            } else {
+                                mRootView.setNodata();
+                            }
+                        } else {
+                            mRootView.setError();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        mRootView.setError();
+//                        mRootView.showMessage("网络连接失败");
+                    }
+                });
+    }
+
+    public void getTravelDataMore(int index) {
+        mModel.getRouteListMore(index)
+                .compose(RxUtils.<BaseData<RouteListResponse>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<RouteListResponse>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<RouteListResponse> responseBaseData) {
+                        if (responseBaseData.isSuccess()) {
+                            if (responseBaseData.getData() != null && responseBaseData.getData().getItems() != null
                                     && responseBaseData.getData().getItems().size() > 0) {
                                 mRootView.setMoreDatas(responseBaseData.getData());
-                                num = responseBaseData.getData().getCurrentPageIndex()+1;
-                                if(responseBaseData.getData().getItems().size() < 10){
-                                    mRootView.setNoMore();
-                                }else{
+                                num = responseBaseData.getData().getCurrentPageIndex() + 1;
+                                if (responseBaseData.getData().getItems().size() < 10) {
                                     mRootView.setMoreComplete();
                                 }
-
-                            }else{
+                            } else {
                                 mRootView.showMessage(responseBaseData.getMessage());
                             }
-                        }else{
+                        } else {
 //                            mRootView.showMessage(responseBaseData.getMessage());
                         }
                     }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        mRootView.showMessage("网络连接失败");
+                    }
                 });
     }
 
-    public void getRouteState(String bid){
+    public void getRouteState(String bid) {
         mModel.getRouteStateInfo(bid)
                 .compose(RxUtils.<BaseData<RouteStateResponse>>applySchedulers(mRootView))
                 .subscribe(new ErrorHandleSubscriber<BaseData<RouteStateResponse>>(mErrorHandler) {
                     @Override
                     public void onNext(BaseData<RouteStateResponse> routeStateResponseBaseData) {
-                        if(routeStateResponseBaseData.isSuccess()){
-                            if(routeStateResponseBaseData.getData() != null){
+                        if (routeStateResponseBaseData.isSuccess()) {
+                            if (routeStateResponseBaseData.getData() != null) {
+                                if (routeStateResponseBaseData.getData().getExt() != null) {
+                                    for (int i = 0; i < routeStateResponseBaseData.getData().getExt().size(); i++){
+                                        routeStateResponseBaseData.getData().getExt().get(i).setJsonData(routeStateResponseBaseData.getData().getExt().get(0).getData().toString());
+                                        routeStateResponseBaseData.getData().getExt().get(i).setData(null);
+
+                                    }
+
+                                }
                                 mRootView.getState(routeStateResponseBaseData.getData());
-                            }else{
+                            } else {
 
                             }
-                        }else{
+                        } else {
 //                            mRootView.showMessage("");
                         }
                     }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
                 });
     }
-    public int getPage(){
+
+    public int getPage() {
         return num;
     }
 
 
-    public void getData(RouteStateResponse r){
+    public void getData(RouteStateResponse r) {
 
     }
 }

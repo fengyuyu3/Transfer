@@ -147,7 +147,7 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
         }else{
             Bundle pBundle = getIntent().getExtras();
             if (pBundle != null) {
-                responses = pBundle.getParcelable(Constant.STATUS);
+                responses = (RouteStateResponse) pBundle.getSerializable(Constant.STATUS);
                 if (responses!=null&&!TextUtils.isEmpty(responses.getBID())){
                     mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.WAITING_PAYMENT,responses.getBID());
                     bid = responses.getBID();

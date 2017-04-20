@@ -83,13 +83,15 @@ public class PaymentActivity extends WEActivity<PaymentPresenter> implements Pay
 
     @Override
     public void showLoading() {
+        showProgressDialog();
 
     }
 
     @Override
     public void hideLoading() {
-
+        dismissProgressDialog();
     }
+
 
     @Override
     public void showMessage(@NonNull String message) {

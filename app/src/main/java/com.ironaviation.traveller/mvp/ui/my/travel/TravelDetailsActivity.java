@@ -177,6 +177,8 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
                  */
                 status = Constant.ARRIVED;
                 showStatus(status);
+                mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.TRAVEL_DETAILS,responses.getBID());
+                showStatus(responses.getStatus());
             }
         }else{
 //            mPresenter.getRouteState();
@@ -252,7 +254,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
             case R.id.rl_go_to_pay:
                 Bundle bundle = new Bundle();
                 responses = mPresenter.getData();
-                bundle.putParcelable(Constant.STATUS,responses);
+                bundle.putSerializable(Constant.STATUS,responses);
                 startActivity(EstimateActivity.class,bundle);
                 break;
         }
@@ -279,7 +281,9 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     public void onEventMainThread(TravelCancelEvent event) {
         switch (event.getEvent()) {
             case Constant.TRAVEL_CANCEL:
-                startActivity(TravelCancelActivity.class);
+                Bundle pBundle=new Bundle();
+                pBundle.putString(Constant.BID,event.getBid());
+                startActivity(TravelCancelActivity.class,pBundle);
                 break;
             case Constant.TRAVEL_CUSTOMER:
                 showMessage("联系客户");

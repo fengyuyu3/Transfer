@@ -3,6 +3,8 @@ package com.ironaviation.traveller.mvp.model.entity.response;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.JsonObject;
+import com.ironaviation.traveller.mvp.model.entity.Ext;
 import com.ironaviation.traveller.mvp.model.entity.request.PassengersRequest;
 
 import java.io.Serializable;
@@ -13,7 +15,7 @@ import java.util.List;
  * Created by Administrator on 2017/4/12 0012.
  */
 
-public class RouteStateResponse implements Parcelable{
+public class RouteStateResponse implements Serializable{
 
     /**
      * DriverName : string
@@ -76,6 +78,7 @@ public class RouteStateResponse implements Parcelable{
     private String Phone;
     private String FlightNo;
     private String FlightDate;
+    private List<Ext>Ext;
 
     public String getFlightNo() {
         return FlightNo;
@@ -127,6 +130,7 @@ public class RouteStateResponse implements Parcelable{
 
     private List<PassengersRequest> Passengers;
 
+    private String Notes;
     public String getDriverName() {
         return DriverName;
     }
@@ -351,46 +355,6 @@ public class RouteStateResponse implements Parcelable{
         this.Passengers = Passengers;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.DriverName);
-        dest.writeString(this.DriverRate);
-        dest.writeString(this.DriverPhone);
-        dest.writeString(this.CarModel);
-        dest.writeString(this.CarLicense);
-        dest.writeString(this.CarColor);
-        dest.writeDouble(this.PickupLongitude);
-        dest.writeDouble(this.PickupLatitude);
-        dest.writeDouble(this.DestLongitude);
-        dest.writeDouble(this.DestLagitude);
-        dest.writeString(this.BID);
-        dest.writeString(this.UID);
-        dest.writeInt(this.SeqNum);
-        dest.writeString(this.OrderNo);
-        dest.writeString(this.Channel);
-        dest.writeString(this.PickupAddress);
-        dest.writeString(this.DestAddress);
-        dest.writeInt(this.SeatNum);
-        dest.writeInt(this.ActualPrice);
-        dest.writeInt(this.TotalPrice);
-        dest.writeString(this.Status);
-        dest.writeByte(this.IsDeleted ? (byte) 1 : (byte) 0);
-        dest.writeString(this.TripType);
-        dest.writeString(this.PickupTime);
-        dest.writeString(this.Cdt);
-        dest.writeByte(this.IsComment ? (byte) 1 : (byte) 0);
-        dest.writeByte(this.IsPaied ? (byte) 1 : (byte) 0);
-        dest.writeString(this.Phone);
-        dest.writeString(this.FlightNo);
-        dest.writeString(this.FlightDate);
-        dest.writeList(this.Passengers);
-    }
-
     public RouteStateResponse() {
     }
 
@@ -429,15 +393,20 @@ public class RouteStateResponse implements Parcelable{
         in.readList(this.Passengers, PassengersRequest.class.getClassLoader());
     }
 
-    public static final Creator<RouteStateResponse> CREATOR = new Creator<RouteStateResponse>() {
-        @Override
-        public RouteStateResponse createFromParcel(Parcel source) {
-            return new RouteStateResponse(source);
-        }
+    public String getNotes() {
+        return Notes;
+    }
 
-        @Override
-        public RouteStateResponse[] newArray(int size) {
-            return new RouteStateResponse[size];
-        }
-    };
+    public void setNotes(String notes) {
+        Notes = notes;
+    }
+
+    public List<Ext> getExt() {
+        return Ext;
+    }
+
+    public void setExt(List<Ext> ext) {
+        this.Ext = ext;
+    }
+
 }

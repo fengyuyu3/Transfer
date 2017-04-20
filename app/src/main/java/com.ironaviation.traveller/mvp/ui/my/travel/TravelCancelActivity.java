@@ -63,6 +63,8 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
     TextView mTvMoney;
     @BindView(R.id.et_other_reason)
     EditText mEtOtherReason;
+    @BindView(R.id.tv_free_hint)
+    TextView mTvFreeHint;
     private String[] cancel_reasons;
     private RecyclerView.LayoutManager mLayoutManager;
 
@@ -100,7 +102,10 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
         Bundle bundle = getIntent().getExtras();
         bid = bundle.getString(Constant.BID);
 
-        mPresenter.getCancelBookInfo(bid);
+        if (bid != null) {
+            mPresenter.getCancelBookInfo(bid);
+
+        }
         mLayoutManager = new LinearLayoutManager(this);
         mTravelCancelAdapter = new TravelCancelAdapter(R.layout.item_travel_cancel);
         mRvCancelTravelReason.setLayoutManager(mLayoutManager);
@@ -124,13 +129,15 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
 
     @Override
     public void showLoading() {
+        showProgressDialog();
 
     }
 
     @Override
     public void hideLoading() {
-
+        dismissProgressDialog();
     }
+
 
     @Override
     public void showMessage(@NonNull String message) {
@@ -177,8 +184,9 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
         if (!IsFreeCancel) {
             mRlFreeView.setVisibility(View.VISIBLE);
             mTvMoney.setText(CancelPrice + "");
+            mTvFreeHint.setText(getString(R.string.cancel_travel_cost_hint_1)+CancelPrice+getString(R.string.cancel_travel_cost_hint_2));
         } else {
-            mRlFreeView.setVisibility(View.VISIBLE);
+            mRlFreeView.setVisibility(View.GONE);
         }
 
     }

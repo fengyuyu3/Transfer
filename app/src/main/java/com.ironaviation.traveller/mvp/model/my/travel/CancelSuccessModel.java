@@ -9,6 +9,7 @@ import com.ironaviation.traveller.mvp.model.api.service.CommonService;
 import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.response.CancelBookingInfo;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BaseModel;
 
@@ -60,9 +61,10 @@ public class CancelSuccessModel extends BaseModel<ServiceManager, CacheManager> 
         this.mApplication = null;
     }
 
-    @Override
-    public Observable<BaseData<CancelBookingInfo>> getCancelBookInfo(String bid) {
-        return mCommonService.getCancelBookInfo(bid);
-    }
 
+    @Override
+    public Observable<BaseData<RouteStateResponse>> getRouteStateInfo(String bid) {
+
+        return mCommonService.getRouteStateInfo(bid);
+    }
 }

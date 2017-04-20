@@ -136,8 +136,10 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
             setTravelDetailsActivity(responses);
         }else if(Constant.CANCEL .equals(status)){
             Intent intent = new Intent();
-            intent.putExtra(Constant.STATUS,status);
-            startActivity(CancelSuccessActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(Constant.STATUS,responses);
+            intent.putExtra(Constant.STATUS,bundle);
+            startActivity(CancelSuccessActivity.class,bundle);
         }else if(Constant.BOOKSUCCESS .equals(status)){
             setTravelDetailsActivity(responses);
         }else if(Constant.COMPLETED .equals(status)){
@@ -150,18 +152,18 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
             startActivity(intent);
         }else if(Constant.NOTPAID .equals(status)){ //跳未支付界面
             Bundle bundle = new Bundle();
-            bundle.putParcelable(Constant.STATUS,responses);
+            bundle.putSerializable(Constant.STATUS,responses);
             startActivity(WaitingPaymentActivity.class,bundle);
         }else if(Constant.INVALIDATION .equals(status) ){ //跳失效界面
             Bundle bundle = new Bundle();
-            bundle.putParcelable(Constant.STATUS,responses);
+            bundle.putSerializable(Constant.STATUS,responses);
             startActivity(InvalidationActivity.class,bundle);
         }
     }
 
     public void setTravelDetailsActivity(RouteStateResponse responses){
         Bundle bundle = new Bundle();
-        bundle.putParcelable(Constant.STATUS,responses);
+        bundle.putSerializable(Constant.STATUS,responses);
         startActivity(TravelDetailsActivity.class,bundle);
     }
 

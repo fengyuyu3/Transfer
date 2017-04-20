@@ -55,15 +55,18 @@ public class InvalidationActivity extends WEActivity<InvalidationPresenter> impl
     }
 
 
+
     @Override
     public void showLoading() {
+        showProgressDialog();
 
     }
 
     @Override
     public void hideLoading() {
-
+        dismissProgressDialog();
     }
+
 
     @Override
     public void showMessage(@NonNull String message) {

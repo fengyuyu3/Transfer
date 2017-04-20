@@ -75,7 +75,7 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  * 修改时间：2017-03-31 11:41
  * 修改备注：
  */
-public class AddressActivity extends WEActivity<AddressPresenter> implements AddressContract.View, OnGetPoiSearchResultListener ,OnGetGeoCoderResultListener {
+public class AddressActivity extends WEActivity<AddressPresenter> implements AddressContract.View, OnGetPoiSearchResultListener, OnGetGeoCoderResultListener {
 
 
     @BindView(R.id.et_address)
@@ -172,13 +172,14 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 mPresenter.saveAddress(infos.get(position));
 
-                if(addressType == Constant.AIRPORT_GO){
+                if (addressType == Constant.AIRPORT_GO) {
                     EventBus.getDefault().post(infos.get(position), EventBusTags.AIRPORT_GO);
                     finish();
-                }else if(addressType == Constant.AIRPORT_ON) {
+                } else if (addressType == Constant.AIRPORT_ON) {
                     EventBus.getDefault().post(infos.get(position), EventBusTags.AIRPORT_ON);
                     finish();
-                }else{
+                } else {
+
                     mPresenter.updateAddressBook(uabId, infos.get(position), addressType);
                 }
             }
@@ -188,12 +189,13 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
 
     @Override
     public void showLoading() {
+        showProgressDialog();
 
     }
 
     @Override
     public void hideLoading() {
-
+        dismissProgressDialog();
     }
 
     @Override
@@ -226,7 +228,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.tv_cancel,R.id.ll_address})
+    @OnClick({R.id.tv_cancel, R.id.ll_address})
     public void onClick(View view) {
 
         switch (view.getId()) {
@@ -296,6 +298,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
     public void onGetPoiDetailResult(PoiDetailResult result) {
 
     }
+
 
     @Override
     public void onGetPoiIndoorResult(PoiIndoorResult result) {
@@ -379,7 +382,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
         }
     }
 
-    public void initMap(){
+    public void initMap() {
         mSearch = GeoCoder.newInstance();
         mSearch.setOnGetGeoCodeResultListener(this);
     }
@@ -428,8 +431,8 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
             addressFlag = true;
             mPwAddress.setTextInfo(result.getAddress());
         }*/
-        HistoryPoiInfo info = new HistoryPoiInfo(result.getPoiList().get(0),false);
-        if(result.getAddress() != null) {
+        HistoryPoiInfo info = new HistoryPoiInfo(result.getPoiList().get(0), false);
+        if (result.getAddress() != null) {
             if (addressType == Constant.AIRPORT_GO) {
                 EventBus.getDefault().post(info, EventBusTags.AIRPORT_GO);
             } else if (addressType == Constant.AIRPORT_ON) {
@@ -437,7 +440,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
             }
             dismissProgressDialog();
             finish();
-        }else{
+        } else {
             dismissProgressDialog();
             showMessage("定位失败,请重新定位");
         }
