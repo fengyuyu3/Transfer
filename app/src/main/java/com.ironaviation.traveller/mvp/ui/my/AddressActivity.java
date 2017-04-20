@@ -13,7 +13,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.PoiInfo;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.geocode.GeoCodeResult;
+import com.baidu.mapapi.search.geocode.GeoCoder;
+import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
 import com.baidu.mapapi.search.poi.PoiCitySearchOption;
 import com.baidu.mapapi.search.poi.PoiDetailResult;
@@ -23,6 +32,7 @@ import com.baidu.mapapi.search.poi.PoiSearch;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
+import com.ironaviation.traveller.app.utils.LocationService;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.my.DaggerAddressComponent;
@@ -33,6 +43,7 @@ import com.ironaviation.traveller.mvp.model.entity.HistoryPoiInfo;
 import com.ironaviation.traveller.mvp.presenter.my.AddressPresenter;
 import com.ironaviation.traveller.mvp.ui.manager.FullyLinearLayoutManager;
 import com.jess.arms.utils.UiUtils;
+import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
 
 import org.simple.eventbus.EventBus;
@@ -64,7 +75,7 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  * 修改时间：2017-03-31 11:41
  * 修改备注：
  */
-public class AddressActivity extends WEActivity<AddressPresenter> implements AddressContract.View, OnGetPoiSearchResultListener {
+public class AddressActivity extends WEActivity<AddressPresenter> implements AddressContract.View, OnGetPoiSearchResultListener ,OnGetGeoCoderResultListener {
 
 
     @BindView(R.id.et_address)
@@ -75,6 +86,8 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
     RecyclerView mRvAddress;
     @BindView(R.id.rl_usual_address)
     AutoRelativeLayout mRlUsualAddress;
+    @BindView(R.id.ll_address)
+    AutoLinearLayout mLlAddress;
     private RecyclerView.LayoutManager mLayoutManager;
 
     private PoiSearch mPoiSearch = null;
@@ -85,6 +98,8 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
     private int addressType;
     private AddressAdapter mAddressAdapter;
     private String uabId;
+    private GeoCoder mSearch = null;
+    private LocationService locationService;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -160,7 +175,10 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
                 if(addressType == Constant.AIRPORT_GO){
                     EventBus.getDefault().post(infos.get(position), EventBusTags.AIRPORT_GO);
                     finish();
-                }else {
+                }else if(addressType == Constant.AIRPORT_ON) {
+                    EventBus.getDefault().post(infos.get(position), EventBusTags.AIRPORT_ON);
+                    finish();
+                }else{
                     mPresenter.updateAddressBook(uabId, infos.get(position), addressType);
                 }
             }
@@ -208,12 +226,15 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.tv_cancel})
+    @OnClick({R.id.tv_cancel,R.id.ll_address})
     public void onClick(View view) {
 
         switch (view.getId()) {
             case R.id.tv_cancel:
                 finish();
+                break;
+            case R.id.ll_address:
+                initLocation();
                 break;
         }
     }
@@ -343,7 +364,6 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
             uabId = bundle.getString(Constant.UABID);
         }
 
-
         if (addressType != 0) {
             switch (addressType) {
                 case Constant.ADDRESS_TYPE_COMPANY:
@@ -357,5 +377,70 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
             }
 
         }
+    }
+
+    public void initMap(){
+        mSearch = GeoCoder.newInstance();
+        mSearch.setOnGetGeoCodeResultListener(this);
+    }
+
+    /***
+     * 初始化定位sdk
+     */
+    private void initLocation() {
+        initMap();
+        showProgressDialog();
+        if (locationService == null) {
+            locationService = new LocationService(this);
+            locationService.registerListener(mListener);
+            locationService.setLocationOption(locationService.getDefaultLocationClientOption());
+            locationService.start();
+        }
+    }
+
+    private BDLocationListener mListener = new BDLocationListener() {
+        double longitude = 0;
+        double latitude = 0;
+
+        @Override
+        public void onReceiveLocation(BDLocation location) {
+            if (null != location && location.getLocType() != BDLocation.TypeServerError) {
+                LatLng ptCenter = new LatLng(location.getLatitude() //latitude weidu
+                        , location.getLongitude()); //long jingdu
+                // 反Geo搜索
+                mSearch.reverseGeoCode(new ReverseGeoCodeOption()
+                        .location(ptCenter));
+            }
+        }
+    };
+
+    @Override
+    public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
+
+    }
+
+    @Override
+    public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
+        if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
+            return;
+        }
+        /*if(!addressFlag){
+            addressFlag = true;
+            mPwAddress.setTextInfo(result.getAddress());
+        }*/
+        HistoryPoiInfo info = new HistoryPoiInfo(result.getPoiList().get(0),false);
+        if(result.getAddress() != null) {
+            if (addressType == Constant.AIRPORT_GO) {
+                EventBus.getDefault().post(info, EventBusTags.AIRPORT_GO);
+            } else if (addressType == Constant.AIRPORT_ON) {
+                EventBus.getDefault().post(info, EventBusTags.AIRPORT_ON);
+            }
+            dismissProgressDialog();
+            finish();
+        }else{
+            dismissProgressDialog();
+            showMessage("定位失败,请重新定位");
+        }
+
     }
 }

@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.model.entity.response.FlightDetails;
 import com.ironaviation.traveller.mvp.ui.my.travel.TravelAdapter;
 
@@ -32,13 +33,15 @@ public class TravelFloatAdapter extends RecyclerView.Adapter<TravelFloatHolder> 
 
     private List<FlightDetails> flightDetailsList;
     private Context mContext;
+    private int type;
     public void setList(List<FlightDetails> flightDetailsList){
         this.flightDetailsList = flightDetailsList;
         notifyDataSetChanged();
     }
 
-    public TravelFloatAdapter(Context mContext){
+    public TravelFloatAdapter(Context mContext,int type){
         this.mContext = mContext;
+        this.type = type;
     }
     @Override
     public TravelFloatHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -57,12 +60,24 @@ public class TravelFloatAdapter extends RecyclerView.Adapter<TravelFloatHolder> 
         holder.ll_city.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String city = getCity(flightDetailsList.get(position).getTakeOff());
-                boolean flag = city.contains("成都");
-                if(flag) {
-                    EventBus.getDefault().post(flightDetailsList.get(position), EventBusTags.FLIGHT_INFO);
-                }else{
-                    Toast.makeText(mContext,mContext.getResources().getString(R.string.airport_no_open),Toast.LENGTH_SHORT).show();
+                String city = null;
+                boolean flag = false;
+                if(type == Constant.TYPE_AIRPORT_OFF) {
+                    city = getCity(flightDetailsList.get(position).getTakeOff());
+                }else if(type == Constant.TYPE_AIRPORT_ON){
+                    city = getCity(flightDetailsList.get(position).getArrive());
+                    }
+                if(city!= null) {
+                    flag = city.contains("成都");
+                    }
+                if (flag) {
+                    if(type == Constant.TYPE_AIRPORT_OFF){
+                        EventBus.getDefault().post(flightDetailsList.get(position), EventBusTags.FLIGHT_INFO);
+                    }else if(type == Constant.TYPE_AIRPORT_ON){
+                        EventBus.getDefault().post(flightDetailsList.get(position), EventBusTags.FLIGHT_INFO_ON);
+                    }
+                } else {
+                    Toast.makeText(mContext, mContext.getResources().getString(R.string.airport_no_open), Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -72,7 +72,7 @@
     <string name="login_input_phone">输入电话号码</string>
     <string name="login_input_code">输入验证码</string>
     <string name="login_code">获取验证码</string>
-    <string name="login_btn">登陆</string>
+    <string name="login_btn">登录</string>
     <string name="login_no_userInfo">请输入用户信息</string>
     <string name="login_no_code">请输入验证码</string>
     <string name="login_no_client_id">初始化中 请稍候</string>
@@ -170,4 +170,20 @@
     <string name="travel_status_invalidation">已失效</string>
     <string name="travel_status_wait">等待评价</string>
     <string name="travel_status_completed">已完成</string>
+
+    <!--接机行程详情-->
+    <string name="travel_go_on_status">请确认您已上车,确认后司机才可发车</string>
+    <string name="travel_go_on_wait">等待上车</string>
+    <string name="travel_go_on_train">司机已发车</string>
+    <string name="travel_go_on_arrive_time">预计10:40到达</string>
+    <string name="travel_go_on_car">已上车</string>
+    <string name="travel_go_on_wait_driver">等待司机发车</string>
+    <string name="travel_arrive_info">航班到达后,司机会提前在指定地点等候
+    您,即来即上车,无需担心航班延误或提前到达</string>
+    <string name="travel_order_two_dimension">订单二维码 </string>
+
+    <!--接机-->
+    <string name="travel_get_address">请输入下车地址</string>
+
+    <string name="address_my">我的位置</string>
 </resources>

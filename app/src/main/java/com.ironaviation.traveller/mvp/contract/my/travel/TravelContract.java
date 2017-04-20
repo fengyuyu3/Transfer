@@ -45,6 +45,9 @@ public interface TravelContract {
         void setRouteStateResponse(RouteStateResponse responses);
         void getState(RouteStateResponse routeStateResponse);
         void setMoreComplete();
+        void showDialog();
+        void dismissDialog();
+        void setNoMore();
     }
 
     //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存

@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="周五"
+            android:text=""
             android:visibility="gone"/>
 
         <TextView

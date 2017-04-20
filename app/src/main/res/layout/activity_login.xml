@@ -5,11 +5,17 @@
     android:background="@mipmap/ic_login_background"
     android:orientation="vertical">
 
+    <ImageView
+        android:layout_marginTop="144px"
+        android:layout_gravity="center"
+        android:src="@mipmap/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
     <com.zhy.autolayout.AutoRelativeLayout
         android:focusableInTouchMode="true"
         android:focusable="true"
         android:layout_gravity="center"
-        android:layout_marginTop="480px"
+        android:layout_marginTop="194px"
         android:paddingLeft="@dimen/interval_input_box"
         android:paddingRight="@dimen/interval_input_box"
         android:background="@drawable/btn_login_edit_shap"
@@ -23,7 +29,7 @@
             android:layout_height="wrap_content" />
         <EditText
             android:id="@+id/et_phone"
-            android:maxLength="20"
+            android:maxLength="11"
             android:inputType="number"
             style="@style/input_edit_style"
             android:layout_marginLeft="62px"

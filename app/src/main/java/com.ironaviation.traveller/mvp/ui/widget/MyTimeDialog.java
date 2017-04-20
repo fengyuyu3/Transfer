@@ -46,7 +46,7 @@ public class MyTimeDialog {
         public MyTimeDialog(Context context,ItemCallBack mCallBack,long time){
             this.context = context;
             this.mCallBack = mCallBack;
-            this.time = time-(60*60*1500);
+            this.time = time-(60*60*2000);
             currentTime = time-60*60*24*1000;
         }
         public void showDialog(final String title) {
@@ -144,7 +144,7 @@ public class MyTimeDialog {
 //                    EventBus.getDefault().post(myIndex, EventBusTags.DIALOG_EVENT);
                     String date = TimerUtils.getYear(currentTime+indexDay*24*60*60)
                     +list.get(indexDay) + hours.get(indexHour)+minites.get(indexMinite);
-                    Log.e("kkk",date+"   "+TimerUtils.getTimeMillis(date));
+//                    Log.e("kkk",date+"   "+TimerUtils.getTimeMillis(date));
                     mCallBack.setTime(TimerUtils.getTimeMillis(date));
                     mCameraDialog.dismiss();
                 }
@@ -157,7 +157,7 @@ public class MyTimeDialog {
                 }
             });
 
-            Log.e("kkk",new Date(time).toString());
+//            Log.e("kkk",new Date(time).toString());
         }
 
     public void dismiss(){

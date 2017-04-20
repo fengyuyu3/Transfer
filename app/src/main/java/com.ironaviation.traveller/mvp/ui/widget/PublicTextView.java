@@ -129,6 +129,13 @@ public class PublicTextView extends AutoLinearLayout {
         }
 //        tvArriveTime.setVisibility(flag == true ? VISIBLE : GONE);
     }
+    public void setArriveTime(String text){
+        if(text != null){
+            tvArriveTime.setText(text);
+        }else{
+            tvArriveTime.setText("");
+        }
+    }
     public void showAddress(boolean flag){
         if(flag){
             tvAddress.setVisibility(VISIBLE);

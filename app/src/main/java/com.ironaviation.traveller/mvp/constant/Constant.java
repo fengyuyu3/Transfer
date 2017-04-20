@@ -44,6 +44,7 @@ public interface Constant {
     int ADDRESS_TYPE_HOME=991;
     int ADDRESS_TYPE_COMPANY=992;
     int AIRPORT_GO = 993;
+    int AIRPORT_ON = 994;
     double AIRPORT_T1_LONGITUDE=103.965305;
     double AIRPORT_T1_LATITUDE=30.585158;
     double AIRPORT_T2_LONGITUDE=103.961509;
@@ -70,5 +71,10 @@ public interface Constant {
     String UPAY = "UPay";
 
     String PHONE = "phone";
+
+    int TYPE_AIRPORT_OFF = 101;//送機
+    int TYPE_AIRPORT_ON = 102; //接機
+
+    int SERVICEID = 134558;
 
 }

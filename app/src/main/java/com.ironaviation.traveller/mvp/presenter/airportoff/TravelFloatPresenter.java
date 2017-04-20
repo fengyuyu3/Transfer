@@ -76,10 +76,14 @@ public class TravelFloatPresenter extends BasePresenter<TravelFloatContract.Mode
                     @Override
                     public void onNext(BaseData<Flight> flightBaseData) {
                         if(flightBaseData.isSuccess()){
-                            if(flightBaseData.getData() != null){
+                            if(flightBaseData.getData() != null ){
 //                                mRootView.showMessage(flightBaseData.getData().getInfo().toString());
                                 mRootView.setData(flightBaseData.getData(),date);
+                            }else{
+                                mRootView.showMessage(flightBaseData.getMessage());
                             }
+                        }else{
+                            mRootView.showMessage(flightBaseData.getMessage());
                         }
                     }
                 });

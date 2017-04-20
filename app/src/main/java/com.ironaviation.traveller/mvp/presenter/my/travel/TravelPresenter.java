@@ -20,6 +20,9 @@ import javax.inject.Inject;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
+import rx.schedulers.Schedulers;
 
 
 /**
@@ -52,6 +55,7 @@ public class TravelPresenter extends BasePresenter<TravelContract.Model, TravelC
     private ImageLoader mImageLoader;
     private AppManager mAppManager;
     private int num;
+    private boolean flag;
 
     @Inject
     public TravelPresenter(TravelContract.Model model, TravelContract.View rootView
@@ -101,7 +105,26 @@ public class TravelPresenter extends BasePresenter<TravelContract.Model, TravelC
 
     public void getTravelData(int index){
         mModel.getRouteListMore(index)
-                .compose(RxUtils.<BaseData<RouteListResponse>>applySchedulers(mRootView))
+                .subscribeOn(Schedulers.io())
+                .doOnSubscribe(new Action0() {
+                    @Override
+                    public void call() {//显示进度条
+                        if(!flag) {
+                            mRootView.showDialog();
+                        }
+                    }
+                })
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doAfterTerminate(new Action0() {
+                    @Override
+                    public void call() {
+                        if(!flag) {
+                            flag = true;
+                        }
+                        mRootView.dismissDialog();//隐藏进度条
+                    }
+                })
                 .subscribe(new ErrorHandleSubscriber<BaseData<RouteListResponse>>(mErrorHandler) {
                     @Override
                     public void onNext(BaseData<RouteListResponse> responseBaseData) {
@@ -116,13 +139,6 @@ public class TravelPresenter extends BasePresenter<TravelContract.Model, TravelC
                         }else{
                             mRootView.setError();
                         }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        mRootView.setError();
-//                        mRootView.showMessage("网络连接失败");
                     }
                 });
     }
@@ -139,8 +155,11 @@ public class TravelPresenter extends BasePresenter<TravelContract.Model, TravelC
                                 mRootView.setMoreDatas(responseBaseData.getData());
                                 num = responseBaseData.getData().getCurrentPageIndex()+1;
                                 if(responseBaseData.getData().getItems().size() < 10){
+                                    mRootView.setNoMore();
+                                }else{
                                     mRootView.setMoreComplete();
                                 }
+
                             }else{
                                 mRootView.showMessage(responseBaseData.getMessage());
                             }
@@ -149,11 +168,6 @@ public class TravelPresenter extends BasePresenter<TravelContract.Model, TravelC
                         }
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        mRootView.showMessage("网络连接失败");
-                    }
                 });
     }
 
@@ -172,11 +186,6 @@ public class TravelPresenter extends BasePresenter<TravelContract.Model, TravelC
                         }else{
 //                            mRootView.showMessage("");
                         }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
                     }
                 });
     }

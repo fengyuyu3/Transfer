@@ -15,6 +15,8 @@ import com.ironaviation.traveller.mvp.model.entity.request.RouteListMoreRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.TravelRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.UpdateAddressBookRequest;
 import com.ironaviation.traveller.mvp.model.entity.response.CancelBookingInfo;
+import com.ironaviation.traveller.mvp.model.entity.response.CommentTag;
+import com.ironaviation.traveller.mvp.model.entity.response.CommentsInfo;
 import com.ironaviation.traveller.mvp.model.entity.response.Flight;
 import com.ironaviation.traveller.mvp.model.entity.response.IdentificationResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.MessageResponse;
@@ -93,4 +95,10 @@ public interface CommonService {
 
     @GET(Api.PAYMENT)
     Observable<BaseData<JsonObject>> getPayment(@Query("bid") String bid,@Query("payMethod") String payMethod);
+
+    @GET(Api.COMMENTTAGS)
+    Observable<BaseData<List<CommentTag>>> getCommentTagInfo();
+
+    @POST(Api.COMMENTS)
+    Observable<BaseData<Boolean>> isCommentSuccess(@Body CommentsInfo params);
 }

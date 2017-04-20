@@ -1,7 +1,5 @@
 package com.ironaviation.traveller.mvp.model.api;
 
-import retrofit2.http.POST;
-
 /**
  * Created by jess on 8/5/16 11:25
  * contact with jess.yan.effort@gmail.com
@@ -30,5 +28,7 @@ public interface Api {
 
     String CANCEL_BOOKING="/api/Booking/CancelBooking/{bid}";//GET {bid} 获取取消预约详情
                                                        //POST {bid} 获取取消预约详情
+    String COMMENTTAGS="/api/Booking/GetCommentTags"; //获取评价标签
+    String COMMENTS ="/api/Booking/AddComments"; //添加标签
     int RequestSuccess = 1;
 }

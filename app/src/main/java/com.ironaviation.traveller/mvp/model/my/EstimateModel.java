@@ -5,11 +5,19 @@ import android.app.Application;
 import com.google.gson.Gson;
 import com.ironaviation.traveller.mvp.contract.my.EstimateContract;
 import com.ironaviation.traveller.mvp.model.api.cache.CacheManager;
+import com.ironaviation.traveller.mvp.model.api.service.CommonService;
 import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
+import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.response.CommentTag;
+import com.ironaviation.traveller.mvp.model.entity.response.CommentsInfo;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BaseModel;
 
+import java.util.List;
+
 import javax.inject.Inject;
+
+import rx.Observable;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -39,12 +47,14 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
 public class EstimateModel extends BaseModel<ServiceManager, CacheManager> implements EstimateContract.Model {
     private Gson mGson;
     private Application mApplication;
+    private CommonService mCommonService;
 
     @Inject
     public EstimateModel(ServiceManager serviceManager, CacheManager cacheManager, Gson gson, Application application) {
         super(serviceManager, cacheManager);
         this.mGson = gson;
         this.mApplication = application;
+        mCommonService = serviceManager.getCommonService();
     }
 
     @Override
@@ -54,4 +64,13 @@ public class EstimateModel extends BaseModel<ServiceManager, CacheManager> imple
         this.mApplication = null;
     }
 
+    @Override
+    public Observable<BaseData<List<CommentTag>>> getCommentTagInfo() {
+        return mCommonService.getCommentTagInfo();
+    }
+
+    @Override
+    public Observable<BaseData<Boolean>> getCommentInfo(CommentsInfo info) {
+        return mCommonService.isCommentSuccess(info);
+    }
 }

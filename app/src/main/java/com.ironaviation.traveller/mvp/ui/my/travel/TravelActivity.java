@@ -205,6 +205,7 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
     @Override
     public void setDatas(RouteListResponse responses) {
         showNodata(false);
+        showError(false);
         mTravelAdapter.setNewData(responses.getItems());
         mRouteItemResponses = mTravelAdapter.getData();
     }
@@ -237,7 +238,6 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
 
     @Override
     public void setMoreComplete() {
-        mTravelAdapter.loadMoreEnd(true);
         mTravelAdapter.loadMoreComplete();
     }
 
@@ -251,8 +251,26 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
     public void onLoadMoreRequested() {
         mPresenter.getTravelDataMore(mPresenter.getPage());
     }
+
     @Subscriber(tag = EventBusTags.PAYMENT)
     public void refresh(String bid){
         mPresenter.getTravelData(defaultIndex);
+    }
+
+    @Override
+    public void showDialog() {
+        showProgressDialog();
+    }
+
+    @Override
+    public void dismissDialog() {
+        mNodataSwipeRefresh.setRefreshing(false);
+        mSlTravel.setRefreshing(false);
+        dismissProgressDialog();
+    }
+
+    @Override
+    public void setNoMore() {
+        mTravelAdapter.loadMoreEnd(true);
     }
 }

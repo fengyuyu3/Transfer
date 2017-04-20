@@ -1,5 +1,6 @@
 package com.ironaviation.traveller.mvp.ui.airportoff;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -130,7 +132,7 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
     public void initRecyclerView(){
         layoutManager = new LinearLayoutManager(this);
         mRwCity.setLayoutManager(layoutManager);
-        mTravelFloatAdapter = new TravelFloatAdapter(this);
+        mTravelFloatAdapter = new TravelFloatAdapter(this,Constant.TYPE_AIRPORT_OFF);
         mRwCity.setAdapter(mTravelFloatAdapter);
     }
 
@@ -284,7 +286,7 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
         Date date=new Date();//取时间
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(date);
-        calendar.add(calendar.DATE, index-1);//把日期往后增加一天.整数往后推,负数往前移动
+        calendar.add(calendar.DATE, index);//把日期往后增加一天.整数往后推,负数往前移动
         date = calendar.getTime(); //这个时间就是日期往后推一天的结果
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String dateString = formatter.format(date);

@@ -21,13 +21,14 @@ public class TimerUtils {
     private int hour;
     private int sec;
     private static String format ="MM月dd日 HH点mm分";
+    private static String formatDate = "dd";
     public static List<String> getSevenDate(){
         List<String> list = new ArrayList<>();
         for(int i = 0; i < WEEKS ; i++) {
             Date date=new Date();//取时间
             Calendar calendar = new GregorianCalendar();
             calendar.setTime(date);
-            calendar.add(calendar.DATE, i-1);//把日期往后增加一天.整数往后推,负数往前移动
+            calendar.add(calendar.DATE, i);//把日期往后增加一天.整数往后推,负数往前移动
             date = calendar.getTime(); //这个时间就是日期往后推一天的结果
             SimpleDateFormat formatter = new SimpleDateFormat("MM月-dd日");
             String dateString = formatter.format(date);
@@ -37,8 +38,7 @@ public class TimerUtils {
     }
 
     public static List<String> getDays(long times,long currentTime){
-        double minite = times - currentTime;
-        int day = (int) Math.ceil(minite/(60*60*1000*24));
+        int day = getDay(times,currentTime);
         List<String> list = new ArrayList<>();
         Date date1 = new Date(times);
         if(date1.getMinutes() >= 50 && date1.getHours() == 23){
@@ -68,8 +68,13 @@ public class TimerUtils {
     }
 
     public static List<String> getStartHours(long time){
+        Date date = null;
+        if(System.currentTimeMillis() > time){
+             date = new Date(System.currentTimeMillis());
+        }else{
+            date = new Date(time);
+        }
         List<String> list = new ArrayList<>();
-        Date date = new Date(time);
         int currentHour = 0;
         if(date.getMinutes()/10 == 5){
             currentHour = date.getHours()+1;
@@ -83,8 +88,13 @@ public class TimerUtils {
     }
 
     public static List<String> getStartMins(long time){
+        Date date = null;
+        if(System.currentTimeMillis() > time){
+            date = new Date(System.currentTimeMillis());
+        }else{
+            date = new Date(time);
+        }
         List<String> list = new ArrayList<>();
-        Date date = new Date(time);
         double currentSec = date.getMinutes();
         if(currentSec >= 50){
             for(int i = 0 ; i <= MINITES; i++){
@@ -152,7 +162,12 @@ public class TimerUtils {
 
     public static List<String> getOneHours(long times,long currentTime){
         List<String> list = new ArrayList<>();
-        Date currentDate = new Date(currentTime);
+        Date currentDate = null;
+        if(System.currentTimeMillis() > currentTime){
+            currentDate = new Date(System.currentTimeMillis());
+        }else{
+            currentDate = new Date(currentTime);
+        }
         Date date = new Date(times);
         int hour = date.getHours();
         int currentHour = currentDate.getHours();
@@ -164,7 +179,12 @@ public class TimerUtils {
 
     public static List<String> getOneMinites(long times,long currentTime){
         List<String> list = new ArrayList<>();
-        Date currentDate = new Date(currentTime);
+        Date currentDate = null;
+        if(System.currentTimeMillis() > currentTime){
+            currentDate = new Date(System.currentTimeMillis());
+        }else{
+            currentDate = new Date(currentTime);
+        }
         Date date = new Date(times);
         int currentMinite = currentDate.getMinutes();
         double minite = date.getMinutes();
@@ -220,5 +240,17 @@ public class TimerUtils {
             t = 0;
         }
         return t;
+    }
+
+    public static int getDay(long time, long currentTime){
+        if(time != 0 && currentTime != 0){
+            if(getDateFormat(time,formatDate).equals(getDateFormat(currentTime,formatDate))){
+                return 1;
+            }else{
+                double minite = time - currentTime;
+                return (int) Math.ceil(minite/(60*60*1000*24));
+            }
+        }
+        return 0;
     }
 }

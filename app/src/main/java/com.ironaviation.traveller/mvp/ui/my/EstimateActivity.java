@@ -19,6 +19,7 @@ import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.my.DaggerEstimateComponent;
 import com.ironaviation.traveller.di.module.my.EstimateModule;
 import com.ironaviation.traveller.mvp.contract.my.EstimateContract;
+import com.ironaviation.traveller.mvp.model.entity.response.CommentTag;
 import com.ironaviation.traveller.mvp.model.entity.response.EstimateResponse;
 import com.ironaviation.traveller.mvp.presenter.my.EstimatePresenter;
 import com.ironaviation.traveller.mvp.ui.widget.CustomerRatingBar;
@@ -200,6 +201,16 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+    }
+
+    @Override
+    public void setList(List<CommentTag> list) {
+
+    }
+
+    @Override
+    public void isSuccess() { //成功做什么
+
     }
 
     public class SpaceItemDecoration extends RecyclerView.ItemDecoration {

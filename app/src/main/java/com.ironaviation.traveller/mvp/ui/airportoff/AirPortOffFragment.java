@@ -18,6 +18,13 @@ import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.geocode.GeoCodeResult;
+import com.baidu.mapapi.search.geocode.GeoCoder;
+import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.app.utils.CheckIdCardUtils;
@@ -179,6 +186,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
 
         setRidTimeHide();
         initEmptyData();
+//        initLocation();
 //        setPrice();
         /*pvTime = new MyTimePickerView(getActivity(), MyTimePickerView.Type.MONTH_DAY_HOUR_TEN_MIN);
         pvTime.setTime(new Date());
@@ -245,6 +253,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
 
     }
 
+
     @OnClick({R.id.pw_seat, R.id.pw_airport, R.id.pw_flt,R.id.pw_time,R.id.pw_address,R.id.tv_code_all,R.id.tw_go_to_order})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -261,7 +270,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
             case R.id.pw_time:
 //                pvTime.show();
                 long num = (flight.getList().get(0).getTakeOffTime()-System.currentTimeMillis())
-                        /60*60*4*1000;
+                        /(60*60*4*1000);
                 if(num < 4){
                     showMessage("离起飞时间小于4小时");
                 }else{
@@ -282,7 +291,12 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
                 launchActivity(intent1);
                 break;
             case R.id.tv_code_all:
-                mPresenter.getAirportInfo(getAirPortInfo());
+                if(getAirPortInfo().getPassengers() == null ||
+                        getAirPortInfo().getPassengers().size() == 0){
+                    showMessage("请输入身份证");
+                }else{
+                    mPresenter.getAirportInfo(getAirPortInfo());
+                }
                 break;
             case R.id.tw_go_to_order:
                 mPresenter.isOrderSuccess(bid);
@@ -609,7 +623,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     public void getAddress(HistoryPoiInfo info){
         addressFlag = true;
         this.info = info;
-        mPwAddress.setTextInfo(info.address);
+        mPwAddress.setTextInfo(info.name);
         //getAirPortInfo
         if(timeFlag && addressFlag ){
             mPresenter.getAirportInfo(getAirPortInfo());
@@ -631,7 +645,6 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         setSeat(Constant.DEFULT_SEAT);
         addressFlag = false;
         timeFlag = false;
-
     }
 
     //显示价格
@@ -722,28 +735,4 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         }
     }
 
-    private LocationService locationService;
-    /***
-     * 初始化定位sdk
-     */
-    private void initLocation() {
-        if (locationService == null) {
-            locationService = new LocationService(getActivity());
-            locationService.registerListener(mListener);
-            locationService.setLocationOption(locationService.getDefaultLocationClientOption());
-            locationService.start();
-        }
-    }
-
-    private BDLocationListener mListener = new BDLocationListener() {
-        double longitude = 0;
-        double latitude = 0;
-
-        @Override
-        public void onReceiveLocation(BDLocation location) {
-            if (null != location && location.getLocType() != BDLocation.TypeServerError) {
-
-            }
-        }
-    };
 }

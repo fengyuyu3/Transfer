@@ -1,7 +1,15 @@
 package com.ironaviation.traveller.mvp.contract.my;
 
+import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.response.CommentTag;
+import com.ironaviation.traveller.mvp.model.entity.response.CommentsInfo;
 import com.jess.arms.mvp.BaseView;
 import com.jess.arms.mvp.IModel;
+import com.squareup.haha.guava.collect.ObjectArrays;
+
+import java.util.List;
+
+import rx.Observable;
 
 /**
  * 通过Template生成对应页面的MVP和Dagger代码,请注意输入框中输入的名字必须相同
@@ -27,11 +35,13 @@ import com.jess.arms.mvp.IModel;
 public interface EstimateContract {
     //对于经常使用的关于UI的方法可以定义到BaseView中,如显示隐藏进度条,和显示文字消息
     interface View extends BaseView {
-
+        void setList(List<CommentTag> list);
+        void isSuccess();
     }
 
     //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存
     interface Model extends IModel {
-
+        Observable<BaseData<List<CommentTag>>> getCommentTagInfo();
+        Observable<BaseData<Boolean>> getCommentInfo(CommentsInfo info);
     }
 }

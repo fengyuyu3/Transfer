@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/include_toolbar"/>
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.baidu.mapapi.map.MapView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </com.baidu.mapapi.map.MapView>
+
+        <View
+            android:id="@+id/id_line"
+            android:layout_width="1px"
+            android:layout_height="1px"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="260px"
+            android:layout_marginTop="30px"
+            android:background="@color/color_transparent"></View>
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:id="@+id/ll_driver_info_airport"
+            android:layout_width="match_parent"
+            android:layout_height="203px"
+            android:layout_marginLeft="18px"
+            android:layout_marginRight="18px"
+            android:layout_marginTop="16px"
+            android:background="@drawable/btn_login_edit_shap"
+            android:orientation="horizontal">
+
+            <com.ironaviation.traveller.mvp.ui.widget.CircleImageView
+                android:layout_width="160px"
+                android:layout_height="160px"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="48px"
+                android:layout_marginTop="30px"
+                android:src="@mipmap/ic_location_head"
+                />
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="27px"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40px"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tw_name_airport"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="李师傅"
+                        android:textColor="@color/color_travel_details_font"
+                        android:textSize="32px"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="20px"
+                        android:src="@mipmap/ic_star"/>
+
+                    <TextView
+                        android:id="@+id/tw_score_airport"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10px"
+                        android:text="5.0"
+                        android:textSize="26px"/>
+
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <TextView
+                    android:id="@+id/tw_car_num_airport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12px"
+                    android:background="@drawable/txt_gray_shap"
+                    android:padding="10px"
+                    android:text="川A.M878D"
+                    android:textColor="@color/color_travel_details_font"
+                    android:textSize="26px"/>
+
+                <TextView
+                    android:id="@+id/yw_car_color_airport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12px"
+                    android:text="白色.江淮"
+                    android:textColor="@color/color_travel_details_font"
+                    android:textSize="26px"/>
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <ImageView
+                android:id="@+id/iw_mobile_airport"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="48px"
+                android:layout_marginTop="64px"
+                android:src="@mipmap/ic_location_phone"/>
+        </com.zhy.autolayout.AutoLinearLayout>
+
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/iw_zoom_airport"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_zoom"/>
+
+            <!--已上车等待司机发车-->
+            <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/ll_complete_airport"
+                android:layout_width="match_parent"
+                android:layout_height="190px"
+                android:layout_marginBottom="16px"
+                android:layout_marginLeft="18px"
+                android:layout_marginRight="18px"
+                android:background="@drawable/btn_login_edit_shap"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="48px"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/ic_location_success"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="20px"
+                        android:text="@string/travel_go_on_car"
+                        android:textColor="@color/order_success_font"
+                        android:textSize="38px"/>
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="40px"
+                    android:text="@string/travel_go_on_wait_driver"
+                    android:textColor="@color/color_travel_details_font"
+                    android:textSize="26px"/>
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/ll_ordering_airport"
+                android:layout_width="match_parent"
+                android:layout_height="247px"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="16px"
+                android:layout_marginLeft="18px"
+                android:layout_marginRight="18px"
+                android:background="@drawable/btn_login_edit_shap"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="48px"
+                    android:text="@string/travel_ordering_success"
+                    android:textColor="@color/order_success_font"
+                    android:textSize="38px"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="42px"
+                    android:text="@string/travel_go_off"
+                    android:textColor="@color/color_travel_details_font"
+                    android:textSize="26px"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="14px"
+                    android:text="@string/travel_go_out"
+                    android:textColor="@color/color_travel_details_font"
+                    android:textSize="26px"/>
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <!--确认上车-->
+            <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/ll_arrive_airport"
+                android:layout_width="match_parent"
+                android:layout_height="299px"
+                android:layout_alignLeft="@+id/autoLinearLayout"
+                android:layout_alignParentBottom="true"
+                android:layout_alignStart="@+id/autoLinearLayout"
+                android:background="@drawable/btn_login_edit_shap"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="48px"
+                    android:text="@string/travel_go_on_wait"
+                    android:textColor="@color/order_success_font"
+                    android:textSize="32px"/>
+
+                <TextView
+                    android:layout_marginTop="35px"
+                    android:layout_gravity="center"
+                    android:text="@string/travel_go_on_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/rl_go_to_pay_airport"
+                    style="@style/button_red_style"
+                    android:layout_width="@dimen/w_input_box"
+                    android:layout_height="@dimen/h_input_box"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="35px"
+                    android:text="@string/travel_arrive">
+                </TextView>
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <!--确认到达-->
+            <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/ll_getOn_airport"
+                android:layout_width="match_parent"
+                android:layout_height="299px"
+                android:layout_alignLeft="@+id/autoLinearLayout"
+                android:layout_alignParentBottom="true"
+                android:layout_alignStart="@+id/autoLinearLayout"
+                android:background="@drawable/btn_login_edit_shap"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="70px"
+                    android:text="@string/travel_complete"
+                    android:textColor="@color/order_success_font"
+                    android:textSize="32px"/>
+
+                <TextView
+                    android:id="@+id/rl_goOn_pay_airport"
+                    style="@style/button_red_style"
+                    android:layout_width="@dimen/w_input_box"
+                    android:layout_height="@dimen/h_input_box"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="70px"
+                    android:text="@string/travel_arrive">
+                </TextView>
+
+            </com.zhy.autolayout.AutoLinearLayout>
+            <!--预计到达时间-->
+            <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/ll_arrive_time_airport"
+                android:layout_width="match_parent"
+                android:layout_height="190px"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="16px"
+                android:layout_marginLeft="18px"
+                android:layout_marginRight="18px"
+                android:background="@drawable/btn_login_edit_shap"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tw_arrive_time_airport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="48px"
+                    android:text="@string/travel_go_on_train"
+                    android:textColor="@color/order_success_font"
+                    android:textSize="38px"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="40px"
+                    android:text="@string/travel_go_on_arrive_time"
+                    android:textColor="@color/color_travel_details_font"
+                    android:textSize="26px"/>
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <!--等待位置-->
+            <com.zhy.autolayout.AutoLinearLayout
+                android:visibility="gone"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="153px">
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_marginTop="36px"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_weight="1"
+                        android:text="P1停机场"
+                        android:textSize="32px"
+                        android:paddingLeft="32px"
+                        android:textColor="@color/login_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView" />
+
+                    <TextView
+                        android:gravity="center"
+                        android:drawablePadding="10px"
+                        android:textSize="26px"
+                        android:text="联系客户"
+                        android:layout_marginRight="32px"
+                        android:drawableLeft="@mipmap/ic_brown_phne"
+                        android:textColor="@color/color_brown"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </com.zhy.autolayout.AutoLinearLayout>
+                <TextView
+                    android:textColor="@color/word_deep_grey"
+                    android:text="成都市双流机场T1航站楼"
+                    android:paddingLeft="32px"
+                    android:layout_marginTop="12px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <!--預約成功-->
+            <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/rl_successful"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="420px">
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:text="预约成功"
+                    android:layout_marginTop="54px"
+                    android:textSize="38px"
+                    android:textColor="@color/order_success_font"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tw_address"
+                    android:drawablePadding="10px"
+                    android:layout_marginTop="36px"
+                    android:textSize="26px"
+                    android:text="查看上车地址"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@mipmap/ic_address"
+                    android:textColor="@color/color_brown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:text="@string/travel_arrive_info"
+                    android:textColor="@color/color_travel_details_font"
+                    android:textSize="26px"
+                    android:layout_marginTop="30px"
+                    android:gravity="left"
+                    android:layout_gravity="center"
+                    android:layout_width="600px"
+                    android:layout_height="wrap_content" />
+                <com.zhy.autolayout.AutoRelativeLayout
+                    android:layout_gravity="center"
+                    android:layout_marginTop="44px"
+                    android:background="@drawable/select_but_champagne"
+                    android:layout_width="600px"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="28px">
+
+                <TextView
+                    android:textSize="32px"
+                    android:drawablePadding="10px"
+                    android:drawableLeft="@mipmap/ic_address"
+                    android:layout_centerInParent="true"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/white"
+                    android:text="@string/travel_order_two_dimension"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                </com.zhy.autolayout.AutoRelativeLayout>
+
+            </com.zhy.autolayout.AutoLinearLayout>
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/iw_zoom_nomal_airport"
+            android:layout_marginBottom="42px"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/select_zoom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </com.zhy.autolayout.AutoRelativeLayout>
+</com.zhy.autolayout.AutoLinearLayout>

@@ -174,6 +174,29 @@
             android:background="@color/line_little_grey"></View>
     </com.zhy.autolayout.AutoRelativeLayout>
 
+    <com.zhy.autolayout.AutoLinearLayout
+        android:background="@color/white"
+        android:id="@+id/ll_address"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="128px">
+        <ImageView
+            android:layout_gravity="center"
+            android:id="@+id/iw_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/h_fillet2"
+            android:layout_marginRight="@dimen/h_fillet2"
+            android:background="@mipmap/ic_address"
+            />
+         <TextView
+             android:text="@string/address_my"
+             android:layout_gravity="center"
+             android:id="@+id/tw_address_text"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"/>
+    </com.zhy.autolayout.AutoLinearLayout>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_address"
         android:layout_width="match_parent"
