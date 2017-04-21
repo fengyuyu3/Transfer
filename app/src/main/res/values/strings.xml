@@ -2,6 +2,8 @@
     <string name="app_name">机场专线</string>
 
     <string name="city">成都</string>
+    <string name="copyright">Copyright @ 2017 All Rights Reserved</string>
+    <string name="our_company">四川铁航信息技术有限公司</string>
     <!--address-->
     <string name="hint_home_address">请输入家庭地址</string>
     <string name="hint_company_address">请输入公司地址</string>
@@ -63,6 +65,10 @@
     <string name="usual_address">常用地址</string>
     <string name="connect_us">联系我们</string>
     <string name="cancellation_account">注销账号</string>
+    <string name="about_us">关于我们</string>
+    <string name="about_us_title">版本V2.0新增功能</string>
+    <string name="about_us_text">新增付费模式，随时查看订单状态，贴心提醒，为您提供优质服务</string>
+    <string name="we_chat_cord">微信公众号</string>
     <string name="us_phone">028-86868686</string>
     <string name="unauthorized">未认证</string>
     <string name="authenticated">已认证</string>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/id_include_toolbar"
+        layout="@layout/include_toolbar"
+        ></include>
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/common_text_style"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="116px"
+        android:text="@string/about_us_title"
+        android:textSize="@dimen/word_title"
+        android:layout_below="@+id/id_include_toolbar"
+        />
+
+    <TextView
+        android:id="@+id/tv_text"
+        style="@style/common_text_content_grey_style"
+        android:layout_below="@+id/tv_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="92px"
+        android:layout_marginRight="92px"
+        android:layout_marginTop="116px"
+        android:maxLines="9"
+        android:text="@string/about_us_text"
+        />
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="112px"
+        android:layout_below="@+id/tv_text"
+        android:layout_marginTop="114px"
+        android:background="@color/white"
+        >
+
+        <TextView
+            style="@style/common_text_style"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/h_fillet2"
+            android:text="@string/we_chat_cord"
+            android:textSize="@dimen/word_title_little"
+            />
+
+        <TextView
+            style="@style/common_text_style"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/h_fillet2"
+            android:text="@string/app_name"
+            android:textSize="@dimen/word_title_little"
+            />
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_copyright"
+        style="@style/common_text_content_grey_style"
+        android:layout_centerHorizontal="true"
+        android:text="@string/copyright"
+        android:layout_above="@+id/tv_our_company"
+        android:textSize="24px"
+        android:layout_marginBottom="@dimen/h_fillet"
+        />
+    <TextView
+        android:id="@+id/tv_our_company"
+        style="@style/common_text_content_grey_style"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:text="@string/our_company"
+        android:textSize="24px"
+        android:layout_marginBottom="60px"
+        />
+</com.zhy.autolayout.AutoRelativeLayout>

@@ -39,10 +39,18 @@
         ></com.ironaviation.traveller.mvp.ui.widget.TextTextImageView>
 
     <com.ironaviation.traveller.mvp.ui.widget.TextTextImageView
-        android:id="@+id/tti_cancellation_account"
+        android:id="@+id/tti_about_us"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/h_fillet2"
+        app:tti_title="@string/about_us"
+        ></com.ironaviation.traveller.mvp.ui.widget.TextTextImageView>
+
+    <com.ironaviation.traveller.mvp.ui.widget.TextTextImageView
+        android:id="@+id/tti_cancellation_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/h_fillet"
         app:tti_title="@string/cancellation_account"
         ></com.ironaviation.traveller.mvp.ui.widget.TextTextImageView>
 
@@ -52,9 +60,9 @@
         style="@style/common_text_content_style"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:gravity="bottom"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="60px"
+        android:gravity="bottom"
 
         android:textColor="@color/input_box_grey_un_select"
         />
