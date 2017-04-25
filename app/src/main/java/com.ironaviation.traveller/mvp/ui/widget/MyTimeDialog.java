@@ -160,7 +160,6 @@ public class MyTimeDialog {
                 }
             });
 
-//            Log.e("kkk",new Date(time).toString());
         }
 
     public void dismiss(){

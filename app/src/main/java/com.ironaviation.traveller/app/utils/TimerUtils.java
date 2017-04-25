@@ -190,7 +190,7 @@ public class TimerUtils {
     }
 
     public static long getTimeMillis(String date){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月-dd日hh点mm分");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月-dd日HH点mm分");
         try {
             long millionSeconds = sdf.parse(date).getTime();//毫秒
             return millionSeconds;

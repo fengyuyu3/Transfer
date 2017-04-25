@@ -183,12 +183,14 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         setRightFunction(R.mipmap.ic_more, this);
         Bundle pBundle = getIntent().getExtras();
         if (pBundle != null) {
-            responses = pBundle.getParcelable(Constant.STATUS);
+            responses = (RouteStateResponse) pBundle.getSerializable(Constant.STATUS);
             if (responses!=null&&!TextUtils.isEmpty(responses.getBID())){
                 mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.WAITING_PAYMENT,responses.getBID());
 //                status = responses.getStatus();
                 mPresenter.setRouteStateResponse(responses);
                 showStatus(status);
+                mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.TRAVEL_DETAILS,responses.getBID());
+                showStatus(responses.getStatus());
             }
         }else{
 //            mPresenter.getRouteState();
@@ -275,7 +277,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
             case R.id.rl_go_to_pay:
                 Bundle bundle = new Bundle();
                 responses = mPresenter.getData();
-                bundle.putParcelable(Constant.STATUS,responses);
+                bundle.putSerializable(Constant.STATUS,responses);
                 startActivity(EstimateActivity.class,bundle);
                 break;
         }
@@ -291,7 +293,11 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
                 break;
             case Constant.REGISTERED:
 //                orderGoingDay();//白天 晚上 判断起飞时间是13点以前还是以后
-                orderGoing();
+                if(responses.isMorning()){
+                    orderGoingDay();
+                }else{
+                    orderGoing();
+                }
                 break;
             case Constant.ARRIVED:
                 arrive();
@@ -317,7 +323,9 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     public void onEventMainThread(TravelCancelEvent event) {
         switch (event.getEvent()) {
             case Constant.TRAVEL_CANCEL:
-                startActivity(TravelCancelActivity.class);
+                Bundle pBundle=new Bundle();
+                pBundle.putString(Constant.BID,event.getBid());
+                startActivity(TravelCancelActivity.class,pBundle);
                 break;
             case Constant.TRAVEL_CUSTOMER:
                 showMessage("联系客户");
@@ -397,26 +405,6 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 
     }
 
-   /* public void complete() { //派单成功 等待接驾
-        mIwZoomNomal.setVisibility(View.GONE);
-        mIwZoom.setVisibility(View.VISIBLE);
-        mLlComplete.setVisibility(View.VISIBLE);//派单成功
-        mLlDriverInfo.setVisibility(View.VISIBLE); //司机信息
-        mLlOrdering.setVisibility(View.GONE);//派单中
-        mLlArrive.setVisibility(View.GONE);  // 确认到达
-//        mLlGoing.setVisibility(View.GONE); //正在进行中
-    }
-
-    public void order() { //预约成功
-        mIwZoomNomal.setVisibility(View.GONE);//显示按钮
-        mIwZoom.setVisibility(View.VISIBLE);  //隐藏按钮
-//        mLlGoing.setVisibility(View.VISIBLE); //正在进行中
-        mLlDriverInfo.setVisibility(View.VISIBLE); //司机信息
-        mLlComplete.setVisibility(View.GONE);//派单成功
-        mLlOrdering.setVisibility(View.GONE);//派单中
-        mLlArrive.setVisibility(View.GONE);  // 确认到达a
-    }*/
-
     public void arrive() { //确认到达
         mIwZoomNomal.setVisibility(View.GONE);
         mIwZoom.setVisibility(View.VISIBLE);
@@ -424,7 +412,6 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         mLlDriverInfo.setVisibility(View.VISIBLE); //司机信息
         mLlOrdering.setVisibility(View.GONE);//派单中
         mLlComplete.setVisibility(View.GONE);//派单成功
-        mLlGoing.setVisibility(View.GONE); //正在进行中
     }
 
     public void AllGone(){  //隐藏

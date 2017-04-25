@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.igexin.sdk.GTIntentService;
+import com.igexin.sdk.PushManager;
 import com.igexin.sdk.message.GTCmdMessage;
 import com.igexin.sdk.message.GTTransmitMessage;
 
@@ -36,6 +37,11 @@ public class WEGTIntentService extends GTIntentService {
 
     @Override
     public void onReceiveMessageData(Context context, GTTransmitMessage msg) {
+        String taskid = msg.getTaskId();
+        String messageid = msg.getMessageId();
+        byte[] payload = msg.getPayload();
+        boolean result = PushManager.getInstance()
+                .sendFeedbackMessage(context, taskid, messageid, 90001);
     }
 
     @Override

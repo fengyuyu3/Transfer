@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- 填充颜色 -->
-    <solid android:color="@color/button_red_un_select"/>
+    <solid android:color="@color/red_bright"/>
     <!-- 矩形的圆角半径 -->
     <corners android:radius="@dimen/fillet_little_input"/>
     <!-- 线的宽度，颜色灰色 -->

@@ -13,14 +13,16 @@
         android:id="@+id/rl_free_view"
         android:layout_width="match_parent"
         android:layout_height="227px"
-        android:background="@color/bg_toolbar">
+        android:background="@color/bg_toolbar"
+        android:visibility="gone"
+        >
 
         <TextView
             android:id="@+id/tv_money"
             style="@style/common_text_content_style"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="40px"
-            android:text="-5.0"
+            android:text=""
             android:textColor="@color/white"
             android:textSize="80px"
 
@@ -40,11 +42,11 @@
             />
 
         <TextView
+            android:id="@+id/tv_free_hint"
             style="@style/common_text_content_style"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="60px"
-            android:text="现在取消将会支付5元作为爽约金"
             android:textColor="@color/white"
             />
     </com.zhy.autolayout.AutoRelativeLayout>

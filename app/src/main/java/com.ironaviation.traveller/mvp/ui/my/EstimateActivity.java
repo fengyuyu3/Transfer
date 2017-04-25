@@ -146,14 +146,16 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
     }
 
 
+
     @Override
     public void showLoading() {
+        showProgressDialog();
 
     }
 
     @Override
     public void hideLoading() {
-
+        dismissProgressDialog();
     }
 
     @Override

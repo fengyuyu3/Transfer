@@ -2,6 +2,8 @@
     <string name="app_name">机场专线</string>
 
     <string name="city">成都</string>
+    <string name="copyright">Copyright @ 2017 All Rights Reserved</string>
+    <string name="our_company">四川铁航信息技术有限公司</string>
     <!--address-->
     <string name="hint_home_address">请输入家庭地址</string>
     <string name="hint_company_address">请输入公司地址</string>
@@ -17,8 +19,12 @@
     <string name="refund_Amount">退款金额</string>
     <string name="cancel_rules_hint">查看取消规则</string>
     <string name="determine_cancel">确定取消</string>
-    <string name="penal_sum_hint">您取消了本次行程，本次违约金由平台减免</string>
+    <string name="penal_sum_hint">您取消了本次行程，本次爽约金由平台减免</string>
+    <string name="free_hint">您取消了本次行程，本次行程为有责取消</string>
     <string name="cancel_travel_hint">请选择取消原因</string>
+    <string name="cancel_travel_cost_hint_1">现在取消将会支付</string>
+    <string name="cancel_travel_cost_hint_2">元作为爽约金</string>
+
 
     <!--common-->
     <string name="cancel">取消</string>
@@ -59,6 +65,10 @@
     <string name="usual_address">常用地址</string>
     <string name="connect_us">联系我们</string>
     <string name="cancellation_account">注销账号</string>
+    <string name="about_us">关于我们</string>
+    <string name="about_us_title">版本V2.0新增功能</string>
+    <string name="about_us_text">新增付费模式，随时查看订单状态，贴心提醒，为您提供优质服务</string>
+    <string name="we_chat_cord">微信公众号</string>
     <string name="us_phone">028-86868686</string>
     <string name="unauthorized">未认证</string>
     <string name="authenticated">已认证</string>
@@ -145,6 +155,7 @@
     <string name="travel_explain">四川航空免费接送机说明</string>
     <string name="travel_order">确认预约</string>
 
+
     <string name="travel_ordering_info">在您出行前一天21:00为您发送司机的信息</string>
     <string name="travel_ordering_info_day">在您出行前4小时为您发送司机的信息</string>
     <string name="travel_wait">等待接驾</string>
@@ -155,11 +166,11 @@
     <string name="travel_already">您已上车</string>
     <string name="travel_already_info">预计30分钟到达机场</string>
     <string name="travel_arrvice">行程已结束</string>
-    
+
     <!--接机-->
     <string name="meet_address">上车地点</string>
     <string name="meet_input_address">请输入下车地址</string>
-    
+
     <!--查看明细-->
     <string name="check_details">查看明细</string>
     <string name="back_details">退款明细</string>

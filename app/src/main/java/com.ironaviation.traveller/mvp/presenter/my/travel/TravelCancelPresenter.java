@@ -128,13 +128,13 @@ public class TravelCancelPresenter extends BasePresenter<TravelCancelContract.Mo
         StringBuffer reason = new StringBuffer();
         for (int i = 0; i < travelCancelReasons.size(); i++) {
             if (i != 0) {
-                reason.append("&*&" + travelCancelReasons.get(i));
+                reason.append(Constant.SEPARATOR + travelCancelReasons.get(i).getName());
             } else {
-                reason.append(travelCancelReasons.get(i));
+                reason.append(travelCancelReasons.get(i).getName());
             }
         }
         if (!TextUtils.isEmpty(otherReason)) {
-            reason.append("*&*" + otherReason);
+            reason.append(Constant.SEPARATOR_OTHER + otherReason);
         } else {
 
         }

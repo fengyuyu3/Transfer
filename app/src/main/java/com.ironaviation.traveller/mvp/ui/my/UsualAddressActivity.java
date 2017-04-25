@@ -106,13 +106,15 @@ public class UsualAddressActivity extends WEActivity<UsualAddressPresenter> impl
 
     @Override
     public void showLoading() {
+        showProgressDialog();
 
     }
 
     @Override
     public void hideLoading() {
-
+        dismissProgressDialog();
     }
+
 
     @Override
     public void showMessage(@NonNull String message) {

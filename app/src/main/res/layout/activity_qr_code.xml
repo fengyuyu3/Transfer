@@ -28,19 +28,6 @@
 
                 />
 
-            <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="marquee"
-                android:layout_marginLeft="26px"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="123456"
-                android:textColor="@color/white"
-                android:textSize="44px"/>
-
-
 
         </com.ironaviation.traveller.mvp.ui.widget.AutoToolbar>
 
@@ -79,7 +66,6 @@
             android:layout_below="@+id/zxingview"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="55px"
-            android:text="001234456766"
             android:textSize="65px"
 
             />

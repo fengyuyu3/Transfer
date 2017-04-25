@@ -39,10 +39,10 @@ public interface Constant {
     String SC_AIRPORT = "3u";
     int DEFULT_SEAT = 2;
     /*addressType*/
-    String ADDRESS_TYPE="addressType";
-    String UABID="uabid";
-    int ADDRESS_TYPE_HOME=991;
-    int ADDRESS_TYPE_COMPANY=992;
+    String ADDRESS_TYPE = "addressType";
+    String UABID = "uabid";
+    int ADDRESS_TYPE_HOME = 991;
+    int ADDRESS_TYPE_COMPANY = 992;
     int AIRPORT_GO = 993;
     int AIRPORT_ON = 994;
     double AIRPORT_T1_LONGITUDE=103.965305;
@@ -69,6 +69,8 @@ public interface Constant {
     String PICKUP = "PickUp"; //接您
     String ABORAD = "Aboard"; //已上车
     String BID = "bid";
+    String SEPARATOR = "&!&";
+    String SEPARATOR_OTHER = "!&!";
 
     String WECHAT = "WeChat";
     String ALIPAY = "AliPay";
@@ -85,5 +87,9 @@ public interface Constant {
     String OFF = "off"; //送机
     String CLEAR_PORT = "ClearPort"; //送机
     String ENTER_PORT = "EnterPort"; //接机
+
+
+    String CLASS_PAY_INFO = "PayInfo";
+
 
 }

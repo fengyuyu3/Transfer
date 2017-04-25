@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -24,6 +25,8 @@ import com.ironaviation.traveller.mvp.presenter.my.travel.CancelSuccessPresenter
 import com.ironaviation.traveller.mvp.ui.my.adapter.CancelSuccessAdapter;
 import com.ironaviation.traveller.mvp.ui.widget.SpaceItemDecoration;
 import com.jess.arms.utils.UiUtils;
+import com.zhy.autolayout.AutoLinearLayout;
+import com.zhy.autolayout.AutoRelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,10 +59,33 @@ public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> im
 
     @BindView(R.id.rv_cancel_success)
     RecyclerView mRvCancelSuccess;
-    @BindView(R.id.tv_money)
-    TextView mTvMoney;
+
     @BindView(R.id.tv_responsibility)
     TextView mTvResponsibility;
+
+    @BindView(R.id.it_driver_name)
+    TextView mItDriverName;
+    @BindView(R.id.it_driver_grade)
+    TextView mItDriverGrade;
+    @BindView(R.id.tv_money)
+    TextView mTvMoney;
+    @BindView(R.id.ic_car_license)
+    TextView mIcCarLicense;
+    @BindView(R.id.rl_head)
+    AutoRelativeLayout mRlHead;
+    @BindView(R.id.rl_driver)
+    AutoLinearLayout mRlDriver;
+    @BindView(R.id.rl_money)
+    AutoRelativeLayout mRlMoney;
+    @BindView(R.id.tv_money_title)
+    TextView mTvMoneyTitle;
+    @BindView(R.id.tv_other_reason)
+    TextView mTvOtherReason;
+    @BindView(R.id.rv_other_reason)
+    AutoRelativeLayout mRvOtherReason;
+    @BindView(R.id.rl_penal_sum)
+    AutoRelativeLayout mRlPenalSum;
+
     private String[] cancel_reasons;
     private List<CancelSuccessResponse> mTravelCancelResponseList = new ArrayList<>();
     private RecyclerView.LayoutManager mLayoutManager;
@@ -101,8 +127,15 @@ public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> im
         mRvCancelSuccess.setLayoutManager(mgr);
         mRvCancelSuccess.setAdapter(mCancelSuccessAdapter);
         getData();
-    }
 
+        Bundle pBundle = getIntent().getExtras();
+        if (pBundle.getSerializable(Constant.STATUS) != null) {
+            RouteStateResponse data = (RouteStateResponse) pBundle.getSerializable(Constant.STATUS);
+            mPresenter.getRouteStateInfo(data);
+        } else if (!TextUtils.isEmpty(pBundle.getString(Constant.BID))) {
+            mPresenter.getRouteStateInfo(pBundle.getString(Constant.BID));
+        }
+    }
     public void getData(){
         Bundle bundle = getIntent().getExtras();
         responses = bundle.getParcelable(Constant.STATUS);
@@ -110,15 +143,18 @@ public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> im
     }
 
 
+
     @Override
     public void showLoading() {
+        showProgressDialog();
 
     }
 
     @Override
     public void hideLoading() {
-
+        dismissProgressDialog();
     }
+
 
     @Override
     public void showMessage(@NonNull String message) {
@@ -151,20 +187,52 @@ public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> im
     }
 
     @Override
-    public void setResponsibilityView(boolean flag, double CancelPrice) {
+    public void setReasonView(List<TravelCancelReason> strings, String otherReason) {
+        if (strings != null) {
+            mCancelSuccessAdapter.setNewData(strings);
 
-
-        if (flag){
-            /*
-            *  mTvMoney;
-         mTvResponsibility;*/
         }
+        if (!TextUtils.isEmpty(otherReason)) {
+            mRvOtherReason.setVisibility(View.VISIBLE);
+            mTvOtherReason.setText(otherReason);
+        } else {
+            mRvOtherReason.setVisibility(View.GONE);
+
+        }
+    }
+
+    @Override
+    public void setDriverName(String name) {
+        mRlDriver.setVisibility(View.VISIBLE);
+        mItDriverName.setText(name);
 
     }
 
     @Override
-    public void setReasonView(List<TravelCancelReason> strings) {
-        mCancelSuccessAdapter.setNewData(strings);
+    public void setDriverRate(String rate) {
+        mItDriverGrade.setText(rate);
 
     }
+
+    @Override
+    public void setCarLicense(String license) {
+
+        mRlHead.setVisibility(View.VISIBLE);
+        mIcCarLicense.setText(license);
+    }
+
+    @Override
+    public void setMoneyView(String money) {
+        mRlMoney.setVisibility(View.VISIBLE);
+        mTvMoneyTitle.setVisibility(View.VISIBLE);
+        mTvMoney.setText(money);
+    }
+
+
+    @Override
+    public void setResponsibilityView(String responsibility) {
+
+        mTvResponsibility.setText(responsibility);
+    }
+
 }

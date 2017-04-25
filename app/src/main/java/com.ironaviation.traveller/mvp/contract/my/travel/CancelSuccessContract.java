@@ -2,6 +2,7 @@ package com.ironaviation.traveller.mvp.contract.my.travel;
 
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.response.CancelBookingInfo;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.TravelCancelReason;
 import com.jess.arms.mvp.BaseView;
 import com.jess.arms.mvp.IModel;
@@ -31,14 +32,23 @@ import rx.Observable;
 public interface CancelSuccessContract {
     //对于经常使用的关于UI的方法可以定义到BaseView中,如显示隐藏进度条,和显示文字消息
     interface View extends BaseView {
-        void setResponsibilityView(boolean flag, double CancelPrice);
 
-        void setReasonView(List<TravelCancelReason> strings);
+        void setReasonView(List<TravelCancelReason> strings, String otherReason);
+
+        void setDriverName(String name);
+
+        void setDriverRate(String rate);
+
+        void setCarLicense(String liscense);
+
+        void setMoneyView(String money);
+
+        void setResponsibilityView(String responsibility);
     }
 
     //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存
     interface Model extends IModel {
+        Observable<BaseData<RouteStateResponse>> getRouteStateInfo(String bid);
 
-        Observable<BaseData<CancelBookingInfo>> getCancelBookInfo(String bid);
     }
 }

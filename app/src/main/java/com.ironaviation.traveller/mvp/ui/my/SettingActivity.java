@@ -17,7 +17,6 @@ import com.ironaviation.traveller.di.component.my.DaggerSettingComponent;
 import com.ironaviation.traveller.di.module.my.SettingModule;
 import com.ironaviation.traveller.mvp.contract.my.SettingContract;
 import com.ironaviation.traveller.mvp.presenter.my.SettingPresenter;
-import com.ironaviation.traveller.mvp.ui.login.LoginActivity;
 import com.ironaviation.traveller.mvp.ui.widget.TextTextImageView;
 import com.jess.arms.utils.DeviceUtils;
 import com.jess.arms.utils.UiUtils;
@@ -61,6 +60,8 @@ public class SettingActivity extends WEActivity<SettingPresenter> implements Set
     TextTextImageView mTtiCancellationAccount;
     @BindView(R.id.tv_version_name)
     TextView mTvVersionName;
+    @BindView(R.id.tti_about_us)
+    TextTextImageView mTtiAboutUs;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -134,7 +135,7 @@ public class SettingActivity extends WEActivity<SettingPresenter> implements Set
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.tti_identification, R.id.tti_usual_address, R.id.tti_connect_us, R.id.tti_cancellation_account})
+    @OnClick({R.id.tti_identification, R.id.tti_usual_address, R.id.tti_connect_us, R.id.tti_cancellation_account, R.id.tti_about_us})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tti_identification:
@@ -149,7 +150,10 @@ public class SettingActivity extends WEActivity<SettingPresenter> implements Set
             case R.id.tti_cancellation_account:
                 mPresenter.signOut();
                 //UiUtils.killAll();
-               // startActivity(LoginActivity.class);
+                // startActivity(LoginActivity.class);
+                break;
+            case R.id.tti_about_us:
+                startActivity(AboutUsActivity.class);
                 break;
         }
     }
@@ -161,5 +165,6 @@ public class SettingActivity extends WEActivity<SettingPresenter> implements Set
             mTvVersionName.setText(getResources().getString(R.string.app_name) + " " + versionName);
         }
     }
+
 
 }

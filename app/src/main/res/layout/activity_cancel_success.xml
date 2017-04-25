@@ -17,6 +17,8 @@
         android:layout_below="@+id/id_include_toolbar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="52px"
+
+        android:visibility="gone"
         >
 
         <ImageView
@@ -27,6 +29,7 @@
             android:src="@mipmap/ic_head_grey"/>
 
         <TextView
+            android:id="@+id/ic_car_license"
             android:layout_width="172px"
             android:layout_height="44px"
             android:layout_below="@+id/ic_head"
@@ -45,6 +48,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/rl_head"
         android:layout_centerHorizontal="true"
+
+        android:visibility="gone"
 
         android:layout_marginTop="14px"
         >
@@ -86,6 +91,7 @@
         android:text="@string/refund_Amount"
         android:textColor="@color/word_middle_grey"
         android:textSize="@dimen/word_content_little"
+        android:visibility="gone"
         />
 
     <com.zhy.autolayout.AutoRelativeLayout
@@ -101,6 +107,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:visibility="gone"
             >
 
             <TextView
@@ -108,7 +115,7 @@
                 style="@style/common_text_content_style"
                 android:layout_below="@+id/tv_money_title"
                 android:layout_centerHorizontal="true"
-                android:text="5.0"
+                android:text=""
                 android:textColor="@color/word_red"
                 android:textSize="80px"
 
@@ -142,7 +149,6 @@
             android:layout_below="@+id/rl_money"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="80px"
-            android:text="@string/penal_sum_hint"
             />
     </com.zhy.autolayout.AutoRelativeLayout>
 
@@ -157,7 +163,8 @@
         android:layout_marginTop="40px"/>
 
     <com.zhy.autolayout.AutoRelativeLayout
-        android:layout_width="match_parent"
+        android:id="@+id/rv_other_reason"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rv_cancel_success"
         android:layout_marginLeft="66px"
@@ -165,16 +172,17 @@
         android:layout_marginTop="50px"
         android:background="@drawable/btn_grey_select"
         android:padding="10px"
+        android:visibility="gone"
         >
 
         <TextView
-            android:id="@+id/tv_travel_cancel"
+            android:id="@+id/tv_other_reason"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minWidth="290px"
             android:layout_centerInParent="true"
             android:layout_marginLeft="@dimen/h_fillet"
             android:layout_toRightOf="@+id/iv_other_reason"
-            android:text="要求能飞"
             android:textColor="@color/word_already_input"
             android:textSize="@dimen/word_content"
             android:visibility="visible"/>
@@ -184,7 +192,7 @@
             android:layout_width="17px"
             android:layout_height="17px"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="22px"
+            android:layout_marginLeft="12px"
             android:background="@drawable/dot_white"
             />
 
