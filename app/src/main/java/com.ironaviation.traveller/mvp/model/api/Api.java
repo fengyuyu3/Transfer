@@ -11,13 +11,11 @@ public interface Api {
     String Travel = "";
     String MESSAGE = "";
     String FLIGHT = "/api/Trips/GetAirlineInfo"; //航班信息
-    String COUSTOMER_INFO = "/api/Booking/PreClearPortBooking"; //客户信息传后台
-    String CLEARANCE_ORDER = "/api/Booking/PreClearPortBooking"; //预览出港信息
     String APP_SIGN_OUT="/api/Users/AppSignOut";//POST 注销登录
     String GET_USER_ADDRESS_BOOK="/api/Users/GetUserAddressBook";//Get 获取用户常用地址
     String UPDATE_ADDRESS_BOOK="/api/Users/UpdateAddressBook";//POST 更新用户地址
     String DELETE_ADDRESS_BOOK="/api/Users/DeleteAddressBook";//POST 删除用户常用地址
-    String PRECLEAR_PORT = "/api/Booking/PreClearPortBooking";//订单
+    String PRECLEAR_PORT = "/api/Booking/PreClearPortBooking";//订单预览出港信息
     String ROUTE_DETAILS = "/api/Booking/GetDetail";
     String ROUTE_DETAILS_MORE = "/api/Booking/GetBookings"; //行程列表
     String VALIDREAL_IDCARD ="/api/Users/ValidRealIDCard"; //实名认证

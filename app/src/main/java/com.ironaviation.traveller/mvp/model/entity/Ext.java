@@ -2,6 +2,7 @@ package com.ironaviation.traveller.mvp.model.entity;
 
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 import java.io.Serializable;
 
@@ -17,7 +18,7 @@ import java.io.Serializable;
 public class Ext implements Serializable {
     private String Name;
 
-    private JsonObject Data;
+    private JsonPrimitive Data;
 
     private String JsonData;
 
@@ -33,11 +34,11 @@ public class Ext implements Serializable {
         return this.Name;
     }
 
-    public void setData(JsonObject Data) {
+    public void setData(JsonPrimitive Data) {
         this.Data = Data;
     }
 
-    public JsonObject getData() {
+    public JsonPrimitive getData() {
         return this.Data;
     }
 
