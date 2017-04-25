@@ -47,17 +47,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:hint1="@string/airport_address"
-                app:left_logo1="@mipmap/ic_blue_point"
-                app:padding_left1="15" />
+                app:left_logo1="@mipmap/ic_blue_big_point"
+                 />
 
             <com.ironaviation.traveller.mvp.ui.widget.PublicTextView
                 android:id="@+id/pw_airport"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:hint1="@string/airport_airport"
-                app:left_logo1="@mipmap/ic_green_point"
+                app:left_logo1="@mipmap/ic_green_big_point"
                 app:line1="false"
-                app:padding_left1="15" />
+                 />
 
             <com.ironaviation.traveller.mvp.ui.widget.PublicTextView
                 android:id="@+id/pw_seat"

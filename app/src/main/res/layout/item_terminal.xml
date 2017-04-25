@@ -14,7 +14,7 @@
     <ImageView
         android:layout_gravity="center"
         android:id="@+id/iw_point"
-        android:src="@mipmap/ic_blue_point"
+        android:src="@mipmap/ic_grey_big_point"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <TextView

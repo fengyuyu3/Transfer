@@ -342,8 +342,6 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
         public void clear() {
 
             handler.removeCallbacks(searchRunnable);
-
-
         }
 
         @Override

@@ -102,10 +102,10 @@ public class TerminalPopupWindow extends PopupWindow {
             AutoLinearLayout mLlTerminal = (AutoLinearLayout) view1.findViewById(R.id.ll_terminal);
             tw.setText(list.get(position));
             if(count == position){
-                iw.setImageResource(R.mipmap.ic_green_point);
+                iw.setImageResource(R.mipmap.ic_green_big_point);
                 tw.setTextColor(context.getResources().getColor(R.color.word_already_input));
             }else{
-                iw.setImageResource(R.mipmap.ic_blue_point);
+                iw.setImageResource(R.mipmap.ic_blue_big_point);
                 tw.setTextColor(context.getResources().getColor(R.color.airport_edit_gray));
             }
             mLlTerminal.setOnClickListener(new View.OnClickListener() {
