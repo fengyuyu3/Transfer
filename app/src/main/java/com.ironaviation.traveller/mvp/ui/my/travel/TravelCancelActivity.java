@@ -19,6 +19,7 @@ import com.ironaviation.traveller.di.component.my.travel.DaggerTravelCancelCompo
 import com.ironaviation.traveller.di.module.my.travel.TravelCancelModule;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.travel.TravelCancelContract;
+import com.ironaviation.traveller.mvp.model.entity.response.CancelBookingInfo;
 import com.ironaviation.traveller.mvp.model.entity.response.TravelCancelReason;
 import com.ironaviation.traveller.mvp.presenter.my.travel.TravelCancelPresenter;
 import com.ironaviation.traveller.mvp.ui.my.adapter.TravelCancelAdapter;
@@ -89,7 +90,6 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
 
     @Override
     protected void initData() {
-        cancel_reasons = getResources().getStringArray(R.array.cancel_reason_list);
 
         setTitle(getString(R.string.travel_cancel));
         mToolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_back));
@@ -113,7 +113,7 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
         mTravelCancelAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                TravelCancelReason mTravelCancelResponse = (TravelCancelReason) adapter.getData().get(position);
+                CancelBookingInfo.Reasons mTravelCancelResponse = (CancelBookingInfo.Reasons) adapter.getData().get(position);
                 if (mTravelCancelResponse.isType()) {
                     mTravelCancelResponse.setType(false);
 
@@ -182,7 +182,7 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
         if (!IsFreeCancel) {
             mRlFreeView.setVisibility(View.VISIBLE);
             mTvMoney.setText(CancelPrice + "");
-            mTvFreeHint.setText(getString(R.string.cancel_travel_cost_hint_1)+CancelPrice+getString(R.string.cancel_travel_cost_hint_2));
+            mTvFreeHint.setText(getString(R.string.cancel_travel_cost_hint_1) + CancelPrice + getString(R.string.cancel_travel_cost_hint_2));
         } else {
             mRlFreeView.setVisibility(View.GONE);
         }
@@ -190,7 +190,7 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
     }
 
     @Override
-    public void setReasonView(List<TravelCancelReason> strings) {
+    public void setReasonView(List<CancelBookingInfo.Reasons> strings) {
         mTravelCancelAdapter.setNewData(strings);
 
     }

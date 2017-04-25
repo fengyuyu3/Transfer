@@ -10,6 +10,7 @@ import com.ironaviation.traveller.mvp.model.api.service.CommonService;
 import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.request.CancelBookingRequest;
+import com.ironaviation.traveller.mvp.model.entity.request.CancelOrderRequest;
 import com.ironaviation.traveller.mvp.model.entity.response.CancelBookingInfo;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.jess.arms.di.scope.ActivityScope;
@@ -68,9 +69,7 @@ public class TravelCancelModel extends BaseModel<ServiceManager, CacheManager> i
     }
 
     @Override
-    public Observable<BaseData<Boolean>> cancelBooking(String bid, String reason) {
-        CancelBookingRequest cancelBookingRequest = new CancelBookingRequest();
-        cancelBookingRequest.setReason(reason);
-        return mCommonService.cancelBooking(bid, cancelBookingRequest);
+    public Observable<BaseData<Boolean>> cancelBooking(String bid, CancelOrderRequest reason) {
+        return mCommonService.cancelBooking(bid, reason);
     }
 }

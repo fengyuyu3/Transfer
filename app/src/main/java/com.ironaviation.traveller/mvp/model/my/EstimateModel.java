@@ -10,6 +10,7 @@ import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.response.CommentTag;
 import com.ironaviation.traveller.mvp.model.entity.response.CommentsInfo;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BaseModel;
 
@@ -72,5 +73,10 @@ public class EstimateModel extends BaseModel<ServiceManager, CacheManager> imple
     @Override
     public Observable<BaseData<Boolean>> getCommentInfo(CommentsInfo info) {
         return mCommonService.isCommentSuccess(info);
+    }
+
+    @Override
+    public Observable<BaseData<RouteStateResponse>> getRouteStateInfo(String bid) {
+        return mCommonService.getRouteStateInfo(bid);
     }
 }

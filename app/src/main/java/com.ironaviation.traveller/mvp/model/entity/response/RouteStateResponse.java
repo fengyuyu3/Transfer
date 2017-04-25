@@ -58,6 +58,7 @@ public class RouteStateResponse implements Serializable{
     private double DestLagitude;
     private String BID;
     private String UID;
+    private String DID;
     private int SeqNum;
     private String OrderNo;
     private String Channel;
@@ -413,5 +414,13 @@ public class RouteStateResponse implements Serializable{
 
     public void setExt(List<com.ironaviation.traveller.mvp.model.entity.Ext> ext) {
         Ext = ext;
+    }
+
+    public String getDID() {
+        return DID;
+    }
+
+    public void setDID(String DID) {
+        this.DID = DID;
     }
 }

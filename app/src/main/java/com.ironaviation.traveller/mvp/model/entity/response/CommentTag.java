@@ -18,6 +18,7 @@ public class CommentTag {
     private String Tag;
     private boolean IsEnabled;
 
+    private boolean Type;
     public String getCTID() {
         return CTID;
     }
@@ -48,5 +49,13 @@ public class CommentTag {
 
     public void setIsEnabled(boolean IsEnabled) {
         this.IsEnabled = IsEnabled;
+    }
+
+    public boolean isType() {
+        return Type;
+    }
+
+    public void setType(boolean type) {
+        Type = type;
     }
 }

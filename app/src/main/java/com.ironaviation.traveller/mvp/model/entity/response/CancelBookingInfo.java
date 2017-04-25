@@ -14,20 +14,22 @@ import java.util.List;
 public class CancelBookingInfo {
 
 
-    private List<String> Reasons;
+
+
+    private List<Reasons> Reasons ;
 
     private boolean IsFreeCancel;
 
     private double CancelPrice;
 
-    public void setString(List<String> Reasons) {
-        this.Reasons = Reasons;
+
+    public List<CancelBookingInfo.Reasons> getReasons() {
+        return Reasons;
     }
 
-    public List<String> getString() {
-        return this.Reasons;
+    public void setReasons(List<CancelBookingInfo.Reasons> reasons) {
+        Reasons = reasons;
     }
-
     public void setIsFreeCancel(boolean IsFreeCancel) {
         this.IsFreeCancel = IsFreeCancel;
     }
@@ -44,5 +46,33 @@ public class CancelBookingInfo {
         return this.CancelPrice;
     }
 
+    public class Reasons {
+        private String Code;
 
+        private String Reason;
+
+        private boolean type;
+
+        public void setCode(String Code){
+            this.Code = Code;
+        }
+        public String getCode(){
+            return this.Code;
+        }
+        public void setReason(String Reason){
+            this.Reason = Reason;
+        }
+        public String getReason(){
+            return this.Reason;
+        }
+
+        public boolean isType() {
+            return type;
+        }
+
+        public void setType(boolean type) {
+            this.type = type;
+        }
+
+    }
 }
