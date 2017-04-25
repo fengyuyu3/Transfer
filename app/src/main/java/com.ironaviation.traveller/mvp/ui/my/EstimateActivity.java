@@ -178,16 +178,15 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
     public void getInitData() {
         Bundle bundle = getIntent().getExtras();
         responses = (RouteStateResponse) bundle.getSerializable(Constant.STATUS);
-        mItDriverName.setText(responses.getDriverName());
-        mItDriverGrade.setText(responses.getDriverRate());
-        mTwCarNum.setText(responses.getCarLicense());
-        mTvMoney.setText(responses.getTotalPrice());
+        mItDriverName.setText(responses.getDriverName() != null ? responses.getDriverName() : "");
+        mItDriverGrade.setText(responses.getDriverRate()  != null ? responses.getDriverRate() : "");
+        mTwCarNum.setText(responses.getCarLicense() != null ? responses.getCarLicense():"");
+        mTvMoney.setText(responses.getTotalPrice()+"");
     }
 
     @Override
     public void showLoading() {
         showProgressDialog();
-
     }
 
     @Override

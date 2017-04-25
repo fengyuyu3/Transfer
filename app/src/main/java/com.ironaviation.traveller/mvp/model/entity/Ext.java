@@ -1,6 +1,7 @@
 package com.ironaviation.traveller.mvp.model.entity;
 
 
+import com.baidu.trace.T;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
@@ -15,10 +16,10 @@ import java.io.Serializable;
  * 修改时间：2017-04-14 20:25
  * 修改备注：
  */
-public class Ext implements Serializable {
+public class Ext<T> implements Serializable {
     private String Name;
 
-    private JsonPrimitive Data;
+    private T Data;
 
     private String JsonData;
 
@@ -34,11 +35,11 @@ public class Ext implements Serializable {
         return this.Name;
     }
 
-    public void setData(JsonPrimitive Data) {
+    public void setData(T Data) {
         this.Data = Data;
     }
 
-    public JsonPrimitive getData() {
+    public T getData() {
         return this.Data;
     }
 

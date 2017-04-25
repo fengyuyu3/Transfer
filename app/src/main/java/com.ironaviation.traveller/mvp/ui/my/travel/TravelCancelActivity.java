@@ -91,7 +91,6 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
     protected void initData() {
         cancel_reasons = getResources().getStringArray(R.array.cancel_reason_list);
 
-
         setTitle(getString(R.string.travel_cancel));
         mToolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_back));
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -105,7 +104,6 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
 
         if (bid != null) {
             mPresenter.getCancelBookInfo(bid);
-
         }
         mLayoutManager = new LinearLayoutManager(this);
         mTravelCancelAdapter = new TravelCancelAdapter(R.layout.item_travel_cancel);
@@ -138,7 +136,6 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
     public void hideLoading() {
         dismissProgressDialog();
     }
-
 
     @Override
     public void showMessage(@NonNull String message) {
