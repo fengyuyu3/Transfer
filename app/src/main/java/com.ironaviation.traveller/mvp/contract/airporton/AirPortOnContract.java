@@ -30,10 +30,12 @@ public interface AirPortOnContract {
         void setSeatNum(List<PassengersRequest> list);
         void setBID(String bid);
         void isOrderSuccess(boolean flag);
+        void setError();
     }
 
     //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存
     interface Model extends IModel {
         Observable<BaseData<AirportGoInfoRequest>> getAirPortInfo(AirportGoInfoRequest params);
+        Observable<BaseData<Boolean>> isOrderSuccessOn(String bid);
     }
 }

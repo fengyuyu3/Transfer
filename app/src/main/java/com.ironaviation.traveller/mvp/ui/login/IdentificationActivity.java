@@ -90,6 +90,7 @@ public class IdentificationActivity extends WEActivity<IdentificationPresenter> 
             public void onClick(View v) {
 
                 startActivity(MainActivity.class);
+                finish();
             }
         });
         mEtName.setOnFocusChangeListener(this);

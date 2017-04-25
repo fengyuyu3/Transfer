@@ -27,6 +27,16 @@ public class LoginEntity extends BaseData{
 
         private String Phone;
 
+        private boolean IsRealValid;
+
+        public boolean isRealValid() {
+            return IsRealValid;
+        }
+
+        public void setRealValid(boolean realValid) {
+            IsRealValid = realValid;
+        }
+
         public String getPhone() {
             return Phone;
         }

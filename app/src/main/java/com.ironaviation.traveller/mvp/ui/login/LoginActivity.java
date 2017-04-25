@@ -92,9 +92,9 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
 
     @Override
     protected void initData() {
-
         initClientId();
         mPresenter.loginRegulation();
+        mCountTimerUtil = new CountTimerUtil(60000,1000,mTvCode);
     }
 
 
@@ -164,6 +164,11 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
         PushManager.getInstance().registerPushIntentService(this.getApplicationContext(), WEGTIntentService.class);
     }
 
+    @Override
+    public void isSuccess() {
+        mCountTimerUtil.start();
+    }
+
 
     @OnClick({R.id.btn_login,R.id.tv_code})
     public void onClick(View view) {
@@ -172,8 +177,7 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
                 mPresenter.getLoginInfo();
                 break;
             case R.id.tv_code:
-                mCountTimerUtil = new CountTimerUtil(60000,1000,mTvCode);
-                mCountTimerUtil.start();
+                mPresenter.getValidCode();
                 break;
         }
     }

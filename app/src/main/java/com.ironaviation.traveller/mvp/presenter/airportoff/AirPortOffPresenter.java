@@ -78,14 +78,23 @@ public class AirPortOffPresenter extends BasePresenter<AirPortOffContract.Model,
                             if(airportGoInfoRequestBaseData.getData() != null) {
                                 mRootView.setAirPortPrice(airportGoInfoRequestBaseData.getData().getTotalPrice(),
                                         airportGoInfoRequestBaseData.getData().getActurlPrice());
-                            }
-                            mRootView.setSeatNum(airportGoInfoRequestBaseData.getData().getPassengers());
-                            if(airportGoInfoRequestBaseData.getData().getBID() != null){
-                                mRootView.setBID(airportGoInfoRequestBaseData.getData().getBID());
+                                if(airportGoInfoRequestBaseData.getData().getBID() != null){
+                                    mRootView.setBID(airportGoInfoRequestBaseData.getData().getBID());
+                                }
+                                mRootView.setSeatNum(airportGoInfoRequestBaseData.getData().getPassengers());
+                            }else{
+                                mRootView.setError();
                             }
                         }else{
+                            mRootView.setError();
                             mRootView.showMessage(airportGoInfoRequestBaseData.getMessage());
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        mRootView.setError();
                     }
                 });
     }

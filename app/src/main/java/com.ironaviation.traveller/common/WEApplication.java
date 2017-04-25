@@ -22,6 +22,8 @@ import com.ironaviation.traveller.BuildConfig;
 import com.ironaviation.traveller.di.module.CacheModule;
 import com.ironaviation.traveller.di.module.ServiceModule;
 import com.ironaviation.traveller.mvp.model.api.Api;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 import me.jessyan.rxerrorhandler.handler.listener.ResponseErroListener;
 import okhttp3.Interceptor;
@@ -58,9 +60,9 @@ public class WEApplication extends BaseApplication {
         }
 
         //微信支付
-        //final IWXAPI msgApi = WXAPIFactory.createWXAPI(context, null);
-        // 将该app注册到微信
-//        msgApi.registerApp("wxd930ea5d5a258f4f");
+        IWXAPI msgApi = WXAPIFactory.createWXAPI(this, null);
+//        // 将该app注册到微信
+        msgApi.registerApp("wxb277d9d5c3cf0829");
         //  installLeakCanary();//leakCanary内存泄露检查
     }
 

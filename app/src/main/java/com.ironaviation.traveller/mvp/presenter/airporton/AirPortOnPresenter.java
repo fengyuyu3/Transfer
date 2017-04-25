@@ -68,13 +68,38 @@ public class AirPortOnPresenter extends BasePresenter<AirPortOnContract.Model, A
                             if(airportGoInfoRequestBaseData.getData() != null) {
                                 mRootView.setAirPortPrice(airportGoInfoRequestBaseData.getData().getTotalPrice(),
                                         airportGoInfoRequestBaseData.getData().getActurlPrice());
-                            }
-                            mRootView.setSeatNum(airportGoInfoRequestBaseData.getData().getPassengers());
-                            if(airportGoInfoRequestBaseData.getData().getBID() != null){
-                                mRootView.setBID(airportGoInfoRequestBaseData.getData().getBID());
+                                if(airportGoInfoRequestBaseData.getData().getBID() != null){
+                                    mRootView.setBID(airportGoInfoRequestBaseData.getData().getBID());
+                                }
+                                mRootView.setSeatNum(airportGoInfoRequestBaseData.getData().getPassengers());
+                            }else{
+                                mRootView.setError();
                             }
                         }else{
+                            mRootView.setError();
                             mRootView.showMessage(airportGoInfoRequestBaseData.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        mRootView.setError();
+                    }
+                });
+    }
+    public void isOrderSuccess(String bid){
+        mModel.isOrderSuccessOn(bid)
+                .compose(RxUtils.<BaseData<Boolean>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<Boolean>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<Boolean> booleanBaseData) {
+                        if(booleanBaseData.isSuccess()){
+                            if(booleanBaseData.getData() != null) {
+                                mRootView.isOrderSuccess(booleanBaseData.getData());
+                            }
+                        }else{
+                            mRootView.showMessage(booleanBaseData.getMessage());
                         }
                     }
                 });

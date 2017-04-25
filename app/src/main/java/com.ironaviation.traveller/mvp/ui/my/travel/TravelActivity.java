@@ -2,7 +2,6 @@ package com.ironaviation.traveller.mvp.ui.my.travel;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.loadmore.LoadMoreView;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.common.AppComponent;
@@ -28,8 +26,8 @@ import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.TravelResponse;
 import com.ironaviation.traveller.mvp.presenter.my.travel.TravelPresenter;
 import com.ironaviation.traveller.mvp.ui.my.EstimateActivity;
+import com.ironaviation.traveller.mvp.ui.my.adapter.TravelAdapter;
 import com.ironaviation.traveller.mvp.ui.payment.InvalidationActivity;
-import com.ironaviation.traveller.mvp.ui.payment.PaymentActivity;
 import com.ironaviation.traveller.mvp.ui.payment.WaitingPaymentActivity;
 import com.jess.arms.utils.UiUtils;
 
@@ -103,6 +101,14 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
                 showNodata(false);
             }
         }, 300);*/
+        setTitle(getString(R.string.travel_detail_title));
+        mToolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_back));
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         setToolbarColor(R.color.base_color);
         mLayoutManager = new LinearLayoutManager(this);
         mRvTravel.setLayoutManager(mLayoutManager);
@@ -159,10 +165,84 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
         }
     }
 
+    public void clearPort(String status,RouteStateResponse responses){ // 送机
+        if(Constant.REGISTERED .equals(status)){
+            setTravelDetailsActivity(responses);
+        }else if(Constant.INHAND .equals(status)){
+            setTravelDetailsActivity(responses);
+        }else if(Constant.ARRIVED .equals(status)){
+            setTravelDetailsActivity(responses);
+        }else if(Constant.CANCEL .equals(status)){
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(Constant.STATUS,responses);
+            bundle.putString(Constant.CHILD_STATUS,Constant.OFF);
+            startActivity(CancelSuccessActivity.class,bundle);
+        }else if(Constant.BOOKSUCCESS .equals(status)){
+            setTravelDetailsActivity(responses);
+        }else if(Constant.COMPLETED .equals(status)){
+            /*Intent intent = new Intent();
+            intent.putExtra(Constant.STATUS,status);
+            startActivity(TravelDetailsActivity.class);*/
+        }else if(Constant.WAIT_APPRAISE .equals(status)){  //等待评价
+            Intent intent = new Intent(this,EstimateActivity.class);
+            intent.putExtra(Constant.STATUS,status);
+            startActivity(intent);
+        }else if(Constant.NOTPAID .equals(status)){ //跳未支付界面
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(Constant.STATUS,responses);
+            bundle.putString(Constant.CHILD_STATUS,Constant.OFF);
+            startActivity(WaitingPaymentActivity.class,bundle);
+        }else if(Constant.INVALIDATION .equals(status) ){ //跳失效界面
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(Constant.STATUS,responses);
+            startActivity(InvalidationActivity.class,bundle);
+        }
+    }
+
+    public void enterPort(String status,RouteStateResponse responses){ // 接机
+        if(Constant.REGISTERED .equals(status)){
+            setTravelDetailsOnActivity(responses);
+        }else if(Constant.INHAND .equals(status)){
+            setTravelDetailsOnActivity(responses);
+        }else if(Constant.ARRIVED .equals(status)){
+            setTravelDetailsOnActivity(responses);
+        }else if(Constant.CANCEL .equals(status)){
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(Constant.STATUS,responses);
+            bundle.putString(Constant.CHILD_STATUS,Constant.ON);
+            startActivity(CancelSuccessActivity.class,bundle);
+        }else if(Constant.BOOKSUCCESS .equals(status)){
+            setTravelDetailsOnActivity(responses);
+        }else if(Constant.COMPLETED .equals(status)){
+            /*Intent intent = new Intent();
+            intent.putExtra(Constant.STATUS,status);
+            startActivity(TravelDetailsActivity.class);*/
+        }else if(Constant.WAIT_APPRAISE .equals(status)){  //等待评价
+            Intent intent = new Intent(this,EstimateActivity.class);
+            intent.putExtra(Constant.STATUS,status);
+            startActivity(intent);
+        }else if(Constant.NOTPAID .equals(status)){ //跳未支付界面
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(Constant.STATUS,responses);
+            bundle.putString(Constant.CHILD_STATUS,Constant.ON);
+            startActivity(WaitingPaymentActivity.class,bundle);
+        }else if(Constant.INVALIDATION .equals(status) ){ //跳失效界面
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(Constant.STATUS,responses);
+            startActivity(InvalidationActivity.class,bundle);
+        }
+    }
+
     public void setTravelDetailsActivity(RouteStateResponse responses){
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constant.STATUS,responses);
         startActivity(TravelDetailsActivity.class,bundle);
+    }
+
+    public void setTravelDetailsOnActivity(RouteStateResponse responses){
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constant.STATUS,responses);
+        startActivity(TravelDetailsOnActivity.class,bundle);
     }
 
     public List<TravelResponse> getList() {
@@ -228,12 +308,22 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
 
     @Override
     public void setRouteStateResponse(RouteStateResponse responses) {
-        setStatus(responses.getStatus(),responses);
+        if(responses.getTripType().equals(Constant.CLEAR_PORT)) {//送机
+            clearPort(responses.getStatus(),responses);
+        }else if(responses.getTripType().equals(Constant.ENTER_PORT)){
+            enterPort(responses.getStatus(),responses);
+        }
+//        setStatus(responses.getStatus(),responses);
     }
 
     @Override
     public void getState(RouteStateResponse routeStateResponse) {
-        setStatus(routeStateResponse.getStatus(),routeStateResponse);
+        if(routeStateResponse.getTripType().equals(Constant.CLEAR_PORT)) {//送机
+            clearPort(routeStateResponse.getStatus(),routeStateResponse);
+        }else if(routeStateResponse.getTripType().equals(Constant.ENTER_PORT)){
+            enterPort(routeStateResponse.getStatus(),routeStateResponse);
+        }
+//        setStatus(routeStateResponse.getStatus(),routeStateResponse);
     }
 
     @Override

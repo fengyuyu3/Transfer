@@ -28,6 +28,7 @@ import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.app.utils.CheckIdCardUtils;
+import com.ironaviation.traveller.app.utils.DialogUtils;
 import com.ironaviation.traveller.app.utils.LocationService;
 import com.ironaviation.traveller.app.utils.TimerUtils;
 import com.ironaviation.traveller.app.utils.TypefaceUtils;
@@ -48,6 +49,7 @@ import com.ironaviation.traveller.mvp.model.entity.response.IdentificationRespon
 import com.ironaviation.traveller.mvp.presenter.airportoff.AirPortOffPresenter;
 import com.ironaviation.traveller.mvp.ui.my.AddressActivity;
 import com.ironaviation.traveller.mvp.ui.payment.WaitingPaymentActivity;
+import com.ironaviation.traveller.mvp.ui.widget.CustomDialog;
 import com.ironaviation.traveller.mvp.ui.widget.FontTextView;
 import com.ironaviation.traveller.mvp.ui.widget.MyTimeDialog;
 import com.ironaviation.traveller.mvp.ui.widget.NumDialog;
@@ -67,6 +69,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import javax.annotation.Resource;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -127,6 +131,10 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     AutoLinearLayout mLlPrice;
     @BindView(R.id.ll_book)
     AutoLinearLayout llBook;
+    @BindView(R.id.tw_reset_price)
+    TextView mTwResetPrice;
+    @BindView(R.id.ll_set_price)
+    AutoLinearLayout mLlSetPrice;
 
     /*@BindView(R.id.pw_id_card)
     PublicView mPwIdCard;*/
@@ -174,6 +182,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
 
     @Override
     protected void initData() {
+        setOrderButtonStatus(false);
         if(UserInfoUtils.getInstance().getInfo(getActivity()) != null
                 && UserInfoUtils.getInstance().getInfo(getActivity()).getPhone() != null){
             phone = UserInfoUtils.getInstance().getInfo(getActivity()).getPhone();
@@ -184,7 +193,8 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         mTerminal = new NumDialog(getActivity(), getTerminal(), this, Constant.AIRPORT_TYPE_TERMINAL);
         mTerminalPopupWindow = new TerminalPopupWindow(getActivity(),getTerminal(),this);
 
-        setRidTimeHide();
+//        setRidTimeHide();
+        setRidTimeShow();
         initEmptyData();
 //        initLocation();
 //        setPrice();
@@ -254,7 +264,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     }
 
 
-    @OnClick({R.id.pw_seat, R.id.pw_airport, R.id.pw_flt,R.id.pw_time,R.id.pw_address,R.id.tv_code_all,R.id.tw_go_to_order})
+    @OnClick({R.id.pw_seat, R.id.pw_airport, R.id.pw_flt,R.id.pw_time,R.id.pw_address,R.id.tv_code_all,R.id.tw_go_to_order,R.id.tw_reset_price})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.pw_seat:
@@ -265,17 +275,12 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
                     mTerminalPopupWindow.setNum(terminalNum);
                     mTerminalPopupWindow.show(mPwSeat);
                 }
+//                test();
 //                mTerminal.show();
                 break;
             case R.id.pw_time:
 //                pvTime.show();
-                long num = (flight.getList().get(0).getTakeOffTime()-System.currentTimeMillis())
-                        /(60*60*4*1000);
-                if(num < 4){
-                    showMessage("离起飞时间小于4小时");
-                }else{
-                    mMyTimeDialog.showDialog(getResources().getString(R.string.airport_input_time));
-                }
+                judgeFlyNo();
                 break;
             case R.id.pw_flt:
                 Intent intent = new Intent(getActivity(), TravelFloatActivity.class);
@@ -301,6 +306,38 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
             case R.id.tw_go_to_order:
                 mPresenter.isOrderSuccess(bid);
                 break;
+            case R.id.tw_reset_price:
+                mPresenter.getAirportInfo(getAirPortInfo());
+                break;
+        }
+    }
+    public void test(){
+        DialogUtils.createDialogViewWithFinish(getActivity(),R.string.travel_empty_one,
+                R.string.travel_cancel_one, R.string.travel_confirm_one, R.string.travel_title_one, new CustomDialog.OnPositiveListener() {
+                    @Override
+                    public void onClick(CustomDialog dialog) {
+                        showMessage("取消");
+                    }
+                }, new CustomDialog.OnNegativeListener() {
+                    @Override
+                    public void onClick(CustomDialog dialog) {
+                        showMessage("确定");
+                    }
+                });
+    }
+
+    public void judgeFlyNo(){ //判断时间
+        String fno = mPwFltNo.getTextInfo();
+        if(fno.equals(getActivity().getResources().getString(R.string.airport_no))){
+            showMessage("请先选择航班号");
+        }else {
+            long num = (flight.getList().get(0).getTakeOffTime() - System.currentTimeMillis())
+                    / (60 * 60 * 1000);
+            if (num < 4) {
+                showMessage("离起飞时间小于4小时");
+            } else {
+                mMyTimeDialog.showDialog(getResources().getString(R.string.airport_input_time));
+            }
         }
     }
 
@@ -388,14 +425,14 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         mAirPortAdapter.setData(list);
     }
 
-    public void setRidTimeHide() {
-        mPwTime.setVisibility(View.GONE);
-        mPwAddress.setVisibility(View.GONE);
+    /*public void setRidTimeHide() {
+        mPwTime.setVisibility(View.VISIBLE);
+        mPwAddress.setVisibility(View.VISIBLE);
         mPwAirport.setVisibility(View.GONE);
         mPwSeat.setVisibility(View.GONE);
         llCertification.setVisibility(View.GONE);
         showPrice(false);
-    }
+    }*/
 
     public void setRidTimeShow() {
         mPwTime.setVisibility(View.VISIBLE);
@@ -562,6 +599,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     @Override
     public void setAirPortPrice(double price, double myPrice) {
         setPrice(price,myPrice);
+        setPrice();//设置显示价格
     }
 
     @Override
@@ -592,8 +630,28 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         if(flag){
             Intent intent = new Intent(getActivity(), WaitingPaymentActivity.class);
             intent.putExtra(Constant.BID,bid);
+            intent.putExtra(Constant.STATUS,Constant.OFF);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void setError() {
+        showPrice();
+        resetPrice();
+        setSeat(Constant.DEFULT_SEAT);
+    }
+
+    public void setPrice(){
+        mTwResetPrice.setVisibility(View.GONE);
+        mLlSetPrice.setVisibility(View.VISIBLE);
+        setOrderButtonStatus(true);
+    }
+
+    public void resetPrice(){
+        mTwResetPrice.setVisibility(View.VISIBLE);
+        mLlSetPrice.setVisibility(View.GONE);
+        setOrderButtonStatus(false);
     }
 
     public class MyAirportHolder {
@@ -610,7 +668,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     public void getFlightInfo(Flight flight){
         this.flight = flight;
         clearData();
-        setRidTimeShow();
+//        setRidTimeShow();
         mPwFltNo.setTextInfo(flight.getInfo().getFlightNo());
         if(getTerminalNum(flight.getList().get(0).getTakeOff()) != -1){
             terminalNum = getTerminalNum(flight.getList().get(0).getTakeOff());
@@ -677,7 +735,9 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         request.setPickupAddress(info.address);
         request.setPickupLatitude(info.location.latitude);
         request.setPickupLongitude(info.location.longitude);
-        request.setPickupTime(TimerUtils.getDateFormat(time,formatDate));
+        request.setPickupTime(time);
+        request.setCity(Constant.CITY);
+        request.setEnterPort(false);
         if(phone != null){
             request.setCallNumber(phone);
         }
@@ -711,21 +771,6 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         return request;
     }
 
-    /*public void setNewSeat(int position){
-        mPwSeat.setTextInfo("需要" + (position + 1) + "个座位");
-        clearMoreData(position);
-        if(mPwFltNo.getTextInfo().substring(0,2).equalsIgnoreCase(Constant.SC_AIRPORT)) {
-            List<AirPortRequest> list = new ArrayList<>();
-            for (int i = 0; i < position+1; i++) {
-                list.add(mAirportRequests.get(i));
-            }
-            addLinearLayout(position);
-            mPwSeat.setLineVisiable(true);
-        }else{
-            mPwSeat.setLineVisiable(false);
-        }
-    }*/
-
     public String isValid(){
         if(DataHelper.getDeviceData(getActivity(),Constant.IDENTIFICATION) != null) {
             IdentificationResponse response = DataHelper.getDeviceData(getActivity(), Constant.IDENTIFICATION);
@@ -733,6 +778,15 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         }else{
             return null;
         }
+    }
+
+    public void setOrderButtonStatus(boolean flag){
+        if(flag){
+            mTwGoToOrder.setBackgroundResource(R.drawable.select_btn_red);
+        }else{
+            mTwGoToOrder.setBackgroundResource(R.drawable.btn_grey_shap);
+        }
+        mTwGoToOrder.setEnabled(flag);
     }
 
 }

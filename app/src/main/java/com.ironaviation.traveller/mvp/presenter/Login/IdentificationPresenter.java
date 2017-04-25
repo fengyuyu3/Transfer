@@ -100,6 +100,7 @@ public class IdentificationPresenter extends BasePresenter<IdentificationContrac
                         if (data.isSuccess()) {
                             saveIdentificationInfo(data.getData());
                             weActivity.startActivity(MainActivity.class);
+                            mRootView.killMyself();
 
                         } else {
                             UiUtils.makeText(data.getMessage());

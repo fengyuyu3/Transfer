@@ -10,6 +10,7 @@ import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.Login;
 import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
+import com.ironaviation.traveller.mvp.model.entity.request.PhoneRequest;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BaseModel;
 
@@ -66,5 +67,12 @@ public class LoginModel extends BaseModel<ServiceManager, CacheManager> implemen
         mLogin.setPhoneNumber(phoneNumber);
         mLogin.setClientId(clientId);
         return mCommonService.login(mLogin);
+    }
+
+    @Override
+    public Observable<BaseData<Boolean>> getValidCode(String phone) {
+        PhoneRequest phoneRequest = new PhoneRequest();
+        phoneRequest.setPhoneNumber(phone);
+        return mCommonService.isValidCode(phoneRequest);
     }
 }

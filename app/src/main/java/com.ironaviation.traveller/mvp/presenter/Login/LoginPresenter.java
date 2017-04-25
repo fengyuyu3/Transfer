@@ -101,7 +101,11 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
                     @Override
                     public void onNext(BaseData<LoginEntity> loginEntityBaseData) {
                         if (loginEntityBaseData.isSuccess()) {
-                            weActivity.startActivity(IdentificationActivity.class);
+                            if(loginEntityBaseData.getData().isRealValid()) {
+                                weActivity.startActivity(MainActivity.class);
+                            }else{
+                                weActivity.startActivity(IdentificationActivity.class);
+                            }
                             mRootView.killMyself();
                             saveLoginInfo(loginEntityBaseData.getData());
                         } else {
@@ -110,7 +114,26 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
                     }
                 });
 
+    }
 
+    public void getValidCode(){
+        if (TextUtils.isEmpty(mRootView.getUserInfo())) {
+            UiUtils.makeText(mApplication.getString(R.string.login_no_userInfo));
+            return;
+        }
+        mModel.getValidCode(mRootView.getUserInfo())
+                .compose(RxUtils.<BaseData<Boolean>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<Boolean>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<Boolean> booleanBaseData) {
+                        if(booleanBaseData.isSuccess()){
+                            mRootView.isSuccess();
+                            mRootView.showMessage(booleanBaseData.getMessage());
+                        }else{
+                            mRootView.showMessage(booleanBaseData.getMessage());
+                        }
+                    }
+                });
     }
 
     /*

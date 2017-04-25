@@ -30,5 +30,8 @@ public interface Api {
                                                        //POST {bid} 获取取消预约详情
     String COMMENTTAGS="/api/Booking/GetCommentTags"; //获取评价标签
     String COMMENTS ="/api/Booking/AddComments"; //添加标签
+    String ENTER_PORT="/api/Booking/AddEnterPortBooking";  //接机订单
+    String VALID_CODE = "/api/Users/SendValidSMS";
+    String CONFIRM_ARRIVE = "/api/Booking/DriverConfirmArrive";
     int RequestSuccess = 1;
 }

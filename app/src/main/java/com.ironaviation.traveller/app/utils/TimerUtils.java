@@ -69,11 +69,7 @@ public class TimerUtils {
 
     public static List<String> getStartHours(long time){
         Date date = null;
-        if(System.currentTimeMillis() > time){
-             date = new Date(System.currentTimeMillis());
-        }else{
-            date = new Date(time);
-        }
+        date = new Date(time);
         List<String> list = new ArrayList<>();
         int currentHour = 0;
         if(date.getMinutes()/10 == 5){
@@ -89,11 +85,7 @@ public class TimerUtils {
 
     public static List<String> getStartMins(long time){
         Date date = null;
-        if(System.currentTimeMillis() > time){
-            date = new Date(System.currentTimeMillis());
-        }else{
-            date = new Date(time);
-        }
+        date = new Date(time);
         List<String> list = new ArrayList<>();
         double currentSec = date.getMinutes();
         if(currentSec >= 50){
@@ -163,11 +155,7 @@ public class TimerUtils {
     public static List<String> getOneHours(long times,long currentTime){
         List<String> list = new ArrayList<>();
         Date currentDate = null;
-        if(System.currentTimeMillis() > currentTime){
-            currentDate = new Date(System.currentTimeMillis());
-        }else{
-            currentDate = new Date(currentTime);
-        }
+        currentDate = new Date(currentTime);
         Date date = new Date(times);
         int hour = date.getHours();
         int currentHour = currentDate.getHours();
@@ -180,11 +168,7 @@ public class TimerUtils {
     public static List<String> getOneMinites(long times,long currentTime){
         List<String> list = new ArrayList<>();
         Date currentDate = null;
-        if(System.currentTimeMillis() > currentTime){
-            currentDate = new Date(System.currentTimeMillis());
-        }else{
-            currentDate = new Date(currentTime);
-        }
+        currentDate = new Date(currentTime);
         Date date = new Date(times);
         int currentMinite = currentDate.getMinutes();
         double minite = date.getMinutes();

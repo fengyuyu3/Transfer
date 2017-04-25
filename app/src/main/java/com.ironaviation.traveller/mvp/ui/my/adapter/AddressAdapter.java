@@ -1,4 +1,4 @@
-package com.ironaviation.traveller.mvp.ui.my;
+package com.ironaviation.traveller.mvp.ui.my.adapter;
 
 import com.baidu.mapapi.search.core.PoiInfo;
 import com.chad.library.adapter.base.BaseQuickAdapter;

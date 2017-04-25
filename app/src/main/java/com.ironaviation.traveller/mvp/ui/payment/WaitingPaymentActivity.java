@@ -11,8 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.baidu.trace.LBSTraceClient;
-import com.baidu.trace.OnEntityListener;
-import com.baidu.trace.TraceLocation;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.utils.TimerUtils;
 import com.ironaviation.traveller.app.EventBusTags;
@@ -117,6 +115,8 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     private String status;
     private String bid;
     private RouteStateResponse responses;
+    private String myStatus; //订单过来的状态
+    private String orderStatus; //订单列表过来的状态
 
 
     @BindView(R.id.id_line)
@@ -141,6 +141,14 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     @Override
     protected void initData() {
         bid =  getIntent().getStringExtra(Constant.BID);
+        myStatus = getIntent().getStringExtra(Constant.STATUS);
+        if(myStatus != null) {
+            if (myStatus.equals(Constant.ON)) {
+                mTtRidingTime.setVisibility(View.GONE);
+            } else if (myStatus.equals(Constant.OFF)) {
+                mTtRidingTime.setVisibility(View.VISIBLE);
+            }
+        }
         if(bid != null) {
             mPresenter.getRouteStateInfo(bid);
             mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.WAITING_PAYMENT,bid);
@@ -154,10 +162,17 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
                     mPresenter.setValue(responses);
 //                    setResponsesData(responses);
                 }
+                orderStatus = pBundle.getString(Constant.CHILD_STATUS);
+                if(orderStatus != null){
+                    if (orderStatus.equals(Constant.ON)) {
+                        mTtRidingTime.setVisibility(View.GONE);
+                    } else if (orderStatus.equals(Constant.OFF)) {
+                        mTtRidingTime.setVisibility(View.VISIBLE);
+                    }
+                }
             }
         }
         setRightFunction(R.mipmap.ic_more, this);
-
     }
 
 
@@ -257,9 +272,8 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
                 break;
             case R.id.tv_determine_cancel:
                 if(status !=null) {
-                    String info = "app_id=2017041706768720&biz_content=%7b%22body%22%3a%22%e7%9c%bc%e9%95%9c%e8%b4%ad%e4%b9%b0%22%2c%22out_trade_no%22%3a%2221234567%22%2c%22product_code%22%3a%22QUICK_MSECURITY_PAY%22%2c%22notify_url%22%3a%22http%3a%2f%2fwww.tralinker.com%2fPay%2fNotifyUrl%22%2c%22subject%22%3a%22%e7%9c%bc%e9%95%9c%22%2c%22timeout_express%22%3a%2230m%22%2c%22total_amount%22%3a%220.01%22%7d&charset=utf-8&format=json&method=alipay.trade.app.pay&sign_type=RSA2&timestamp=2017-04-19+20%3a09%3a11&version=1.0&sign=eR1aP0lie3okd4ZFPnbKEZfGAvct3IrAA1BKUMZzPQSisGk2yvZAsz3T7qUaUYXKKUJWVl6HMvT1HVhBopI9eWqZqi2OENGQebw%2fnNOzyGu1V%2fl%2fUsN%2fz6a983Vvo2Hnwv6zQiNe%2bc2nltZzB3zls0cZBhUhETRYWNMs0Z1lFGNB%2b2SrlL0cUz4hnucFCp4VSI3MsqltjURdbVcqAie%2bVZvZtu2rxMu75PQTULgEiUGbYCvRz%2fKic7cWCNOID3lNCOvaesBnW8w6HCup18hJ944Ajy7bg5Kvt84PdmVa4kMPufnImHxojqNDT82OH%2fj5GkTQjOrhPNwZdO%2foWOV7tQ%3d%3d";
-                    AlipayUtils.aliPay(this,info);
-//                    mPresenter.setPayment(bid, status);
+//                    setStatus(status);
+                    mPresenter.setPayment(bid, status);
                 }else{
                     showMessage("请选择支付方式");
                 }
@@ -268,12 +282,21 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     }
 
     public void setStatus(String status){
-        switch (status){
+        /*switch (status){
             case Constant.ALIPAY:
                 String info = "";
                 AlipayUtils.aliPay(this,info);
-                break;
-        }
+                break;*/
+            switch (status){
+                case Constant.ALIPAY :
+                    String info = "app_id=2017041706768720&biz_content=%7b%22body%22%3a%22%e7%9c%bc%e9%95%9c%e8%b4%ad%e4%b9%b0%22%2c%22out_trade_no%22%3a%2221234567%22%2c%22product_code%22%3a%22QUICK_MSECURITY_PAY%22%2c%22notify_url%22%3a%22http%3a%2f%2fwww.tralinker.com%2fPay%2fNotifyUrl%22%2c%22subject%22%3a%22%e7%9c%bc%e9%95%9c%22%2c%22timeout_express%22%3a%2230m%22%2c%22total_amount%22%3a%220.01%22%7d&charset=utf-8&format=json&method=alipay.trade.app.pay&sign_type=RSA2&timestamp=2017-04-19+20%3a09%3a11&version=1.0&sign=eR1aP0lie3okd4ZFPnbKEZfGAvct3IrAA1BKUMZzPQSisGk2yvZAsz3T7qUaUYXKKUJWVl6HMvT1HVhBopI9eWqZqi2OENGQebw%2fnNOzyGu1V%2fl%2fUsN%2fz6a983Vvo2Hnwv6zQiNe%2bc2nltZzB3zls0cZBhUhETRYWNMs0Z1lFGNB%2b2SrlL0cUz4hnucFCp4VSI3MsqltjURdbVcqAie%2bVZvZtu2rxMu75PQTULgEiUGbYCvRz%2fKic7cWCNOID3lNCOvaesBnW8w6HCup18hJ944Ajy7bg5Kvt84PdmVa4kMPufnImHxojqNDT82OH%2fj5GkTQjOrhPNwZdO%2foWOV7tQ%3d%3d";
+                    AlipayUtils.aliPay(this,info);
+                    break;
+                case Constant.WECHAT:
+                    WXPayUtills wxPayUtills = new WXPayUtills(this);
+                    wxPayUtills.pay();
+                    break;
+            }
     }
 
     @Override

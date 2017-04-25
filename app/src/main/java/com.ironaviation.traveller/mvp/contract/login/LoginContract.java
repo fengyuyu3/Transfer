@@ -36,10 +36,13 @@ public interface LoginContract {
         String getClientId();
 
         void initClientId();
+
+        void isSuccess();
     }
 
     //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存
     interface Model extends IModel {
         Observable<BaseData<LoginEntity>> getLoginInfo(String userInfo, String code,String clientId);
+        Observable<BaseData<Boolean>> getValidCode(String phone);
     }
 }

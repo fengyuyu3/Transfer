@@ -55,6 +55,7 @@ public interface Constant {
     int INDEX = 10;
 
     String STATUS = "status";
+    String CHILD_STATUS = "child_status";
     String REGISTERED = "Registered"; // 预约成功
     String INHAND = "InHand";// 进行中
     String ARRIVED = "Arrived";// 已到达
@@ -64,6 +65,9 @@ public interface Constant {
     String NOTPAID = "NotPaid"; //未支付
     String INVALIDATION = "Invalidation"; //已失效
     String WAIT_APPRAISE = "wait"; //等待评价
+    String TOSEND = "ToSend"; //接其他人
+    String PICKUP = "PickUp"; //接您
+    String ABORAD = "Aboard"; //已上车
     String BID = "bid";
 
     String WECHAT = "WeChat";
@@ -75,6 +79,11 @@ public interface Constant {
     int TYPE_AIRPORT_OFF = 101;//送機
     int TYPE_AIRPORT_ON = 102; //接機
 
-    int SERVICEID = 134558;
+    int SERVICEID = 138814;
+    String CITY = "成都";
+    String ON = "on";  //接机
+    String OFF = "off"; //送机
+    String CLEAR_PORT = "ClearPort"; //送机
+    String ENTER_PORT = "EnterPort"; //接机
 
 }

@@ -35,10 +35,18 @@ android {
         release {
             buildConfigField "boolean", "LOG_DEBUG", "false"
             buildConfigField "boolean", "USE_CANARY", "false"
-            minifyEnabled true
-            shrinkResources true
-            zipAlignEnabled true
+            minifyEnabled false
+            shrinkResources false
+            zipAlignEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    productFlavors.all { flavor ->
+
+    }
+    productFlavors {
+        baidu {
+
         }
     }
 
@@ -100,6 +108,6 @@ dependencies {
     compile 'cn.bingoogolapple:bga-zxing:1.1.6@aar'
     compile 'com.weigan:loopView:0.1.2'
     compile files('libs/alipaySdk-20170309.jar')
-    compile files('libs/libammsdk.jar')
     compile files('libs/BaiduTraceSDK_v2_1_15.jar')
+    compile files('libs/libammsdk.jar')
 }

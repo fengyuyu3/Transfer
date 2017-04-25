@@ -132,7 +132,11 @@ public class TravelPresenter extends BasePresenter<TravelContract.Model, TravelC
                             if(responseBaseData.getData() != null && responseBaseData.getData().getItems() != null
                                     && responseBaseData.getData().getItems().size() > 0) {
                                 mRootView.setDatas(responseBaseData.getData());
-                                num = responseBaseData.getData().getCurrentPageIndex()+1;
+                                if(responseBaseData.getData().getItems().size() <10){
+                                    mRootView.setNoMore();
+                                }else{
+                                    num = responseBaseData.getData().getCurrentPageIndex()+1;
+                                }
                             }else{
                                 mRootView.setNodata();
                             }

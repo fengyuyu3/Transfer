@@ -64,4 +64,9 @@ public class TravelDetailsModel extends BaseModel<ServiceManager, CacheManager> 
     public Observable<BaseData<RouteStateResponse>> getRouteStateInfo(String bid) {
         return mCommonService.getRouteStateInfo(bid);
     }
+
+    @Override
+    public Observable<BaseData<Boolean>> isConfirmArrive(String bid) {
+        return mCommonService.isConfirmArrive(bid);
+    }
 }

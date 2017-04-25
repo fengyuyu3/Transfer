@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/loading"
+    android:layout_width="600px"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="20px">
+<TextView
+    android:id="@+id/tv_content"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text=""
+    android:padding="40px"
+    android:gravity="center"
+    android:textColor="@color/input_box_grey_un_select"
+    android:textSize="28px"
+    android:layout_marginTop="60px"
+    />
+  <View
+      android:layout_width="match_parent"
+      android:layout_height="1px"
+      android:layout_marginTop="40px"
+      android:background="@color/white"
+      />
+  <LinearLayout
+      android:id="@+id/llBtnGroup"
+      android:layout_width="match_parent"
+      android:layout_marginTop="10dp"
+      android:gravity="center_vertical"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/btnPositive"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:clickable="true"
+        android:gravity="center"
+        android:textSize="28px"
+        android:minHeight="80px"
+        android:textColor="@color/play_range_bg" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+      <View
+          android:id="@+id/divider"
+          android:layout_width="1px"
+          android:layout_height="40px"
+          android:layout_gravity="center_vertical"
+          android:background="@color/white" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/btnNegative"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:gravity="center"
+        android:textSize="28px"
+        android:minHeight="80px"
+        android:textColor="@color/play_range_bg" />
+  </LinearLayout>
+</LinearLayout>

@@ -2,7 +2,7 @@ package com.ironaviation.traveller.mvp.presenter.my.travel;
 
 import android.app.Application;
 
-import com.ironaviation.traveller.mvp.contract.my.travel.TravelDetailsContract;
+import com.ironaviation.traveller.mvp.contract.my.travel.TravelDetailsOnContract;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.jess.arms.base.AppManager;
@@ -28,20 +28,11 @@ import javax.inject.Inject;
 
 
 /**
- *
- * 项目名称：Transfer      
- * 类描述：   
- * 创建人：flq  
- * 创建时间：2017/3/29 15:40   
- * 修改人：  
- * 修改时间：2017/3/29 15:40   
- * 修改备注：   
- * @version
- *
+ * Created by Administrator on 2017/4/21.
  */
 
 @ActivityScope
-public class TravelDetailsPresenter extends BasePresenter<TravelDetailsContract.Model, TravelDetailsContract.View> {
+public class TravelDetailsOnPresenter extends BasePresenter<TravelDetailsOnContract.Model, TravelDetailsOnContract.View> {
     private RxErrorHandler mErrorHandler;
     private Application mApplication;
     private ImageLoader mImageLoader;
@@ -49,7 +40,7 @@ public class TravelDetailsPresenter extends BasePresenter<TravelDetailsContract.
     private RouteStateResponse mRouteStateResponse;
 
     @Inject
-    public TravelDetailsPresenter(TravelDetailsContract.Model model, TravelDetailsContract.View rootView
+    public TravelDetailsOnPresenter(TravelDetailsOnContract.Model model, TravelDetailsOnContract.View rootView
             , RxErrorHandler handler, Application application
             , ImageLoader imageLoader, AppManager appManager) {
         super(model, rootView);
@@ -67,6 +58,7 @@ public class TravelDetailsPresenter extends BasePresenter<TravelDetailsContract.
         this.mImageLoader = null;
         this.mApplication = null;
     }
+
     public void getRouteState(String bid){
         mModel.getRouteStateInfo(bid)
                 .compose(RxUtils.<BaseData<RouteStateResponse>>applySchedulers(mRootView))
@@ -74,12 +66,12 @@ public class TravelDetailsPresenter extends BasePresenter<TravelDetailsContract.
                     @Override
                     public void onNext(BaseData<RouteStateResponse> routeStateResponseBaseData) {
                         if(routeStateResponseBaseData.isSuccess()){
-                              if(routeStateResponseBaseData.getData() != null){
-                                  setRouteStateResponse(routeStateResponseBaseData.getData());
-                                  mRouteStateResponse = routeStateResponseBaseData.getData();
-                              }else{
+                            if(routeStateResponseBaseData.getData() != null){
+                                setRouteStateResponse(routeStateResponseBaseData.getData());
+                                mRouteStateResponse = routeStateResponseBaseData.getData();
+                            }else{
 
-                              }
+                            }
                         }else{
 //                            mRootView.showMessage("");
                         }
@@ -88,21 +80,6 @@ public class TravelDetailsPresenter extends BasePresenter<TravelDetailsContract.
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
-                    }
-                });
-    }
-
-    public void isConfirmArrive(final String bid){
-        mModel.isConfirmArrive(bid)
-                .compose(RxUtils.<BaseData<Boolean>>applySchedulers(mRootView))
-                .subscribe(new ErrorHandleSubscriber<BaseData<Boolean>>(mErrorHandler) {
-                    @Override
-                    public void onNext(BaseData<Boolean> booleanBaseData) {
-                        if (booleanBaseData.isSuccess()){
-                            mRootView.isSuccess();
-                        }else{
-                            mRootView.showMessage(booleanBaseData.getMessage());
-                        }
                     }
                 });
     }
@@ -131,6 +108,7 @@ public class TravelDetailsPresenter extends BasePresenter<TravelDetailsContract.
         if(response.getStatus() != null){
             mRootView.setStatus(response.getStatus());
         }
+
     }
 
 }

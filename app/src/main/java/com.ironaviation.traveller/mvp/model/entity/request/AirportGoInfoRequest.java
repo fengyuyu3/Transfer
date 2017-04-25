@@ -36,7 +36,7 @@ public class AirportGoInfoRequest {
     private String TakeOffAddress;
     private String ArriveAddress;
     private String PickupAddress;
-    private String PickupTime;
+    private long PickupTime;
     private double PickupLongitude;
     private double PickupLatitude;
     private String DestAddress;
@@ -46,7 +46,25 @@ public class AirportGoInfoRequest {
     private int TotalPrice;
     private int ActurlPrice;
     private String CallNumber;
+    private String City;
     private List<PassengersRequest> Passengers;
+    private boolean IsEnterPort;
+
+    public boolean isEnterPort() {
+        return IsEnterPort;
+    }
+
+    public void setEnterPort(boolean enterPort) {
+        IsEnterPort = enterPort;
+    }
+
+    public String getCity() {
+        return City;
+    }
+
+    public void setCity(String city) {
+        City = city;
+    }
 
     public String getCallNumber() {
         return CallNumber;
@@ -120,11 +138,11 @@ public class AirportGoInfoRequest {
         this.PickupAddress = PickupAddress;
     }
 
-    public String getPickupTime() {
+    public long getPickupTime() {
         return PickupTime;
     }
 
-    public void setPickupTime(String PickupTime) {
+    public void setPickupTime(long PickupTime) {
         this.PickupTime = PickupTime;
     }
 

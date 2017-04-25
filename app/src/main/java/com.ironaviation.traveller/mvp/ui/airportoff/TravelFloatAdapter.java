@@ -11,7 +11,6 @@ import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.model.entity.response.FlightDetails;
-import com.ironaviation.traveller.mvp.ui.my.travel.TravelAdapter;
 
 import org.simple.eventbus.EventBus;
 

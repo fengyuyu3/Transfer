@@ -21,6 +21,7 @@ import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.travel.TravelCancelContract;
 import com.ironaviation.traveller.mvp.model.entity.response.TravelCancelReason;
 import com.ironaviation.traveller.mvp.presenter.my.travel.TravelCancelPresenter;
+import com.ironaviation.traveller.mvp.ui.my.adapter.TravelCancelAdapter;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoRelativeLayout;
 

@@ -1,20 +1,29 @@
 package com.ironaviation.traveller.mvp.ui.payment;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.payment.DaggerInvalidationComponent;
 import com.ironaviation.traveller.di.module.payment.InvalidationModule;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.payment.InvalidationContract;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.presenter.payment.InvalidationPresenter;
+import com.ironaviation.traveller.mvp.ui.widget.AutoToolbar;
+import com.ironaviation.traveller.mvp.ui.widget.TextTextView;
 import com.jess.arms.utils.UiUtils;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -34,6 +43,31 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
 public class InvalidationActivity extends WEActivity<InvalidationPresenter> implements InvalidationContract.View {
 
 
+    @BindView(R.id.iv_function_left)
+    ImageView mIvFunctionLeft;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.tv_function_right)
+    TextView mTvFunctionRight;
+    @BindView(R.id.iv_function_right)
+    ImageView mIvFunctionRight;
+    @BindView(R.id.toolbar)
+    AutoToolbar mToolbar;
+    @BindView(R.id.tv_payment_amount)
+    TextView mTvPaymentAmount;
+    @BindView(R.id.tv_unit)
+    TextView mTvUnit;
+    @BindView(R.id.tt_order_number)
+    TextTextView mTtOrderNumber;
+    @BindView(R.id.tt_get_on_the_bus_address)
+    TextTextView mTtGetOnTheBusAddress;
+    @BindView(R.id.tt_get_off_the_bus_address)
+    TextTextView mTtGetOffTheBusAddress;
+    @BindView(R.id.tt_need_seats)
+    TextTextView mTtNeedSeats;
+
+    private RouteStateResponse responses;
+
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerInvalidationComponent
@@ -51,7 +85,16 @@ public class InvalidationActivity extends WEActivity<InvalidationPresenter> impl
 
     @Override
     protected void initData() {
+        Bundle bundle = getIntent().getExtras();
+        responses = bundle.getParcelable(Constant.STATUS);
 
+    }
+
+    public void setData(RouteStateResponse responses){
+        mTtOrderNumber.setText(responses.getOrderNo());
+        mTtGetOnTheBusAddress.setText(responses.getPickupAddress());
+        mTtGetOffTheBusAddress.setText(responses.getDestAddress());
+        mTtNeedSeats.setText(responses.getSeatNum()+"");
     }
 
 
@@ -86,5 +129,12 @@ public class InvalidationActivity extends WEActivity<InvalidationPresenter> impl
     @Override
     protected void nodataRefresh() {
 
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

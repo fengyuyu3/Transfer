@@ -95,7 +95,7 @@
                     android:textSize="26px"/>
 
                 <TextView
-                    android:id="@+id/yw_car_color_airport"
+                    android:id="@+id/tw_car_color_airport"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12px"
@@ -115,6 +115,9 @@
 
 
         <com.zhy.autolayout.AutoLinearLayout
+            android:layout_marginBottom="18px"
+            android:layout_marginRight="18px"
+            android:layout_marginLeft="18px"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -228,7 +231,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="48px"
+                    android:layout_marginTop="34px"
                     android:text="@string/travel_go_on_wait"
                     android:textColor="@color/order_success_font"
                     android:textSize="32px"/>
@@ -240,13 +243,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
-                    android:id="@+id/rl_go_to_pay_airport"
+                    android:layout_marginBottom="30px"
+                    android:id="@+id/tw_go_to_pay_airport"
                     style="@style/button_red_style"
                     android:layout_width="@dimen/w_input_box"
                     android:layout_height="@dimen/h_input_box"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="35px"
-                    android:text="@string/travel_arrive">
+                    android:layout_marginTop="20px"
+                    android:text="@string/travel_go_on">
                 </TextView>
 
             </com.zhy.autolayout.AutoLinearLayout>
@@ -268,22 +272,22 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="70px"
-                    android:text="@string/travel_complete"
+                    android:text="@string/traval_compelete"
                     android:textColor="@color/order_success_font"
                     android:textSize="32px"/>
 
                 <TextView
-                    android:id="@+id/rl_goOn_pay_airport"
+                    android:id="@+id/tw_go_on_pay_airport"
                     style="@style/button_red_style"
                     android:layout_width="@dimen/w_input_box"
                     android:layout_height="@dimen/h_input_box"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="70px"
+                    android:layout_marginTop="50px"
                     android:text="@string/travel_arrive">
                 </TextView>
 
             </com.zhy.autolayout.AutoLinearLayout>
-            <!--预计到达时间-->
+            <!--预计到达时间 进行中-->
             <com.zhy.autolayout.AutoLinearLayout
                 android:id="@+id/ll_arrive_time_airport"
                 android:layout_width="match_parent"
@@ -297,7 +301,7 @@
                 android:visibility="gone">
 
                 <TextView
-                    android:id="@+id/tw_arrive_time_airport"
+                    android:id="@+id/tw_title_on"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -307,6 +311,7 @@
                     android:textSize="38px"/>
 
                 <TextView
+                    android:id="@+id/tw_text_on"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -363,6 +368,7 @@
 
             <!--預約成功-->
             <com.zhy.autolayout.AutoLinearLayout
+                android:visibility="gone"
                 android:id="@+id/rl_successful"
                 android:background="@color/white"
                 android:orientation="vertical"
@@ -398,6 +404,7 @@
                     android:layout_width="600px"
                     android:layout_height="wrap_content" />
                 <com.zhy.autolayout.AutoRelativeLayout
+                    android:id="@+id/al_two_dimension"
                     android:layout_gravity="center"
                     android:layout_marginTop="44px"
                     android:background="@drawable/select_but_champagne"

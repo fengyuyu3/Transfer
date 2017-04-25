@@ -1,4 +1,4 @@
-package com.ironaviation.traveller.mvp.ui.my;
+package com.ironaviation.traveller.mvp.ui.my.adapter;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
@@ -13,9 +13,7 @@ import android.widget.TextView;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.common.WEApplication;
 import com.ironaviation.traveller.mvp.model.entity.request.UpdateAddressBookRequest;
-import com.ironaviation.traveller.mvp.model.entity.response.UsualAddressResponse;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuAdapter;
-import com.zhy.autolayout.AutoRelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;

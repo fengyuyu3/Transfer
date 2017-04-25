@@ -76,6 +76,42 @@ public class RouteStateResponse implements Parcelable{
     private String Phone;
     private String FlightNo;
     private String FlightDate;
+    private String ChildStatus;
+    private String ChildStatusName;
+    private String StatusName;
+    private String OrderStatus;
+
+    public String getChildStatus() {
+        return ChildStatus;
+    }
+
+    public void setChildStatus(String childStatus) {
+        ChildStatus = childStatus;
+    }
+
+    public String getChildStatusName() {
+        return ChildStatusName;
+    }
+
+    public void setChildStatusName(String childStatusName) {
+        ChildStatusName = childStatusName;
+    }
+
+    public String getStatusName() {
+        return StatusName;
+    }
+
+    public void setStatusName(String statusName) {
+        StatusName = statusName;
+    }
+
+    public String getOrderStatus() {
+        return OrderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        OrderStatus = orderStatus;
+    }
 
     public String getFlightNo() {
         return FlightNo;
@@ -351,6 +387,9 @@ public class RouteStateResponse implements Parcelable{
         this.Passengers = Passengers;
     }
 
+    public RouteStateResponse() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -388,10 +427,11 @@ public class RouteStateResponse implements Parcelable{
         dest.writeString(this.Phone);
         dest.writeString(this.FlightNo);
         dest.writeString(this.FlightDate);
+        dest.writeString(this.ChildStatus);
+        dest.writeString(this.ChildStatusName);
+        dest.writeString(this.StatusName);
+        dest.writeString(this.OrderStatus);
         dest.writeList(this.Passengers);
-    }
-
-    public RouteStateResponse() {
     }
 
     protected RouteStateResponse(Parcel in) {
@@ -425,6 +465,10 @@ public class RouteStateResponse implements Parcelable{
         this.Phone = in.readString();
         this.FlightNo = in.readString();
         this.FlightDate = in.readString();
+        this.ChildStatus = in.readString();
+        this.ChildStatusName = in.readString();
+        this.StatusName = in.readString();
+        this.OrderStatus = in.readString();
         this.Passengers = new ArrayList<PassengersRequest>();
         in.readList(this.Passengers, PassengersRequest.class.getClassLoader());
     }

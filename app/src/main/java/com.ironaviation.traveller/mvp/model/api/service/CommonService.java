@@ -11,6 +11,7 @@ import com.ironaviation.traveller.mvp.model.entity.request.BIDRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.CancelBookingRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.IdentificationRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.MessageRequest;
+import com.ironaviation.traveller.mvp.model.entity.request.PhoneRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.RouteListMoreRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.TravelRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.UpdateAddressBookRequest;
@@ -101,4 +102,13 @@ public interface CommonService {
 
     @POST(Api.COMMENTS)
     Observable<BaseData<Boolean>> isCommentSuccess(@Body CommentsInfo params);
+
+    @POST(Api.ENTER_PORT)
+    Observable<BaseData<Boolean>> isOrderSuccessOn(@Body BIDRequest params);
+
+    @POST(Api.VALID_CODE)
+    Observable<BaseData<Boolean>> isValidCode(@Body PhoneRequest params);
+
+    @POST(Api.CONFIRM_ARRIVE)
+    Observable<BaseData<Boolean>> isConfirmArrive(@Query("bid") String bid);
 }

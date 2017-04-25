@@ -1,15 +1,14 @@
-package com.ironaviation.traveller.mvp.model.airporton;
+package com.ironaviation.traveller.mvp.model.my.travel;
 
 import android.app.Application;
 
 import com.google.gson.Gson;
-import com.ironaviation.traveller.mvp.contract.airporton.AirPortOnContract;
+import com.ironaviation.traveller.mvp.contract.my.travel.TravelDetailsOnContract;
 import com.ironaviation.traveller.mvp.model.api.cache.CacheManager;
 import com.ironaviation.traveller.mvp.model.api.service.CommonService;
 import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
-import com.ironaviation.traveller.mvp.model.entity.request.AirportGoInfoRequest;
-import com.ironaviation.traveller.mvp.model.entity.request.BIDRequest;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BaseModel;
 
@@ -30,17 +29,17 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 
 /**
- * Created by Administrator on 2017/4/10 0010.
+ * Created by Administrator on 2017/4/21.
  */
 
 @ActivityScope
-public class AirPortOnModel extends BaseModel<ServiceManager, CacheManager> implements AirPortOnContract.Model {
+public class TravelDetailsOnModel extends BaseModel<ServiceManager, CacheManager> implements TravelDetailsOnContract.Model {
     private Gson mGson;
     private Application mApplication;
     private CommonService mCommonService;
 
     @Inject
-    public AirPortOnModel(ServiceManager serviceManager, CacheManager cacheManager, Gson gson, Application application) {
+    public TravelDetailsOnModel(ServiceManager serviceManager, CacheManager cacheManager, Gson gson, Application application) {
         super(serviceManager, cacheManager);
         this.mGson = gson;
         this.mApplication = application;
@@ -55,14 +54,7 @@ public class AirPortOnModel extends BaseModel<ServiceManager, CacheManager> impl
     }
 
     @Override
-    public Observable<BaseData<AirportGoInfoRequest>> getAirPortInfo(AirportGoInfoRequest params) {
-        return mCommonService.getAirPortInfo(params);
-    }
-
-    @Override
-    public Observable<BaseData<Boolean>> isOrderSuccessOn(String bid) {
-        BIDRequest params = new BIDRequest();
-        params.setBID(bid);
-        return mCommonService.isOrderSuccessOn(params);
+    public Observable<BaseData<RouteStateResponse>> getRouteStateInfo(String bid) {
+        return mCommonService.getRouteStateInfo(bid);
     }
 }

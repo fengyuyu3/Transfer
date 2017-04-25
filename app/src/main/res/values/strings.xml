@@ -144,10 +144,22 @@
     <string name="travel_go_out">在您出行前30分钟为您发送司机的信息</string>
     <string name="travel_explain">四川航空免费接送机说明</string>
     <string name="travel_order">确认预约</string>
+
+    <string name="travel_ordering_info">在您出行前一天21:00为您发送司机的信息</string>
+    <string name="travel_ordering_info_day">在您出行前4小时为您发送司机的信息</string>
+    <string name="travel_wait">等待接驾</string>
+    <string name="travel_wait_info">您预约的上车时间为2月2日11:00,请您提前5分钟到达预约地点,做好上车准备</string>
+    <string name="travel_pickup">司机正在接您的途中</string>
+    <string name="travel_pickup_info">司机预计11:30分到达</string>
+    <string name="travel_peer">司机正在接同行乘客</string>
+    <string name="travel_already">您已上车</string>
+    <string name="travel_already_info">预计30分钟到达机场</string>
+    <string name="travel_arrvice">行程已结束</string>
     
     <!--接机-->
     <string name="meet_address">上车地点</string>
     <string name="meet_input_address">请输入下车地址</string>
+    
     <!--查看明细-->
     <string name="check_details">查看明细</string>
     <string name="back_details">退款明细</string>
@@ -181,9 +193,20 @@
     <string name="travel_arrive_info">航班到达后,司机会提前在指定地点等候
     您,即来即上车,无需担心航班延误或提前到达</string>
     <string name="travel_order_two_dimension">订单二维码 </string>
+    <string name="traval_compelete">行程已结束</string>
+    <string name="travel_go_on">确认上车</string>
 
     <!--接机-->
     <string name="travel_get_address">请输入下车地址</string>
 
     <string name="address_my">我的位置</string>
+    <string name="address_locationing">正在努力定位中......</string>
+    <string name="travel_reset_price">点击重新获取价格</string>
+    <string name="travel_cancel_one">取消</string>
+    <string name="travel_confirm_one">确定</string>
+    <string name="travel_title_one">标题</string>
+    <string name="travel_empty_one">""</string>
+    <string name="travel_detail_title">我的行程</string>
+    <string name="travel_detail">行程详情</string>
+
 </resources>

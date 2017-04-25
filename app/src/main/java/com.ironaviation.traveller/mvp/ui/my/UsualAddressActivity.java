@@ -21,6 +21,7 @@ import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.UsualAddressContract;
 import com.ironaviation.traveller.mvp.model.entity.request.UpdateAddressBookRequest;
 import com.ironaviation.traveller.mvp.presenter.my.UsualAddressPresenter;
+import com.ironaviation.traveller.mvp.ui.my.adapter.UsualAddressAdapter;
 import com.ironaviation.traveller.mvp.ui.widget.AutoSwipeMenuRecyclerView;
 import com.jess.arms.utils.UiUtils;
 import com.yanzhenjie.recyclerview.swipe.Closeable;
@@ -28,10 +29,7 @@ import com.yanzhenjie.recyclerview.swipe.OnSwipeMenuItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenu;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuCreator;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuItem;
-import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import butterknife.BindView;

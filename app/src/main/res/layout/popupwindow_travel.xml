@@ -22,6 +22,7 @@
             android:src="@mipmap/ic_airport"/>
 
         <EditText
+            android:maxLength="10"
             android:id="@+id/edt_travel_num"
             android:imeOptions="actionDone"
             android:layout_width="match_parent"

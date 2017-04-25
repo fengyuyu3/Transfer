@@ -42,6 +42,7 @@ import com.ironaviation.traveller.mvp.contract.my.AddressContract;
 import com.ironaviation.traveller.mvp.model.entity.HistoryPoiInfo;
 import com.ironaviation.traveller.mvp.presenter.my.AddressPresenter;
 import com.ironaviation.traveller.mvp.ui.manager.FullyLinearLayoutManager;
+import com.ironaviation.traveller.mvp.ui.my.adapter.AddressAdapter;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
@@ -88,6 +89,8 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
     AutoRelativeLayout mRlUsualAddress;
     @BindView(R.id.ll_address)
     AutoLinearLayout mLlAddress;
+    @BindView(R.id.tw_address_text)
+    TextView mTwAddressText;
     private RecyclerView.LayoutManager mLayoutManager;
 
     private PoiSearch mPoiSearch = null;
@@ -100,6 +103,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
     private String uabId;
     private GeoCoder mSearch = null;
     private LocationService locationService;
+    private HistoryPoiInfo info;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -118,6 +122,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
 
     @Override
     protected void initData() {
+        mTwAddressText.setText(getResources().getString(R.string.address_locationing));
         // 初始化搜索模块，注册搜索事件监听
         mPoiSearch = PoiSearch.newInstance();
         mPoiSearch.setOnGetPoiSearchResultListener(this);
@@ -129,7 +134,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
         mRvAddress.setAdapter(mAddressAdapter);
         infos = mPresenter.getAddress().getPoiInfos();
         mAddressAdapter.setNewData(infos);
-
+        initLocation();
         Bundle pBundle = getIntent().getExtras();
         if (pBundle != null) {
             setView(pBundle);
@@ -163,8 +168,6 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
                 }
                 // mHandler.post(mBackgroundRunnable);//mBackgroundRunnable为线程对象
                 getAllSearchTextFilter(charSequence.toString());
-
-
             }
         });
         mAddressAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -234,7 +237,20 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
                 finish();
                 break;
             case R.id.ll_address:
-                initLocation();
+                if (addressType == Constant.AIRPORT_GO) {
+                    if(info != null) {
+                        EventBus.getDefault().post(info, EventBusTags.AIRPORT_GO);
+                    }else{
+                        showMessage("没有定位成功!");
+                    }
+                } else if (addressType == Constant.AIRPORT_ON) {
+                    if(info != null) {
+                        EventBus.getDefault().post(info, EventBusTags.AIRPORT_ON);
+                    }else{
+                        showMessage("没有定位成功!");
+                    }
+                }
+                finish();
                 break;
         }
     }
@@ -389,7 +405,6 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
      */
     private void initLocation() {
         initMap();
-        showProgressDialog();
         if (locationService == null) {
             locationService = new LocationService(this);
             locationService.registerListener(mListener);
@@ -430,17 +445,8 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
         }*/
         HistoryPoiInfo info = new HistoryPoiInfo(result.getPoiList().get(0),false);
         if(result.getAddress() != null) {
-            if (addressType == Constant.AIRPORT_GO) {
-                EventBus.getDefault().post(info, EventBusTags.AIRPORT_GO);
-            } else if (addressType == Constant.AIRPORT_ON) {
-                EventBus.getDefault().post(info, EventBusTags.AIRPORT_ON);
-            }
-            dismissProgressDialog();
-            finish();
-        }else{
-            dismissProgressDialog();
-            showMessage("定位失败,请重新定位");
+            mTwAddressText.setText(info.name);
+            this.info = info;
         }
-
     }
 }

@@ -48,6 +48,9 @@ public class MyTimeDialog {
             this.mCallBack = mCallBack;
             this.time = time-(60*60*2000);
             currentTime = time-60*60*24*1000;
+            if(System.currentTimeMillis()+60*60*2000 > currentTime){
+               currentTime = System.currentTimeMillis()+60*60*2000;
+            }
         }
         public void showDialog(final String title) {
             mCameraDialog  = new Dialog(context, R.style.picker_dialog_background);

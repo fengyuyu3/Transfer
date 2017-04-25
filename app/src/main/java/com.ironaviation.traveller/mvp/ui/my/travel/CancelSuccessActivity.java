@@ -15,10 +15,13 @@ import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.my.travel.DaggerCancelSuccessComponent;
 import com.ironaviation.traveller.di.module.my.travel.CancelSuccessModule;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.travel.CancelSuccessContract;
 import com.ironaviation.traveller.mvp.model.entity.response.CancelSuccessResponse;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.TravelCancelReason;
 import com.ironaviation.traveller.mvp.presenter.my.travel.CancelSuccessPresenter;
+import com.ironaviation.traveller.mvp.ui.my.adapter.CancelSuccessAdapter;
 import com.ironaviation.traveller.mvp.ui.widget.SpaceItemDecoration;
 import com.jess.arms.utils.UiUtils;
 
@@ -62,6 +65,8 @@ public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> im
     private RecyclerView.LayoutManager mLayoutManager;
 
     private CancelSuccessAdapter mCancelSuccessAdapter;
+    private RouteStateResponse responses;
+    private String status;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -95,7 +100,13 @@ public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> im
         mCancelSuccessAdapter = new CancelSuccessAdapter(R.layout.item_cancel_success);
         mRvCancelSuccess.setLayoutManager(mgr);
         mRvCancelSuccess.setAdapter(mCancelSuccessAdapter);
+        getData();
+    }
 
+    public void getData(){
+        Bundle bundle = getIntent().getExtras();
+        responses = bundle.getParcelable(Constant.STATUS);
+        status = bundle.getString(Constant.CHILD_STATUS);
     }
 
 

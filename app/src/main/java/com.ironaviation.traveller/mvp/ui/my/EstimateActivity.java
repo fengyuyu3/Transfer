@@ -22,6 +22,7 @@ import com.ironaviation.traveller.mvp.contract.my.EstimateContract;
 import com.ironaviation.traveller.mvp.model.entity.response.CommentTag;
 import com.ironaviation.traveller.mvp.model.entity.response.EstimateResponse;
 import com.ironaviation.traveller.mvp.presenter.my.EstimatePresenter;
+import com.ironaviation.traveller.mvp.ui.my.adapter.EstimateAdapter;
 import com.ironaviation.traveller.mvp.ui.widget.CustomerRatingBar;
 import com.jess.arms.utils.UiUtils;
 
@@ -138,7 +139,6 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
                 } else {
                     estimateResponse.setType(true);
                     view.setBackgroundResource(R.drawable.btn_grey_select);
-
                 }
                 return false;
             }

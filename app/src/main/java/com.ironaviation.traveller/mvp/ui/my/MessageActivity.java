@@ -1,14 +1,12 @@
 package com.ironaviation.traveller.mvp.ui.my;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -20,13 +18,13 @@ import com.ironaviation.traveller.di.module.my.MessageModule;
 import com.ironaviation.traveller.mvp.contract.my.MessageContract;
 import com.ironaviation.traveller.mvp.model.entity.response.MessageResponse;
 import com.ironaviation.traveller.mvp.presenter.my.MessagePresenter;
+import com.ironaviation.traveller.mvp.ui.my.adapter.MessageAdapter;
 import com.jess.arms.utils.UiUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 

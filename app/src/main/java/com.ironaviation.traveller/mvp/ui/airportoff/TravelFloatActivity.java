@@ -1,6 +1,5 @@
 package com.ironaviation.traveller.mvp.ui.airportoff;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,11 +11,9 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
@@ -31,8 +28,6 @@ import com.ironaviation.traveller.mvp.contract.airportoff.TravelFloatContract;
 import com.ironaviation.traveller.mvp.model.entity.response.Flight;
 import com.ironaviation.traveller.mvp.model.entity.response.FlightDetails;
 import com.ironaviation.traveller.mvp.presenter.airportoff.TravelFloatPresenter;
-import com.ironaviation.traveller.mvp.ui.my.travel.TravelAdapter;
-import com.ironaviation.traveller.mvp.ui.widget.TimePicker.MyTimePickerView;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;

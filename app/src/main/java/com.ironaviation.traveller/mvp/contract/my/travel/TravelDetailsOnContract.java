@@ -1,12 +1,9 @@
-package com.ironaviation.traveller.mvp.contract.my;
+package com.ironaviation.traveller.mvp.contract.my.travel;
 
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
-import com.ironaviation.traveller.mvp.model.entity.response.CommentTag;
-import com.ironaviation.traveller.mvp.model.entity.response.CommentsInfo;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.jess.arms.mvp.BaseView;
 import com.jess.arms.mvp.IModel;
-
-import java.util.List;
 
 import rx.Observable;
 
@@ -20,27 +17,22 @@ import rx.Observable;
  */
 
 /**
- *
- * 项目名称：Traveller      
- * 类描述：   
- * 创建人：starRing  
- * 创建时间：2017-03-29 19:48   
- * 修改人：starRing  
- * 修改时间：2017-03-29 19:48   
- * 修改备注：   
- * @version
- *
+ * Created by Administrator on 2017/4/21.
  */
-public interface EstimateContract {
+
+public interface TravelDetailsOnContract {
     //对于经常使用的关于UI的方法可以定义到BaseView中,如显示隐藏进度条,和显示文字消息
     interface View extends BaseView {
-        void setList(List<CommentTag> list);
-        void isSuccess();
+        void setDriverName(String name);
+        void setDriverRate(String rate);
+        void setDriverPhone(String phone);
+        void setCarLicense(String liscense);
+        void setCarColor(String carColor,String model);
+        void setStatus(String Status);
     }
 
     //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存
     interface Model extends IModel {
-        Observable<BaseData<List<CommentTag>>> getCommentTagInfo();
-        Observable<BaseData<Boolean>> getCommentInfo(CommentsInfo info);
+        Observable<BaseData<RouteStateResponse>> getRouteStateInfo(String bid);
     }
 }
