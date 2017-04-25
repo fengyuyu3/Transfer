@@ -160,6 +160,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     private LBSTraceClient client;
     protected static OverlayOptions overlayOptions;
     private static Overlay overlay = null;
+    private String bid;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -189,7 +190,10 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 //                status = responses.getStatus();
                 mPresenter.setRouteStateResponse(responses);
                 showStatus(status);
-                mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.TRAVEL_DETAILS,responses.getBID());
+                if(responses.getBID() != null) {
+                    mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.TRAVEL_DETAILS, responses.getBID());
+                    bid = responses.getBID();
+                }
                 showStatus(responses.getStatus());
             }
         }else{
@@ -275,10 +279,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
                 }
                 break;
             case R.id.rl_go_to_pay:
-                Bundle bundle = new Bundle();
-                responses = mPresenter.getData();
-                bundle.putSerializable(Constant.STATUS,responses);
-                startActivity(EstimateActivity.class,bundle);
+                mPresenter.isConfirmArrive(bid);
                 break;
         }
     }
@@ -288,7 +289,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
             case Constant.INHAND: //派单进行中
                 showChildStatus(responses.getChildStatus());
                 break;
-            case Constant.BOOKSUCCESS:
+            case Constant.BOOKSUCCESS: //派单成功
                 waitPickup();
                 break;
             case Constant.REGISTERED:
@@ -463,8 +464,12 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 
     @Override
     public void isSuccess() {
-        Intent intent = new Intent(this,EstimateActivity.class);
-        launchActivity(intent);
+        responses = mPresenter.getData();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constant.STATUS,responses);
+        startActivity(EstimateActivity.class,bundle);
+        /*Intent intent = new Intent(this,EstimateActivity.class);
+        launchActivity(intent);*/
         finish();
     }
 
@@ -478,8 +483,8 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         mSearch.setOnGetRoutePlanResultListener(this);
         //覆盖物初始化
         bd = BitmapDescriptorFactory
-                .fromResource(R.drawable.ic_gcoding);
-        car = BitmapDescriptorFactory.fromResource(R.drawable.arrow);
+                .fromResource(R.mipmap.ic_location_customer);
+        car = BitmapDescriptorFactory.fromResource(R.mipmap.ic_location_car);
     }
 
     //路径规划 route  stNode设置一个假的 Latitude 30.542191  Longitude 104.066535

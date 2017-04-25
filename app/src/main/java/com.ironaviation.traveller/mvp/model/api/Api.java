@@ -30,6 +30,6 @@ public interface Api {
     String COMMENTS ="/api/Booking/AddComments"; //添加标签
     String ENTER_PORT="/api/Booking/AddEnterPortBooking";  //接机订单
     String VALID_CODE = "/api/Users/SendValidSMS";
-    String CONFIRM_ARRIVE = "/api/Booking/DriverConfirmArrive";
+    String CONFIRM_ARRIVE = "/api/Booking/ConfirmArrive";
     int RequestSuccess = 1;
 }

@@ -127,7 +127,6 @@ public class TravelPresenter extends BasePresenter<TravelContract.Model, TravelC
                     public void onError(Throwable e) {
                         super.onError(e);
                         mRootView.setError();
-//                        mRootView.showMessage("网络连接失败");
                     }
                 });
     }

@@ -182,9 +182,15 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
         }else if(Constant.BOOKSUCCESS .equals(status)){
             setTravelDetailsActivity(responses);
         }else if(Constant.COMPLETED .equals(status)){
-            /*Intent intent = new Intent();
-            intent.putExtra(Constant.STATUS,status);
-            startActivity(TravelDetailsActivity.class);*/
+            if(responses.isComment()){
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(Constant.STATUS,responses);
+                startActivity(EstimateActivity.class,bundle);
+            }else{
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(Constant.STATUS,responses);
+                startActivity(EstimateActivity.class,bundle);
+            }
         }else if(Constant.WAIT_APPRAISE .equals(status)){  //等待评价
             Intent intent = new Intent(this,EstimateActivity.class);
             intent.putExtra(Constant.STATUS,status);
@@ -216,9 +222,15 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
         }else if(Constant.BOOKSUCCESS .equals(status)){
             setTravelDetailsOnActivity(responses);
         }else if(Constant.COMPLETED .equals(status)){
-            /*Intent intent = new Intent();
-            intent.putExtra(Constant.STATUS,status);
-            startActivity(TravelDetailsActivity.class);*/
+            if(responses.isComment()){
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(Constant.STATUS,responses);
+                startActivity(EstimateActivity.class,bundle);
+            }else{
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(Constant.STATUS,responses);
+                startActivity(EstimateActivity.class,bundle);
+            }
         }else if(Constant.WAIT_APPRAISE .equals(status)){  //等待评价
             Intent intent = new Intent(this,EstimateActivity.class);
             intent.putExtra(Constant.STATUS,status);

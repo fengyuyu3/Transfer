@@ -73,6 +73,7 @@
             </com.zhy.autolayout.AutoLinearLayout>
 
             <TextView
+                android:id="@+id/tw_car_num"
                 android:layout_width="174px"
                 android:layout_height="44px"
                 android:layout_below="@+id/ll_name"

@@ -8,6 +8,7 @@ import com.ironaviation.traveller.mvp.model.api.cache.CacheManager;
 import com.ironaviation.traveller.mvp.model.api.service.CommonService;
 import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.request.BIDRequest;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BaseModel;
@@ -67,6 +68,8 @@ public class TravelDetailsModel extends BaseModel<ServiceManager, CacheManager> 
 
     @Override
     public Observable<BaseData<Boolean>> isConfirmArrive(String bid) {
-        return mCommonService.isConfirmArrive(bid);
+        BIDRequest request = new BIDRequest();
+        request.setBID(bid);
+        return mCommonService.isConfirmArrive(request);
     }
 }

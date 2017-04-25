@@ -10,6 +10,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -18,13 +19,17 @@ import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.my.DaggerEstimateComponent;
 import com.ironaviation.traveller.di.module.my.EstimateModule;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.EstimateContract;
 import com.ironaviation.traveller.mvp.model.entity.response.CommentTag;
 import com.ironaviation.traveller.mvp.model.entity.response.EstimateResponse;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.presenter.my.EstimatePresenter;
 import com.ironaviation.traveller.mvp.ui.my.adapter.EstimateAdapter;
+import com.ironaviation.traveller.mvp.ui.widget.AutoToolbar;
 import com.ironaviation.traveller.mvp.ui.widget.CustomerRatingBar;
 import com.jess.arms.utils.UiUtils;
+import com.zhy.autolayout.AutoLinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +69,30 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
     RecyclerView mRvEvaluationContent;
     @BindView(R.id.tv_anonymous_evaluation)
     TextView mTvAnonymousEvaluation;
+    @BindView(R.id.iv_function_left)
+    ImageView mIvFunctionLeft;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.tv_function_right)
+    TextView mTvFunctionRight;
+    @BindView(R.id.iv_function_right)
+    ImageView mIvFunctionRight;
+    @BindView(R.id.toolbar)
+    AutoToolbar mToolbar;
+    @BindView(R.id.iv_head)
+    ImageView mIvHead;
+    @BindView(R.id.it_driver_name)
+    TextView mItDriverName;
+    @BindView(R.id.ll_name)
+    AutoLinearLayout mLlName;
+    @BindView(R.id.tv_final_payment)
+    TextView mTvFinalPayment;
+    @BindView(R.id.tv_money)
+    TextView mTvMoney;
+    @BindView(R.id.tv_unit)
+    TextView mTvUnit;
+    @BindView(R.id.tw_car_num)
+    TextView mTwCarNum;
 
     private EstimateAdapter mEstimateAdapter;
 
@@ -71,6 +100,7 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
     private String[] insufficient_reasons;
     private List<EstimateResponse> greatSatisfactionReasonList = new ArrayList<>();
     private List<EstimateResponse> insufficientReasonList = new ArrayList<>();
+    private RouteStateResponse responses;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -89,6 +119,7 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
 
     @Override
     protected void initData() {
+        getInitData();
         great_satisfaction_reasons = getResources().getStringArray(R.array.great_satisfaction_reason_list);
         insufficient_reasons = getResources().getStringArray(R.array.insufficient_reason_list);
         for (int i = 0; i < insufficient_reasons.length; i++) {
@@ -116,7 +147,6 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
             public void onRatingChange(int RatingCount) {
 
                 if (RatingCount >= 3) {
-
                     mEstimateAdapter.setNewData(greatSatisfactionReasonList);
                 } else {
                     mEstimateAdapter.setNewData(insufficientReasonList);
@@ -145,7 +175,14 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
         });
     }
 
-
+    public void getInitData() {
+        Bundle bundle = getIntent().getExtras();
+        responses = (RouteStateResponse) bundle.getSerializable(Constant.STATUS);
+        mItDriverName.setText(responses.getDriverName());
+        mItDriverGrade.setText(responses.getDriverRate());
+        mTwCarNum.setText(responses.getCarLicense());
+        mTvMoney.setText(responses.getTotalPrice());
+    }
 
     @Override
     public void showLoading() {

@@ -110,5 +110,5 @@ public interface CommonService {
     Observable<BaseData<Boolean>> isValidCode(@Body PhoneRequest params);
 
     @POST(Api.CONFIRM_ARRIVE)
-    Observable<BaseData<Boolean>> isConfirmArrive(@Query("bid") String bid);
+    Observable<BaseData<Boolean>> isConfirmArrive(@Body BIDRequest params);
 }
