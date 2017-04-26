@@ -105,7 +105,7 @@ public class TerminalPopupWindow extends PopupWindow {
                 iw.setImageResource(R.mipmap.ic_green_big_point);
                 tw.setTextColor(context.getResources().getColor(R.color.word_already_input));
             }else{
-                iw.setImageResource(R.mipmap.ic_blue_big_point);
+                iw.setImageResource(R.mipmap.ic_grey_big_point);
                 tw.setTextColor(context.getResources().getColor(R.color.airport_edit_gray));
             }
             mLlTerminal.setOnClickListener(new View.OnClickListener() {

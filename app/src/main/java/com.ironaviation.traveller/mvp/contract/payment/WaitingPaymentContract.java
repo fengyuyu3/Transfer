@@ -40,7 +40,7 @@ public interface WaitingPaymentContract {
         void setDestAddress(String address);
         void setSeatNum(int num);
         void setPrice(int num);
-        void setCountdown(long time);
+        void setCountdown(long time,long cdt);
         void setSuccess();
 
     }

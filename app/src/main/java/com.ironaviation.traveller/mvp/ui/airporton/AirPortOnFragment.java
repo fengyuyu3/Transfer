@@ -438,6 +438,7 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
             intent.putExtra(Constant.BID,bid);
             intent.putExtra(Constant.STATUS,Constant.ON);
             startActivity(intent);
+            clearData();
         }
     }
 

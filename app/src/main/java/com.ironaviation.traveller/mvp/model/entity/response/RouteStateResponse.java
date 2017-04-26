@@ -70,7 +70,7 @@ public class RouteStateResponse implements Serializable{
     private boolean IsDeleted;
     private String TripType;
     private String PickupTime;
-    private String Cdt;
+    private long Cdt;
     private boolean IsComment;
     private boolean IsPaied;
     private String Phone;
@@ -82,6 +82,15 @@ public class RouteStateResponse implements Serializable{
     private String StatusName;
     private String OrderStatus;
     private boolean IsMorning;
+    private long CurrentTime;
+
+    public long getCurrentTime() {
+        return CurrentTime;
+    }
+
+    public void setCurrentTime(long currentTime) {
+        CurrentTime = currentTime;
+    }
 
     public boolean isMorning() {
         return IsMorning;
@@ -366,11 +375,11 @@ public class RouteStateResponse implements Serializable{
         this.PickupTime = PickupTime;
     }
 
-    public String getCdt() {
+    public long getCdt() {
         return Cdt;
     }
 
-    public void setCdt(String Cdt) {
+    public void setCdt(long Cdt) {
         this.Cdt = Cdt;
     }
 

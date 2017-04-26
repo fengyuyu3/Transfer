@@ -632,6 +632,8 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
             intent.putExtra(Constant.BID,bid);
             intent.putExtra(Constant.STATUS,Constant.OFF);
             startActivity(intent);
+            clearData();
+            setRidTimeShow();
         }
     }
 

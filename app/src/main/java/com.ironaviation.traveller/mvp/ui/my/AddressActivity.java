@@ -406,7 +406,6 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
      */
     private void initLocation() {
         initMap();
-        showProgressDialog();
         if (locationService == null) {
             locationService = new LocationService(this);
             locationService.registerListener(mListener);
@@ -445,24 +444,22 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
             addressFlag = true;
             mPwAddress.setTextInfo(result.getAddress());
         }*/
-        HistoryPoiInfo info = new HistoryPoiInfo(result.getPoiList().get(0), false);
+        /*HistoryPoiInfo info = new HistoryPoiInfo(result.getPoiList().get(0), false);
         if (result.getAddress() != null) {
             if (addressType == Constant.AIRPORT_GO) {
                 EventBus.getDefault().post(info, EventBusTags.AIRPORT_GO);
             } else if (addressType == Constant.AIRPORT_ON) {
                 EventBus.getDefault().post(info, EventBusTags.AIRPORT_ON);
             }
-            dismissProgressDialog();
-            finish();
         } else {
             dismissProgressDialog();
             showMessage("定位失败,请重新定位");
-        }
+        }*/
 
-        /*HistoryPoiInfo info = new HistoryPoiInfo(result.getPoiList().get(0), false);
+        HistoryPoiInfo info = new HistoryPoiInfo(result.getPoiList().get(0), false);
         if (result.getAddress() != null) {
             mTwAddressText.setText(info.name);
             this.info = info;
-        }*/
+        }
     }
 }

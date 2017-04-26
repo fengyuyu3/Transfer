@@ -219,5 +219,6 @@
     <string name="travel_empty_one">""</string>
     <string name="travel_detail_title">我的行程</string>
     <string name="travel_detail">行程详情</string>
+    <string name="travel_wait_payment">等待支付</string>
 
 </resources>

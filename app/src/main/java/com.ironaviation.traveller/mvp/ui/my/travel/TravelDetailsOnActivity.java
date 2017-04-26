@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.travel.TravelDetailsOnContract;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.presenter.my.travel.TravelDetailsOnPresenter;
+import com.ironaviation.traveller.mvp.ui.my.QRCodeActivity;
 import com.ironaviation.traveller.mvp.ui.widget.AutoToolbar;
 import com.ironaviation.traveller.mvp.ui.widget.MoreActionPopupWindow;
 import com.jess.arms.utils.UiUtils;
@@ -125,10 +127,10 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
 
     @Override
     protected void initData() {
-        setRightFunction(R.mipmap.ic_more, this);
+        initTitle();
         Bundle pBundle = getIntent().getExtras();
         if (pBundle != null) {
-            responses = pBundle.getParcelable(Constant.STATUS);
+            responses = (RouteStateResponse) pBundle.getSerializable(Constant.STATUS);
             if (responses!=null&&!TextUtils.isEmpty(responses.getBID())){
                 mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.WAITING_PAYMENT,responses.getBID());
 //                status = responses.getStatus();
@@ -144,7 +146,7 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
                  String INVALIDATION = "Invalidation"; //已失效
                  String WAIT_APPRAISE = "wait"; //等待评价
                  */
-                status = Constant.ARRIVED;
+//                status = Constant.ARRIVED;
                 showStatus(status);
             }
         }else{
@@ -152,6 +154,17 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
         }
     }
 
+    public void initTitle(){
+        setRightFunction(R.mipmap.ic_more, this);
+        setTitle(getString(R.string.travel_detail));
+        mToolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_back));
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
 
     @Override
     public void showLoading() {
@@ -220,6 +233,7 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
     }
 
     public void waitPickUp(){  //等待上车
+        mLlDriverInfoAirport.setVisibility(View.VISIBLE);
         mIwZoomAirport.setVisibility(View.VISIBLE);
         mIwZoomNomalAirport.setVisibility(View.GONE);
         mLlWaitAirport.setVisibility(View.VISIBLE);   //等待上车
@@ -229,6 +243,7 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
     }
 
     public void arrive(){   //确认到达
+        mLlDriverInfoAirport.setVisibility(View.VISIBLE);
         mIwZoomAirport.setVisibility(View.VISIBLE);
         mIwZoomNomalAirport.setVisibility(View.GONE);
         mLlWaitAirport.setVisibility(View.GONE);   //等待上车
@@ -238,6 +253,7 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
     }
 
     public void GoOn(){     //进行中 司机已发车
+        mLlDriverInfoAirport.setVisibility(View.VISIBLE);
         mIwZoomAirport.setVisibility(View.VISIBLE);
         mIwZoomNomalAirport.setVisibility(View.GONE);
         mLlWaitAirport.setVisibility(View.GONE);   //等待上车
@@ -249,6 +265,7 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
     }
 
     public void aready(){     //进行中  已上车
+        mLlDriverInfoAirport.setVisibility(View.VISIBLE);
         mIwZoomAirport.setVisibility(View.VISIBLE);
         mIwZoomNomalAirport.setVisibility(View.GONE);
         mLlWaitAirport.setVisibility(View.GONE);   //等待上车
@@ -260,6 +277,7 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
     }
 
     public void success(){  //预约成功
+        mLlDriverInfoAirport.setVisibility(View.GONE);
         mIwZoomAirport.setVisibility(View.VISIBLE);
         mIwZoomNomalAirport.setVisibility(View.GONE);
         mLlWaitAirport.setVisibility(View.GONE);   //等待上车
@@ -269,7 +287,12 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
     }
 
     public void AllGone(){
-
+        mIwZoomAirport.setVisibility(View.GONE);
+        mIwZoomNomalAirport.setVisibility(View.VISIBLE);
+        mLlWaitAirport.setVisibility(View.GONE);   //等待上车
+        mLlArriveAirport.setVisibility(View.GONE); //确认到达
+        mLlGoOnAirport.setVisibility(View.GONE);   //进行中
+        mRlSuccessful.setVisibility(View.GONE);    //预约成功
     }
 
     public void showStatus(String status){
@@ -315,10 +338,19 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
             case R.id.tw_go_to_pay_airport: //确认上车按钮
                 break;
             case R.id.al_two_dimension:     //二维码
+
                 break;
             case R.id.tw_address:           //查看地址
                 break;
+            case R.id.iw_zoom_nomal_airport: //隐藏
+
+                break;
         }
+    }
+    public void twoDimenSion(){
+        String orderOn = responses.getOrderNo();
+        Intent intent = new Intent(this, QRCodeActivity.class);
+
     }
 
     @Override

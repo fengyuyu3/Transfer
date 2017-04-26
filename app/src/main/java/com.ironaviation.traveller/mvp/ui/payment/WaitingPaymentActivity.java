@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.baidu.trace.LBSTraceClient;
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.utils.CountTimeMiniteUtil;
+import com.ironaviation.traveller.app.utils.CountTimerUtil;
 import com.ironaviation.traveller.app.utils.TimerUtils;
 import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.common.AppComponent;
@@ -117,7 +119,7 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     private RouteStateResponse responses;
     private String myStatus; //订单过来的状态
     private String orderStatus; //订单列表过来的状态
-
+    private CountTimeMiniteUtil mCountTimeMiniteUtil;
 
     @BindView(R.id.id_line)
     View idLine;
@@ -140,6 +142,7 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
 
     @Override
     protected void initData() {
+        initToolbar();
         bid =  getIntent().getStringExtra(Constant.BID);
         myStatus = getIntent().getStringExtra(Constant.STATUS);
         if(myStatus != null) {
@@ -170,11 +173,29 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
                         mTtRidingTime.setVisibility(View.VISIBLE);
                     }
                 }
+                if(responses.getCurrentTime() != 0 && responses.getCdt() != 0){
+                    setCountTime(24*60*60*1000-(responses.getCurrentTime()-responses.getCdt()));
+                }
             }
         }
         setRightFunction(R.mipmap.ic_more, this);
     }
 
+    public void initToolbar(){
+        setTitle(getString(R.string.travel_wait_payment));
+        mToolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_back));
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        setToolbarColor(R.color.base_color);
+    }
+    public void setCountTime(long time){
+        mCountTimeMiniteUtil = new CountTimeMiniteUtil(time,1000*60,mTvMoneyUnit);
+        mCountTimeMiniteUtil.start();
+    }
 
     /*public void setResponsesData(RouteStateResponse responses){
         setOrderNum(responses.getOrderNo());
@@ -339,8 +360,8 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     }
 
     @Override
-    public void setCountdown(long time) {
-
+    public void setCountdown(long time,long cdt) {
+        setCountTime(24*60*60*1000-(time-cdt));
     }
 
     @Override
