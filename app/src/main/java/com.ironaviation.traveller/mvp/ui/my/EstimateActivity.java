@@ -8,12 +8,15 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.gson.Gson;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
@@ -22,6 +25,7 @@ import com.ironaviation.traveller.di.module.my.EstimateModule;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.EstimateContract;
 import com.ironaviation.traveller.mvp.model.entity.response.CommentTag;
+import com.ironaviation.traveller.mvp.model.entity.response.CommentsResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.EstimateResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.presenter.my.EstimatePresenter;
@@ -93,14 +97,19 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
     TextView mTvUnit;
     @BindView(R.id.tw_car_num)
     TextView mTwCarNum;
+    @BindView(R.id.et_other_estimate)
+    EditText mEtOtherEstimate;
 
     private EstimateAdapter mEstimateAdapter;
+    private RouteStateResponse responses;
 
     private String[] great_satisfaction_reasons;
     private String[] insufficient_reasons;
     private List<EstimateResponse> greatSatisfactionReasonList = new ArrayList<>();
     private List<EstimateResponse> insufficientReasonList = new ArrayList<>();
-    private RouteStateResponse responses;
+    private List<CommentTag> commentShowTags = new ArrayList<>();
+    private List<CommentTag> commentDataTags = new ArrayList<>();
+    private int rate;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -120,14 +129,8 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
     @Override
     protected void initData() {
         getInitData();
-        great_satisfaction_reasons = getResources().getStringArray(R.array.great_satisfaction_reason_list);
-        insufficient_reasons = getResources().getStringArray(R.array.insufficient_reason_list);
-        for (int i = 0; i < insufficient_reasons.length; i++) {
-            insufficientReasonList.add(new EstimateResponse(insufficient_reasons[i]));
-        }
-        for (int i = 0; i < great_satisfaction_reasons.length; i++) {
-            greatSatisfactionReasonList.add(new EstimateResponse(great_satisfaction_reasons[i]));
-        }
+
+
         setTitle(getString(R.string.estimate));
         mToolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_back));
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -145,12 +148,9 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
         mRatingBar.setOnRatingChangeListener(new CustomerRatingBar.OnRatingChangeListener() {
             @Override
             public void onRatingChange(int RatingCount) {
+                setListView(RatingCount + 1);
 
-                if (RatingCount >= 3) {
-                    mEstimateAdapter.setNewData(greatSatisfactionReasonList);
-                } else {
-                    mEstimateAdapter.setNewData(insufficientReasonList);
-                }
+
             }
         });
         //GridLayout 3列
@@ -162,7 +162,7 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
         mEstimateAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public boolean onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                EstimateResponse estimateResponse = (EstimateResponse) adapter.getData().get(position);
+                CommentTag estimateResponse = (CommentTag) adapter.getData().get(position);
                 if (estimateResponse.isType()) {
                     estimateResponse.setType(false);
                     view.setBackgroundResource(R.drawable.btn_write_un_select);
@@ -173,16 +173,26 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
                 return false;
             }
         });
+        if (!responses.isComment()) {
+            mPresenter.getCommentTagInfo();
+
+        } else {
+            setAlreadyComment(responses);
+
+        }
+
     }
 
     public void getInitData() {
         Bundle bundle = getIntent().getExtras();
         responses = (RouteStateResponse) bundle.getSerializable(Constant.STATUS);
         mItDriverName.setText(responses.getDriverName() != null ? responses.getDriverName() : "");
-        mItDriverGrade.setText(responses.getDriverRate()  != null ? responses.getDriverRate() : "");
-        mTwCarNum.setText(responses.getCarLicense() != null ? responses.getCarLicense():"");
-        mTvMoney.setText(responses.getTotalPrice()+"");
+        mItDriverGrade.setText(responses.getDriverRate() != null ? responses.getDriverRate() : "");
+        mTwCarNum.setText(responses.getCarLicense() != null ? responses.getCarLicense() : "");
+        mTvMoney.setText(responses.getTotalPrice() + "");
+
     }
+
 
     @Override
     public void showLoading() {
@@ -244,10 +254,80 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
     @Override
     public void setList(List<CommentTag> list) {
 
+        commentDataTags = list;
+        setListView(5);
+        mRatingBar.setStar(5);
+
     }
 
     @Override
     public void isSuccess() { //成功做什么
+
+    }
+
+    @Override
+    public void setListView(int count) {
+        rate = count;
+        commentShowTags = new ArrayList<>();
+        for (int i = 0; i < commentDataTags.size(); i++) {
+            if (commentDataTags.get(i).getRate() == count) {
+                commentShowTags.add(commentDataTags.get(i));
+            }
+
+        }
+        mEstimateAdapter.setNewData(commentShowTags);
+    }
+
+    @Override
+    public void AlreadyComment() {
+
+
+    }
+
+    @Override
+    public String getOtherReason() {
+        return mEtOtherEstimate.getText().toString();
+    }
+
+    @Override
+    public int getRate() {
+        return rate;
+    }
+
+    @Override
+    public List<String> getTagIds() {
+        List<String> tagids = new ArrayList<>();
+        for (int i = 0; i < commentShowTags.size(); i++) {
+            if (commentShowTags.get(i).isType()) {
+                tagids.add(commentShowTags.get(i).getCTID());
+            }
+
+        }
+        return tagids;
+    }
+
+    @Override
+    public RouteStateResponse getRouteStateResponse() {
+        return responses;
+    }
+
+    @Override
+    public void setAlreadyComment(RouteStateResponse responses) {
+        for (int i = 0; i < responses.getExt().size(); i++) {
+            if (responses.getExt().get(i).getName().equals("Comments")) {
+                CommentsResponse commentsResponse = new Gson().fromJson(responses.getExt().get(i).getJsonData(), CommentsResponse.class);
+                mTvAnonymousEvaluation.setVisibility(View.INVISIBLE);
+                mRatingBar.setmClickable(false);
+                mRatingBar.setStar(commentsResponse.getRate());
+                if (TextUtils.isEmpty(commentsResponse.getNotes())) {
+                    mEtOtherEstimate.setVisibility(View.INVISIBLE);
+                } else {
+                    mEtOtherEstimate.setEnabled(false);
+                    mEtOtherEstimate.setText(commentsResponse.getNotes());
+                }
+                mEstimateAdapter.setNewData(commentsResponse.getTags());
+            }
+        }
 
     }
 
@@ -277,5 +357,13 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
     @OnClick({R.id.tv_anonymous_evaluation})
     public void onClick(View view) {
 
+        switch (view.getId()) {
+            case R.id.tv_anonymous_evaluation:
+                mPresenter.isCommentSuccess(mPresenter.getCommentsInfo());
+                break;
+
+        }
     }
+
+
 }

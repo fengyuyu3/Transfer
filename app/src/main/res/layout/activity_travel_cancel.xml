@@ -97,6 +97,7 @@
     <TextView
         android:id="@+id/tv_determine_cancel"
         style="@style/button_champagne_style"
+        android:layout_gravity="center"
         android:layout_marginTop="@dimen/h_fillet2"
         android:text="@string/determine_cancel"
         >

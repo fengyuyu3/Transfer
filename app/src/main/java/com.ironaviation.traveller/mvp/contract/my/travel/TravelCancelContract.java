@@ -2,6 +2,7 @@ package com.ironaviation.traveller.mvp.contract.my.travel;
 
 import com.google.gson.JsonObject;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.request.CancelOrderRequest;
 import com.ironaviation.traveller.mvp.model.entity.response.CancelBookingInfo;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.TravelCancelReason;
@@ -37,7 +38,7 @@ public interface TravelCancelContract {
 
         void setFreeView(boolean flag, double CancelPrice);
 
-        void setReasonView(List<TravelCancelReason> strings);
+        void setReasonView(List<CancelBookingInfo.Reasons> strings);
 
         String getOtherReason();
     }
@@ -48,7 +49,7 @@ public interface TravelCancelContract {
 
         Observable<BaseData<CancelBookingInfo>> getCancelBookInfo(String bid);
 
-        Observable<BaseData<Boolean>> cancelBooking(String bid, String reason);
+        Observable<BaseData<Boolean>> cancelBooking(String bid, CancelOrderRequest reason);
 
     }
 }

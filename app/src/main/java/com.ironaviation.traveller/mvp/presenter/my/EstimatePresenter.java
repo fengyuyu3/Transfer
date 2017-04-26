@@ -2,10 +2,13 @@ package com.ironaviation.traveller.mvp.presenter.my;
 
 import android.app.Application;
 
+import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.mvp.contract.my.EstimateContract;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.response.CommentTag;
 import com.ironaviation.traveller.mvp.model.entity.response.CommentsInfo;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
+import com.ironaviation.traveller.mvp.ui.login.LoginActivity;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
@@ -31,16 +34,13 @@ import javax.inject.Inject;
 
 
 /**
- *
- * 项目名称：Traveller      
- * 类描述：   
- * 创建人：starRing  
- * 创建时间：2017-03-29 19:49   
- * 修改人：starRing  
- * 修改时间：2017-03-29 19:49   
- * 修改备注：   
- * @version
- *
+ * 项目名称：Traveller
+ * 类描述：
+ * 创建人：starRing
+ * 创建时间：2017-03-29 19:49
+ * 修改人：starRing
+ * 修改时间：2017-03-29 19:49
+ * 修改备注：
  */
 @ActivityScope
 public class EstimatePresenter extends BasePresenter<EstimateContract.Model, EstimateContract.View> {
@@ -48,6 +48,7 @@ public class EstimatePresenter extends BasePresenter<EstimateContract.Model, Est
     private Application mApplication;
     private ImageLoader mImageLoader;
     private AppManager mAppManager;
+    private WEActivity weActivity;
 
     @Inject
     public EstimatePresenter(EstimateContract.Model model, EstimateContract.View rootView
@@ -58,6 +59,7 @@ public class EstimatePresenter extends BasePresenter<EstimateContract.Model, Est
         this.mApplication = application;
         this.mImageLoader = imageLoader;
         this.mAppManager = appManager;
+        weActivity = (WEActivity) mAppManager.getCurrentActivity();
     }
 
     @Override
@@ -69,37 +71,79 @@ public class EstimatePresenter extends BasePresenter<EstimateContract.Model, Est
         this.mApplication = null;
     }
 
-    public void getCommentTagInfo(){
+    public void getCommentTagInfo() {
         mModel.getCommentTagInfo()
                 .compose(RxUtils.<BaseData<List<CommentTag>>>applySchedulers(mRootView))
                 .subscribe(new ErrorHandleSubscriber<BaseData<List<CommentTag>>>(mErrorHandler) {
                     @Override
                     public void onNext(BaseData<List<CommentTag>> commentTagBaseData) {
-                        if(commentTagBaseData.isSuccess()){
-                            if(commentTagBaseData.getData() != null
-                                    && commentTagBaseData.getData().size() > 0){
+                        if (commentTagBaseData.isSuccess()) {
+                            if (commentTagBaseData.getData() != null
+                                    && commentTagBaseData.getData().size() > 0) {
                                 mRootView.setList(commentTagBaseData.getData());
                             }
-                        }else{
+                        } else {
                             mRootView.showMessage(commentTagBaseData.getMessage());
                         }
                     }
                 });
     }
 
-    public void isCommentSuccess(CommentsInfo info){
+    public void getRouteState(String bid) {
+        mModel.getRouteStateInfo(bid)
+                .compose(RxUtils.<BaseData<RouteStateResponse>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<RouteStateResponse>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<RouteStateResponse> routeStateResponseBaseData) {
+                        if (routeStateResponseBaseData.isSuccess()) {
+                            if (routeStateResponseBaseData.getData() != null) {
+                                if (routeStateResponseBaseData.getData().getExt() != null) {
+                                    for (int i = 0; i < routeStateResponseBaseData.getData().getExt().size(); i++){
+                                        routeStateResponseBaseData.getData().getExt().get(i).setJsonData(routeStateResponseBaseData.getData().getExt().get(i).getData().toString());
+                                        routeStateResponseBaseData.getData().getExt().get(i).setData(null);
+                                    }
+                                }
+                            } else {
+
+                            }
+
+                            mRootView.setAlreadyComment(routeStateResponseBaseData.getData());
+                        } else {
+//                            mRootView.showMessage("");
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+                });
+    }
+
+    public void isCommentSuccess(CommentsInfo info) {
         mModel.getCommentInfo(info)
                 .compose(RxUtils.<BaseData<Boolean>>applySchedulers(mRootView))
                 .subscribe(new ErrorHandleSubscriber<BaseData<Boolean>>(mErrorHandler) {
                     @Override
                     public void onNext(BaseData<Boolean> booleanBaseData) {
-                        if(booleanBaseData.isSuccess()){
-
-                        }else{
+                        if (booleanBaseData.isSuccess()) {
+                            getRouteState(mRootView.getRouteStateResponse().getBID());
+                        } else {
                             mRootView.showMessage(booleanBaseData.getMessage());
                         }
                     }
                 });
+    }
+
+    public CommentsInfo getCommentsInfo() {
+        CommentsInfo commentsInfo = new CommentsInfo();
+        commentsInfo.setBID(mRootView.getRouteStateResponse().getBID());
+        commentsInfo.setDID(mRootView.getRouteStateResponse().getDID());
+        commentsInfo.setNotes(mRootView.getOtherReason());
+        commentsInfo.setRate(mRootView.getRate());
+        commentsInfo.setTagIds(mRootView.getTagIds());
+        return commentsInfo;
+
     }
 
 }

@@ -3,6 +3,7 @@ package com.ironaviation.traveller.mvp.contract.my;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.response.CommentTag;
 import com.ironaviation.traveller.mvp.model.entity.response.CommentsInfo;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.jess.arms.mvp.BaseView;
 import com.jess.arms.mvp.IModel;
 
@@ -21,13 +22,13 @@ import rx.Observable;
 
 /**
  *
- * 项目名称：Traveller      
- * 类描述：   
- * 创建人：starRing  
- * 创建时间：2017-03-29 19:48   
- * 修改人：starRing  
- * 修改时间：2017-03-29 19:48   
- * 修改备注：   
+ * 项目名称：Traveller
+ * 类描述：
+ * 创建人：starRing
+ * 创建时间：2017-03-29 19:48
+ * 修改人：starRing
+ * 修改时间：2017-03-29 19:48
+ * 修改备注：
  * @version
  *
  */
@@ -36,11 +37,19 @@ public interface EstimateContract {
     interface View extends BaseView {
         void setList(List<CommentTag> list);
         void isSuccess();
+        void setListView(int count);
+        void AlreadyComment();
+        String getOtherReason();
+        int getRate();
+        List<String>getTagIds();
+        RouteStateResponse getRouteStateResponse();
+        void setAlreadyComment(RouteStateResponse responses);
     }
 
     //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存
     interface Model extends IModel {
         Observable<BaseData<List<CommentTag>>> getCommentTagInfo();
         Observable<BaseData<Boolean>> getCommentInfo(CommentsInfo info);
+        Observable<BaseData<RouteStateResponse>> getRouteStateInfo(String bid);
     }
 }

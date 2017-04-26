@@ -10,6 +10,7 @@ import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.travel.TravelCancelContract;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.request.CancelBookingRequest;
+import com.ironaviation.traveller.mvp.model.entity.request.CancelOrderRequest;
 import com.ironaviation.traveller.mvp.model.entity.response.CancelBookingInfo;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.TravelCancelReason;
@@ -87,14 +88,14 @@ public class TravelCancelPresenter extends BasePresenter<TravelCancelContract.Mo
                     public void onNext(BaseData<CancelBookingInfo> data) {
                         if (data.getData() != null) {
                             mRootView.setFreeView(data.getData().getIsFreeCancel(), data.getData().getCancelPrice());
-                            mRootView.setReasonView(setTravelCancelReason(data.getData().getString()));
+                            mRootView.setReasonView(data.getData().getReasons());
                         }
 
                     }
                 });
     }
 
-    public void cancelBook(final String bid, List<TravelCancelReason> travelCancelReasons, String otherReason) {
+    public void cancelBook(final String bid, List<CancelBookingInfo.Reasons> travelCancelReasons, String otherReason) {
 
         mModel.cancelBooking(bid, setCancelBookingRequest(travelCancelReasons, otherReason))
                 .compose(RxUtils.<BaseData<Boolean>>applySchedulers(mRootView))
@@ -123,22 +124,25 @@ public class TravelCancelPresenter extends BasePresenter<TravelCancelContract.Mo
         return mTravelCancelResponseList;
     }
 
-    private String setCancelBookingRequest(List<TravelCancelReason> travelCancelReasons, String otherReason) {
+    private CancelOrderRequest setCancelBookingRequest(List<CancelBookingInfo.Reasons> travelCancelReasons, String otherReason) {
+        CancelOrderRequest cancelOrderRequest = new CancelOrderRequest();
 
-        StringBuffer reason = new StringBuffer();
+        List<String> stringList = new ArrayList<>();
+
         for (int i = 0; i < travelCancelReasons.size(); i++) {
-            if (i != 0) {
-                reason.append(Constant.SEPARATOR + travelCancelReasons.get(i).getName());
-            } else {
-                reason.append(travelCancelReasons.get(i).getName());
+            if (travelCancelReasons.get(i).isType()) {
+                stringList.add(travelCancelReasons.get(i).getCode());
             }
         }
+        if (stringList.size() > 0) {
+            cancelOrderRequest.setReasonCodes(stringList);
+        }
         if (!TextUtils.isEmpty(otherReason)) {
-            reason.append(Constant.SEPARATOR_OTHER + otherReason);
+            cancelOrderRequest.setReason(otherReason);
         } else {
 
         }
-        return reason.toString();
+        return cancelOrderRequest;
 
     }
 }

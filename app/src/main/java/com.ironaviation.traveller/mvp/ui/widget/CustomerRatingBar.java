@@ -137,6 +137,14 @@ public class CustomerRatingBar extends LinearLayout {
     }
 
 
+
+    public void setStar(int starCount){
+        for (int i = 0; i < starCount; ++i) {
+            ImageView imageView = mImageViewList.get(i);
+            imageView.setImageDrawable(starFillDrawable);
+
+        }
+    }
     /**
      * setting start
      *
