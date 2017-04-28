@@ -19,10 +19,12 @@ import com.ironaviation.traveller.di.component.my.travel.DaggerTravelCancelCompo
 import com.ironaviation.traveller.di.module.my.travel.TravelCancelModule;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.travel.TravelCancelContract;
+import com.ironaviation.traveller.mvp.model.api.Api;
 import com.ironaviation.traveller.mvp.model.entity.response.CancelBookingInfo;
 import com.ironaviation.traveller.mvp.model.entity.response.TravelCancelReason;
 import com.ironaviation.traveller.mvp.presenter.my.travel.TravelCancelPresenter;
 import com.ironaviation.traveller.mvp.ui.my.adapter.TravelCancelAdapter;
+import com.ironaviation.traveller.mvp.ui.webview.WebViewActivity;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoRelativeLayout;
 
@@ -67,11 +69,14 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
     EditText mEtOtherReason;
     @BindView(R.id.tv_free_hint)
     TextView mTvFreeHint;
+    @BindView(R.id.tw_cancel_rules)
+    TextView mTwCancelRules;
     private String[] cancel_reasons;
     private RecyclerView.LayoutManager mLayoutManager;
 
     private TravelCancelAdapter mTravelCancelAdapter;
     private String bid;
+    private String status;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -104,6 +109,9 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
 
         if (bid != null) {
             mPresenter.getCancelBookInfo(bid);
+            if(bundle.getString(Constant.STATUS) != null){
+                status = bundle.getString(Constant.STATUS);
+            }
         }
         mLayoutManager = new LinearLayoutManager(this);
         mTravelCancelAdapter = new TravelCancelAdapter(R.layout.item_travel_cancel);
@@ -167,12 +175,23 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
         ButterKnife.bind(this);
     }
 
-    @OnClick(R.id.tv_determine_cancel)
+    @OnClick({R.id.tv_determine_cancel,R.id.tw_cancel_rules})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_determine_cancel:
                 mPresenter.cancelBook(bid, mTravelCancelAdapter.getData(), getOtherReason());
                 //startActivity(CancelSuccessActivity.class);
+                break;
+            case R.id.tw_cancel_rules:
+                Intent intent = new Intent(this, WebViewActivity.class);
+                if(status.equals(Constant.CLEAR_PORT)) { //送机
+                    intent.putExtra(Constant.TITLE,getResources().getString(R.string.travel_enter_port));
+                    intent.putExtra(Constant.URL, Api.PHONE_CANCEL_ROLE_OFF);
+                }else if(status.equals(Constant.ENTER_PORT)){ //接机
+                    intent.putExtra(Constant.TITLE,getResources().getString(R.string.travel_clear_port));
+                    intent.putExtra(Constant.URL, Api.PHONE_CANCEL_ROLE_ON);
+                }
+                startActivity(intent);
                 break;
         }
     }
@@ -193,6 +212,11 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
     public void setReasonView(List<CancelBookingInfo.Reasons> strings) {
         mTravelCancelAdapter.setNewData(strings);
 
+    }
+
+    @Override
+    public String getStatus() {
+        return status;
     }
 
     @Override

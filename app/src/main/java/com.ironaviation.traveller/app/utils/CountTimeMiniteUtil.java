@@ -25,7 +25,7 @@ public class CountTimeMiniteUtil  extends CountDownTimer {
     public void onFinish()
     {
         mSend.setTextColor(ContextCompat.getColor(WEApplication.getContext(), R.color.code_grey));
-        mSend.setText(mSend.getResources().getText(R.string.login_code));
+        mSend.setText(mSend.getResources().getText(R.string.travel_payment_lose));
     }
 
     @Override
@@ -39,15 +39,15 @@ public class CountTimeMiniteUtil  extends CountDownTimer {
         String t = null;
         int hour = (int) (time/(60*60*1000));
         if(hour < 10){
-            t = "0"+hour;
+            t = "0"+hour+"小时";
         }else{
-            t = hour+"";
+            t = hour+"小时";
         }
         int minite = (int) ((time-hour*60*60*1000)/(60*1000));
         if(minite < 10){
-            t = t+":0"+minite;
+            t = t+":0"+minite+"分";
         }else{
-            t = t+":"+minite;
+            t = t+":"+minite+"分";
         }
         return t;
     }

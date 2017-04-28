@@ -1,5 +1,7 @@
 package com.ironaviation.traveller.mvp.model.entity;
 
+import java.io.Serializable;
+
 /**
  * 项目名称：Transfer
  * 类描述：登录信息
@@ -7,7 +9,7 @@ package com.ironaviation.traveller.mvp.model.entity;
  * 修改时间：2017-01-11 10:16
  * 修改备注：
  */
-public class LoginEntity extends BaseData{
+public class LoginEntity extends BaseData implements Serializable{
 
         private String Name;
 
@@ -29,9 +31,19 @@ public class LoginEntity extends BaseData{
 
         private boolean IsRealValid;
 
-        public boolean isRealValid() {
-            return IsRealValid;
+        private String IDCard;
+
+        public String getIDCard() {
+            return IDCard;
         }
+
+        public void setIDCard(String IDCard) {
+            this.IDCard = IDCard;
+        }
+
+        public boolean isRealValid() {
+                return IsRealValid;
+            }
 
         public void setRealValid(boolean realValid) {
             IsRealValid = realValid;

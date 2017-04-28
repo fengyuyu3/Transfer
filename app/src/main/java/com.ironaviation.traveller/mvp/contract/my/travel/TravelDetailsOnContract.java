@@ -29,10 +29,15 @@ public interface TravelDetailsOnContract {
         void setCarLicense(String liscense);
         void setCarColor(String carColor,String model);
         void setStatus(String Status);
+        void isSuccess();
+        void setBid(String bid);
+        void isPickUpSuccess();
     }
 
     //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存
     interface Model extends IModel {
         Observable<BaseData<RouteStateResponse>> getRouteStateInfo(String bid);
+        Observable<BaseData<Boolean>> isConfirmArrive(String bid);
+        Observable<BaseData<Boolean>> isConfirmPickup(String bid);
     }
 }

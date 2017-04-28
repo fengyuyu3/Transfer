@@ -84,6 +84,37 @@ public class TravelDetailsOnPresenter extends BasePresenter<TravelDetailsOnContr
                 });
     }
 
+    public void isConfirmArrive(final String bid){
+        mModel.isConfirmArrive(bid)
+                .compose(RxUtils.<BaseData<Boolean>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<Boolean>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<Boolean> booleanBaseData) {
+                        if (booleanBaseData.isSuccess()){
+                            mRootView.isSuccess();
+                        }else{
+                            mRootView.showMessage(booleanBaseData.getMessage());
+                        }
+                    }
+                });
+    }
+
+    public void isConfirmPickup(String bid){
+        mModel.isConfirmPickup(bid)
+                .compose(RxUtils.<BaseData<Boolean>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<Boolean>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<Boolean> booleanBaseData) {
+                        if (booleanBaseData.isSuccess()){
+                            mRootView.isPickUpSuccess();
+                        }else{
+                            mRootView.showMessage(booleanBaseData.getMessage());
+                        }
+                    }
+                });
+    }
+
+
     public RouteStateResponse getData(){
         return mRouteStateResponse;
     }
@@ -107,6 +138,9 @@ public class TravelDetailsOnPresenter extends BasePresenter<TravelDetailsOnContr
         }
         if(response.getStatus() != null){
             mRootView.setStatus(response.getStatus());
+        }
+        if(response.getBID() != null){
+            mRootView.setBid(response.getBID());
         }
 
     }

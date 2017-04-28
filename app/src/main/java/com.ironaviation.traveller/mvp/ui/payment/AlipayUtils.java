@@ -1,11 +1,13 @@
 package com.ironaviation.traveller.mvp.ui.payment;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
 import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.common.WEActivity;
+import com.ironaviation.traveller.mvp.ui.my.travel.TravelActivity;
 
 import org.simple.eventbus.EventBus;
 
@@ -34,9 +36,13 @@ public class AlipayUtils {
                     }
                 }
                 if(TextUtils.equals(resultStatus,"9000")) {
-                    EventBus.getDefault().post(result, EventBusTags.ALIPAY);
+                    Intent intent = new Intent(activity, TravelActivity.class);
+                    activity.startActivity(intent);
+                    EventBus.getDefault().post(true, EventBusTags.REFRESH);
+                    activity.finish();
                 }else{
                     Toast.makeText(activity,"支付失败",Toast.LENGTH_SHORT).show();
+                    activity.finish();
                 }
             }
         };

@@ -70,13 +70,13 @@ public class RouteStateResponse implements Serializable{
     private String Status;
     private boolean IsDeleted;
     private String TripType;
-    private String PickupTime;
+    private long PickupTime;
     private long Cdt;
     private boolean IsComment;
     private boolean IsPaied;
     private String Phone;
     private String FlightNo;
-    private String FlightDate;
+    private long FlightDate;
     private List<Ext> Ext;
     private String ChildStatus;
     private String ChildStatusName;
@@ -141,11 +141,11 @@ public class RouteStateResponse implements Serializable{
         FlightNo = flightNo;
     }
 
-    public String getFlightDate() {
+    public long getFlightDate() {
         return FlightDate;
     }
 
-    public void setFlightDate(String flightDate) {
+    public void setFlightDate(long flightDate) {
         FlightDate = flightDate;
     }
 
@@ -368,11 +368,11 @@ public class RouteStateResponse implements Serializable{
         this.TripType = TripType;
     }
 
-    public String getPickupTime() {
+    public long getPickupTime() {
         return PickupTime;
     }
 
-    public void setPickupTime(String PickupTime) {
+    public void setPickupTime(long PickupTime) {
         this.PickupTime = PickupTime;
     }
 

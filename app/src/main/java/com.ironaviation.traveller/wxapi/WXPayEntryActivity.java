@@ -5,12 +5,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.EventBusTags;
+import com.ironaviation.traveller.mvp.ui.my.travel.TravelActivity;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
+
+import org.simple.eventbus.EventBus;
 
 public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
@@ -46,16 +52,18 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
 //		Toast.makeText(this, "baseresp.getType = " + resp.getType(), Toast.LENGTH_SHORT).show();
 
-		Log.e("kkk",resp.errCode+"");
 		switch (resp.errCode) {
 			case BaseResp.ErrCode.ERR_OK:
+				Intent intent = new Intent(this, TravelActivity.class);
+				EventBus.getDefault().post(true,EventBusTags.REFRESH);
+				startActivity(intent);
 				finish();
 				break;
 			case BaseResp.ErrCode.ERR_USER_CANCEL:
-				break;
 			case BaseResp.ErrCode.ERR_AUTH_DENIED:
-				break;
 			case BaseResp.ErrCode.ERR_UNSUPPORT:
+				Toast.makeText(this,getResources().getString(R.string.travel_payment_lose),Toast.LENGTH_SHORT).show();
+				finish();
 				break;
 		}
 	}

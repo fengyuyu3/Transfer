@@ -22,6 +22,7 @@ import com.ironaviation.traveller.mvp.model.entity.response.CommentsInfo;
 import com.ironaviation.traveller.mvp.model.entity.response.Flight;
 import com.ironaviation.traveller.mvp.model.entity.response.IdentificationResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.MessageResponse;
+import com.ironaviation.traveller.mvp.model.entity.response.PassengersResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteListResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.TravelResponse;
@@ -96,7 +97,7 @@ public interface CommonService {
     Observable<BaseData<Boolean>> isOrderSuccess(@Body BIDRequest params);
 
     @GET(Api.PAYMENT)
-    Observable<BaseData<JsonObject>> getPayment(@Query("bid") String bid,@Query("payMethod") String payMethod);
+    Observable<BaseData> getPayment(@Query("bid") String bid,@Query("payMethod") String payMethod);
 
     @GET(Api.COMMENTTAGS)
     Observable<BaseData<List<CommentTag>>> getCommentTagInfo();
@@ -112,4 +113,10 @@ public interface CommonService {
 
     @POST(Api.CONFIRM_ARRIVE)
     Observable<BaseData<Boolean>> isConfirmArrive(@Body BIDRequest params);
+
+    @POST(Api.CONFIRM_PICKUP)
+    Observable<BaseData<Boolean>> isConfirmPickup(@Body BIDRequest params);
+
+    @GET(Api.GET_OTHER_PASSENGER)
+    Observable<BaseData<List<PassengersResponse>>> getOtherPassengerInfo(@Query("bid") String bid);
 }

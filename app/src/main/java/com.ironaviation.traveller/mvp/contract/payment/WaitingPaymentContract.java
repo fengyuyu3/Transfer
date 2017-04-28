@@ -3,6 +3,7 @@ package com.ironaviation.traveller.mvp.contract.payment;
 import com.google.gson.JsonObject;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
+import com.ironaviation.traveller.mvp.model.entity.response.WeChatInfo;
 import com.jess.arms.mvp.BaseView;
 import com.jess.arms.mvp.IModel;
 
@@ -42,12 +43,13 @@ public interface WaitingPaymentContract {
         void setPrice(int num);
         void setCountdown(long time,long cdt);
         void setSuccess();
-
+        void setWeChat(WeChatInfo info);
+        void setAliPay(String aliPay);
     }
 
     //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存
     interface Model extends IModel {
         Observable<BaseData<RouteStateResponse>> getRouteStateInfo(String bid);
-        Observable<BaseData<JsonObject>> getPayment(String bid,String payMethod);
+        Observable<BaseData> getPayment(String bid,String payMethod);
     }
 }

@@ -30,7 +30,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <com.ironaviation.traveller.mvp.ui.widget.FontTextView
-            android:text="21.00"
+            android:id="@+id/tw_go_back_money"
+            android:text=""
             android:textSize="80px"
             android:textColor="@color/word_red"
             android:layout_width="wrap_content"
@@ -57,10 +58,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
+            android:id="@+id/tw_order_no"
             android:layout_marginLeft="159px"
             android:textSize="28px"
             android:textColor="@color/login_edit"
-            android:text="1111000"
+            android:text=""
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </com.zhy.autolayout.AutoLinearLayout>
@@ -78,10 +80,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
+            android:id="@+id/tw_payment_money"
             android:layout_marginLeft="159px"
             android:textSize="28px"
             android:textColor="@color/login_edit"
-            android:text="1111000"
+            android:text=""
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </com.zhy.autolayout.AutoLinearLayout>
@@ -99,10 +102,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
+            android:id="@+id/tw_appointment_money"
             android:layout_marginLeft="159px"
             android:textSize="28px"
             android:textColor="@color/color_brown"
-            android:text="1111000"
+            android:text=""
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </com.zhy.autolayout.AutoLinearLayout>
@@ -119,11 +123,13 @@
             android:text="@string/back_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
         <TextView
+            android:id="@+id/tw_back_money"
             android:layout_marginLeft="159px"
             android:textSize="28px"
             android:textColor="@color/color_brown"
-            android:text="1111000"
+            android:text=""
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </com.zhy.autolayout.AutoLinearLayout>
@@ -143,15 +149,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
+            android:id="@+id/tw_payment_date"
             android:layout_marginLeft="159px"
             android:textSize="28px"
             android:textColor="@color/login_edit"
-            android:text="1111000"
+            android:text="@string/travel_go_back_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
     </com.zhy.autolayout.AutoLinearLayout>
     <TextView
+        android:id="@+id/tw_check_rule"
         android:drawablePadding="10px"
         android:gravity="center"
         android:drawableLeft="@mipmap/ic_state"

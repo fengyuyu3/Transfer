@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 
+import com.ironaviation.traveller.mvp.model.entity.response.WeChatInfo;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
@@ -36,14 +37,14 @@ public class WXPayUtills {
      *
      *
      */
-    public void pay(){
+    public void pay(WeChatInfo info){
         if(api == null){
             initWX();
         }
         if(!api.isWXAppInstalled()){
             createDialog();
         }else{
-            wxPay();
+            wxPay(info);
         }
 
     }
@@ -60,17 +61,16 @@ public class WXPayUtills {
      * ,"Package":"Sign=WXPay","Sign":"BA0A8F857902D813BCD057207E9BC5BC"}
      */
 
-    public void wxPay(){
+    public void wxPay(WeChatInfo info){
         PayReq req = new PayReq();
         //req.appId = "wxf8b4f85f3a794e77";  // 测试用appId
-        req.appId			= "wxb277d9d5c3cf0829";
-        req.partnerId		= "1461817702";
-        req.prepayId		= "wx20170420154915c24ac2acaa0178722295";
-        req.nonceStr		= "KKKQNLLQoQCJwoI";
-        req.timeStamp		= "1492674552";
-        req.packageValue	= "Sign=WXPay";
-        req.sign			= "BA0A8F857902D813BCD057207E9BC5BC";
-
+        req.appId			= info.getAppId();
+        req.partnerId		= info.getPartnerId();
+        req.prepayId		= info.getPrepayId();
+        req.nonceStr		= info.getNonceStr();
+        req.timeStamp		= info.getTimeStamp();
+        req.packageValue	= info.getPackage();
+        req.sign			= info.getSign();
         // Toast.makeText(PayActivity.this, "正常调起支付", Toast.LENGTH_SHORT).show();
         // 在支付之前，如果应用没有注册到微信，应该先调用IWXMsg.registerApp将应用注册到微信
         api.sendReq(req);
@@ -80,12 +80,12 @@ public class WXPayUtills {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setMessage("请安装微信");
         builder.setPositiveButton("确定",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
         builder.create().show();
     }
 }

@@ -87,7 +87,6 @@ public class InvalidationActivity extends WEActivity<InvalidationPresenter> impl
     protected void initData() {
         Bundle bundle = getIntent().getExtras();
         responses = (RouteStateResponse) bundle.getSerializable(Constant.STATUS);
-
     }
 
     public void setData(RouteStateResponse responses){
@@ -96,7 +95,6 @@ public class InvalidationActivity extends WEActivity<InvalidationPresenter> impl
         mTtGetOffTheBusAddress.setText(responses.getDestAddress());
         mTtNeedSeats.setText(responses.getSeatNum()+"");
     }
-
 
 
     @Override

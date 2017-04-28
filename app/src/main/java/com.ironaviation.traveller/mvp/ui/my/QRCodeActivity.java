@@ -48,6 +48,9 @@ public class QRCodeActivity extends WEActivity {
     @Override
     protected void initData() {
         createEnglishQRCode("11326");
+        initToolbar();
+    }
+    public void initToolbar(){
         setTitle(getString(R.string.order_qr_code));
         setLeftFunction(ContextCompat.getDrawable(this, R.mipmap.ic_back), new View.OnClickListener() {
             @Override

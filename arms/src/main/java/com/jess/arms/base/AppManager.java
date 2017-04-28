@@ -120,7 +120,7 @@ public class AppManager {
             return;
         }
         getCurrentActivity().startActivity(intent);
-        startAnimation();
+//        startAnimation();
     }
 
     public void startAnimation(){
@@ -134,7 +134,7 @@ public class AppManager {
      */
     public void startActivity(Class activityClass) {
         startActivity(new Intent(mApplication, activityClass));
-        startAnimation();
+//        startAnimation();
     }
 
     /**

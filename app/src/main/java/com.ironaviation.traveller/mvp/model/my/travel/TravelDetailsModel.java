@@ -9,9 +9,12 @@ import com.ironaviation.traveller.mvp.model.api.service.CommonService;
 import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.request.BIDRequest;
+import com.ironaviation.traveller.mvp.model.entity.response.PassengersResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BaseModel;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -71,5 +74,10 @@ public class TravelDetailsModel extends BaseModel<ServiceManager, CacheManager> 
         BIDRequest request = new BIDRequest();
         request.setBID(bid);
         return mCommonService.isConfirmArrive(request);
+    }
+
+    @Override
+    public Observable<BaseData<List<PassengersResponse>>> getPassengerInfo(String bid) {
+        return mCommonService.getOtherPassengerInfo(bid);
     }
 }

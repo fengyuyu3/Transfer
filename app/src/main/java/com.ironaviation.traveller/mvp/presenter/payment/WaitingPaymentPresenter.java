@@ -2,11 +2,14 @@ package com.ironaviation.traveller.mvp.presenter.payment;
 
 import android.app.Application;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.ironaviation.traveller.common.WEActivity;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.payment.WaitingPaymentContract;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
+import com.ironaviation.traveller.mvp.model.entity.response.WeChatInfo;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
@@ -87,14 +90,21 @@ public class WaitingPaymentPresenter extends BasePresenter<WaitingPaymentContrac
                 });
     }
 
-    public void setPayment(String bid,String payment){
+    public void setPayment(String bid, final String payment){
         mModel.getPayment(bid,payment)
-                .compose(RxUtils.<BaseData<JsonObject>>applySchedulers(mRootView))
-                .subscribe(new ErrorHandleSubscriber<BaseData<JsonObject>>(mErrorHandler) {
+                .compose(RxUtils.<BaseData>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData>(mErrorHandler) {
                     @Override
-                    public void onNext(BaseData<JsonObject> jsonObjectBaseData) {
+                    public void onNext(BaseData jsonObjectBaseData) {
                         if(jsonObjectBaseData.isSuccess()){
-                            mRootView.setSuccess();
+                            if(Constant.WECHAT.equals(payment)){
+                                String in = jsonObjectBaseData.getData().toString();
+                                WeChatInfo info = new Gson().fromJson(in,WeChatInfo.class);
+                                mRootView.setWeChat(info);
+                            }else if(Constant.ALIPAY.equals(payment)){
+                                String info = jsonObjectBaseData.getData().toString();
+                                mRootView.setAliPay(info);
+                            }
                         }
                     }
                 });
@@ -111,14 +121,8 @@ public class WaitingPaymentPresenter extends BasePresenter<WaitingPaymentContrac
         if(response.getFlightNo() != null) {//航班号
             mRootView.setTravelNO(response.getFlightNo());
         }
-        if(response.getFlightDate() != null){
-            long time ;
-            try{
-                time = Long.parseLong(response.getFlightDate());
-            }catch (Exception e){
-                time = 0;
-            }
-            mRootView.setTime(time);
+        if(response.getPickupTime() != 0){
+            mRootView.setTime(response.getPickupTime());
         }
         if(response.getPickupAddress() != null){
             mRootView.setPickUpAddress(response.getPickupAddress());

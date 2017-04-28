@@ -377,4 +377,9 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
     public void setNoMore() {
         mTravelAdapter.loadMoreEnd(true);
     }
+
+    @Subscriber(tag=EventBusTags.REFRESH)
+    public void refresh(boolean flag){
+        mPresenter.getTravelData(defaultIndex);
+    }
 }

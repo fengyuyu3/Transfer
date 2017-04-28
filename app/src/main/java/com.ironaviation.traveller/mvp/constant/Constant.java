@@ -37,7 +37,7 @@ public interface Constant {
     int SEAT_NUM = 6;
 
     String SC_AIRPORT = "3u";
-    int DEFULT_SEAT = 2;
+    int DEFULT_SEAT = 1;
     /*addressType*/
     String ADDRESS_TYPE = "addressType";
     String UABID = "uabid";
@@ -90,6 +90,20 @@ public interface Constant {
 
 
     String CLASS_PAY_INFO = "PayInfo";
-
+    String CANCELREASON = "CancelReason"; //取消原因
+    String PAYMENT= "payment"; //付款方式
+    String REAL_PRICE  = "real_price";  //真实价格
+    String FIXED_PRICE = "fixed_price"; //一口价
+    String FREE_PASSENGER = "free_passenger"; //免费乘客
+    String FREE_PASSENGER_PRICE = "free_passenger_price"; //免费乘客
+    String PEOPLE_NUM = "num"; //乘客数
+    String PAYMENT_NOMAL = "payment_nomal";
+    String PAYMETHOD = "PayMethod";
+    String PAY_WECHAT = "微信支付";
+    String PAY_ALIPAY = "支付宝支付";
+    String URL = "url";
+    String TITLE = "title";
+    int SETTING = 201;
+    int AUTO_SETTTING = 202;
 
 }

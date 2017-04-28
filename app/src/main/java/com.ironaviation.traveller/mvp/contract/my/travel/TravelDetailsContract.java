@@ -1,9 +1,12 @@
 package com.ironaviation.traveller.mvp.contract.my.travel;
 
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.response.PassengersResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.jess.arms.mvp.BaseView;
 import com.jess.arms.mvp.IModel;
+
+import java.util.List;
 
 import rx.Observable;
 
@@ -39,11 +42,14 @@ public interface TravelDetailsContract {
         void setCarColor(String carColor,String model);
         void setStatus(String Status);
         void isSuccess();
+        void setBid(String bid);
+        void setPassengersInfo(List<PassengersResponse> info);
     }
 
     //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存
     interface Model extends IModel {
         Observable<BaseData<RouteStateResponse>> getRouteStateInfo(String bid);
         Observable<BaseData<Boolean>> isConfirmArrive(String bid);
+        Observable<BaseData<List<PassengersResponse>>> getPassengerInfo(String id);
     }
 }

@@ -82,23 +82,43 @@ public class CancelSuccessPresenter extends BasePresenter<CancelSuccessContract.
                 .subscribe(new ErrorHandleSubscriber<BaseData<RouteStateResponse>>(mErrorHandler) {
                     @Override
                     public void onNext(BaseData<RouteStateResponse> data) {
-                        if (data.getData() != null) {
-                            //mRootView.setResponsibilityView(data.getData().getIsFreeCancel(), data.getData().getCancelPrice());
-                            getRouteStateInfo(data.getData());
-
-
+                        if(data.isSuccess()) {
+                            if (data.getData() != null) {
+                                if (data.getData().getExt() != null) {
+                                    for (int i = 0; i < data.getData().getExt().size(); i++){
+                                        data.getData().getExt().get(i).setJsonData(data.getData().getExt().get(i).getData().toString());
+                                        data.getData().getExt().get(i).setData(null);
+                                    }
+                                }
+                                //mRootView.setResponsibilityView(data.getData().getIsFreeCancel(), data.getData().getCancelPrice());
+                                getRouteStateInfo(data.getData());
+                                mRootView.setRespons(data.getData());
+                            }
                         }
-
                     }
                 });
     }
 
     public void getRouteStateInfo(RouteStateResponse data) {
         if (data != null) {
-            //mRootView.setResponsibilityView(data.getData().getIsFreeCancel(), data.getData().getCancelPrice());
-
-            if (!TextUtils.isEmpty(data.getNotes())) {
-                setReasons(data.getNotes());
+            List<String> list = new ArrayList<>();
+            if(data.getExt() != null && data.getExt().size() != 0){
+                for(int i = 0; i < data.getExt().size(); i++){
+                    if(!TextUtils.isEmpty(data.getExt().get(i).getName()) &&
+                        data.getExt().get(i).getName().equals(Constant.CANCELREASON)){
+                        String d = data.getExt().get(i).getJsonData();
+                        list = jsonData(d);
+                    }
+                }
+            }
+            if(!TextUtils.isEmpty(data.getNotes())){
+                if(list != null && list.size() > 0) {
+                    setNewReason(list, data.getNotes());
+                }
+            }else{
+                if(list != null && list.size() > 0) {
+                    setNewReason(list, "");
+                }
             }
 
             if (!TextUtils.isEmpty(data.getDriverName())) {
@@ -124,8 +144,7 @@ public class CancelSuccessPresenter extends BasePresenter<CancelSuccessContract.
             for (int i = 0; i < Ext.size(); i++) {
                 if (Ext.get(i).getName().equals(Constant.CLASS_PAY_INFO)) {
                     try {
-                        payInfo = new Gson().fromJson(Ext.get(i).getJsonData(), PayInfo.class);
-
+                        payInfo = new Gson().fromJson(Ext.get(i).getJsonData(),PayInfo.class);
                     }catch (Exception e){
                         //友盟
                     }
@@ -146,6 +165,61 @@ public class CancelSuccessPresenter extends BasePresenter<CancelSuccessContract.
         } else {
             mRootView.setResponsibilityView(WEApplication.getContext().getString(R.string.penal_sum_hint));
         }
+    }
+
+
+    public PayInfo getInfo(String info){
+        PayInfo info1 = new PayInfo();
+        info = info.substring(1,info.length()-1);
+        String s[] = info.split(",");
+        for(int i = 0; i < s.length; i++){
+            String c[] = s[i].split("=");
+            if(c[0].equals("PIID")){
+                info1.setPIID(c[1]);
+            } else if(c[0].equals("BID")){
+                info1.setBID(c[1]);
+            }else if(c[0].equals("PayMethod")){
+                info1.setPayMethod(c[1]);
+            }else if(c[0].equals("PayAccount")){
+                info1.setPayAccount(c[1]);
+            }else if(c[0].equals("Amount")){
+                if(c[1] != null){
+                    try {
+                        info1.setAmount(Double.parseDouble(c[1]));
+                    }catch (Exception e){
+
+                    }
+                }
+
+            }else if(c[0].equals("IsPaied")){
+                if(c[1]!= null && c[1].equals("true")) {
+                    info1.setIsPaied(Boolean.parseBoolean(c[1]));
+                }else if(c[1]!= null && c[1].equals("false")){
+                    info1.setIsPaied(Boolean.parseBoolean(c[1]));
+                }
+            }else if(c[0].equals("Rebate")){
+                if(c[1] != null){
+                    try {
+                        info1.setRebate(Double.parseDouble(c[1]));
+                    }catch (Exception e){
+
+                    }
+                }
+            }else if(c[0].equals("IsRebate")){
+                if(c[1]!= null && c[1].equals("true")) {
+                    info1.setIsRebate(Boolean.parseBoolean(c[1]));
+                }else if(c[1]!= null && c[1].equals("false")){
+                    info1.setIsRebate(Boolean.parseBoolean(c[1]));
+                }
+            }else if(c[0].equals("IsFreeCancel")){
+                if(c[1]!= null && c[1].equals("true")) {
+                    info1.setIsFreeCancel(Boolean.parseBoolean(c[1]));
+                }else if(c[1]!= null && c[1].equals("false")){
+                    info1.setIsFreeCancel(Boolean.parseBoolean(c[1]));
+                }
+            }
+        }
+        return info1;
     }
 
     private List<TravelCancelReason> setTravelCancelReason(String reasons[]) {
@@ -185,5 +259,28 @@ public class CancelSuccessPresenter extends BasePresenter<CancelSuccessContract.
         }
 
         mRootView.setReasonView(setTravelCancelReason(reasons), otherReason);
+    }
+    public void setNewReason(List<String> list,String otherReason){
+        mRootView.setReasonView(setNewTravelCancelReason(list), otherReason);
+    }
+    private List<TravelCancelReason> setNewTravelCancelReason(List<String> list) {
+        List<TravelCancelReason> mTravelCancelResponseList = new ArrayList<>();
+
+        for (int i = 0; i < list.size(); i++) {
+            mTravelCancelResponseList.add(new TravelCancelReason(list.get(i)));
+        }
+        return mTravelCancelResponseList;
+    }
+
+    public List<String> jsonData(String data){
+        List<String> list = new ArrayList<>();
+        if(data != null){
+            data = data.substring(1,data.length()-1);
+            String[] s = data.split(",");
+            for(int i = 0; i < s.length; i++){
+                list.add(s[i]);
+            }
+        }
+        return list;
     }
 }

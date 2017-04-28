@@ -6,7 +6,8 @@ package com.ironaviation.traveller.mvp.model.api;
  */
 public interface Api {
 //    String APP_DOMAIN = "http://th-api.bestwise.net";// 测试
-    String APP_DOMAIN = "http://192.168.0.75:8051";
+//    String APP_DOMAIN = "http://192.168.0.75:8051";
+    String APP_DOMAIN = "http://th-api.bestwise.net"; //测试服务器
     String LOGIN = "/api/Users/LoginWithSMS";// 登录
     String Travel = "";
     String MESSAGE = "";
@@ -31,5 +32,13 @@ public interface Api {
     String ENTER_PORT="/api/Booking/AddEnterPortBooking";  //接机订单
     String VALID_CODE = "/api/Users/SendValidSMS";
     String CONFIRM_ARRIVE = "/api/Booking/ConfirmArrive";
+    String CONFIRM_PICKUP ="/api/Booking/ConfirmPickup"; //乘客确认上车
+    String GET_OTHER_PASSENGER = "/api/Booking/GetOtherPassengersStatus"; //其他乘客
     int RequestSuccess = 1;
+
+    String PHONE_PRICE_ROLE="http://th-api.bestwise.net/app/view/phonePriceRole.html";
+    String PHONE_CANCEL_ROLE_ON ="http://th-api.bestwise.net/app/view/phoneCancelRole.html?type=jieji";
+    String PHONE_CANCEL_ROLE_OFF ="http://th-api.bestwise.net/app/view/phoneCancelRole.html";
+    String PHONE_ID_CARD ="http://th-api.bestwise.net/app/view/phoneIdCard.html";///*?userName=XXXXXX&number=XXXXXXX*/
+    String PHONE_INTRODUCE ="http://th-api.bestwise.net/app/view/phoneIntroduce.html";
 }

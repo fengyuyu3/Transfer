@@ -141,7 +141,6 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
      * <p>@param loginEntity 登录实体
      */
     public void saveLoginInfo(LoginEntity loginEntity) {
-
         DataHelper.saveDeviceData(mApplication, Constant.LOGIN, loginEntity);
     }
 

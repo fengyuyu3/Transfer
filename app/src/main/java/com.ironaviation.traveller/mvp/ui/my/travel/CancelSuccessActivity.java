@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.alipay.sdk.auth.APAuthInfo;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
@@ -18,11 +19,13 @@ import com.ironaviation.traveller.di.component.my.travel.DaggerCancelSuccessComp
 import com.ironaviation.traveller.di.module.my.travel.CancelSuccessModule;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.travel.CancelSuccessContract;
+import com.ironaviation.traveller.mvp.model.api.Api;
 import com.ironaviation.traveller.mvp.model.entity.response.CancelSuccessResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.TravelCancelReason;
 import com.ironaviation.traveller.mvp.presenter.my.travel.CancelSuccessPresenter;
 import com.ironaviation.traveller.mvp.ui.my.adapter.CancelSuccessAdapter;
+import com.ironaviation.traveller.mvp.ui.webview.WebViewActivity;
 import com.ironaviation.traveller.mvp.ui.widget.SpaceItemDecoration;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoLinearLayout;
@@ -33,6 +36,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -85,14 +89,17 @@ public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> im
     AutoRelativeLayout mRvOtherReason;
     @BindView(R.id.rl_penal_sum)
     AutoRelativeLayout mRlPenalSum;
+    @BindView(R.id.tw_cancel_rules)
+    TextView mTwCancelRules;
 
     private String[] cancel_reasons;
     private List<CancelSuccessResponse> mTravelCancelResponseList = new ArrayList<>();
     private RecyclerView.LayoutManager mLayoutManager;
 
     private CancelSuccessAdapter mCancelSuccessAdapter;
-    private RouteStateResponse responses;
+    private RouteStateResponse data;
     private String status;
+
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -128,26 +135,24 @@ public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> im
         mRvCancelSuccess.setAdapter(mCancelSuccessAdapter);
         getData();
 
+    }
+    public void getData(){
         Bundle pBundle = getIntent().getExtras();
         if (pBundle.getSerializable(Constant.STATUS) != null) {
-            RouteStateResponse data = (RouteStateResponse) pBundle.getSerializable(Constant.STATUS);
+            data = (RouteStateResponse) pBundle.getSerializable(Constant.STATUS);
+            status = data.getTripType();
             mPresenter.getRouteStateInfo(data);
         } else if (!TextUtils.isEmpty(pBundle.getString(Constant.BID))) {
             mPresenter.getRouteStateInfo(pBundle.getString(Constant.BID));
+            if(!TextUtils.isEmpty(pBundle.getString(Constant.CANCEL))){
+                status = pBundle.getString(Constant.CANCEL);
+            }
         }
     }
-    public void getData(){
-        Bundle bundle = getIntent().getExtras();
-        responses = bundle.getParcelable(Constant.STATUS);
-        status = bundle.getString(Constant.CHILD_STATUS);
-    }
-
-
 
     @Override
     public void showLoading() {
         showProgressDialog();
-
     }
 
     @Override
@@ -190,14 +195,12 @@ public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> im
     public void setReasonView(List<TravelCancelReason> strings, String otherReason) {
         if (strings != null) {
             mCancelSuccessAdapter.setNewData(strings);
-
         }
         if (!TextUtils.isEmpty(otherReason)) {
             mRvOtherReason.setVisibility(View.VISIBLE);
             mTvOtherReason.setText(otherReason);
         } else {
             mRvOtherReason.setVisibility(View.GONE);
-
         }
     }
 
@@ -231,8 +234,36 @@ public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> im
 
     @Override
     public void setResponsibilityView(String responsibility) {
-
         mTvResponsibility.setText(responsibility);
+    }
+
+    @Override
+    public void setRespons(RouteStateResponse data) {
+        this.data = data;
+    }
+
+    @OnClick({R.id.tw_cancel_rules,R.id.tv_money})
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.tw_cancel_rules: //取消规则
+                Intent intent = new Intent(this, WebViewActivity.class);
+                if(status.equals(Constant.CLEAR_PORT)) { //送机
+                    intent.putExtra(Constant.TITLE,getResources().getString(R.string.travel_enter_port));
+                    intent.putExtra(Constant.URL, Api.PHONE_CANCEL_ROLE_OFF);
+                }else if(status.equals(Constant.ENTER_PORT)){ //接机
+                    intent.putExtra(Constant.TITLE,getResources().getString(R.string.travel_clear_port));
+                    intent.putExtra(Constant.URL, Api.PHONE_CANCEL_ROLE_ON);
+                }
+                startActivity(intent);
+                break;
+            case R.id.tv_money:
+                Intent intent1 = new Intent(this, RefundActivity.class);
+                if(data != null) {
+                    intent1.putExtra(Constant.STATUS,data);
+                    startActivity(intent1);
+                }
+                break;
+        }
     }
 
 }

@@ -32,7 +32,8 @@
                 android:layout_height="wrap_content"
                 app:hint1="@string/airport_no"
                 app:left_logo1="@mipmap/ic_airport"
-                app:line1="false" />
+                app:line1="false"
+                app:right_time1="true"/>
 
             <com.ironaviation.traveller.mvp.ui.widget.PublicTextView
                 android:id="@+id/pw_time"
@@ -59,11 +60,16 @@
                 app:line1="false"
                  />
 
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_marginTop="16px"
+                android:id="@+id/ll_seat"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <com.ironaviation.traveller.mvp.ui.widget.PublicTextView
                 android:id="@+id/pw_seat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16px"
                 app:hint1="@string/airport_seat"
                 app:left_logo1="@mipmap/ic_seat" />
 
@@ -106,6 +112,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tw_explain"
                         android:layout_marginLeft="32px"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -186,6 +193,7 @@
                     </com.zhy.autolayout.AutoLinearLayout>
 
                 </com.zhy.autolayout.AutoLinearLayout>
+            </com.zhy.autolayout.AutoLinearLayout>
             </com.zhy.autolayout.AutoLinearLayout>
         </com.zhy.autolayout.AutoLinearLayout>
     </com.ironaviation.traveller.mvp.ui.widget.AutoScrollView>

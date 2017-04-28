@@ -255,13 +255,13 @@ public abstract class WEActivity<P extends Presenter> extends BaseWEActivity<P> 
         spinner.start();*/
     }
 
-    public void startActivity(Intent intent) {
+    /*public void startActivity(Intent intent) {
         super.startActivity(intent);
         Message message = new Message();
         message.what = START_ACTIVITY;
         message.obj = intent;
         EventBus.getDefault().post(message, APPMANAGER_MESSAGE);
-    }
+    }*/
 
     public void startActivity(Class clazz) {
         Intent intent = new Intent(this, clazz);

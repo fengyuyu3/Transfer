@@ -86,9 +86,15 @@ public class TravelCancelPresenter extends BasePresenter<TravelCancelContract.Mo
                 .subscribe(new ErrorHandleSubscriber<BaseData<CancelBookingInfo>>(mErrorHandler) {
                     @Override
                     public void onNext(BaseData<CancelBookingInfo> data) {
-                        if (data.getData() != null) {
-                            mRootView.setFreeView(data.getData().getIsFreeCancel(), data.getData().getCancelPrice());
-                            mRootView.setReasonView(data.getData().getReasons());
+                        if(data.isSuccess()) {
+                            if (data.getData() != null) {
+                                mRootView.setFreeView(data.getData().getIsFreeCancel(), data.getData().getCancelPrice());
+                                mRootView.setReasonView(data.getData().getReasons());
+                            }else{
+                                mRootView.showMessage(data.getMessage());
+                            }
+                        }else{
+                            mRootView.showMessage(data.getMessage());
                         }
 
                     }
@@ -102,14 +108,20 @@ public class TravelCancelPresenter extends BasePresenter<TravelCancelContract.Mo
                 .subscribe(new ErrorHandleSubscriber<BaseData<Boolean>>(mErrorHandler) {
                     @Override
                     public void onNext(BaseData<Boolean> data) {
-
-                        if (data.getData()) {
-                            Bundle pBundle = new Bundle();
-                            pBundle.putString(Constant.BID, bid);
-                            weActivity.startActivity(CancelSuccessActivity.class, pBundle);
-                            weActivity.finish();
-                        } else {
-
+                        if(data.isSuccess()) {
+                            if (data.getData()) {
+                                Bundle pBundle = new Bundle();
+                                pBundle.putString(Constant.BID, bid);
+                                if(mRootView.getStatus() != null) {
+                                    pBundle.putString(Constant.CANCEL, mRootView.getStatus());
+                                }
+                                weActivity.startActivity(CancelSuccessActivity.class, pBundle);
+                                weActivity.finish();
+                            } else {
+                                mRootView.showMessage(data.getMessage());
+                            }
+                        }else{
+                            mRootView.showMessage(data.getMessage());
                         }
                     }
                 });

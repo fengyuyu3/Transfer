@@ -1,20 +1,37 @@
 package com.ironaviation.traveller.mvp.ui.my.travel;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.my.travel.DaggerRefundComponent;
 import com.ironaviation.traveller.di.module.my.travel.RefundModule;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.travel.RefundContract;
+import com.ironaviation.traveller.mvp.model.api.Api;
+import com.ironaviation.traveller.mvp.model.entity.Ext;
+import com.ironaviation.traveller.mvp.model.entity.PayInfo;
+import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.presenter.my.travel.RefundPresenter;
+import com.ironaviation.traveller.mvp.ui.webview.WebViewActivity;
+import com.ironaviation.traveller.mvp.ui.widget.AutoToolbar;
+import com.ironaviation.traveller.mvp.ui.widget.FontTextView;
 import com.jess.arms.utils.UiUtils;
 
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -28,11 +45,28 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 
 /**
+ * 退款明细
  * Created by Administrator on 2017/4/12 0012.
  */
 
 public class RefundActivity extends WEActivity<RefundPresenter> implements RefundContract.View {
 
+
+    @BindView(R.id.tw_go_back_money)
+    FontTextView mTwGoBackMoney;
+    @BindView(R.id.tw_order_no)
+    TextView mTwOrderNo;
+    @BindView(R.id.tw_payment_money)
+    TextView mTwPaymentMoney;
+    @BindView(R.id.tw_appointment_money)
+    TextView mTwAppointmentMoney;
+    @BindView(R.id.tw_back_money)
+    TextView mTwBackMoney;
+    @BindView(R.id.tw_payment_date)
+    TextView mTwPaymentDate;
+    @BindView(R.id.tw_check_rule)
+    TextView mTwCheckRule;
+    private RouteStateResponse data;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -51,9 +85,51 @@ public class RefundActivity extends WEActivity<RefundPresenter> implements Refun
 
     @Override
     protected void initData() {
-
+        initTitle();
+        Intent intent = getIntent();
+        data = (RouteStateResponse) intent.getSerializableExtra(Constant.STATUS);
+        if(data != null){
+            setInfo(data);
+        }
     }
 
+    public void setData(RouteStateResponse data){
+        /*mTwGoBackMoney.setTextType(data);
+        mTwOrderNo*/
+    }
+
+    public void initTitle(){
+        setTitle(getString(R.string.refund_Amount));
+        mToolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_back));
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    public void setInfo(RouteStateResponse info){
+        List<Ext> Ext= info.getExt();
+        PayInfo payInfo = null;
+        if (Ext != null && Ext.size() != 0) {
+            for (int i = 0; i < Ext.size(); i++) {
+                if (Ext.get(i).getName().equals(Constant.CLASS_PAY_INFO)) {
+                    try {
+                        payInfo = new Gson().fromJson(Ext.get(i).getJsonData(),PayInfo.class);
+                    }catch (Exception e){
+                        //友盟
+                    }
+
+                }
+
+            }
+        }
+        mTwOrderNo.setText(info.getOrderNo() != null ? info.getOrderNo():"");
+        mTwPaymentMoney.setText(payInfo.getAmount()+"");
+        mTwAppointmentMoney.setText((payInfo.getAmount()-payInfo.getRebate())+"");
+        mTwBackMoney.setText(payInfo.getRebate()+"");
+    }
 
     @Override
     public void showLoading() {
@@ -86,5 +162,32 @@ public class RefundActivity extends WEActivity<RefundPresenter> implements Refun
     @Override
     protected void nodataRefresh() {
 
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
+    @OnClick(R.id.tw_check_rule)
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.tw_check_rule:
+                if(data != null) {
+                    String status = data.getTripType();
+                    Intent intent = new Intent(this, WebViewActivity.class);
+                    if (status.equals(Constant.CLEAR_PORT)) { //送机
+                        intent.putExtra(Constant.TITLE, getResources().getString(R.string.travel_enter_port));
+                        intent.putExtra(Constant.URL, Api.PHONE_CANCEL_ROLE_OFF);
+                    } else if (status.equals(Constant.ENTER_PORT)) { //接机
+                        intent.putExtra(Constant.TITLE, getResources().getString(R.string.travel_clear_port));
+                        intent.putExtra(Constant.URL, Api.PHONE_CANCEL_ROLE_ON);
+                    }
+                    startActivity(intent);
+                }
+            break;
+        }
     }
 }

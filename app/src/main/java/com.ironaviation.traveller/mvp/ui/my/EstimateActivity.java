@@ -30,6 +30,7 @@ import com.ironaviation.traveller.mvp.model.entity.response.EstimateResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.presenter.my.EstimatePresenter;
 import com.ironaviation.traveller.mvp.ui.my.adapter.EstimateAdapter;
+import com.ironaviation.traveller.mvp.ui.my.travel.PaymentDetailsActivity;
 import com.ironaviation.traveller.mvp.ui.widget.AutoToolbar;
 import com.ironaviation.traveller.mvp.ui.widget.CustomerRatingBar;
 import com.jess.arms.utils.UiUtils;
@@ -63,7 +64,6 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  * 修改备注：
  */
 public class EstimateActivity extends WEActivity<EstimatePresenter> implements EstimateContract.View {
-
 
     @BindView(R.id.it_driver_grade)
     TextView mItDriverGrade;
@@ -180,7 +180,6 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
             setAlreadyComment(responses);
 
         }
-
     }
 
     public void getInitData() {
@@ -190,7 +189,39 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
         mItDriverGrade.setText(responses.getDriverRate() != null ? responses.getDriverRate() : "");
         mTwCarNum.setText(responses.getCarLicense() != null ? responses.getCarLicense() : "");
         mTvMoney.setText(responses.getTotalPrice() + "");
+    }
 
+    public void setPaymentDetail(){
+        Intent intent = new Intent(this, PaymentDetailsActivity.class);
+        intent.putExtra(Constant.REAL_PRICE,responses.getActualPrice());
+        intent.putExtra(Constant.FIXED_PRICE,responses.getTotalPrice());
+        int num = 0;
+        double myPrice = 0;
+        for(int i = 0; i < responses.getPassengers().size(); i++){
+            if(responses.getPassengers().get(i).isIsValid()){
+                num++;
+                myPrice = myPrice + responses.getPassengers().get(i).getPrice();
+            }
+        }
+        intent.putExtra(Constant.PEOPLE_NUM,responses.getPassengers().size());
+        intent.putExtra(Constant.FREE_PASSENGER,num);
+        intent.putExtra(Constant.FREE_PASSENGER_PRICE,myPrice);
+        if(responses.getExt() != null && responses.getExt().size() > 0){
+            for(int i = 0; i < responses.getExt().size(); i++){
+                if(responses.getExt().get(i).getName().equals(Constant.PAYMETHOD)){
+                    String payment = responses.getExt().get(i).getJsonData();
+                    if(Constant.WECHAT.equals(payment)) {
+                        intent.putExtra(Constant.PAYMENT, Constant.PAY_WECHAT);
+                    }else if(Constant.ALIPAY.equals(payment)){
+                        intent.putExtra(Constant.PAYMENT,Constant.PAY_ALIPAY);
+                    }else{
+                        intent.putExtra(Constant.PAYMENT,Constant.PAYMENT_NOMAL);
+                    }
+                }
+            }
+        }
+
+        startActivity(intent);
     }
 
 
@@ -354,14 +385,16 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
     }
 
 
-    @OnClick({R.id.tv_anonymous_evaluation})
+    @OnClick({R.id.tv_anonymous_evaluation,R.id.tv_money})
     public void onClick(View view) {
 
         switch (view.getId()) {
             case R.id.tv_anonymous_evaluation:
                 mPresenter.isCommentSuccess(mPresenter.getCommentsInfo());
                 break;
-
+            case R.id.tv_money:
+                setPaymentDetail();
+                break;
         }
     }
 

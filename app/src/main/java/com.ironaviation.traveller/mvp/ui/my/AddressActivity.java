@@ -315,7 +315,6 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
 
     }
 
-
     @Override
     public void onGetPoiIndoorResult(PoiIndoorResult result) {
 
@@ -457,7 +456,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
         }*/
 
         HistoryPoiInfo info = new HistoryPoiInfo(result.getPoiList().get(0), false);
-        if (result.getAddress() != null) {
+        if (result.getAddress() != null && info != null && info.name !=null) {
             mTwAddressText.setText(info.name);
             this.info = info;
         }

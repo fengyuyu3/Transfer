@@ -3,10 +3,16 @@ package com.ironaviation.traveller.app.service;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.igexin.sdk.GTIntentService;
 import com.igexin.sdk.PushManager;
 import com.igexin.sdk.message.GTCmdMessage;
 import com.igexin.sdk.message.GTTransmitMessage;
+import com.ironaviation.traveller.app.EventBusTags;
+import com.ironaviation.traveller.mvp.constant.Constant;
+import com.ironaviation.traveller.mvp.model.entity.response.PushResponse;
+
+import org.simple.eventbus.EventBus;
 
 /**
  * 项目名称：Traveller
@@ -42,6 +48,23 @@ public class WEGTIntentService extends GTIntentService {
         byte[] payload = msg.getPayload();
         boolean result = PushManager.getInstance()
                 .sendFeedbackMessage(context, taskid, messageid, 90001);
+        if (payload == null) {
+        } else {
+            String data = new String(payload);
+            try{
+                PushResponse response = new Gson().fromJson(data,PushResponse.class);
+                if(response.getStutas().equals(Constant.ON)){
+                    EventBus.getDefault().post(response,EventBusTags.AIRPORT_PUSH_ON);
+                }else if(response.getStutas().equals(Constant.OFF)){
+                    EventBus.getDefault().post(response,EventBusTags.AIRPORT_PUSH_OFF);
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            /*TransparentMessageEntity transparentMessageEntity =
+                    new Gson().fromJson(data, TransparentMessageEntity.class);*/
+        }
+
     }
 
     @Override

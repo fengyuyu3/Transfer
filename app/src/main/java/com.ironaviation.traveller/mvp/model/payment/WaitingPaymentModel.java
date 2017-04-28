@@ -68,7 +68,7 @@ public class WaitingPaymentModel extends BaseModel<ServiceManager, CacheManager>
     }
 
     @Override
-    public Observable<BaseData<JsonObject>> getPayment(String bid, String payMethod) {
+    public Observable<BaseData> getPayment(String bid, String payMethod) {
         return mCommonService.getPayment(bid,payMethod);
     }
 }

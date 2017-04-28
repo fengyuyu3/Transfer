@@ -1,6 +1,7 @@
 package com.ironaviation.traveller.mvp.presenter.Login;
 
 import android.app.Application;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -10,10 +11,12 @@ import com.ironaviation.traveller.app.utils.CheckIdCardUtils;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.login.IdentificationContract;
+import com.ironaviation.traveller.mvp.model.api.Api;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
 import com.ironaviation.traveller.mvp.model.entity.response.IdentificationResponse;
 import com.ironaviation.traveller.mvp.ui.main.MainActivity;
+import com.ironaviation.traveller.mvp.ui.webview.WebViewActivity;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
@@ -98,14 +101,22 @@ public class IdentificationPresenter extends BasePresenter<IdentificationContrac
                     @Override
                     public void onNext(BaseData<IdentificationResponse> data) {
                         if (data.isSuccess()) {
-                            saveIdentificationInfo(data.getData());
-                            weActivity.startActivity(MainActivity.class);
-                            mRootView.killMyself();
-
+                            if(data.getData().isResult()) {
+                                saveIdentificationInfo(data.getData());
+                                if(data.getData().getName() != null && data.getData().getIDCard() != null) {
+                                    Intent intent = new Intent(weActivity, WebViewActivity.class);
+                                    intent.putExtra(Constant.URL, Api.PHONE_ID_CARD + "?userName=" + data.getData().getName() + "&number=" + setTextIDCard(data.getData().getIDCard()));
+                                    intent.putExtra(Constant.TITLE, weActivity.getResources().getString(R.string.authenticated_success));
+                                    intent.putExtra(Constant.STATUS, Constant.AUTO_SETTTING);
+                                    weActivity.startActivity(intent);
+                                    mRootView.killMyself();
+                                }
+                            }else{
+                                mRootView.showMessage(weActivity.getResources().getString(R.string.authenticated_filed));
+                            }
                         } else {
                             UiUtils.makeText(data.getMessage());
                         }
-
                     }
                 });
 
@@ -116,7 +127,19 @@ public class IdentificationPresenter extends BasePresenter<IdentificationContrac
      * <p>@param Identification
      */
     public void saveIdentificationInfo(IdentificationResponse identificationResponse) {
+        if(DataHelper.getDeviceData(mApplication, Constant.LOGIN) != null) {
+            LoginEntity loginEntity = DataHelper.getDeviceData(mApplication,Constant.LOGIN);
+            loginEntity.setIDCard(identificationResponse.getIDCard());
+            loginEntity.setName(identificationResponse.getName());
+            loginEntity.setRealValid(true);
+        }else{ //登录信息没有
 
-        DataHelper.saveDeviceData(mApplication, Constant.IDENTIFICATION, identificationResponse);
+        }
+    }
+
+    public String setTextIDCard(String idCard) {
+        StringBuilder telBuilder = new StringBuilder(idCard);
+        telBuilder.replace(3, 15, "************");
+        return telBuilder.toString();
     }
 }

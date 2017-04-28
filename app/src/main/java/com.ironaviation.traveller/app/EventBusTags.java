@@ -20,6 +20,9 @@ public interface EventBusTags {
 
     String FLIGHT_INFO_ON = "flight_info_on";
     String FLIGHT_ON = "flight_on";
+    String AIRPORT_PUSH_ON = "airport_push_on";
+    String AIRPORT_PUSH_OFF = "airport_push_off";
+    String REFRESH = "refresh";
 
 
 }

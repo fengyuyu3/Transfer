@@ -19,11 +19,13 @@
     <string name="refund_Amount">退款金额</string>
     <string name="cancel_rules_hint">查看取消规则</string>
     <string name="determine_cancel">确定取消</string>
-    <string name="penal_sum_hint">您取消了本次行程，本次爽约金由平台减免</string>
-    <string name="free_hint">您取消了本次行程，本次行程为有责取消</string>
+    <string name="penal_sum_hint">您取消了本次行程，本次行程为有责取消</string>
+    <string name="free_hint">您取消了本次行程，本次爽约金由平台减免</string>
     <string name="cancel_travel_hint">请选择取消原因</string>
     <string name="cancel_travel_cost_hint_1">现在取消将会支付</string>
     <string name="cancel_travel_cost_hint_2">元作为爽约金</string>
+    <string name="cancel_free">无责取消</string>
+    <string name="cancel_penal_sum">有责取消</string>
 
 
     <!--common-->
@@ -72,6 +74,8 @@
     <string name="us_phone">028-86868686</string>
     <string name="unauthorized">未认证</string>
     <string name="authenticated">已认证</string>
+    <string name="authenticated_filed">认证失败,请检查身份证号码和名字</string>
+    <string name="authenticated_success">认证成功</string>
     <!--评价-->
     <string name="final_payment">最终支付</string>
     <string name="anonymous_evaluation">匿名评价</string>
@@ -201,8 +205,7 @@
     <string name="travel_go_on_arrive_time">预计10:40到达</string>
     <string name="travel_go_on_car">已上车</string>
     <string name="travel_go_on_wait_driver">等待司机发车</string>
-    <string name="travel_arrive_info">航班到达后,司机会提前在指定地点等候
-    您,即来即上车,无需担心航班延误或提前到达</string>
+    <string name="travel_arrive_info">航班到达后,司机会提前在指定地点等候您,即来即上车,无需担心航班延误或提前到达</string>
     <string name="travel_order_two_dimension">订单二维码 </string>
     <string name="traval_compelete">行程已结束</string>
     <string name="travel_go_on">确认上车</string>
@@ -220,5 +223,17 @@
     <string name="travel_detail_title">我的行程</string>
     <string name="travel_detail">行程详情</string>
     <string name="travel_wait_payment">等待支付</string>
+    <string name="travel_order_failed">订单生成失败,请重新生成订单</string>
+    <string name="travel_price_detail">付款明细</string>
+    <string name="travel_price_rule">计价规则</string>
+    <string name="travel_price_fixed_price">一口价(%d位)</string>
+    <string name="travel_price_free">免费乘客(%d位)</string>
+    <string name="travel_deduction">优惠抵扣</string>
+    <string name="travel_price_payment">支付方式</string>
+    <string name="travel_enter_port">取消规则</string>
+    <string name="travel_clear_port">取消规则</string>
+    <string name="travel_explain_detail">接机说明</string>
+    <string name="travel_go_back_time">3-7个工作日</string>
+    <string name="travel_payment_lose">支付失效</string>
 
 </resources>

@@ -1,5 +1,7 @@
 package com.ironaviation.traveller.mvp.model.entity;
 
+import java.io.Serializable;
+
 /**
  * 项目名称：Traveller
  * 类描述：
@@ -9,7 +11,7 @@ package com.ironaviation.traveller.mvp.model.entity;
  * 修改时间：2017-04-14 18:52
  * 修改备注：
  */
-public class PayInfo {
+public class PayInfo implements Serializable{
     private String PIID;
 
     private String BID;

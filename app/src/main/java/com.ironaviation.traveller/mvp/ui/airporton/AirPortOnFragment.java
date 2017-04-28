@@ -27,6 +27,7 @@ import com.ironaviation.traveller.di.module.airporton.AirPortOnModule;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.airporton.AirPortOnContract;
 import com.ironaviation.traveller.mvp.model.entity.HistoryPoiInfo;
+import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
 import com.ironaviation.traveller.mvp.model.entity.request.AirPortRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.AirportGoInfoRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.PassengersRequest;
@@ -35,6 +36,7 @@ import com.ironaviation.traveller.mvp.model.entity.response.IdentificationRespon
 import com.ironaviation.traveller.mvp.presenter.airporton.AirPortOnPresenter;
 import com.ironaviation.traveller.mvp.ui.airportoff.TravelFloatActivity;
 import com.ironaviation.traveller.mvp.ui.my.AddressActivity;
+import com.ironaviation.traveller.mvp.ui.my.travel.PaymentDetailsActivity;
 import com.ironaviation.traveller.mvp.ui.payment.WaitingPaymentActivity;
 import com.ironaviation.traveller.mvp.ui.widget.FontTextView;
 import com.ironaviation.traveller.mvp.ui.widget.MyTimeDialog;
@@ -120,6 +122,9 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
     private String formatDate = "yyyy-MM-dd";
     private String bid;
     private boolean addressFlag,terminalFlag;
+    private List<PassengersRequest> mPassengersRequests;
+    private double price,acturlPrice;
+    private String idCard;
 
 
     public static AirPortOnFragment newInstance() {
@@ -163,9 +168,9 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
         mAirportRequests = new ArrayList<>();
         for (int i = 0; i < Constant.SEAT_NUM; i++) {
             AirPortRequest request = new AirPortRequest();
-            if(isValid() != null && i == 0){
+            if(isValid() && i == 0 && idCard != null){
 //                request.setStatus(Constant.AIRPORT_SUCCESS);
-                request.setIdCard(isValid());//设置了身份证
+                request.setIdCard(idCard);//设置了身份证
                 request.setStatus(Constant.AIRPORT_NO);
             }else{
                 request.setStatus(Constant.AIRPORT_NO);
@@ -360,7 +365,11 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
 
     //设置数据
     public void setAirportData(MyAirportHolder holder, AirPortRequest request) {
-        holder.mEdtContent.setText(request.getIdCard());
+        if(isValid() && request != null && request.getIdCard() != null && request.getIdCard().equalsIgnoreCase(idCard)){
+            holder.mEdtContent.setText(request.getIdCard()+"(本人)");
+        }else{
+            holder.mEdtContent.setText(request.getIdCard());
+        }
         if (request.getStatus() == Constant.AIRPORT_SUCCESS) {
             setSuccess(holder);
         } else if (request.getStatus() == Constant.AIRPORT_FAILURE) {
@@ -402,6 +411,7 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
                 }
             }
         }
+        this.mPassengersRequests = list;
         setSeat(seatNum);
     }
 
@@ -473,7 +483,7 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
 
     @OnClick({R.id.pw_seat_on, R.id.pw_airport_on,R.id.pw_address_on,
             R.id.pw_flt_no_on,R.id.tv_code_all_on,R.id.tw_reset_price_on,
-            R.id.tw_go_to_order_on})
+            R.id.tw_go_to_order_on,R.id.ll_set_price_on})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.pw_seat_on:
@@ -512,6 +522,9 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
             case R.id.tw_go_to_order_on:
                 mPresenter.isOrderSuccess(bid);
                 break;
+            case R.id.ll_set_price_on:
+                setPaymentDetail();
+                break;
            /* case R.id.pw_time:
                 mMyTimeDialog.showDialog("test");
                 break;
@@ -523,13 +536,34 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
                 break;*/
         }
     }
+    public void setPaymentDetail(){
+        Intent intent = new Intent(getActivity(), PaymentDetailsActivity.class);
+        intent.putExtra(Constant.REAL_PRICE,price);
+        intent.putExtra(Constant.FIXED_PRICE,acturlPrice);
+        int num = 0;
+        double myPrice = 0;
+        for(int i = 0; i < mPassengersRequests.size(); i++){
+            if(mPassengersRequests.get(i).isIsValid()){
+                num++;
+                myPrice = myPrice + mPassengersRequests.get(i).getPrice();
+            }
+        }
+        intent.putExtra(Constant.PEOPLE_NUM,seatNum);
+        intent.putExtra(Constant.FREE_PASSENGER,num);
+        intent.putExtra(Constant.FREE_PASSENGER_PRICE,myPrice);
+        intent.putExtra(Constant.PAYMENT,Constant.PAYMENT_NOMAL);
+        startActivity(intent);
+    }
 
-    public String isValid(){
-        if(DataHelper.getDeviceData(getActivity(),Constant.IDENTIFICATION) != null) {
-            IdentificationResponse response = DataHelper.getDeviceData(getActivity(), Constant.IDENTIFICATION);
-            return response.getIDCard();
+    public boolean isValid(){
+        if(DataHelper.getDeviceData(getActivity(),Constant.LOGIN) != null) {
+            LoginEntity response = DataHelper.getDeviceData(getActivity(), Constant.LOGIN);
+            if(response.getIDCard() != null){
+                idCard = response.getIDCard();
+            }
+            return response.isRealValid();
         }else{
-            return null;
+            return false;
         }
     }
 
@@ -620,6 +654,8 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
 //        String originalPrice = "<font color='#3a3a3a' >" + "22.04" + "</font>" + "<font color='#3a3a3a' size=40> 元</font>";
         mTwOriginalPrice.setTextType(acturlPrice+"");
         mTwOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+        this.price = price;
+        this.acturlPrice = acturlPrice;
     }
 
     public void showPrice(){

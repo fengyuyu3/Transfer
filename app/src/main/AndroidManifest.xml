@@ -48,6 +48,18 @@
         android:theme="@style/AppTheme">
 
 
+        <!--引导页-->
+        <activity
+            android:name=".mvp.ui.login.SplashActivity"
+            android:hardwareAccelerated="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
         <!--主页-->
         <activity
             android:name=".mvp.ui.main.MainActivity"
@@ -75,10 +87,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"
             >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <!--旅行-->
         <activity
@@ -272,6 +280,14 @@
                   android:screenOrientation="portrait"
                   android:windowSoftInputMode="stateHidden|adjustPan"></activity>
         <activity android:name=".mvp.ui.my.travel.TravelDetailsOnActivity"
+                  android:hardwareAccelerated="false"
+                  android:screenOrientation="portrait"
+                  android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+        <activity android:name=".mvp.ui.my.travel.PaymentDetailsActivity"
+                  android:hardwareAccelerated="false"
+                  android:screenOrientation="portrait"
+                  android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+        <activity android:name=".mvp.ui.webview.WebViewActivity"
                   android:hardwareAccelerated="false"
                   android:screenOrientation="portrait"
                   android:windowSoftInputMode="stateHidden|adjustPan"></activity>

@@ -40,6 +40,8 @@ public interface TravelCancelContract {
 
         void setReasonView(List<CancelBookingInfo.Reasons> strings);
 
+        String getStatus();
+
         String getOtherReason();
     }
 
