@@ -67,6 +67,7 @@ public class InvalidationActivity extends WEActivity<InvalidationPresenter> impl
     TextTextView mTtNeedSeats;
 
     private RouteStateResponse responses;
+    private String bid;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -87,6 +88,14 @@ public class InvalidationActivity extends WEActivity<InvalidationPresenter> impl
     protected void initData() {
         Bundle bundle = getIntent().getExtras();
         responses = (RouteStateResponse) bundle.getSerializable(Constant.STATUS);
+        if(responses != null){
+            setData(responses);
+        }else{
+            String bid = bundle.getString(Constant.BID);
+            if(bid != null) {
+                mPresenter.getRouteStateInfo(bid);
+            }
+        }
     }
 
     public void setData(RouteStateResponse responses){
@@ -137,5 +146,10 @@ public class InvalidationActivity extends WEActivity<InvalidationPresenter> impl
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+    }
+
+    @Override
+    public void setRouteStateData(RouteStateResponse responses) {
+        setData(responses);
     }
 }

@@ -103,7 +103,31 @@ public interface Constant {
     String PAY_ALIPAY = "支付宝支付";
     String URL = "url";
     String TITLE = "title";
-    int SETTING = 201;
-    int AUTO_SETTTING = 202;
+    int SETTING = 301;
+    int AUTO_SETTTING = 302;
 
+    int TIMEOUT_NO_PAY = 210; //超时未支付 送机
+    int WAIT_DRIVER = 201;//等待接驾
+    int RECEIVE_ONE_PASSENGER=202; //司机去接第一位乘客
+    int RECEIVE_MINE = 203;//司机去接自己
+    int RECEIVE_OTHER_PASSENGER = 213; //司机去接其他乘客
+    int ALREADY_ABOARD = 204;//已上车
+    int ALREADY_ARRIVE = 205;//已到达
+    int AUTO_AFFIRM = 207 ;  //自动确认
+    int ROUTE_CANCEL = 208 ; //行程取消
+    int ORDER_SUCCESS = 211; //付款成功(预约成功)
+    int ROUTE_INVALID = 212; //行程已失效
+
+    int TIMEOUT_NO_PAY_ON = 220; //超时未支付 接机
+    int REMIND_BY_BUS = 214; // 提醒坐车(飞机到达后(飞机到达时间))
+    int REMIND_BY_BUS_AGO = 215; //提醒坐车(飞机起飞前50分钟)
+    int WAIT_ABOARD = 216;   //等待上车
+    int AFFIRM_DEPART = 209; //确认发车
+    int ALREADY_ARRIVE_ON = 206; // 确认已到达 接机
+    int AUTO_AFFIRM_ON = 217 ;  //自动确认 接机
+    int ROUTE_CANCEL_ON = 218 ; //行程取消 接机
+    int ORDER_SUCCESS_ON = 221; //付款成功(预约成功)接机
+    int ROUTE_INVALID_ON = 222; //行程已失效 接机
+
+    int OTHER_LOGIN = 200; //其他地方登陆
 }

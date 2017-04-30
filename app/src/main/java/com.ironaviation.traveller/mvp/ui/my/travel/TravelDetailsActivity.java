@@ -162,7 +162,6 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     private LBSTraceClient mLBSTraceClient;
     private OnEntityListener entityListener = null;
     private MapUtil mapUtils;
-    private LBSTraceClient client;
     protected static OverlayOptions overlayOptions;
     private static Overlay overlay = null;
     private String bid;
@@ -193,13 +192,18 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         if (pBundle != null) {
             responses = (RouteStateResponse) pBundle.getSerializable(Constant.STATUS);
             if (responses!=null&&!TextUtils.isEmpty(responses.getBID())){
-                mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.WAITING_PAYMENT,responses.getBID());
+//                mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.WAITING_PAYMENT,responses.getBID());
                 status = responses.getStatus();
                 bid = responses.getBID();
                 mPresenter.setRouteStateResponse(responses);
                 showStatus(status);
                 mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.TRAVEL_DETAILS, responses.getBID());
                 setPassengersResponseInfo(responses);
+            }else{
+                bid = pBundle.getString(Constant.BID);
+                if(bid != null) {
+                    mPresenter.getRouteState(bid);
+                }
             }
         }else{
 //            mPresenter.getRouteState();
@@ -306,7 +310,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
                 break;
             case R.id.iw_zoom_nomal:
                 if(status != null) {
-                    showStatus(status);
+                    showStatusAll(status);
                 }
                 break;
             case R.id.iw_mobile:
@@ -359,6 +363,30 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
                 break;
             case Constant.ABORAD:
                 already();
+                break;
+        }
+    }
+
+    public void showStatusAll(String  status){
+        /*route = null;
+        mBaiduMap.clear();*/
+        switch (status){
+            case Constant.INHAND: //派单进行中
+                showChildStatus(responses.getChildStatus());
+                break;
+            case Constant.BOOKSUCCESS: //派单成功
+                waitPickup();
+                break;
+            case Constant.REGISTERED:
+//                orderGoingDay();//白天 晚上 判断起飞时间是13点以前还是以后
+                if(responses.isMorning()){
+                    orderGoingDay();
+                }else{
+                    orderGoing();
+                }
+                break;
+            case Constant.ARRIVED:
+                arrive();
                 break;
         }
     }
@@ -713,7 +741,6 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     };
 
     public void initQuery(){
-        client = new LBSTraceClient(this);
         initOnEntityListener();
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -745,7 +772,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         // 分页索引
         int pageIndex = 1;
 
-        client.queryEntityList(Constant.SERVICEID, "958", columnKey, returnType, activeTime,
+        mWeApplication.getClient().queryEntityList(Constant.SERVICEID, "958", columnKey, returnType, activeTime,
                 pageSize,
                 pageIndex, entityListener);
     }
@@ -814,7 +841,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 
     @Subscriber(tag=EventBusTags.AIRPORT_PUSH_OFF)
     public void getPushData(PushResponse response){
-        mPresenter.getRouteState(response.getBid());
+        mPresenter.getRouteState(response.getBID());
     }
 
     private class MyDrivingRouteOverlay extends DrivingRouteOverlay {

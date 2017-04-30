@@ -167,16 +167,19 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
         Bundle pBundle = getIntent().getExtras();
         if (pBundle != null) {
             responses = (RouteStateResponse) pBundle.getSerializable(Constant.STATUS);
-            if (responses!=null&&!TextUtils.isEmpty(responses.getBID())){
-
-//                status = responses.getStatus();
+            if (responses != null && !TextUtils.isEmpty(responses.getBID())) {
+                status = responses.getStatus();
+                bid = responses.getBID();
                 mPresenter.setRouteStateResponse(responses);
-                mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.WAITING_PAYMENT,responses.getBID());
+                mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.TRAVEL_DETAILS, responses.getBID());
 //                status = Constant.ARRIVED;
                 showStatus(status);
+            } else {
+                bid = pBundle.getString(Constant.BID);
+                if (bid != null) {
+                    mPresenter.getRouteState(bid);
+                }
             }
-        }else{
-//            mPresenter.getRouteState();
         }
     }
 
@@ -329,11 +332,11 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
         mLlArriveAirport.setVisibility(View.GONE); //确认到达
         mLlGoOnAirport.setVisibility(View.GONE);   //进行中
         mRlSuccessful.setVisibility(View.VISIBLE);    //预约成功
-        if(responses.getDestAddress() != null) {
+        /*if(responses.getDestAddress() != null) {
             pathTwo(responses.getPickupLatitude(), responses.getPickupLongitude()
                     , responses.getDestLagitude(), responses.getDestLongitude()
                     ,responses.getDestAddress() );
-        }
+        }*/
     }
 
     public void AllGone(){

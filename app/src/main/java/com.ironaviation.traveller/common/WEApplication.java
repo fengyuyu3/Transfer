@@ -4,6 +4,9 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.baidu.mapapi.SDKInitializer;
+import com.baidu.trace.LBSTraceClient;
+import com.baidu.trace.LocationMode;
+import com.baidu.trace.Trace;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
 import com.jess.arms.base.BaseApplication;
@@ -38,6 +41,8 @@ import timber.log.Timber;
 public class WEApplication extends BaseApplication {
     private AppComponent mAppComponent;
     private RefWatcher mRefWatcher;//leakCanary观察器
+    private LBSTraceClient client = null;
+    private Trace trace = null;
 
     @Override
     public void onCreate() {
@@ -64,8 +69,17 @@ public class WEApplication extends BaseApplication {
 //        // 将该app注册到微信
         msgApi.registerApp("wxb277d9d5c3cf0829");
         //  installLeakCanary();//leakCanary内存泄露检查
+        initMap();
     }
 
+    public void initMap(){
+        client = new LBSTraceClient(this);
+        client.setLocationMode(LocationMode.High_Accuracy);
+        /*trace = new Trace(this, Constant.SERVICEID, entityName, traceType);*/
+    }
+    public LBSTraceClient getClient(){
+        return client;
+    }
 
     @Override
     public void onTerminate() {
