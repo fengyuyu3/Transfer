@@ -110,7 +110,7 @@
             android:visibility="gone"
             >
 
-            <TextView
+            <com.ironaviation.traveller.mvp.ui.widget.FontTextView
                 android:id="@+id/tv_money"
                 style="@style/common_text_content_style"
                 android:layout_below="@+id/tv_money_title"
@@ -118,7 +118,6 @@
                 android:text=""
                 android:textColor="@color/word_red"
                 android:textSize="80px"
-
                 />
 
             <TextView

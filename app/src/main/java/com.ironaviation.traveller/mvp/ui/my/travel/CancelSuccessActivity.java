@@ -26,6 +26,7 @@ import com.ironaviation.traveller.mvp.model.entity.response.TravelCancelReason;
 import com.ironaviation.traveller.mvp.presenter.my.travel.CancelSuccessPresenter;
 import com.ironaviation.traveller.mvp.ui.my.adapter.CancelSuccessAdapter;
 import com.ironaviation.traveller.mvp.ui.webview.WebViewActivity;
+import com.ironaviation.traveller.mvp.ui.widget.FontTextView;
 import com.ironaviation.traveller.mvp.ui.widget.SpaceItemDecoration;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoLinearLayout;
@@ -72,7 +73,7 @@ public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> im
     @BindView(R.id.it_driver_grade)
     TextView mItDriverGrade;
     @BindView(R.id.tv_money)
-    TextView mTvMoney;
+    FontTextView mTvMoney;
     @BindView(R.id.ic_car_license)
     TextView mIcCarLicense;
     @BindView(R.id.rl_head)
@@ -228,9 +229,8 @@ public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> im
     public void setMoneyView(String money) {
         mRlMoney.setVisibility(View.VISIBLE);
         mTvMoneyTitle.setVisibility(View.VISIBLE);
-        mTvMoney.setText(money);
+        mTvMoney.setTextType(money);
     }
-
 
     @Override
     public void setResponsibilityView(String responsibility) {

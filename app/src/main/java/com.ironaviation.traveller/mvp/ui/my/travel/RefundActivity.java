@@ -120,11 +120,10 @@ public class RefundActivity extends WEActivity<RefundPresenter> implements Refun
                     }catch (Exception e){
                         //友盟
                     }
-
                 }
-
             }
         }
+        mTwGoBackMoney.setTextType(payInfo.getRebate()+"");
         mTwOrderNo.setText(info.getOrderNo() != null ? info.getOrderNo():"");
         mTwPaymentMoney.setText(payInfo.getAmount()+"");
         mTwAppointmentMoney.setText((payInfo.getAmount()-payInfo.getRebate())+"");

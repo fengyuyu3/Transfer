@@ -1,5 +1,6 @@
 package com.ironaviation.traveller.mvp.ui.my.travel;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -50,6 +51,7 @@ import com.ironaviation.traveller.di.component.my.travel.DaggerTravelDetailsComp
 import com.ironaviation.traveller.di.module.my.travel.TravelDetailsModule;
 import com.ironaviation.traveller.event.TravelCancelEvent;
 import com.ironaviation.traveller.map.overlayutil.DrivingRouteOverlay;
+import com.ironaviation.traveller.map.overlayutil.OverlayManager;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.travel.TravelDetailsContract;
 import com.ironaviation.traveller.mvp.model.entity.request.PathPlanning;
@@ -166,6 +168,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     private String bid;
     private PassengersResponse mPassengersResponse;
     private List<PassengersResponse> mPassengersResponseList;
+    private OverlayManager mOverlayManager;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -320,6 +323,8 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     }
 
     public void showStatus(String  status){
+        /*route = null;
+        mBaiduMap.clear();*/
         switch (status){
             case Constant.INHAND: //派单进行中
                 if(bid != null) {
@@ -382,10 +387,10 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         mLlArrive.setVisibility(View.GONE);  // 确认到达
         mTwTitle.setText(getResources().getString(R.string.travel_ordering_success));
         mTwText.setText(getResources().getString(R.string.travel_ordering_info_day));
-        if(responses != null &&responses.getDestAddress() != null) {
+        /*if(responses != null &&responses.getDestAddress() != null) {
             pathTwo(responses.getPickupLatitude(), responses.getPickupLongitude(),
                     responses.getDestLagitude(), responses.getDestLongitude(),responses.getDestAddress());
-        }
+        }*/
     }
 
     public void orderGoing() {  //预约成功 晚班
@@ -397,10 +402,10 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         mLlArrive.setVisibility(View.GONE);  // 确认到达
         mTwTitle.setText(getResources().getString(R.string.travel_ordering_success));
         mTwText.setText(getResources().getString(R.string.travel_ordering_info));
-        if(responses != null &&responses.getDestAddress() != null) {
+        /*if(responses != null &&responses.getDestAddress() != null) {
             pathTwo(responses.getPickupLatitude(), responses.getPickupLongitude(),
                     responses.getDestLagitude(), responses.getDestLongitude(),responses.getDestAddress());
-        }
+        }*/
     }
 
     public void pickup(){ //司机正在接您的途中
@@ -434,6 +439,10 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         mLlArrive.setVisibility(View.GONE);  // 确认到达
         mTwTitle.setText(getResources().getString(R.string.travel_already));
         mTwText.setText(getResources().getString(R.string.travel_already_info));
+        /*if(responses != null &&responses.getDestAddress() != null) {
+            pathTwo(responses.getPickupLatitude(), responses.getPickupLongitude(),
+                    responses.getDestLagitude(), responses.getDestLongitude(),responses.getDestAddress());
+        }*/
     }
 
     public void waitPickup(){ //等待接驾
@@ -558,7 +567,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     private void pathPlanning (List<PassengersResponse> planningListt,double
                               latitude,double longitudu,String address){
         mPlanNodes = new ArrayList<>();
-        stNode = PlanNode.withLocation(new LatLng(30.622657,104.083864));//起点 104.083864,30.622657
+        stNode = PlanNode.withLocation(new LatLng(latitude,longitudu));//起点 104.083864,30.622657
         /*mSearch.drivingSearch((new DrivingRoutePlanOption())
                 .from(stNode).to(enNode));*/
         for (int i = 0; i < planningListt.size(); i++) {
@@ -568,8 +577,10 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         }
         DrivingRoutePlanOption drivingRoutePlanOption = new DrivingRoutePlanOption();
         drivingRoutePlanOption.from(stNode);
-        drivingRoutePlanOption.to(PlanNode.withCityNameAndPlaceName("成都", "双流机场T1航站楼"));
-        drivingRoutePlanOption.passBy(mPlanNodes);
+        drivingRoutePlanOption.to(PlanNode.withCityNameAndPlaceName("成都", address));
+        if(mPlanNodes.size() > 0) {
+            drivingRoutePlanOption.passBy(mPlanNodes);
+        }
         mSearch.drivingSearch(drivingRoutePlanOption);
         initMarker(planningListt); //初始化覆盖物
     }
@@ -614,7 +625,8 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         }
         if (result.error == SearchResult.ERRORNO.NO_ERROR) {
                 route = result.getRouteLines().get(0);
-                DrivingRouteOverlay overlay = new DrivingRouteOverlay(mBaiduMap, this);
+                MyDrivingRouteOverlay overlay = new MyDrivingRouteOverlay(mBaiduMap, this);
+                mOverlayManager = overlay;
                 mBaiduMap.setOnMarkerClickListener(overlay);
                 overlay.setData(result.getRouteLines().get(0));
                 overlay.addToMap();
@@ -804,4 +816,22 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     public void getPushData(PushResponse response){
         mPresenter.getRouteState(response.getBid());
     }
+
+    private class MyDrivingRouteOverlay extends DrivingRouteOverlay {
+
+        public MyDrivingRouteOverlay(BaiduMap baiduMap, Context context) {
+            super(baiduMap,context);
+        }
+
+        @Override
+        public BitmapDescriptor getStartMarker() {
+            return BitmapDescriptorFactory.fromResource(R.mipmap.ic_location_start);
+        }
+
+        @Override
+        public BitmapDescriptor getTerminalMarker() {
+            return BitmapDescriptorFactory.fromResource(R.mipmap.ic_location_end);
+        }
+    }
+
 }
