@@ -24,6 +24,7 @@ import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.event.TravelCancelEvent;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.payment.WaitingPaymentContract;
+import com.ironaviation.traveller.mvp.model.entity.BasePushData;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.WeChatInfo;
 import com.ironaviation.traveller.mvp.presenter.payment.WaitingPaymentPresenter;
@@ -410,6 +411,14 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     @Subscriber(tag = EventBusTags.ALIPAY)
     public void paySuccess(String result){
         //成功 跳转界面
+    }
+
+    @Subscriber(tag = EventBusTags.TIMEOUT_NO_PAY)
+    public void timeNoPay(BasePushData response){
+        if(response.getData().getBID() != null){
+            mPresenter.getRouteStateInfo(response.getData().getBID());
+        }
+
     }
 
 }

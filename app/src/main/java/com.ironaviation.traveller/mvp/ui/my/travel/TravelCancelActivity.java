@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.my.travel.DaggerTravelCancelComponent;
@@ -27,6 +28,8 @@ import com.ironaviation.traveller.mvp.ui.my.adapter.TravelCancelAdapter;
 import com.ironaviation.traveller.mvp.ui.webview.WebViewActivity;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoRelativeLayout;
+
+import org.simple.eventbus.Subscriber;
 
 import java.util.List;
 
@@ -231,5 +234,9 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
+    }
+    @Subscriber(tag = EventBusTags.ROUTE_CANCEL) //送机
+    public void routeCancel(){
+        mPresenter.getCancelBookInfo(bid);
     }
 }

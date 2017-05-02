@@ -25,6 +25,15 @@ public class PushResponse {
     private int Code;
     private String TripType;
     private boolean IsComment;
+    private String UID;
+
+    public String getUID() {
+        return UID;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
+    }
 
     public boolean isComment() {
         return IsComment;

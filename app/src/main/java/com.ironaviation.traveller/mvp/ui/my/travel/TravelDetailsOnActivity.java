@@ -39,6 +39,7 @@ import com.ironaviation.traveller.map.overlayutil.DrivingRouteOverlay;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.travel.TravelDetailsOnContract;
 import com.ironaviation.traveller.mvp.model.entity.request.PathPlanning;
+import com.ironaviation.traveller.mvp.model.entity.response.PushResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.presenter.my.travel.TravelDetailsOnPresenter;
 import com.ironaviation.traveller.mvp.ui.my.EstimateActivity;
@@ -48,6 +49,8 @@ import com.ironaviation.traveller.mvp.ui.widget.MoreActionPopupWindow;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
+
+import org.simple.eventbus.Subscriber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -529,5 +532,10 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
         drivingRoutePlanOption.passBy(mPlanNodes);
         mSearch.drivingSearch(drivingRoutePlanOption);
         initMarker(planningListt); //初始化覆盖物
+    }
+
+    @Subscriber(tag = EventBusTags.TRAVEL_DETAIL_ON)
+    public void travelDetailOn(PushResponse response){
+        mPresenter.getRouteState(response.getBID());
     }
 }

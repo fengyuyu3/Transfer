@@ -227,6 +227,4 @@ public class SplashActivity extends WEActivity {
         }
         getWindow().setAttributes(attrs);
     }
-
-
 }

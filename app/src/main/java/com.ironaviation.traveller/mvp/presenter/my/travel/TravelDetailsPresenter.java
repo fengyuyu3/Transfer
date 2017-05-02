@@ -80,6 +80,7 @@ public class TravelDetailsPresenter extends BasePresenter<TravelDetailsContract.
                               if(routeStateResponseBaseData.getData() != null){
                                   setRouteStateResponse(routeStateResponseBaseData.getData());
                                   mRouteStateResponse = routeStateResponseBaseData.getData();
+                                  mRootView.setPassengersResponseInfo(routeStateResponseBaseData.getData());
                               }else{
 
                               }

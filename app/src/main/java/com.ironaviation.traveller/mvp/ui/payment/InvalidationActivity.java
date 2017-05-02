@@ -10,17 +10,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.payment.DaggerInvalidationComponent;
 import com.ironaviation.traveller.di.module.payment.InvalidationModule;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.payment.InvalidationContract;
+import com.ironaviation.traveller.mvp.model.entity.response.PushResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.presenter.payment.InvalidationPresenter;
 import com.ironaviation.traveller.mvp.ui.widget.AutoToolbar;
 import com.ironaviation.traveller.mvp.ui.widget.TextTextView;
 import com.jess.arms.utils.UiUtils;
+
+import org.simple.eventbus.Subscriber;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -151,5 +155,10 @@ public class InvalidationActivity extends WEActivity<InvalidationPresenter> impl
     @Override
     public void setRouteStateData(RouteStateResponse responses) {
         setData(responses);
+    }
+
+    @Subscriber(tag = EventBusTags.ROUTE_INVALID)
+    public void routeInvalid(PushResponse response){
+        mPresenter.getRouteStateInfo(response.getBID());
     }
 }

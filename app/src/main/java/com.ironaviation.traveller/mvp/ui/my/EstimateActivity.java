@@ -173,22 +173,24 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
                 return false;
             }
         });
-        if (!responses.isComment()) {
-            mPresenter.getCommentTagInfo();
-
-        } else {
-            setAlreadyComment(responses);
-
+        if(responses != null) {
+            if (!responses.isComment()) {
+                mPresenter.getCommentTagInfo();
+            } else {
+                setAlreadyComment(responses);
+            }
         }
     }
 
     public void getInitData() {
         Bundle bundle = getIntent().getExtras();
         responses = (RouteStateResponse) bundle.getSerializable(Constant.STATUS);
-        mItDriverName.setText(responses.getDriverName() != null ? responses.getDriverName() : "");
-        mItDriverGrade.setText(responses.getDriverRate() != null ? responses.getDriverRate() : "");
-        mTwCarNum.setText(responses.getCarLicense() != null ? responses.getCarLicense() : "");
-        mTvMoney.setText(responses.getTotalPrice() + "");
+        if(responses!=null) {
+            mItDriverName.setText(responses.getDriverName() != null ? responses.getDriverName() : "");
+            mItDriverGrade.setText(responses.getDriverRate() != null ? responses.getDriverRate() : "");
+            mTwCarNum.setText(responses.getCarLicense() != null ? responses.getCarLicense() : "");
+            mTvMoney.setText(responses.getTotalPrice() + "");
+        }
     }
 
     public void setPaymentDetail(){
