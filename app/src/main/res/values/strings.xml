@@ -29,7 +29,13 @@
 
 
     <!--common-->
+    <string name="exit_hint">请确认是否退出登录？</string>
+    <string name="hint">提示</string>
+    <string name="confirm">确认</string>
     <string name="cancel">取消</string>
+    <string name="contact_customer_service">联系客服</string>
+
+    <string name="search">搜索</string>
     <!--identification-->
     <string name="identification">认证</string>
     <string name="title_identification">实名认证</string>

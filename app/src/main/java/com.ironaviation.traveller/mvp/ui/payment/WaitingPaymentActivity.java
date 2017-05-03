@@ -400,7 +400,7 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
                 startActivity(TravelCancelActivity.class,pBundle);
                 break;
             case Constant.TRAVEL_CUSTOMER:
-                showMessage("联系客户");
+                showMessage(getString(R.string.contact_customer_service));
                 break;
         }
     }

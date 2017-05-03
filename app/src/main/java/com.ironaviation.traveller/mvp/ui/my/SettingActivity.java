@@ -1,9 +1,11 @@
 package com.ironaviation.traveller.mvp.ui.my;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -182,7 +184,19 @@ public class SettingActivity extends WEActivity<SettingPresenter> implements Set
 
                 break;
             case R.id.tti_cancellation_account:
-                mPresenter.signOut();
+
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(getString(R.string.hint));
+                builder.setMessage(getString(R.string.exit_hint));
+                builder.setNegativeButton(getString(R.string.cancel), null);
+                builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mPresenter.signOut();
+                    }
+                });
+                builder.show();
                 //UiUtils.killAll();
                 // startActivity(LoginActivity.class);
                 break;

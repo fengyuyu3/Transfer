@@ -102,7 +102,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
     @BindView(R.id.tv_company_detail_address)
     TextView mTvCompanyDetailAddress;
     private RecyclerView.LayoutManager mLayoutManager;
-    List<UpdateAddressBookRequest> mUpdateAddressBookRequests;
+    List<UpdateAddressBookRequest> mUpdateAddressBookRequests=new ArrayList<>();
     private PoiSearch mPoiSearch = null;
     private boolean searchFlag = true;
     private boolean searchListFlag = false;
@@ -301,6 +301,8 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
 
                 break;
             case R.id.ll_company_address:
+
+
                 for (int i = 0; i < mUpdateAddressBookRequests.size(); i++) {
                     switch (mUpdateAddressBookRequests.get(i).getAddressName()) {
                         case Constant.COMPANY:

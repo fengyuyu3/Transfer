@@ -350,7 +350,7 @@
                         android:gravity="center"
                         android:drawablePadding="10px"
                         android:textSize="26px"
-                        android:text="联系客户"
+                        android:text="@string/contact_customer_service"
                         android:layout_marginRight="32px"
                         android:drawableLeft="@mipmap/ic_brown_phne"
                         android:textColor="@color/color_brown"

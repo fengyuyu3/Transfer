@@ -72,7 +72,7 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  * 修改时间：2017/5/2 19:40
  * 修改备注：
  */
-public class AddressSearchActivity extends WEActivity<AddressSearchPresenter> implements AddressSearchContract.View, OnGetPoiSearchResultListener, OnGetGeoCoderResultListener {
+public class AddressSearchActivity extends WEActivity<AddressSearchPresenter> implements AddressSearchContract.View, OnGetPoiSearchResultListener {
 
     @BindView(R.id.et_address)
     EditText mEtAddress;
@@ -80,10 +80,8 @@ public class AddressSearchActivity extends WEActivity<AddressSearchPresenter> im
     TextView mTvCancel;
     @BindView(R.id.rv_address)
     RecyclerView mRvAddress;
-    @BindView(R.id.ll_address)
-    AutoLinearLayout mLlAddress;
-    @BindView(R.id.tw_address_text)
-    TextView mTwAddressText;
+
+
 
     private RecyclerView.LayoutManager mLayoutManager;
 
@@ -95,7 +93,6 @@ public class AddressSearchActivity extends WEActivity<AddressSearchPresenter> im
     private int addressType;
     private AddressAdapter mAddressAdapter;
     private String uabId;
-    private GeoCoder mSearch = null;
     private LocationService locationService;
     private HistoryPoiInfo info;
 
@@ -116,7 +113,6 @@ public class AddressSearchActivity extends WEActivity<AddressSearchPresenter> im
 
     @Override
     protected void initData() {
-        mTwAddressText.setText(getResources().getString(R.string.address_locationing));
         // 初始化搜索模块，注册搜索事件监听
         mPoiSearch = PoiSearch.newInstance();
         mPoiSearch.setOnGetPoiSearchResultListener(this);
@@ -126,7 +122,6 @@ public class AddressSearchActivity extends WEActivity<AddressSearchPresenter> im
         mRvAddress.setAdapter(mAddressAdapter);
         infos = new ArrayList<>();
         mAddressAdapter.setNewData(infos);
-        initLocation();
         Bundle pBundle = getIntent().getExtras();
         if (pBundle != null) {
             setView(pBundle);
@@ -204,10 +199,6 @@ public class AddressSearchActivity extends WEActivity<AddressSearchPresenter> im
 
     }
 
-    @Override
-    public void onGetGeoCodeResult(GeoCodeResult result) {
-
-    }
 
 
     @Override
@@ -356,66 +347,7 @@ public class AddressSearchActivity extends WEActivity<AddressSearchPresenter> im
         }
     }
 
-    public void initMap() {
-        mSearch = GeoCoder.newInstance();
-        mSearch.setOnGetGeoCodeResultListener(this);
-    }
-
-    /***
-     * 初始化定位sdk
-     */
-    private void initLocation() {
-        initMap();
-        if (locationService == null) {
-            locationService = new LocationService(this);
-            locationService.registerListener(mListener);
-            locationService.setLocationOption(locationService.getDefaultLocationClientOption());
-            locationService.start();
-        }
-    }
-
-    private BDLocationListener mListener = new BDLocationListener() {
-        double longitude = 0;
-        double latitude = 0;
-
-        @Override
-        public void onReceiveLocation(BDLocation location) {
-            if (null != location && location.getLocType() != BDLocation.TypeServerError) {
-                LatLng ptCenter = new LatLng(location.getLatitude() //latitude weidu
-                        , location.getLongitude()); //long jingdu
-                // 反Geo搜索
-                mSearch.reverseGeoCode(new ReverseGeoCodeOption()
-                        .location(ptCenter));
-            }
-        }
-    };
 
 
-    @Override
-    public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
-        if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
-            return;
-        }
-        /*if(!addressFlag){
-            addressFlag = true;
-            mPwAddress.setTextInfo(result.getAddress());
-        }*/
-        /*HistoryPoiInfo info = new HistoryPoiInfo(result.getPoiList().get(0), false);
-        if (result.getAddress() != null) {
-            if (addressType == Constant.AIRPORT_GO) {
-                EventBus.getDefault().post(info, EventBusTags.AIRPORT_GO);
-            } else if (addressType == Constant.AIRPORT_ON) {
-                EventBus.getDefault().post(info, EventBusTags.AIRPORT_ON);
-            }
-        } else {
-            dismissProgressDialog();
-            showMessage("定位失败,请重新定位");
-        }*/
 
-        HistoryPoiInfo info = new HistoryPoiInfo(result.getPoiList().get(0), false);
-        if (result.getAddress() != null && info != null && info.name != null) {
-            mTwAddressText.setText(info.name);
-            this.info = info;
-        }
-    }
 }
