@@ -10,10 +10,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.baidu.trace.LBSTraceClient;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.utils.CountTimeMiniteUtil;
-import com.ironaviation.traveller.app.utils.CountTimerUtil;
 import com.ironaviation.traveller.app.utils.TimerUtils;
 import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.common.AppComponent;
@@ -22,14 +20,12 @@ import com.ironaviation.traveller.di.component.payment.DaggerWaitingPaymentCompo
 import com.ironaviation.traveller.di.module.payment.WaitingPaymentModule;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.event.TravelCancelEvent;
-import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.payment.WaitingPaymentContract;
 import com.ironaviation.traveller.mvp.model.entity.BasePushData;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
-import com.ironaviation.traveller.mvp.model.entity.response.WeChatInfo;
+import com.ironaviation.traveller.mvp.model.entity.response.WeChaTInfo;
 import com.ironaviation.traveller.mvp.presenter.payment.WaitingPaymentPresenter;
 import com.ironaviation.traveller.mvp.ui.my.travel.TravelActivity;
-import com.ironaviation.traveller.mvp.ui.my.travel.TravelDetailsActivity;
 import com.ironaviation.traveller.mvp.ui.widget.AutoToolbar;
 import com.ironaviation.traveller.mvp.ui.widget.FontTextView;
 import com.ironaviation.traveller.mvp.ui.my.travel.TravelCancelActivity;
@@ -37,11 +33,7 @@ import com.ironaviation.traveller.mvp.ui.widget.ImageTextImageView;
 import com.ironaviation.traveller.mvp.ui.widget.TextTextView;
 import com.ironaviation.traveller.mvp.ui.widget.MoreActionPopupWindow;
 import com.jess.arms.utils.UiUtils;
-import com.zhy.autolayout.AutoRelativeLayout;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
 
@@ -377,7 +369,7 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     }
 
     @Override
-    public void setWeChat(WeChatInfo info) {
+    public void setWeChat(WeChaTInfo info) {
         WXPayUtills wxPayUtills = new WXPayUtills(this);
         wxPayUtills.pay(info);
     }

@@ -27,6 +27,16 @@
                 android:padding="10px"
 
                 />
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="44px"/>
+
 
 
         </com.ironaviation.traveller.mvp.ui.widget.AutoToolbar>
@@ -66,8 +76,7 @@
             android:layout_below="@+id/zxingview"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="55px"
-            android:textSize="65px"
-
+            android:textSize="45px"
             />
     </com.zhy.autolayout.AutoRelativeLayout>
 

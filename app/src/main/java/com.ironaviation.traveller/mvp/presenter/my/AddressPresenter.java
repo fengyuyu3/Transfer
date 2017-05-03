@@ -6,17 +6,22 @@ import android.text.TextUtils;
 import com.baidu.mapapi.search.core.PoiInfo;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.AddressContract;
 import com.ironaviation.traveller.mvp.model.entity.AddressHistory;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.HistoryPoiInfo;
+import com.ironaviation.traveller.mvp.model.entity.request.UpdateAddressBookRequest;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.utils.DataHelper;
 import com.jess.arms.utils.RxUtils;
 import com.jess.arms.widget.imageloader.ImageLoader;
+
+import org.simple.eventbus.Subscriber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,53 +118,55 @@ public class AddressPresenter extends BasePresenter<AddressContract.Model, Addre
         return addressHistory;
     }
 
-  /*  public void updateAddressBook(HistoryPoiInfo position, int addressType) {
-        switch (addressType) {
-            case Constant.ADDRESS_TYPE_COMPANY:
-                updateAddressBook(null, "公司", position.name, position.location.longitude, position.location.latitude);
+    public void setDefaultData(List<UpdateAddressBookRequest> updateAddressBookRequests) {
+        if (updateAddressBookRequests == null || updateAddressBookRequests.size() == 0) {
 
-                break;
-            case Constant.ADDRESS_TYPE_HOME:
-                updateAddressBook(null, "家", position.name, position.location.longitude, position.location.latitude);
+            UpdateAddressBookRequest home = new UpdateAddressBookRequest();
+            home.setAddressName(mApplication.getString(R.string.home));
+            home.setViewType(1);
+            UpdateAddressBookRequest company = new UpdateAddressBookRequest();
+            company.setViewType(1);
+            company.setAddressName(mApplication.getString(R.string.company));
+            updateAddressBookRequests.add( home);
+            updateAddressBookRequests.add( company);
 
-                break;
+        } else if (updateAddressBookRequests.size() == 1) {
+            if (updateAddressBookRequests.get(0).getAddressName().equals(mApplication.getString(R.string.home))) {
 
-        }
+                UpdateAddressBookRequest company = new UpdateAddressBookRequest();
+                company.setAddressName(mApplication.getString(R.string.company));
+                updateAddressBookRequests.add(1, company);
+                company.setViewType(1);
 
-    }*/
+            }
+            if (updateAddressBookRequests.get(0).getAddressName().equals(mApplication.getString(R.string.company))) {
 
-    public void updateAddressBook(String UABID, HistoryPoiInfo position, int addressType) {
-        switch (addressType) {
-            case Constant.ADDRESS_TYPE_COMPANY:
-                updateAddressBook(UABID, "公司", position.name, position.location.longitude, position.location.latitude);
-
-                break;
-            case Constant.ADDRESS_TYPE_HOME:
-                updateAddressBook(UABID, "家", position.name, position.location.longitude, position.location.latitude);
-
-                break;
-
+                UpdateAddressBookRequest home = new UpdateAddressBookRequest();
+                home.setAddressName(mApplication.getString(R.string.home));
+                home.setViewType(1);
+                updateAddressBookRequests.add(0, home);
+            }
         }
 
     }
 
-    private void updateAddressBook(String UABID,
-                                   String AddressName,
-                                   String Address,
-                                   double Longitude,
-                                   double Latitude) {
 
-        mModel.updateAddressBook(UABID, AddressName, Address, Longitude, Latitude)
-                .compose(RxUtils.<BaseData<List<JsonObject>>>applySchedulers(mRootView))
-                .subscribe(new ErrorHandleSubscriber<BaseData<List<JsonObject>>>(mErrorHandler) {
+    public void getUserAddressBook() {
+        mModel.getUserAddressBook()
+                .compose(RxUtils.<BaseData<List<UpdateAddressBookRequest>>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<List<UpdateAddressBookRequest>>>(mErrorHandler) {
                     @Override
-                    public void onNext(BaseData<List<JsonObject>> loginEntityBaseData) {
-                        if (loginEntityBaseData.isSuccess()) {
+                    public void onNext(BaseData<List<UpdateAddressBookRequest>> loginEntityBaseData) {
 
-                            mAppManager.getCurrentActivity().finish();
-                        } else {
+                        if (loginEntityBaseData.getData() == null || loginEntityBaseData.getData().size() < 2) {
+                            setDefaultData(loginEntityBaseData.getData());
                         }
+                        mRootView.setView(loginEntityBaseData.getData());
+
                     }
                 });
+
     }
+
+
 }

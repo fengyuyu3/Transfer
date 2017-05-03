@@ -5,8 +5,8 @@
     <string name="copyright">Copyright @ 2017 All Rights Reserved</string>
     <string name="our_company">四川铁航信息技术有限公司</string>
     <!--address-->
-    <string name="hint_home_address">请输入家庭地址</string>
-    <string name="hint_company_address">请输入公司地址</string>
+    <string name="hint_home_address">请设置家庭地址</string>
+    <string name="hint_company_address">请设置公司地址</string>
     <string name="hint_get_on_the_bus_address">请输入上车地址</string>
     <string name="hint_get_off_the_bus_address">请输入下车地址</string>
 

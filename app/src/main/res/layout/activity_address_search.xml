@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_write_grey"
+    android:orientation="vertical">
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+
+        >
+
+        <TextView
+            android:id="@+id/tv_city"
+            style="@style/common_text_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30px"
+            android:layout_marginLeft="@dimen/h_fillet2"
+            android:layout_marginTop="30px"
+            android:text="@string/city"
+
+            />
+
+        <ImageView
+            android:id="@+id/v_line"
+            android:layout_width="1px"
+            android:layout_height="65px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="23px"
+
+            android:layout_toRightOf="@+id/tv_city"
+            android:background="@color/line_little_grey"/>
+
+        <EditText
+            android:id="@+id/et_address"
+            style="@style/input_edit_style"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="23px"
+            android:layout_toLeftOf="@+id/tv_cancel"
+            android:layout_toRightOf="@+id/v_line"
+            android:maxLength="25"
+            />
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            style="@style/common_text_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/h_fillet2"
+            android:paddingBottom="30px"
+            android:paddingLeft="30px"
+            android:paddingRight="32px"
+            android:paddingTop="30px"
+            android:text="@string/cancel"
+            android:textColor="@color/word_wait_input"
+            />
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/h_fillet"
+    ></View>
+
+
+
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:background="@color/white"
+        android:id="@+id/ll_address"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="128px">
+        <ImageView
+            android:layout_gravity="center"
+            android:id="@+id/iw_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/h_fillet2"
+            android:layout_marginRight="@dimen/h_fillet2"
+            android:background="@mipmap/ic_address"
+            />
+         <TextView
+             android:text="@string/address_my"
+             android:layout_gravity="center"
+             android:id="@+id/tw_address_text"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"/>
+    </com.zhy.autolayout.AutoLinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_address"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+    </android.support.v7.widget.RecyclerView>
+</com.zhy.autolayout.AutoLinearLayout>

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -35,28 +36,25 @@ import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.app.utils.LocationService;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
-import com.ironaviation.traveller.di.component.my.DaggerAddressComponent;
-import com.ironaviation.traveller.di.module.my.AddressModule;
+import com.ironaviation.traveller.di.component.my.DaggerAddressSearchComponent;
+import com.ironaviation.traveller.di.module.my.AddressSearchModule;
 import com.ironaviation.traveller.mvp.constant.Constant;
-import com.ironaviation.traveller.mvp.contract.my.AddressContract;
+import com.ironaviation.traveller.mvp.contract.my.travel.AddressSearchContract;
 import com.ironaviation.traveller.mvp.model.entity.HistoryPoiInfo;
-import com.ironaviation.traveller.mvp.model.entity.request.UpdateAddressBookRequest;
-import com.ironaviation.traveller.mvp.presenter.my.AddressPresenter;
+import com.ironaviation.traveller.mvp.presenter.my.AddressSearchPresenter;
 import com.ironaviation.traveller.mvp.ui.manager.FullyLinearLayoutManager;
 import com.ironaviation.traveller.mvp.ui.my.adapter.AddressAdapter;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
 
+
 import org.simple.eventbus.EventBus;
-import org.simple.eventbus.Subscriber;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -70,16 +68,18 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 
 /**
- * 项目名称：Traveller
- * 类描述：
- * 创建人：starRing
- * 创建时间：2017-03-31 11:41
- * 修改人：starRing
- * 修改时间：2017-03-31 11:41
- * 修改备注：
+ *
+ * 项目名称：Traveller      
+ * 类描述：   
+ * 创建人：starRing  
+ * 创建时间：2017/5/2 19:40   
+ * 修改人：starRing  
+ * 修改时间：2017/5/2 19:40   
+ * 修改备注：   
+ * @version
+ *
  */
-public class AddressActivity extends WEActivity<AddressPresenter> implements AddressContract.View, OnGetPoiSearchResultListener, OnGetGeoCoderResultListener {
-
+public class AddressSearchActivity extends WEActivity<AddressSearchPresenter> implements AddressSearchContract.View , OnGetPoiSearchResultListener, OnGetGeoCoderResultListener {
 
     @BindView(R.id.et_address)
     EditText mEtAddress;
@@ -87,22 +87,13 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
     TextView mTvCancel;
     @BindView(R.id.rv_address)
     RecyclerView mRvAddress;
-    @BindView(R.id.rl_usual_address)
-    AutoRelativeLayout mRlUsualAddress;
     @BindView(R.id.ll_address)
     AutoLinearLayout mLlAddress;
     @BindView(R.id.tw_address_text)
     TextView mTwAddressText;
-    @BindView(R.id.ll_home_address)
-    AutoLinearLayout mLlHomeAddress;
-    @BindView(R.id.ll_company_address)
-    AutoLinearLayout mLlCompanyAddress;
-    @BindView(R.id.tv_item_detail_address)
-    TextView mTvItemDetailAddress;
-    @BindView(R.id.tv_company_detail_address)
-    TextView mTvCompanyDetailAddress;
+
     private RecyclerView.LayoutManager mLayoutManager;
-    List<UpdateAddressBookRequest> mUpdateAddressBookRequests;
+
     private PoiSearch mPoiSearch = null;
     private boolean searchFlag = true;
     private boolean searchListFlag = false;
@@ -117,17 +108,17 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
-        DaggerAddressComponent
+        DaggerAddressSearchComponent
                 .builder()
                 .appComponent(appComponent)
-                .addressModule(new AddressModule(this)) //请将AddressModule()第一个首字母改为小写
+                .addressSearchModule(new AddressSearchModule(this)) //请将AddressSearchModule()第一个首字母改为小写
                 .build()
                 .inject(this);
     }
 
     @Override
     protected View initView() {
-        return LayoutInflater.from(this).inflate(R.layout.activity_address, null, false);
+        return LayoutInflater.from(this).inflate(R.layout.activity_address_search, null, false);
     }
 
     @Override
@@ -138,15 +129,15 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
         mPoiSearch.setOnGetPoiSearchResultListener(this);
         mAddressAdapter = new AddressAdapter(R.layout.item_address);
         mLayoutManager = new FullyLinearLayoutManager(this);
-
         mRvAddress.setLayoutManager(mLayoutManager);
-
         mRvAddress.setAdapter(mAddressAdapter);
-        infos = mPresenter.getAddress().getPoiInfos();
+        infos =new ArrayList<>();
         mAddressAdapter.setNewData(infos);
         initLocation();
-        mPresenter.getUserAddressBook();
-
+        Bundle pBundle = getIntent().getExtras();
+        if (pBundle != null) {
+            setView(pBundle);
+        }
         /**
          * 当输入关键字变化时，动态更新建议列表
          */
@@ -169,7 +160,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
                 if (charSequence.length() <= 0) {
                     //mRvAddress.setVisibility(View.GONE);
                     //infos = null;
-                    infos = mPresenter.getAddress().getPoiInfos();
+                    infos =new ArrayList<>();
                     mAddressAdapter.setNewData(infos);
                     searchRunnable.clear();
                     return;
@@ -181,17 +172,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
         mAddressAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                mPresenter.saveAddress(infos.get(position));
-
-                if (addressType == Constant.AIRPORT_GO) {
-                    EventBus.getDefault().post(infos.get(position), EventBusTags.AIRPORT_GO);
-                    finish();
-                } else if (addressType == Constant.AIRPORT_ON) {
-                    EventBus.getDefault().post(infos.get(position), EventBusTags.AIRPORT_ON);
-                    finish();
-                } else {
-
-                }
+                mPresenter.updateAddressBook(uabId, infos.get(position), addressType);
             }
         });
     }
@@ -199,13 +180,12 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
 
     @Override
     public void showLoading() {
-        showProgressDialog();
 
     }
 
     @Override
     public void hideLoading() {
-        dismissProgressDialog();
+
     }
 
     @Override
@@ -232,102 +212,20 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+    public void onGetGeoCodeResult(GeoCodeResult result) {
+
     }
 
-    @OnClick({R.id.tv_cancel, R.id.ll_address, R.id.ll_home_address, R.id.ll_company_address, R.id.tv_item_detail_address, R.id.tv_company_detail_address})
-    public void onClick(View view) {
-
-        switch (view.getId()) {
-            case R.id.tv_cancel:
-                finish();
-                break;
-            case R.id.ll_address:
-                if (addressType == Constant.AIRPORT_GO) {
-                    if (info != null) {
-                        EventBus.getDefault().post(info, EventBusTags.AIRPORT_GO);
-                    } else {
-                        showMessage("没有定位成功!");
-                    }
-                } else if (addressType == Constant.AIRPORT_ON) {
-                    if (info != null) {
-                        EventBus.getDefault().post(info, EventBusTags.AIRPORT_ON);
-                    } else {
-                        showMessage("没有定位成功!");
-                    }
-                }
-                finish();
-            case R.id.ll_home_address:
-                for (int i = 0; i < mUpdateAddressBookRequests.size(); i++) {
-                    switch (mUpdateAddressBookRequests.get(i).getAddressName()) {
-                        case Constant.HOME:
-
-                            if (mUpdateAddressBookRequests.get(i).getViewType() == 1) {
 
 
-                                if (addressType == Constant.AIRPORT_GO) {
-                                    HistoryPoiInfo historyPoiInfo=new HistoryPoiInfo(mUpdateAddressBookRequests.get(i).getAddressName(),
-                                            mUpdateAddressBookRequests.get(i).getAddress(),
-                                            new LatLng(mUpdateAddressBookRequests.get(i).getLatitude(),mUpdateAddressBookRequests.get(i).getLongitude()));
-                                    EventBus.getDefault().post(historyPoiInfo, EventBusTags.AIRPORT_GO);
-                                    finish();
-                                } else if (addressType == Constant.AIRPORT_ON) {
-                                    HistoryPoiInfo historyPoiInfo=new HistoryPoiInfo(mUpdateAddressBookRequests.get(i).getAddressName(),
-                                            mUpdateAddressBookRequests.get(i).getAddress(),
-                                            new LatLng(mUpdateAddressBookRequests.get(i).getLatitude(),mUpdateAddressBookRequests.get(i).getLongitude()));
-                                    EventBus.getDefault().post(historyPoiInfo, EventBusTags.AIRPORT_ON);
-                                    finish();
-                                } else {
+    @Override
+    public void onGetPoiDetailResult(PoiDetailResult result) {
 
-                                }
+    }
 
-                            } else if (mUpdateAddressBookRequests.get(i).getViewType() == 0) {
-                                Bundle pBundle = new Bundle();
-                                pBundle.putInt(Constant.ADDRESS_TYPE, Constant.ADDRESS_USUAl_HOME);
-                                startActivity(AddressSearchActivity.class, pBundle);
-                            }
-                            break;
+    @Override
+    public void onGetPoiIndoorResult(PoiIndoorResult result) {
 
-                    }
-                }
-
-                break;
-            case R.id.ll_company_address:
-                for (int i = 0; i < mUpdateAddressBookRequests.size(); i++) {
-                    switch (mUpdateAddressBookRequests.get(i).getAddressName()) {
-                        case Constant.COMPANY:
-
-                            if (mUpdateAddressBookRequests.get(i).getViewType() == 1) {
-                                if (addressType == Constant.AIRPORT_GO) {
-                                    HistoryPoiInfo historyPoiInfo=new HistoryPoiInfo(mUpdateAddressBookRequests.get(i).getAddressName(),
-                                            mUpdateAddressBookRequests.get(i).getAddress(),
-                                            new LatLng(mUpdateAddressBookRequests.get(i).getLatitude(),mUpdateAddressBookRequests.get(i).getLongitude()));
-                                    EventBus.getDefault().post(historyPoiInfo, EventBusTags.AIRPORT_GO);
-                                    finish();
-                                } else if (addressType == Constant.AIRPORT_ON) {
-                                    HistoryPoiInfo historyPoiInfo=new HistoryPoiInfo(mUpdateAddressBookRequests.get(i).getAddressName(),
-                                            mUpdateAddressBookRequests.get(i).getAddress(),
-                                            new LatLng(mUpdateAddressBookRequests.get(i).getLatitude(),mUpdateAddressBookRequests.get(i).getLongitude()));
-                                    EventBus.getDefault().post(historyPoiInfo, EventBusTags.AIRPORT_ON);
-                                    finish();
-                                } else {
-
-                                }
-                            } else if (mUpdateAddressBookRequests.get(i).getViewType() == 0) {
-                                Bundle pBundle = new Bundle();
-                                pBundle.putInt(Constant.ADDRESS_TYPE, Constant.ADDRESS_USUAl_COMPANY);
-                                startActivity(AddressSearchActivity.class, pBundle);
-                            }
-                            break;
-
-
-                    }
-                }
-                break;
-        }
     }
 
 
@@ -340,7 +238,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
         searchRunnable.pushKeyWord(keyword);
     }
 
-    SearchRunnable searchRunnable = new SearchRunnable();
+    AddressSearchActivity.SearchRunnable searchRunnable = new AddressSearchActivity.SearchRunnable();
 
 
     /**
@@ -378,41 +276,6 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
         }
 
     }
-
-    /**
-     * 获取POI详情搜索结果，得到searchPoiDetail返回的搜索结果
-     *
-     * @param result
-     */
-    @Override
-    public void onGetPoiDetailResult(PoiDetailResult result) {
-
-    }
-
-    @Override
-    public void onGetPoiIndoorResult(PoiIndoorResult result) {
-
-    }
-
-    @Override
-    public void setView(List<UpdateAddressBookRequest> mUpdateAddressBookRequests) {
-
-        this.mUpdateAddressBookRequests = mUpdateAddressBookRequests;
-        for (int i = 0; i < mUpdateAddressBookRequests.size(); i++) {
-            switch (mUpdateAddressBookRequests.get(i).getAddressName()) {
-                case "家":
-
-                    mTvItemDetailAddress.setText(mUpdateAddressBookRequests.get(i).getAddress());
-                    break;
-                case "公司":
-                    mTvCompanyDetailAddress.setText(mUpdateAddressBookRequests.get(i).getAddress());
-                    break;
-
-            }
-        }
-
-    }
-
 
     class SearchRunnable implements Runnable {
         String keyWord;
@@ -455,13 +318,39 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
 
         }
     }
-
     @Override
     protected void onDestroy() {
         mPoiSearch.destroy();
         super.onDestroy();
     }
 
+
+    /**
+     * 设置页面
+     *
+     * @param
+     */
+    private void setView(Bundle bundle) {
+        addressType = bundle.getInt(Constant.ADDRESS_TYPE);
+
+        if (!TextUtils.isEmpty(bundle.getString(Constant.UABID))) {
+            uabId = bundle.getString(Constant.UABID);
+        }
+
+        if (addressType != 0) {
+            switch (addressType) {
+                case Constant.ADDRESS_TYPE_COMPANY:
+                case Constant.ADDRESS_USUAl_COMPANY:
+                    mEtAddress.setHint(getString(R.string.hint_company_address));
+                    break;
+                case Constant.ADDRESS_TYPE_HOME:
+                case Constant.ADDRESS_USUAl_HOME:
+                    mEtAddress.setHint(getString(R.string.hint_home_address));
+                    break;
+            }
+
+        }
+    }
 
     public void initMap() {
         mSearch = GeoCoder.newInstance();
@@ -497,10 +386,6 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
         }
     };
 
-    @Override
-    public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
-
-    }
 
     @Override
     public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
@@ -529,9 +414,4 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
             this.info = info;
         }
     }
-    @Subscriber(tag = EventBusTags.ADDRESS)
-    public void getUserAddressBook(String usual_address){
-        mPresenter.getUserAddressBook();
-    }
-
 }

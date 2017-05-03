@@ -34,16 +34,13 @@ import rx.Observable;
 public interface AddressContract {
     //对于经常使用的关于UI的方法可以定义到BaseView中,如显示隐藏进度条,和显示文字消息
     interface View extends BaseView {
+        void setView(List<UpdateAddressBookRequest> mUpdateAddressBookRequests);
 
     }
 
     //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存
     interface Model extends IModel {
-        Observable<BaseData<List<JsonObject>>> updateAddressBook(String UABID,
-                                                                 String AddressName,
-                                                                 String Address,
-                                                                 double Longitude,
-                                                                 double Latitude);
+        Observable<BaseData<List<UpdateAddressBookRequest>>> getUserAddressBook();
 
     }
 }

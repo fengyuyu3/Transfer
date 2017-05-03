@@ -91,6 +91,7 @@
                 />
 
             <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/ll_home_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -111,6 +112,8 @@
                     android:layout_marginTop="12px"
                     android:ellipsize="end"
                     android:text=""
+                    android:hint="@string/hint_home_address"
+                    android:textColorHint="@color/word_deep_grey"
                     />
             </com.zhy.autolayout.AutoLinearLayout>
 
@@ -141,6 +144,8 @@
                 />
 
             <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/ll_company_address"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -161,6 +166,8 @@
                     android:layout_marginTop="12px"
                     android:ellipsize="end"
                     android:text=""
+                    android:hint="@string/hint_company_address"
+                    android:textColorHint="@color/word_deep_grey"
                     />
             </com.zhy.autolayout.AutoLinearLayout>
 

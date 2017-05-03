@@ -164,6 +164,17 @@
             >
 
         </activity>
+        <!--地址搜索-->
+        <activity
+            android:name=".mvp.ui.my.AddressSearchActivity"
+            android:hardwareAccelerated="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            >
+
+        </activity>
+
 
         <!--评价-->
         <activity

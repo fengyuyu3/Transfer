@@ -43,6 +43,9 @@ public interface Constant {
     String UABID = "uabid";
     int ADDRESS_TYPE_HOME = 991;
     int ADDRESS_TYPE_COMPANY = 992;
+    int ADDRESS_USUAl_HOME = 995;
+    int ADDRESS_USUAl_COMPANY = 996;
+
     int AIRPORT_GO = 993;
     int AIRPORT_ON = 994;
     double AIRPORT_T1_LONGITUDE=103.965305;
@@ -53,7 +56,8 @@ public interface Constant {
     String AIRPORT_T2 = "成都双流国际机场T2航站楼";
 
     int INDEX = 10;
-
+    String HOME="家";
+    String COMPANY="公司";
     String STATUS = "status";
     String CHILD_STATUS = "child_status";
     String REGISTERED = "Registered"; // 预约成功

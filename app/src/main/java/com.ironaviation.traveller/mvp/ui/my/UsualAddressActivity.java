@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.my.DaggerUsualAddressComponent;
@@ -20,6 +21,7 @@ import com.ironaviation.traveller.di.module.my.UsualAddressModule;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.UsualAddressContract;
 import com.ironaviation.traveller.mvp.model.entity.request.UpdateAddressBookRequest;
+import com.ironaviation.traveller.mvp.model.entity.response.FlightDetails;
 import com.ironaviation.traveller.mvp.presenter.my.UsualAddressPresenter;
 import com.ironaviation.traveller.mvp.ui.my.adapter.UsualAddressAdapter;
 import com.ironaviation.traveller.mvp.ui.widget.AutoSwipeMenuRecyclerView;
@@ -30,6 +32,10 @@ import com.yanzhenjie.recyclerview.swipe.SwipeMenu;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuCreator;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuItem;
 
+import org.simple.eventbus.EventBus;
+import org.simple.eventbus.Subscriber;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -183,7 +189,7 @@ public class UsualAddressActivity extends WEActivity<UsualAddressPresenter> impl
                 pBundle.putString(Constant.UABID,mUsualAddressAdapter.getItem(position).getUABID().toString());
             }
 
-            startActivity(AddressActivity.class, pBundle);
+            startActivity(AddressSearchActivity.class, pBundle);
         }
 
 
@@ -211,6 +217,10 @@ public class UsualAddressActivity extends WEActivity<UsualAddressPresenter> impl
     public void setView(List<UpdateAddressBookRequest> mUpdateAddressBookRequests) {
 
         mUsualAddressAdapter.setData(mUpdateAddressBookRequests);
+    }
 
+    @Subscriber(tag = EventBusTags.USUAL_ADDRESS)
+    public void getUserAddressBook(String usual_address){
+        mPresenter.getUserAddressBook();
     }
 }
