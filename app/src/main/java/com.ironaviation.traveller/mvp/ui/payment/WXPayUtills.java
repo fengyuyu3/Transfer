@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 
-import com.ironaviation.traveller.mvp.model.entity.response.WeChatInfo;
+import com.ironaviation.traveller.mvp.model.entity.response.WeChaTInfo;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
@@ -37,7 +37,7 @@ public class WXPayUtills {
      *
      *
      */
-    public void pay(WeChatInfo info){
+    public void pay(WeChaTInfo info){
         if(api == null){
             initWX();
         }
@@ -61,7 +61,7 @@ public class WXPayUtills {
      * ,"Package":"Sign=WXPay","Sign":"BA0A8F857902D813BCD057207E9BC5BC"}
      */
 
-    public void wxPay(WeChatInfo info){
+    public void wxPay(WeChaTInfo info){
         PayReq req = new PayReq();
         //req.appId = "wxf8b4f85f3a794e77";  // 测试用appId
         req.appId			= info.getAppId();

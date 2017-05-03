@@ -44,6 +44,12 @@ public class HistoryPoiInfo implements Serializable {
         this.flagHistory=flagHistory;
     }
 
+    public HistoryPoiInfo(String name, String address, LatLng location) {
+        this.name = name;
+        this.address = address;
+        this.location = location;
+    }
+
     public boolean isFlagHistory() {
         return flagHistory;
     }

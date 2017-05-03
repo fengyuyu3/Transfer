@@ -2,11 +2,10 @@ package com.ironaviation.traveller.mvp.model.my;
 
 import android.app.Application;
 import android.text.TextUtils;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.ironaviation.traveller.mvp.contract.my.AddressContract;
+import com.ironaviation.traveller.mvp.contract.my.travel.AddressSearchContract;
 import com.ironaviation.traveller.mvp.model.api.cache.CacheManager;
 import com.ironaviation.traveller.mvp.model.api.service.CommonService;
 import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
@@ -34,26 +33,30 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 
 /**
- * 项目名称：Traveller
- * 类描述：
- * 创建人：starRing
- * 创建时间：2017-03-31 11:39
- * 修改人：starRing
- * 修改时间：2017-03-31 11:39
- * 修改备注：
+ *
+ * 项目名称：Traveller      
+ * 类描述：   
+ * 创建人：starRing  
+ * 创建时间：2017/5/2 19:39   
+ * 修改人：starRing  
+ * 修改时间：2017/5/2 19:39   
+ * 修改备注：   
+ * @version
+ *
  */
 @ActivityScope
-public class AddressModel extends BaseModel<ServiceManager, CacheManager> implements AddressContract.Model {
+public class AddressSearchModel extends BaseModel<ServiceManager, CacheManager> implements AddressSearchContract.Model {
     private Gson mGson;
     private Application mApplication;
     private CommonService mCommonService;
 
     @Inject
-    public AddressModel(ServiceManager serviceManager, CacheManager cacheManager, Gson gson, Application application) {
+    public AddressSearchModel(ServiceManager serviceManager, CacheManager cacheManager, Gson gson, Application application) {
         super(serviceManager, cacheManager);
         this.mGson = gson;
         this.mApplication = application;
         this.mCommonService=serviceManager.getCommonService();
+
     }
 
     @Override
@@ -61,12 +64,32 @@ public class AddressModel extends BaseModel<ServiceManager, CacheManager> implem
         super.onDestroy();
         this.mGson = null;
         this.mApplication = null;
-        this.mCommonService=null;
     }
 
-
     @Override
-    public Observable<BaseData<List<UpdateAddressBookRequest>>> getUserAddressBook() {
-        return mCommonService.getUserAddressBook();
+    public Observable<BaseData<List<JsonObject>>> updateAddressBook(String UABID, String AddressName, String Address, double Longitude, double Latitude) {
+        UpdateAddressBookRequest params = new UpdateAddressBookRequest();
+
+        if (!TextUtils.isEmpty(AddressName)) {
+            params.setAddressName(AddressName);
+        }
+
+        if (!TextUtils.isEmpty(Address)) {
+            params.setAddress(Address);
+        }
+
+        if (!TextUtils.isEmpty(UABID)) {
+            params.setUABID(UABID);
+        }
+
+        if (Longitude!=0) {
+            params.setLongitude(Longitude);
+        }
+
+        if (Latitude!=0) {
+            params.setLatitude(Latitude);
+        }
+
+        return mCommonService.updateAddressBook(params);
     }
 }

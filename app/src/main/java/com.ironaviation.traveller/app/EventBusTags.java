@@ -31,5 +31,6 @@ public interface EventBusTags {
     String TRAVEL_DETAIL = "travel_detail";
     String TRAVEL_DETAIL_ON = "travel_detail_on";
 
-
+    String USUAL_ADDRESS = "UsualAddress";
+    String ADDRESS = "Address";
 }

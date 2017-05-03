@@ -1,19 +1,23 @@
 package com.ironaviation.traveller.mvp.ui.my;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
+import com.ironaviation.traveller.mvp.ui.widget.AutoToolbar;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cn.bingoogolapple.qrcode.core.BGAQRCodeUtil;
 import cn.bingoogolapple.qrcode.zxing.QRCodeEncoder;
 
@@ -28,6 +32,18 @@ import cn.bingoogolapple.qrcode.zxing.QRCodeEncoder;
  */
 public class QRCodeActivity extends WEActivity {
 
+    String OrderNo;
+
+    @BindView(R.id.iv_function_left)
+    ImageView mIvFunctionLeft;
+    @BindView(R.id.toolbar)
+    AutoToolbar mToolbar;
+    @BindView(R.id.tv_qr_code_hint)
+    TextView mTvQrCodeHint;
+    @BindView(R.id.zxingview)
+    ImageView mZxingview;
+    @BindView(R.id.tv_order_id)
+    TextView mTvOrderId;
 
     @Override
     protected void nodataRefresh() {
@@ -41,16 +57,21 @@ public class QRCodeActivity extends WEActivity {
 
     @Override
     protected View initView() {
+
         return LayoutInflater.from(this).inflate(R.layout.activity_qr_code, null, false);
 
     }
 
     @Override
     protected void initData() {
-        createEnglishQRCode("11326");
+        Bundle pBundele = getIntent().getExtras();
+        OrderNo = pBundele.getString("OrderNo");
+        createEnglishQRCode(OrderNo);
         initToolbar();
+        mTvOrderId.setText(OrderNo);
     }
-    public void initToolbar(){
+
+    public void initToolbar() {
         setTitle(getString(R.string.order_qr_code));
         setLeftFunction(ContextCompat.getDrawable(this, R.mipmap.ic_back), new View.OnClickListener() {
             @Override
@@ -71,7 +92,7 @@ public class QRCodeActivity extends WEActivity {
             @Override
             protected Bitmap doInBackground(Void... params) {
 
-                return QRCodeEncoder.syncEncodeQRCode(cord, BGAQRCodeUtil.dp2px(QRCodeActivity.this, 150), Color.parseColor("#000000"), BitmapFactory.decodeResource(getResources(), R.mipmap.ic_person));
+                return QRCodeEncoder.syncEncodeQRCode(cord, BGAQRCodeUtil.dp2px(QRCodeActivity.this, 150), Color.parseColor("#000000"));
             }
 
             @Override
@@ -84,5 +105,12 @@ public class QRCodeActivity extends WEActivity {
                 }
             }
         }.execute();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

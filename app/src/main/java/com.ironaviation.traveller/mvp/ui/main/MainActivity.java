@@ -33,7 +33,9 @@ import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.DaggerMainComponent;
 import com.ironaviation.traveller.di.module.MainModule;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.MainContract;
+import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
 import com.ironaviation.traveller.mvp.presenter.MainPresenter;
 import com.ironaviation.traveller.mvp.ui.airportoff.AirPortOffFragment;
 import com.ironaviation.traveller.mvp.ui.airporton.AirPortOnFragment;
@@ -43,6 +45,7 @@ import com.ironaviation.traveller.mvp.ui.my.SettingActivity;
 import com.ironaviation.traveller.mvp.ui.my.travel.TravelActivity;
 import com.ironaviation.traveller.mvp.ui.widget.AutoSlidingTabLayout;
 import com.ironaviation.traveller.mvp.ui.widget.AutoToolbar;
+import com.jess.arms.utils.DataHelper;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoRelativeLayout;
 
@@ -213,6 +216,12 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+    }
+
+    @Override
+    public void setPhone(String phone) {
+        LoginEntity response = DataHelper.getDeviceData(mApplication, Constant.LOGIN);
+        mIvPhone.setText(response.getPhone());
     }
 
     private class MyPagerAdapter extends FragmentPagerAdapter {

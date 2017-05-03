@@ -4,7 +4,7 @@ package com.ironaviation.traveller.mvp.model.entity.response;
  * Created by Administrator on 2017/4/26.
  */
 
-public class WeChatInfo {
+public class WeChaTInfo {
 
     private String AppId;
     private String PartnerId;

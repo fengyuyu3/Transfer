@@ -416,6 +416,9 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
         String orderOn = responses.getOrderNo();
         if(orderOn != null) {
             Intent intent = new Intent(this, QRCodeActivity.class);
+            Bundle pBundle=new Bundle();
+            pBundle.putString("OrderNo",orderOn);
+            intent.putExtras(pBundle);
             startActivity(intent);
         }else{
             showMessage(getResources().getString(R.string.travel_order_failed));

@@ -1,10 +1,11 @@
-package com.ironaviation.traveller.mvp.contract.payment;
+package com.ironaviation.traveller.mvp.contract.my.travel;
 
+import com.google.gson.JsonObject;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
-import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
-import com.ironaviation.traveller.mvp.model.entity.response.WeChaTInfo;
 import com.jess.arms.mvp.BaseView;
 import com.jess.arms.mvp.IModel;
+
+import java.util.List;
 
 import rx.Observable;
 
@@ -22,33 +23,26 @@ import rx.Observable;
  * 项目名称：Traveller      
  * 类描述：   
  * 创建人：starRing  
- * 创建时间：2017-04-10 14:52   
+ * 创建时间：2017/5/2 19:39   
  * 修改人：starRing  
- * 修改时间：2017-04-10 14:52   
+ * 修改时间：2017/5/2 19:39   
  * 修改备注：   
  * @version
  *
  */
-public interface WaitingPaymentContract {
+public interface AddressSearchContract {
     //对于经常使用的关于UI的方法可以定义到BaseView中,如显示隐藏进度条,和显示文字消息
     interface View extends BaseView {
-        void setOrderNum(String num);
-        void setMobile(String mobile);
-        void setTravelNO(String travelNO);
-        void setTime(long time);
-        void setPickUpAddress(String address);
-        void setDestAddress(String address);
-        void setSeatNum(int num);
-        void setPrice(int num);
-        void setCountdown(long time,long cdt);
-        void setSuccess();
-        void setWeChat(WeChaTInfo info);
-        void setAliPay(String aliPay);
+
     }
 
     //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存
     interface Model extends IModel {
-        Observable<BaseData<RouteStateResponse>> getRouteStateInfo(String bid);
-        Observable<BaseData> getPayment(String bid,String payMethod);
+        Observable<BaseData<List<JsonObject>>> updateAddressBook(String UABID,
+                                                                 String AddressName,
+                                                                 String Address,
+                                                                 double Longitude,
+                                                                 double Latitude);
+
     }
 }

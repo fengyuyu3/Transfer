@@ -3,13 +3,12 @@ package com.ironaviation.traveller.mvp.presenter.payment;
 import android.app.Application;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.payment.WaitingPaymentContract;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
-import com.ironaviation.traveller.mvp.model.entity.response.WeChatInfo;
+import com.ironaviation.traveller.mvp.model.entity.response.WeChaTInfo;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
@@ -99,7 +98,7 @@ public class WaitingPaymentPresenter extends BasePresenter<WaitingPaymentContrac
                         if(jsonObjectBaseData.isSuccess()){
                             if(Constant.WECHAT.equals(payment)){
                                 String in = jsonObjectBaseData.getData().toString();
-                                WeChatInfo info = new Gson().fromJson(in,WeChatInfo.class);
+                                WeChaTInfo info = new Gson().fromJson(in,WeChaTInfo.class);
                                 mRootView.setWeChat(info);
                             }else if(Constant.ALIPAY.equals(payment)){
                                 String info = jsonObjectBaseData.getData().toString();
