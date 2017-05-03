@@ -1,9 +1,6 @@
 package com.ironaviation.traveller.mvp.model.entity;
 
 
-import com.baidu.trace.T;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 
 import java.io.Serializable;
 

@@ -29,6 +29,15 @@ public class PassengersResponse implements Comparable<PassengersResponse>{
     private double PickupLatitude;
     private double DestLongitude;
     private double DestLatitude;
+    private String UID;
+
+    public String getUID() {
+        return UID;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
+    }
 
     public String getOrderNo() {
         return OrderNo;
@@ -112,7 +121,7 @@ public class PassengersResponse implements Comparable<PassengersResponse>{
 
     @Override
     public int compareTo(PassengersResponse o) {
-        if(this.PickupTime - o.PickupTime >0){
+        if(this.PickupTime - o.PickupTime > 0){
             return 1;
         }else if(this.PickupTime - o.PickupTime == 0){
             return 0;

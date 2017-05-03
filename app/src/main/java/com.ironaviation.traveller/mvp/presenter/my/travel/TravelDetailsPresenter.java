@@ -78,6 +78,12 @@ public class TravelDetailsPresenter extends BasePresenter<TravelDetailsContract.
                     public void onNext(BaseData<RouteStateResponse> routeStateResponseBaseData) {
                         if(routeStateResponseBaseData.isSuccess()){
                               if(routeStateResponseBaseData.getData() != null){
+                                  if (routeStateResponseBaseData.getData().getExt() != null) {
+                                      for (int i = 0; i < routeStateResponseBaseData.getData().getExt().size(); i++){
+                                          routeStateResponseBaseData.getData().getExt().get(i).setJsonData(routeStateResponseBaseData.getData().getExt().get(i).getData().toString());
+                                          routeStateResponseBaseData.getData().getExt().get(i).setData(null);
+                                      }
+                                  }
                                   setRouteStateResponse(routeStateResponseBaseData.getData());
                                   mRouteStateResponse = routeStateResponseBaseData.getData();
                                   mRootView.setPassengersResponseInfo(routeStateResponseBaseData.getData());

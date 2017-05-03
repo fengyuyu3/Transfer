@@ -3,7 +3,6 @@ package com.ironaviation.traveller.app.utils;
 import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.CoordinateConverter;
-import com.baidu.trace.model.CoordType;
 
 /**
  * Created by baidu on 17/2/9.

@@ -81,7 +81,7 @@ public interface Constant {
     int TYPE_AIRPORT_OFF = 101;//送機
     int TYPE_AIRPORT_ON = 102; //接機
 
-    int SERVICEID = 138814;
+    int SERVICEID = 139760;
     String CITY = "成都";
     String ON = "on";  //接机
     String OFF = "off"; //送机
@@ -90,6 +90,7 @@ public interface Constant {
 
 
     String CLASS_PAY_INFO = "PayInfo";
+    String CURRENT_PICKUP = "CurrentPickup";
     String CANCELREASON = "CancelReason"; //取消原因
     String PAYMENT= "payment"; //付款方式
     String REAL_PRICE  = "real_price";  //真实价格

@@ -169,7 +169,6 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     private RoutePlanSearch mSearch = null;    // 搜索模块，也可去掉地图模块独立使用
     private BitmapDescriptor bd;
     private BitmapDescriptor car;
-    private LBSTraceClient mLBSTraceClient;
     private OnEntityListener entityListener = null;
     private MapUtil mapUtils;
     protected static OverlayOptions overlayOptions;
@@ -188,8 +187,10 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     private static OnStartTraceListener startTraceListener = null;  //开启轨迹服务监听器
     private Trace trace;  // 实例化轨迹服务
     private int traceType = 2;  //轨迹服务类型
-    private double driverLongitude;
-    private double driverLatitude;
+    /*private double driverLongitude;
+    private double driverLatitude;*/
+    private String uid;
+    private String driverCode;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -215,11 +216,11 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
             responses = (RouteStateResponse) pBundle.getSerializable(Constant.STATUS);
             if (responses!=null&&!TextUtils.isEmpty(responses.getBID())){
 //                mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.WAITING_PAYMENT,responses.getBID());
-                status = responses.getStatus();
+                /*status = responses.getStatus();
                 bid = responses.getBID();
                 mPresenter.setRouteStateResponse(responses);
-                showStatus(status);
-                mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.TRAVEL_DETAILS, responses.getBID());
+                showStatus(status,responses);
+                mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.TRAVEL_DETAILS, responses.getBID());*/
                 setPassengersResponseInfo(responses);
             }else{
                 bid = pBundle.getString(Constant.BID);
@@ -255,6 +256,19 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         mPassengersResponse.setPickupLatitude(response.getPickupLatitude());
         mPassengersResponse.setDestLongitude(response.getDestLongitude());
         mPassengersResponse.setDestLatitude(response.getDestLagitude());
+        driverCode = response.getDriverCode();
+        trace = new Trace(getApplicationContext(), Constant.SERVICEID, driverCode, traceType);
+        mWeApplication.getClient().startTrace(trace, startTraceListener);
+        status = response.getStatus();
+        bid = response.getBID();
+        mPresenter.setRouteStateResponse(response);
+        mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.TRAVEL_DETAILS, response.getBID());
+        for(int i = 0; i < response.getExt().size(); i++){
+            if(response.getExt().get(i).getName().equals(Constant.CURRENT_PICKUP)){
+                uid = response.getExt().get(i).getJsonData();
+            }
+        }
+        showStatus(status,response);
     }
     public void initTitle(){
         setTitle(getString(R.string.travel_detail));
@@ -319,7 +333,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
                 break;
             case R.id.iw_zoom_nomal:
                 if(status != null) {
-                    showStatusAll(status);
+                    showStatusAll(status,responses);
                 }
                 break;
             case R.id.iw_mobile:
@@ -336,7 +350,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     }
 
     //有数据请求
-    public void showStatus(String  status){
+    public void showStatus(String  status,RouteStateResponse responses){
         /*route = null;
         mBaiduMap.clear();*/
         switch (status){
@@ -380,7 +394,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     }
 
     //无数据请求
-    public void showStatusAll(String  status){
+    public void showStatusAll(String  status,RouteStateResponse responses){
         /*route = null;
         mBaiduMap.clear();*/
         switch (status){
@@ -388,7 +402,6 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
                 showChildStatus(responses.getChildStatus());
                 break;
             case Constant.BOOKSUCCESS: //派单成功
-
                 waitPickup();
                 break;
             case Constant.REGISTERED:
@@ -559,14 +572,16 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     @Override
     public void setStatus(String status) {
         this.status = status;
-        showStatus(status);
+        showStatus(status,responses);
     }
 
     @Override
     public void isSuccess() {
-        responses = mPresenter.getData();
+//        responses = mPresenter.getData();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constant.STATUS,responses);
+        if(responses != null) {
+            bundle.putSerializable(Constant.STATUS, responses);
+        }
         startActivity(EstimateActivity.class,bundle);
         /*Intent intent = new Intent(this,EstimateActivity.class);
         launchActivity(intent);*/
@@ -581,9 +596,11 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 
     @Override
     public void setPassengersInfo(List<PassengersResponse> info) {
+        initOnEntityListener();
         setTraceServer();
         mPassengersResponseList = info;
-        for(int i= 0 ; i < info.size() ;i++){
+
+        /*for(int i= 0 ; i < info.size() ;i++){
             if(mPassengersResponse.getChildStatus().equals(Constant.ABORAD)){
                 info.remove(info.get(i));
             }
@@ -597,6 +614,43 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
             pathPlanning(info, driverLatitude, driverLongitude, responses.getDestAddress());
         }else{
             pathPlanning(info, driverLatitude, driverLongitude, Constant.AIRPORT_T1);
+        }*/
+        mapLocation(info,mPassengersResponse);
+    }
+
+    public void mapLocation(List<PassengersResponse> info,PassengersResponse mPassengersResponse){
+
+        List<PassengersResponse> passengersResponseList = new ArrayList<>();
+        if(info != null) {
+            info.add(mPassengersResponse);
+            Collections.sort(info);
+        }
+        for(int i= 0 ; i < info.size() ;i++){
+            if(info.get(i).getChildStatus().equals(Constant.ABORAD)){
+                passengersResponseList.add(info.get(i));
+                info.remove(info.get(i));
+            }
+        }
+        Collections.sort(passengersResponseList);
+        if(info != null && info.size() > 0){
+            if(uid != null){
+                for(int i = 0; i < info.size(); i++){
+                    if(info.get(i).getUID()!= null && info.get(i).getUID().equals(uid)){
+                        passengersResponseList.add(info.get(i));
+                        info.remove(info.get(i));
+                    }
+                }
+            }
+            passengersResponseList.addAll(info);
+        }
+//        info.remove(0);
+        double latitude = passengersResponseList.get(0).getPickupLatitude();
+        double longtude = passengersResponseList.get(0).getPickupLongitude();
+        passengersResponseList.remove(0);
+        if(responses.getDestAddress() != null) {
+            pathPlanning(passengersResponseList,latitude,longtude, responses.getDestAddress());
+        }else{
+            pathPlanning(passengersResponseList, latitude, longtude, Constant.AIRPORT_T1);
         }
     }
 
@@ -614,7 +668,6 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         mMapview.showScaleControl(false);
         mSearch = RoutePlanSearch.newInstance();
         mSearch.setOnGetRoutePlanResultListener(this);
-        trace = new Trace(getApplicationContext(), Constant.SERVICEID, "958", traceType);
         //覆盖物初始化
         bd = BitmapDescriptorFactory
                 .fromResource(R.mipmap.ic_location_customer);
@@ -827,7 +880,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         // 分页索引
         int pageIndex = 1;
 
-        mWeApplication.getClient().queryEntityList(Constant.SERVICEID, "958", columnKey, returnType, activeTime,
+        mWeApplication.getClient().queryEntityList(Constant.SERVICEID, driverCode, columnKey, returnType, activeTime,
                 pageSize,
                 pageIndex, entityListener);
     }
@@ -853,7 +906,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
             @Override
             public void onQueryEntityListCallback(String message) {
                 // TODO Auto-generated method stub
-                TraceLocation entityLocation = new TraceLocation();
+                /*TraceLocation entityLocation = new TraceLocation();
                 try {
                     JSONObject dataJson = new JSONObject(message);
                     if (null != dataJson && dataJson.has("status") && dataJson.getInt("status") == 0
@@ -863,13 +916,13 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
                         JSONObject point = entity.getJSONObject("realtime_point");
                         JSONArray location = point.getJSONArray("location");
 //                        setCar(location.getDouble(1),location.getDouble(0));
-                        /*entityLocation.setLongitude(location.getDouble(0));
-                        entityLocation.setLatitude(location.getDouble(1));*/
+                        *//*entityLocation.setLongitude(location.getDouble(0));
+                        entityLocation.setLatitude(location.getDouble(1));*//*
                     }
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
                     return;
-                }
+                }*/
                 try {
                     //数据以JSON形式存取
                     RealtimeTrackData realtimeTrackData = new Gson().fromJson(message, RealtimeTrackData.class);
@@ -877,8 +930,8 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
                     if (realtimeTrackData != null && realtimeTrackData.getStatus() == 0) {
 
                         LatLng latLng = realtimeTrackData.getRealtimePoint();
-                        driverLongitude = latLng.longitude;
-                        driverLatitude = latLng.latitude;
+                      /*  driverLongitude = latLng.longitude;
+                        driverLatitude = latLng.latitude;*/
 
                         if (latLng != null) {
                             pointList.add(latLng);

@@ -512,7 +512,6 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
                     .position(ll).icon(bd).zIndex(9).draggable(true);
             mBaiduMap.addOverlay(markerOptions);
         }
-
     }
 
     //路径规划 route  stNode设置一个假的 Latitude 30.542191  Longitude 104.066535

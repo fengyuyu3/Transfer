@@ -49,13 +49,14 @@ public class RouteStateResponse implements Serializable{
     private String DriverName;
     private String DriverRate;
     private String DriverPhone;
+    private String DriverCode;
     private String CarModel;
     private String CarLicense;
     private String CarColor;
     private double PickupLongitude;
     private double PickupLatitude;
     private double DestLongitude;
-    private double DestLagitude;
+    private double DestLatitude;
     private String BID;
     private String UID;
     private String DID;
@@ -84,6 +85,14 @@ public class RouteStateResponse implements Serializable{
     private String OrderStatus;
     private boolean IsMorning;
     private long CurrentTime;
+
+    public String getDriverCode() {
+        return DriverCode;
+    }
+
+    public void setDriverCode(String driverCode) {
+        DriverCode = driverCode;
+    }
 
     public long getCurrentTime() {
         return CurrentTime;
@@ -257,11 +266,11 @@ public class RouteStateResponse implements Serializable{
     }
 
     public double getDestLagitude() {
-        return DestLagitude;
+        return DestLatitude;
     }
 
     public void setDestLagitude(double DestLagitude) {
-        this.DestLagitude = DestLagitude;
+        this.DestLatitude = DestLagitude;
     }
 
     public String getBID() {
