@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -158,6 +159,7 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
         vp.setCurrentItem(4);
         setTitle(getString(R.string.app_name));
         setRightFunctionText("成都", R.color.white, null);
+        setPhone();
         setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_head));
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,9 +221,27 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
     }
 
     @Override
-    public void setPhone(String phone) {
+    public void setPhone() {
         LoginEntity response = DataHelper.getDeviceData(mApplication, Constant.LOGIN);
-        mIvPhone.setText(response.getPhone());
+
+        mIvPhone.setText(setPhoneSecret(response.getPhone()));
+    }
+
+    private String setPhoneSecret(String pNumber) {
+        StringBuilder sb = new StringBuilder();
+
+        if (!TextUtils.isEmpty(pNumber) && pNumber.length() > 6) {
+            for (int i = 0; i < pNumber.length(); i++) {
+                char c = pNumber.charAt(i);
+                if (i >= 3 && i <= 6) {
+                    sb.append('*');
+                } else {
+                    sb.append(c);
+                }
+            }
+
+        }
+        return sb.toString();
     }
 
     private class MyPagerAdapter extends FragmentPagerAdapter {
