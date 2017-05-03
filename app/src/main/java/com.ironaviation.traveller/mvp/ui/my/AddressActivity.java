@@ -146,7 +146,11 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
         mAddressAdapter.setNewData(infos);
         initLocation();
         mPresenter.getUserAddressBook();
+        Bundle pBundle = getIntent().getExtras();
+        if (pBundle != null) {
+            addressType = pBundle.getInt(Constant.ADDRESS_TYPE);
 
+        }
         /**
          * 当输入关键字变化时，动态更新建议列表
          */
@@ -260,12 +264,13 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
                     }
                 }
                 finish();
+                break;
             case R.id.ll_home_address:
                 for (int i = 0; i < mUpdateAddressBookRequests.size(); i++) {
                     switch (mUpdateAddressBookRequests.get(i).getAddressName()) {
                         case Constant.HOME:
 
-                            if (mUpdateAddressBookRequests.get(i).getViewType() == 1) {
+                            if (mUpdateAddressBookRequests.get(i).getViewType() == 0) {
 
 
                                 if (addressType == Constant.AIRPORT_GO) {
@@ -284,7 +289,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
 
                                 }
 
-                            } else if (mUpdateAddressBookRequests.get(i).getViewType() == 0) {
+                            } else if (mUpdateAddressBookRequests.get(i).getViewType() ==1) {
                                 Bundle pBundle = new Bundle();
                                 pBundle.putInt(Constant.ADDRESS_TYPE, Constant.ADDRESS_USUAl_HOME);
                                 startActivity(AddressSearchActivity.class, pBundle);
@@ -300,7 +305,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
                     switch (mUpdateAddressBookRequests.get(i).getAddressName()) {
                         case Constant.COMPANY:
 
-                            if (mUpdateAddressBookRequests.get(i).getViewType() == 1) {
+                            if (mUpdateAddressBookRequests.get(i).getViewType() == 0) {
                                 if (addressType == Constant.AIRPORT_GO) {
                                     HistoryPoiInfo historyPoiInfo=new HistoryPoiInfo(mUpdateAddressBookRequests.get(i).getAddressName(),
                                             mUpdateAddressBookRequests.get(i).getAddress(),
@@ -316,7 +321,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
                                 } else {
 
                                 }
-                            } else if (mUpdateAddressBookRequests.get(i).getViewType() == 0) {
+                            } else if (mUpdateAddressBookRequests.get(i).getViewType() == 1) {
                                 Bundle pBundle = new Bundle();
                                 pBundle.putInt(Constant.ADDRESS_TYPE, Constant.ADDRESS_USUAl_COMPANY);
                                 startActivity(AddressSearchActivity.class, pBundle);
