@@ -98,4 +98,19 @@ public class PushResponse {
     public void setTripType(String TripType) {
         this.TripType = TripType;
     }
+
+    @Override
+    public String toString() {
+        return "PushResponse{" +
+                "BID='" + BID + '\'' +
+                ", BLID='" + BLID + '\'' +
+                ", POID='" + POID + '\'' +
+                ", Status='" + Status + '\'' +
+                ", StatusName='" + StatusName + '\'' +
+                ", Code=" + Code +
+                ", TripType='" + TripType + '\'' +
+                ", IsComment=" + IsComment +
+                ", UID='" + UID + '\'' +
+                '}';
+    }
 }

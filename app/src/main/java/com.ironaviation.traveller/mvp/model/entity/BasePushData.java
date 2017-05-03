@@ -34,4 +34,13 @@ public class BasePushData{
     public void setData(PushResponse data) {
         Data = data;
     }
+
+    @Override
+    public String toString() {
+        return "BasePushData{" +
+                "Type=" + Type +
+                ", Message='" + Message + '\'' +
+                ", Data=" + Data +
+                '}';
+    }
 }

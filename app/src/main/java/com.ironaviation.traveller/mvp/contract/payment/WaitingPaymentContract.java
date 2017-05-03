@@ -6,6 +6,8 @@ import com.ironaviation.traveller.mvp.model.entity.response.WeChaTInfo;
 import com.jess.arms.mvp.BaseView;
 import com.jess.arms.mvp.IModel;
 
+import java.math.BigDecimal;
+
 import rx.Observable;
 
 /**
@@ -39,7 +41,7 @@ public interface WaitingPaymentContract {
         void setPickUpAddress(String address);
         void setDestAddress(String address);
         void setSeatNum(int num);
-        void setPrice(int num);
+        void setPrice(float num);
         void setCountdown(long time,long cdt);
         void setSuccess();
         void setWeChat(WeChaTInfo info);

@@ -32,6 +32,7 @@ import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.model.LatLngBounds;
 import com.baidu.mapapi.search.core.RouteLine;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.route.BikingRouteResult;
@@ -47,6 +48,7 @@ import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.baidu.trace.LBSTraceClient;
 import com.baidu.trace.OnEntityListener;
 import com.baidu.trace.OnStartTraceListener;
+import com.baidu.trace.OnTrackListener;
 import com.baidu.trace.Trace;
 import com.baidu.trace.TraceLocation;
 import com.google.gson.Gson;
@@ -64,6 +66,7 @@ import com.ironaviation.traveller.map.overlayutil.OverlayManager;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.travel.TravelDetailsContract;
 import com.ironaviation.traveller.mvp.model.entity.request.PathPlanning;
+import com.ironaviation.traveller.mvp.model.entity.response.HistoryTrackData;
 import com.ironaviation.traveller.mvp.model.entity.response.PassengersResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.PushResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.RealtimeTrackData;
@@ -169,6 +172,8 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     private RoutePlanSearch mSearch = null;    // 搜索模块，也可去掉地图模块独立使用
     private BitmapDescriptor bd;
     private BitmapDescriptor car;
+    private BitmapDescriptor start;
+    private BitmapDescriptor end;
     private OnEntityListener entityListener = null;
     private MapUtil mapUtils;
     protected static OverlayOptions overlayOptions;
@@ -180,6 +185,8 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     private static MapStatusUpdate msUpdate = null;
     private static BitmapDescriptor realtimeBitmap;  //图标
     private static OverlayOptions overlay1;  //覆盖物
+    private static OverlayOptions startMarker;
+    private static OverlayOptions endMarker;
     private static PolylineOptions polyline = null;  //路线覆盖物
     private static List<LatLng> pointList = new ArrayList<LatLng>();  //定位点的集合
     private int packInterval = 3;
@@ -258,7 +265,8 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         mPassengersResponse.setDestLatitude(response.getDestLagitude());
         driverCode = response.getDriverCode();
         trace = new Trace(getApplicationContext(), Constant.SERVICEID, driverCode, traceType);
-        mWeApplication.getClient().startTrace(trace, startTraceListener);
+        initOnStartTraceListener();
+//        mWeApplication.getClient().startTrace(trace, startTraceListener);
         status = response.getStatus();
         bid = response.getBID();
         mPresenter.setRouteStateResponse(response);
@@ -374,6 +382,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
                 }
                 break;
             case Constant.ARRIVED:
+                queryEntityListBlue(responses);
                 arrive();
                 break;
         }
@@ -572,7 +581,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     @Override
     public void setStatus(String status) {
         this.status = status;
-        showStatus(status,responses);
+//        showStatus(status,responses);
     }
 
     @Override
@@ -614,8 +623,9 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
             pathPlanning(info, driverLatitude, driverLongitude, responses.getDestAddress());
         }else{
             pathPlanning(info, driverLatitude, driverLongitude, Constant.AIRPORT_T1);
-        }*/
-        mapLocation(info,mPassengersResponse);
+        }*/ //Latitude 30.542191  Longitude 104.066535
+        LatLng latLng = new LatLng(30.542191,104.066535);
+        mapNewLocation(info,mPassengersResponse,latLng);
     }
 
     public void mapLocation(List<PassengersResponse> info,PassengersResponse mPassengersResponse){
@@ -654,9 +664,44 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         }
     }
 
+    //正在进行中
+    public void mapNewLocation(List<PassengersResponse> info,PassengersResponse mPassengersResponse,
+                               LatLng driverLatLng){
+        List<PassengersResponse> passengersResponseList = new ArrayList<>();
+        if(info != null) {
+            info.add(mPassengersResponse);
+            Collections.sort(info);
+        }
+        for(int i= 0 ; i < info.size() ;i++){
+            if(info.get(i).getChildStatus().equals(Constant.ABORAD)){
+                info.remove(info.get(i));
+            }
+        }
+        if(info != null && info.size() > 0){
+            if(uid != null){
+                for(int i = 0; i < info.size(); i++){
+                    if(info.get(i).getUID()!= null && info.get(i).getUID().equals(uid)){
+                        passengersResponseList.add(info.get(i));
+                        info.remove(info.get(i));
+                    }
+                }
+            }
+        }
+        passengersResponseList.addAll(info);
+        if(responses.getDestAddress() != null) {
+            pathPlanning(passengersResponseList,driverLatLng.latitude,driverLatLng.longitude, responses.getDestAddress());
+        }else{
+            pathPlanning(passengersResponseList, driverLatLng.latitude, driverLatLng.longitude, Constant.AIRPORT_T1);
+        }
+    }
+    //
+    public void setEndPoint(){
+
+
+    }
+
     //开启轨迹
     public void setTraceServer(){
-        initOnStartTraceListener();
         mWeApplication.getClient().startTrace(trace, startTraceListener);  // 开启轨迹服务
     }
 
@@ -672,6 +717,8 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         bd = BitmapDescriptorFactory
                 .fromResource(R.mipmap.ic_location_customer);
         car = BitmapDescriptorFactory.fromResource(R.mipmap.ic_location_car);
+        start = BitmapDescriptorFactory.fromResource(R.mipmap.ic_location_start);
+        end = BitmapDescriptorFactory.fromResource(R.mipmap.ic_location_end);
     }
 
     //路径规划 route  stNode设置一个假的 Latitude 30.542191  Longitude 104.066535
@@ -935,7 +982,159 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 
                         if (latLng != null) {
                             pointList.add(latLng);
-                            drawRealtimePoint(latLng);
+                            drawRealtimePoint(latLng,Color.TRANSPARENT);
+                        } else {
+//                        Toast.makeText(getApplicationContext(), "当前无轨迹点", Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                }catch (Exception e){
+                    return;
+                }
+            }
+
+            @Override
+            public void onReceiveLocation(TraceLocation location) {
+                // TODO Auto-generated method stub
+            }
+        };
+    }
+
+    /**
+     * 查询entityList
+     */
+    private void queryEntityListBlue(RouteStateResponse responses) {
+        // entity标识列表（多个entityName，以英文逗号"," 分割）
+
+        // entity标识
+        String entityName = responses.getDriverName();
+        // 是否返回精简的结果（0 : 否，1 : 是）
+        int simpleReturn = 0;
+        int startTime = 0;
+        int endTime = 0;
+        // 开始时间
+        if (startTime == 0) {
+            startTime = (int) (responses.getPickupTime()/1000);
+        }
+        if (endTime == 0) {
+            endTime = (int) (System.currentTimeMillis() / 1000);
+        }
+
+        // 分页大小
+        int pageSize = 1000;
+        // 分页索引
+        int pageIndex = 1;
+
+        mWeApplication.getClient().queryHistoryTrack(Constant.SERVICEID, entityName, simpleReturn, startTime, endTime, pageSize, pageIndex
+                , new OnTrackListener() {
+                    @Override
+                    public void onRequestFailedCallback(String s) {
+
+                    }
+                    @Override
+                    public void onQueryHistoryTrackCallback(String arg0) {
+                        // TODO Auto-generated method stub
+                        super.onQueryHistoryTrackCallback(arg0);
+                        showHistoryTrack(arg0);
+                    }
+                });
+    }
+
+
+    /**
+     * 显示历史轨迹
+     *
+     * @param
+     */
+    public void showHistoryTrack(String historyTrack) {
+
+        HistoryTrackData historyTrackData = new Gson().fromJson(historyTrack,
+                HistoryTrackData.class);
+        List<LatLng> latLngList = new ArrayList<LatLng>();
+        if (historyTrackData != null && historyTrackData.getStatus() == 0) {
+            if (historyTrackData.getListPoints() != null) {
+                latLngList.addAll(historyTrackData.getListPoints());
+            }
+
+            // 绘制历史轨迹
+            drawHistoryTrack(latLngList);
+        }
+
+    }
+
+    /**
+     * 绘制历史轨迹
+     *
+     * @param points
+     */
+    public void drawHistoryTrack(final List<LatLng> points) {
+        // 绘制新覆盖物前，清空之前的覆盖物
+        mBaiduMap.clear();
+
+        if (points == null || points.size() == 0) {
+
+        } else if (points.size() > 1) {
+
+            LatLng llC = points.get(0);
+            LatLng llD = points.get(points.size() - 1);
+            LatLngBounds bounds = new LatLngBounds.Builder()
+                    .include(llC).include(llD).build();
+
+            msUpdate = MapStatusUpdateFactory.newLatLngBounds(bounds);
+
+            // 添加起点图标
+            startMarker = new MarkerOptions()
+                    .position(points.get(points.size() - 1)).icon(start)
+                    .zIndex(9).draggable(true);
+
+            // 添加终点图标
+            endMarker = new MarkerOptions().position(points.get(0))
+                    .icon(end).zIndex(9).draggable(true);
+
+            // 添加路线（轨迹）
+            polyline = new PolylineOptions().width(10)
+                    .color(Color.BLUE).points(points);
+
+            addMarker();
+
+        }
+
+    }
+
+    /**
+     * 初始化OnEntityListenerBlue
+     */
+    private void initOnEntityListenerBlue() {
+        entityListener = new OnEntityListener() {
+
+            // 请求失败回调接口
+            @Override
+            public void onRequestFailedCallback(String arg0) {
+                // TODO Auto-generated method stub
+            }
+
+            // 添加entity回调接口
+            public void onAddEntityCallback(String arg0) {
+                // TODO Auto-generated method stub
+            }
+
+            // 查询entity列表回调接口
+            @Override
+            public void onQueryEntityListCallback(String message) {
+                // TODO Auto-generated method stub
+                try {
+                    //数据以JSON形式存取
+                    RealtimeTrackData realtimeTrackData = new Gson().fromJson(message, RealtimeTrackData.class);
+
+                    if (realtimeTrackData != null && realtimeTrackData.getStatus() == 0) {
+
+                        LatLng latLng = realtimeTrackData.getRealtimePoint();
+                      /*  driverLongitude = latLng.longitude;
+                        driverLatitude = latLng.latitude;*/
+
+                        if (latLng != null) {
+                            pointList.add(latLng);
+                            drawRealtimePoint(latLng,Color.BLUE);
                         } else {
 //                        Toast.makeText(getApplicationContext(), "当前无轨迹点", Toast.LENGTH_LONG).show();
                         }
@@ -972,7 +1171,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
      * 画出实时线路点
      * @param point
      */
-    private void drawRealtimePoint(LatLng point){
+    private void drawRealtimePoint(LatLng point,int color){
 
         mBaiduMap.clear();
         MapStatus mapStatus = new MapStatus.Builder().target(point).zoom(18).build();
@@ -981,8 +1180,8 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         overlay1 = new MarkerOptions().position(point)
                 .icon(realtimeBitmap).zIndex(9).draggable(true);
 
-        if(pointList.size() >= 2  && pointList.size() <= 1000){
-            polyline = new PolylineOptions().width(10).color(Color.TRANSPARENT).points(pointList);
+        if(pointList.size() >= 2  && pointList.size() <= 1000){ //Color.TRANSPARENT
+            polyline = new PolylineOptions().width(10).color(color).points(pointList);
         }
 
         addMarker();
@@ -1002,6 +1201,13 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 
         if(overlay1 != null){
             mBaiduMap.addOverlay(overlay1);
+        }
+        if (null != startMarker) {
+            mBaiduMap.addOverlay(startMarker);
+        }
+
+        if (null != endMarker) {
+            mBaiduMap.addOverlay(endMarker);
         }
     }
 

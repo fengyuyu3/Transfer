@@ -167,11 +167,16 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
                         mTtRidingTime.setVisibility(View.VISIBLE);
                     }
                 }
-                if(responses.getCurrentTime() != 0 && responses.getCdt() != 0){
-                    if(responses.getPickupTime()-responses.getCdt()-4*60*60*1000 > 24*60*60*1000){
+                if(responses.getCurrentTime() != 0 && responses.getExpireAt() != 0){
+                    /*if(responses.getPickupTime()-responses.getCdt()-4*60*60*1000 > 24*60*60*1000){
                         setCountTime(24*60*60*1000-(responses.getCurrentTime()-responses.getCdt()));
                     }else{
                         setCountTime(responses.getPickupTime()-responses.getCurrentTime()-2*60*60*1000);
+                    }*/
+                    if((responses.getExpireAt() - responses.getCurrentTime()) > 0){
+                        setCountTime(responses.getExpireAt()-responses.getCurrentTime());
+                    }else{
+                        setCountTime(0);
                     }
                 }
             }
@@ -352,7 +357,7 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
         mTtNeedSeats.setTitle("需要"+num+"个座位数");
     }
     @Override
-    public void setPrice(int num) {
+    public void setPrice(float num) {
         mTvMoney.setTextType(num+"");
     }
 

@@ -1,5 +1,7 @@
 package com.ironaviation.traveller.mvp.model.entity.response;
 
+import java.math.BigDecimal;
+
 /**
  * Created by Administrator on 2017/4/12 0012.
  */
@@ -32,8 +34,8 @@ public class RouteItemResponse {
     private String PickupAddress;
     private String DestAddress;
     private int SeatNum;
-    private int ActualPrice;
-    private int TotalPrice;
+    private float ActualPrice;
+    private float TotalPrice;
     private String Status;
     private boolean IsDeleted;
     private String TripType;
@@ -106,19 +108,19 @@ public class RouteItemResponse {
         this.SeatNum = SeatNum;
     }
 
-    public int getActualPrice() {
+    public float getActualPrice() {
         return ActualPrice;
     }
 
-    public void setActualPrice(int ActualPrice) {
+    public void setActualPrice(float ActualPrice) {
         this.ActualPrice = ActualPrice;
     }
 
-    public int getTotalPrice() {
+    public float getTotalPrice() {
         return TotalPrice;
     }
 
-    public void setTotalPrice(int TotalPrice) {
+    public void setTotalPrice(float TotalPrice) {
         this.TotalPrice = TotalPrice;
     }
 

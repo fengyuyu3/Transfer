@@ -6,6 +6,7 @@ import com.ironaviation.traveller.mvp.model.entity.Ext;
 import com.ironaviation.traveller.mvp.model.entity.request.PassengersRequest;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,8 +67,8 @@ public class RouteStateResponse implements Serializable{
     private String PickupAddress;
     private String DestAddress;
     private int SeatNum;
-    private int ActualPrice;
-    private int TotalPrice;
+    private float ActualPrice;
+    private float TotalPrice;
     private String Status;
     private boolean IsDeleted;
     private String TripType;
@@ -85,6 +86,23 @@ public class RouteStateResponse implements Serializable{
     private String OrderStatus;
     private boolean IsMorning;
     private long CurrentTime;
+    private long ExpireAt;
+
+    public double getDestLatitude() {
+        return DestLatitude;
+    }
+
+    public void setDestLatitude(double destLatitude) {
+        DestLatitude = destLatitude;
+    }
+
+    public long getExpireAt() {
+        return ExpireAt;
+    }
+
+    public void setExpireAt(long expireAt) {
+        ExpireAt = expireAt;
+    }
 
     public String getDriverCode() {
         return DriverCode;
@@ -337,19 +355,19 @@ public class RouteStateResponse implements Serializable{
         this.SeatNum = SeatNum;
     }
 
-    public int getActualPrice() {
+    public float getActualPrice() {
         return ActualPrice;
     }
 
-    public void setActualPrice(int ActualPrice) {
+    public void setActualPrice(float ActualPrice) {
         this.ActualPrice = ActualPrice;
     }
 
-    public int getTotalPrice() {
+    public float getTotalPrice() {
         return TotalPrice;
     }
 
-    public void setTotalPrice(int TotalPrice) {
+    public void setTotalPrice(float TotalPrice) {
         this.TotalPrice = TotalPrice;
     }
 

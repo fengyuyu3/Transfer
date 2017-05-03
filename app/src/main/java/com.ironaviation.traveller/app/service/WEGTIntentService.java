@@ -74,8 +74,10 @@ public class WEGTIntentService extends GTIntentService {
         if (payload == null) {
         } else {
             String data = new String(payload);
+            Log.e("kkk",data);
             try{
                 BasePushData response = new Gson().fromJson(data,BasePushData.class);
+                Log.e("kkkk",response.toString());
                 if(!TextUtils.isEmpty(response.getData().getTripType())){
                     setStatus(response,context);
                     messageLogic(response,context);
@@ -114,6 +116,7 @@ public class WEGTIntentService extends GTIntentService {
             case Constant.ROUTE_CANCEL: //行程取消
                 EventBus.getDefault().post(response,EventBusTags.ROUTE_CANCEL);
                 break;
+            case Constant.ORDER_SUCCESS:
             case Constant.WAIT_DRIVER:
             case Constant.RECEIVE_ONE_PASSENGER:
             case Constant.RECEIVE_MINE:
@@ -172,6 +175,7 @@ public class WEGTIntentService extends GTIntentService {
                 pBundle.putString(Constant.STATUS,Constant.CLEAR_PORT);
                 intent.putExtras(pBundle);
                 break;
+            case Constant.ORDER_SUCCESS:
             case Constant.WAIT_DRIVER:
             case Constant.RECEIVE_ONE_PASSENGER:
             case Constant.RECEIVE_MINE:

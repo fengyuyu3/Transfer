@@ -132,7 +132,7 @@ public class WaitingPaymentPresenter extends BasePresenter<WaitingPaymentContrac
         if(response.getSeatNum() != 0){
             mRootView.setSeatNum(response.getSeatNum());
         }
-        if(response.getActualPrice() != -1){
+        if(response.getActualPrice() != -1.00){
             mRootView.setPrice(response.getActualPrice());
         }
 //        mRootView.setCountdown(); //倒计时
