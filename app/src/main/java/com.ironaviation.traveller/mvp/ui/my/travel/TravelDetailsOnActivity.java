@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MapStatus;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.model.LatLng;
@@ -144,9 +146,12 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
     private BaiduMap mBaiduMap;
     private BitmapDescriptor bd;
     private BitmapDescriptor car;
+    private BitmapDescriptor start;
+    private BitmapDescriptor end;
     private RouteLine route = null;
     private String bid;
     private List<PlanNode> mPlanNodes;
+    private String phone;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -176,7 +181,7 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
                 mPresenter.setRouteStateResponse(responses);
                 mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.TRAVEL_DETAILS, responses.getBID());
 //                status = Constant.ARRIVED;
-                showStatus(status);
+                showStatus(responses);
             } else {
                 bid = pBundle.getString(Constant.BID);
                 if (bid != null) {
@@ -243,10 +248,11 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
 
     @Override
     public void setDriverPhone(String phone) {
-        Intent intent = new Intent(Intent.ACTION_DIAL);
+        /*Intent intent = new Intent(Intent.ACTION_DIAL);
         Uri data = Uri.parse("tel:" + phone);
         intent.setData(data);
-        startActivity(intent);
+        startActivity(intent);*/
+        this.phone = phone;
     }
 
     @Override
@@ -280,7 +286,7 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
 
     @Override
     public void isPickUpSuccess() {
-
+        aready();
     }
 
     public void waitPickUp(){  //等待上车
@@ -351,13 +357,15 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
         mRlSuccessful.setVisibility(View.GONE);    //预约成功
     }
 
-    public void showStatus(String status){
-        switch (status){
+    public void showStatus(RouteStateResponse responses){
+        switch (responses.getStatus()){
             case Constant.REGISTERED:
+                setMark(responses);
                 success();
             break;
             case Constant.BOOKSUCCESS:
-                showChildStatus(status);
+                setMark(responses);
+                showChildStatus(responses.getChildStatus());
             break;
             case Constant.ARRIVED:
                 arrive();
@@ -365,6 +373,23 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
             case Constant.INHAND:
                  GoOn();
             break;
+        }
+    }
+
+    public void showStatusAll(RouteStateResponse responses){
+        switch (responses.getStatus()){
+            case Constant.REGISTERED:
+                success();
+                break;
+            case Constant.BOOKSUCCESS:
+                showChildStatus(responses.getChildStatus());
+                break;
+            case Constant.ARRIVED:
+                arrive();
+                break;
+            case Constant.INHAND:
+                GoOn();
+                break;
         }
     }
 
@@ -386,7 +411,7 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
         }
     }*/
     @OnClick({R.id.tw_go_on_pay_airport,R.id.tw_go_to_pay_airport,R.id.al_two_dimension
-    ,R.id.tw_address,R.id.iw_zoom_airport,R.id.iw_zoom_nomal_airport})
+    ,R.id.tw_address,R.id.iw_zoom_airport,R.id.iw_zoom_nomal_airport,R.id.iw_mobile_airport})
     public void myOnClick(View view){
         switch (view.getId()){
             case R.id.tw_go_on_pay_airport: //确认到达按钮
@@ -404,11 +429,17 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
                 break;
             case R.id.iw_zoom_nomal_airport: //隐藏
                 if(status != null) {
-                    showStatus(status);
+                    showStatusAll(responses);
                 }
                 break;
             case R.id.iw_zoom_airport:
                 AllGone();
+                break;
+            case R.id.iw_mobile_airport:
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                Uri data = Uri.parse("tel:" + phone);
+                intent.setData(data);
+                startActivity(intent);
                 break;
         }
     }
@@ -447,6 +478,8 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
         bd = BitmapDescriptorFactory
                 .fromResource(R.mipmap.ic_location_customer);
         car = BitmapDescriptorFactory.fromResource(R.mipmap.ic_location_car);
+        start = BitmapDescriptorFactory.fromResource(R.mipmap.ic_location_start);
+        end = BitmapDescriptorFactory.fromResource(R.mipmap.ic_location_end);
     }
 
     private void pathTwo(double startlatitude, double startlongitude
@@ -539,5 +572,20 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
     @Subscriber(tag = EventBusTags.TRAVEL_DETAIL_ON)
     public void travelDetailOn(PushResponse response){
         mPresenter.getRouteState(response.getBID());
+    }
+
+    public void setMark(RouteStateResponse responses){
+        LatLng pickup = new LatLng(responses.getPickupLatitude(),
+                responses.getPickupLongitude());
+        LatLng dest = new LatLng(responses.getDestLagitude(),
+                responses.getDestLongitude());
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(pickup).icon(end).zIndex(9).draggable(true);
+        MarkerOptions markerOptions1 = new MarkerOptions()
+                .position(dest).icon(start).zIndex(9).draggable(true);
+        mBaiduMap.addOverlay(markerOptions);
+        mBaiduMap.addOverlay(markerOptions1);
+        MapStatus mMapStatus = new MapStatus.Builder().target(dest).build();
+        mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(mMapStatus));
     }
 }
