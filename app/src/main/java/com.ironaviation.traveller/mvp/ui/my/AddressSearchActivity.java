@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -32,7 +31,6 @@ import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ironaviation.traveller.R;
-import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.app.utils.LocationService;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
@@ -46,15 +44,13 @@ import com.ironaviation.traveller.mvp.ui.manager.FullyLinearLayoutManager;
 import com.ironaviation.traveller.mvp.ui.my.adapter.AddressAdapter;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoLinearLayout;
-import com.zhy.autolayout.AutoRelativeLayout;
-
-
-import org.simple.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -68,18 +64,15 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 
 /**
- *
- * 项目名称：Traveller      
- * 类描述：   
- * 创建人：starRing  
- * 创建时间：2017/5/2 19:40   
- * 修改人：starRing  
- * 修改时间：2017/5/2 19:40   
- * 修改备注：   
- * @version
- *
+ * 项目名称：Traveller
+ * 类描述：
+ * 创建人：starRing
+ * 创建时间：2017/5/2 19:40
+ * 修改人：starRing
+ * 修改时间：2017/5/2 19:40
+ * 修改备注：
  */
-public class AddressSearchActivity extends WEActivity<AddressSearchPresenter> implements AddressSearchContract.View , OnGetPoiSearchResultListener, OnGetGeoCoderResultListener {
+public class AddressSearchActivity extends WEActivity<AddressSearchPresenter> implements AddressSearchContract.View, OnGetPoiSearchResultListener, OnGetGeoCoderResultListener {
 
     @BindView(R.id.et_address)
     EditText mEtAddress;
@@ -131,7 +124,7 @@ public class AddressSearchActivity extends WEActivity<AddressSearchPresenter> im
         mLayoutManager = new FullyLinearLayoutManager(this);
         mRvAddress.setLayoutManager(mLayoutManager);
         mRvAddress.setAdapter(mAddressAdapter);
-        infos =new ArrayList<>();
+        infos = new ArrayList<>();
         mAddressAdapter.setNewData(infos);
         initLocation();
         Bundle pBundle = getIntent().getExtras();
@@ -160,7 +153,7 @@ public class AddressSearchActivity extends WEActivity<AddressSearchPresenter> im
                 if (charSequence.length() <= 0) {
                     //mRvAddress.setVisibility(View.GONE);
                     //infos = null;
-                    infos =new ArrayList<>();
+                    infos = new ArrayList<>();
                     mAddressAdapter.setNewData(infos);
                     searchRunnable.clear();
                     return;
@@ -217,7 +210,6 @@ public class AddressSearchActivity extends WEActivity<AddressSearchPresenter> im
     }
 
 
-
     @Override
     public void onGetPoiDetailResult(PoiDetailResult result) {
 
@@ -238,7 +230,7 @@ public class AddressSearchActivity extends WEActivity<AddressSearchPresenter> im
         searchRunnable.pushKeyWord(keyword);
     }
 
-    AddressSearchActivity.SearchRunnable searchRunnable = new AddressSearchActivity.SearchRunnable();
+    SearchRunnable searchRunnable = new SearchRunnable();
 
 
     /**
@@ -275,6 +267,17 @@ public class AddressSearchActivity extends WEActivity<AddressSearchPresenter> im
             // rl_reservation.setVisibility(View.VISIBLE);
         }
 
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
+    @OnClick(R.id.tv_cancel)
+    public void onClick() {
     }
 
     class SearchRunnable implements Runnable {
@@ -318,6 +321,7 @@ public class AddressSearchActivity extends WEActivity<AddressSearchPresenter> im
 
         }
     }
+
     @Override
     protected void onDestroy() {
         mPoiSearch.destroy();
