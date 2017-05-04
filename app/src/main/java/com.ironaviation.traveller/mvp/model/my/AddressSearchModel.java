@@ -33,16 +33,13 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 
 /**
- *
- * 项目名称：Traveller      
- * 类描述：   
- * 创建人：starRing  
- * 创建时间：2017/5/2 19:39   
- * 修改人：starRing  
- * 修改时间：2017/5/2 19:39   
- * 修改备注：   
- * @version
- *
+ * 项目名称：Traveller
+ * 类描述：
+ * 创建人：starRing
+ * 创建时间：2017/5/2 19:39
+ * 修改人：starRing
+ * 修改时间：2017/5/2 19:39
+ * 修改备注：
  */
 @ActivityScope
 public class AddressSearchModel extends BaseModel<ServiceManager, CacheManager> implements AddressSearchContract.Model {
@@ -55,7 +52,7 @@ public class AddressSearchModel extends BaseModel<ServiceManager, CacheManager> 
         super(serviceManager, cacheManager);
         this.mGson = gson;
         this.mApplication = application;
-        this.mCommonService=serviceManager.getCommonService();
+        this.mCommonService = serviceManager.getCommonService();
 
     }
 
@@ -67,7 +64,7 @@ public class AddressSearchModel extends BaseModel<ServiceManager, CacheManager> 
     }
 
     @Override
-    public Observable<BaseData<List<JsonObject>>> updateAddressBook(String UABID, String AddressName, String Address, double Longitude, double Latitude) {
+    public Observable<BaseData<List<JsonObject>>> updateAddressBook(String UABID, String AddressName, String Address, String DetailAddress, double Longitude, double Latitude) {
         UpdateAddressBookRequest params = new UpdateAddressBookRequest();
 
         if (!TextUtils.isEmpty(AddressName)) {
@@ -82,13 +79,17 @@ public class AddressSearchModel extends BaseModel<ServiceManager, CacheManager> 
             params.setUABID(UABID);
         }
 
-        if (Longitude!=0) {
+        if (!TextUtils.isEmpty(DetailAddress)) {
+            params.setDetailAddress(DetailAddress);
+        }
+        if (Longitude != 0) {
             params.setLongitude(Longitude);
         }
 
-        if (Latitude!=0) {
+        if (Latitude != 0) {
             params.setLatitude(Latitude);
         }
+
 
         return mCommonService.updateAddressBook(params);
     }

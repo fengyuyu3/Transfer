@@ -248,6 +248,8 @@ public class WEGTIntentService extends GTIntentService {
 
     @Override
     public void onReceiveCommandResult(Context context, GTCmdMessage cmdMessage) {
+        Log.e(TAG, "onReceiveClientId -> " + "cmdMessage = " + cmdMessage.toString());
+
     }
 
     private void messageLogic(BasePushData response,Context context) {

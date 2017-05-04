@@ -41,6 +41,7 @@ public interface AddressSearchContract {
         Observable<BaseData<List<JsonObject>>> updateAddressBook(String UABID,
                                                                  String AddressName,
                                                                  String Address,
+                                                                 String DetailAddress,
                                                                  double Longitude,
                                                                  double Latitude);
 
