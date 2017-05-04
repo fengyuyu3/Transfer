@@ -78,12 +78,12 @@ public class AddressSearchPresenter extends BasePresenter<AddressSearchContract.
         switch (addressType) {
             case Constant.ADDRESS_TYPE_COMPANY:
             case Constant.ADDRESS_USUAl_COMPANY:
-                updateAddressBook(UABID, Constant.COMPANY, position.name, position.location.longitude, position.location.latitude, addressType);
+                updateAddressBook(UABID, Constant.COMPANY, position.name, position.address,position.location.longitude, position.location.latitude, addressType);
 
                 break;
             case Constant.ADDRESS_TYPE_HOME:
             case Constant.ADDRESS_USUAl_HOME:
-                updateAddressBook(UABID, Constant.HOME, position.name, position.location.longitude, position.location.latitude, addressType);
+                updateAddressBook(UABID, Constant.HOME, position.name, position.address, position.location.longitude, position.location.latitude, addressType);
 
                 break;
 
@@ -94,11 +94,12 @@ public class AddressSearchPresenter extends BasePresenter<AddressSearchContract.
     private void updateAddressBook(String UABID,
                                    String AddressName,
                                    String Address,
+                                   String DetailAddress,
                                    double Longitude,
                                    double Latitude,
                                    final int addressType) {
 
-        mModel.updateAddressBook(UABID, AddressName, Address, Longitude, Latitude)
+        mModel.updateAddressBook(UABID, AddressName, Address, DetailAddress,Longitude, Latitude)
                 .compose(RxUtils.<BaseData<List<JsonObject>>>applySchedulers(mRootView))
                 .subscribe(new ErrorHandleSubscriber<BaseData<List<JsonObject>>>(mErrorHandler) {
                     @Override

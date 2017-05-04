@@ -24,6 +24,7 @@ public class UpdateAddressBookRequest {
 
     private boolean IsDeleted;
 
+    private String DetailAddress;
     public int getViewType() {
         return viewType;
     }
@@ -88,6 +89,14 @@ public class UpdateAddressBookRequest {
 
     public boolean getIsDeleted() {
         return this.IsDeleted;
+    }
+
+    public String getDetailAddress() {
+        return DetailAddress;
+    }
+
+    public void setDetailAddress(String detailAddress) {
+        DetailAddress = detailAddress;
     }
 
 }
