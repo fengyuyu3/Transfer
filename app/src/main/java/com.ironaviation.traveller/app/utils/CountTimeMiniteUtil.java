@@ -45,9 +45,9 @@ public class CountTimeMiniteUtil  extends CountDownTimer {
         }
         int minite = (int) ((time-hour*60*60*1000)/(60*1000));
         if(minite < 10){
-            t = t+":0"+minite+"分";
+            t = t+"0"+minite+"分";
         }else{
-            t = t+":"+minite+"分";
+            t = t+""+minite+"分";
         }
         return t;
     }

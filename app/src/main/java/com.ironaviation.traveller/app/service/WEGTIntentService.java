@@ -116,7 +116,7 @@ public class WEGTIntentService extends GTIntentService {
             case Constant.ROUTE_CANCEL: //行程取消
                 EventBus.getDefault().post(response,EventBusTags.ROUTE_CANCEL);
                 break;
-            case Constant.ORDER_SUCCESS:
+//            case Constant.ORDER_SUCCESS:
             case Constant.WAIT_DRIVER:
             case Constant.RECEIVE_ONE_PASSENGER:
             case Constant.RECEIVE_MINE:
@@ -175,7 +175,7 @@ public class WEGTIntentService extends GTIntentService {
                 pBundle.putString(Constant.STATUS,Constant.CLEAR_PORT);
                 intent.putExtras(pBundle);
                 break;
-            case Constant.ORDER_SUCCESS:
+//            case Constant.ORDER_SUCCESS:
             case Constant.WAIT_DRIVER:
             case Constant.RECEIVE_ONE_PASSENGER:
             case Constant.RECEIVE_MINE:

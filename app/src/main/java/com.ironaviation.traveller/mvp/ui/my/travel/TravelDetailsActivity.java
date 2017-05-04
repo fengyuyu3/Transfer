@@ -600,7 +600,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     @Override
     public void setBid(String bid) {
         this.bid = bid;
-        mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.TRAVEL_DETAILS, responses.getBID());
+        mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.TRAVEL_DETAILS, bid);
     }
 
     @Override
