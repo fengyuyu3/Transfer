@@ -179,14 +179,17 @@ public class UsualAddressActivity extends WEActivity<UsualAddressPresenter> impl
         @Override
         public void onItemClick(int position) {
             Bundle pBundle = new Bundle();
-            if (position == 0) {
+
+
+            if (mUsualAddressAdapter.getItem(position).getAddressName().equals(Constant.HOME)) {
                 pBundle.putInt(Constant.ADDRESS_TYPE, Constant.ADDRESS_TYPE_HOME);
+
             } else {
                 pBundle.putInt(Constant.ADDRESS_TYPE, Constant.ADDRESS_TYPE_COMPANY);
 
             }
-            if (!TextUtils.isEmpty(mUsualAddressAdapter.getItem(position).getUABID())){
-                pBundle.putString(Constant.UABID,mUsualAddressAdapter.getItem(position).getUABID().toString());
+            if (!TextUtils.isEmpty(mUsualAddressAdapter.getItem(position).getUABID())) {
+                pBundle.putString(Constant.UABID, mUsualAddressAdapter.getItem(position).getUABID().toString());
             }
 
             startActivity(AddressSearchActivity.class, pBundle);
@@ -220,7 +223,7 @@ public class UsualAddressActivity extends WEActivity<UsualAddressPresenter> impl
     }
 
     @Subscriber(tag = EventBusTags.USUAL_ADDRESS)
-    public void getUserAddressBook(String usual_address){
+    public void getUserAddressBook(String usual_address) {
         mPresenter.getUserAddressBook();
     }
 }

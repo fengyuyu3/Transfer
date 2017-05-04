@@ -42,6 +42,7 @@
             style="@style/input_edit_style"
             android:layout_marginLeft="62px"
             android:hint="@string/login_input_phone"
+
             />
     </com.zhy.autolayout.AutoRelativeLayout>
 

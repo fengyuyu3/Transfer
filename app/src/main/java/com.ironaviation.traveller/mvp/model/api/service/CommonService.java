@@ -50,8 +50,8 @@ public interface CommonService {
     @POST(Api.Travel)
     Observable<BaseData<List<TravelResponse>>> getTravelData(@Body TravelRequest params);
 
-    @POST(Api.MESSAGE)
-    Observable<BaseData<List<MessageResponse>>> getMessageData(@Body MessageRequest params);
+    @GET(Api.GET_MESSAGES)
+    Observable<BaseData<MessageResponse>> getMessageData(@Query("pageSize") int pageSize, @Query("pageIndex") int pageIndex);
 
     @GET(Api.FLIGHT)
     Observable<BaseData<Flight>> getFlightInfo(@Query("flightNo") String flightNo, @Query("date") String date);
@@ -89,15 +89,14 @@ public interface CommonService {
     Observable<BaseData<CancelBookingInfo>> getCancelBookInfo(@Path("bid") String bid);
 
     @POST(Api.CANCEL_BOOKING)
-    Observable<BaseData<Boolean>> cancelBooking(@Path("bid") String bid,@Body CancelOrderRequest params);
-
+    Observable<BaseData<Boolean>> cancelBooking(@Path("bid") String bid, @Body CancelOrderRequest params);
 
 
     @POST(Api.ADD_ORDER)
     Observable<BaseData<Boolean>> isOrderSuccess(@Body BIDRequest params);
 
     @GET(Api.PAYMENT)
-    Observable<BaseData> getPayment(@Query("bid") String bid,@Query("payMethod") String payMethod);
+    Observable<BaseData> getPayment(@Query("bid") String bid, @Query("payMethod") String payMethod);
 
     @GET(Api.COMMENTTAGS)
     Observable<BaseData<List<CommentTag>>> getCommentTagInfo();
@@ -119,4 +118,6 @@ public interface CommonService {
 
     @GET(Api.GET_OTHER_PASSENGER)
     Observable<BaseData<List<PassengersResponse>>> getOtherPassengerInfo(@Query("bid") String bid);
+
+
 }

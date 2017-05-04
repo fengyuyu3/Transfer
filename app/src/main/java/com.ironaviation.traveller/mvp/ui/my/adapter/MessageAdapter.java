@@ -17,15 +17,15 @@ import com.ironaviation.traveller.mvp.model.entity.response.TravelResponse;
  * 修改备注：
  */
 
-public class MessageAdapter extends BaseQuickAdapter<MessageResponse, BaseViewHolder> {
+public class MessageAdapter extends BaseQuickAdapter<MessageResponse.Items, BaseViewHolder> {
 
     public MessageAdapter(int layoutResId) {
         super(layoutResId);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, MessageResponse item) {
-        helper.setText(R.id.tv_message_text, "您的预约已经接受");
-        helper.setText(R.id.tv_message_title, "系统消息");
+    protected void convert(BaseViewHolder helper, MessageResponse.Items item) {
+        helper.setText(R.id.tv_message_text, item.getContents());
+        helper.setText(R.id.tv_message_title,item.getTitle());
     }
 }

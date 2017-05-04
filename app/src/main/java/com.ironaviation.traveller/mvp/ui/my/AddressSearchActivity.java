@@ -268,7 +268,14 @@ public class AddressSearchActivity extends WEActivity<AddressSearchPresenter> im
     }
 
     @OnClick(R.id.tv_cancel)
-    public void onClick() {
+    public void onClick(View view) {
+        switch (view.getId()) {
+
+            case R.id.tv_cancel:
+                    finish();
+                break;
+
+        }
     }
 
     class SearchRunnable implements Runnable {
