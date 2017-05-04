@@ -532,8 +532,12 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
 
         HistoryPoiInfo info = new HistoryPoiInfo(result.getPoiList().get(0), false);
         if (result.getAddress() != null && info != null && info.name != null) {
-            mTwAddressText.setText(info.name);
-            this.info = info;
+            try {
+                mTwAddressText.setText(info.name);
+                this.info = info;
+            }catch (Exception e){
+
+            }
         }
     }
     @Subscriber(tag = EventBusTags.ADDRESS)

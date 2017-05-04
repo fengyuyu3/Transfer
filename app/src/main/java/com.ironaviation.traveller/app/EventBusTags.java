@@ -6,8 +6,10 @@ package com.ironaviation.traveller.app;
  */
 public interface EventBusTags {
 
+    String SHUT_DOWN = "shut_down";
     String TRAVEL_DETAILS = "TravelDetailsActivity";
     String WAITING_PAYMENT = "WaitingPaymentActivity";
+    String TRAVEL_DETAILS_ON = "TravelDetailsOnActivity";
 
     String DIALOG_EVENT = "dialog";
     String FLIGHT_INFO = "flight_info";
@@ -33,4 +35,6 @@ public interface EventBusTags {
 
     String USUAL_ADDRESS = "UsualAddress";
     String ADDRESS = "Address";
+    String ALIPAY_RESULT = "alipay_result";
+    String PAYMENT_FINISH = "payment_finish";
 }

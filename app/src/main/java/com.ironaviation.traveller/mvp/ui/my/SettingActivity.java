@@ -2,6 +2,7 @@ package com.ironaviation.traveller.mvp.ui.my;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -22,6 +23,7 @@ import com.ironaviation.traveller.mvp.contract.my.SettingContract;
 import com.ironaviation.traveller.mvp.model.api.Api;
 import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
 import com.ironaviation.traveller.mvp.presenter.my.SettingPresenter;
+import com.ironaviation.traveller.mvp.ui.login.IdentificationActivity;
 import com.ironaviation.traveller.mvp.ui.payment.InvalidationActivity;
 import com.ironaviation.traveller.mvp.ui.webview.WebViewActivity;
 import com.ironaviation.traveller.mvp.ui.widget.TextTextImageView;
@@ -173,7 +175,7 @@ public class SettingActivity extends WEActivity<SettingPresenter> implements Set
                     intent.putExtra(Constant.STATUS,Constant.SETTING);
                     startActivity(intent);
                 }else{
-                    Intent intent = new Intent(this, InvalidationActivity.class);
+                    Intent intent = new Intent(this, IdentificationActivity.class);
                     startActivity(intent);
                 }
                 break;
@@ -181,10 +183,12 @@ public class SettingActivity extends WEActivity<SettingPresenter> implements Set
                 startActivity(UsualAddressActivity.class);
                 break;
             case R.id.tti_connect_us:
-
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                Uri data = Uri.parse("tel:" + Constant.CONNECTION_US);
+                intent.setData(data);
+                startActivity(intent);
                 break;
             case R.id.tti_cancellation_account:
-
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(getString(R.string.hint));

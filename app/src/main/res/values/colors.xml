@@ -19,6 +19,7 @@
     <color name="input_box_tan_select">#c1aa86</color>
     <color name="input_box_grey_un_select">#b2b2b2</color>
     <color name="id_cord_background">#f3f3f3</color>
+    <color name="input_box_grey_button">#d8d8d8</color>
 
     <color name="bg_toolbar">#d23026</color>
     <color name="word_toolbar_select">#d23930</color>

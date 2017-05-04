@@ -7,6 +7,7 @@ import com.baidu.mapapi.SDKInitializer;
 import com.baidu.trace.LBSTraceClient;
 import com.baidu.trace.LocationMode;
 import com.baidu.trace.Trace;
+import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
 import com.jess.arms.base.BaseApplication;
@@ -195,7 +196,7 @@ public class WEApplication extends BaseApplication {
                     @Override
                     public void handleResponseError(Context context, Exception e) {
                         Timber.tag(TAG).w("------------>" + e.getMessage());
-                        UiUtils.SnackbarText("net error");
+                        UiUtils.SnackbarText(getString(R.string.network_error));
                     }
                 }).build();
     }

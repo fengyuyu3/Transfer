@@ -252,6 +252,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 
     @Override
     public void setPassengersResponseInfo(RouteStateResponse response){
+        this.responses = response;
         mPassengersResponse = new PassengersResponse();
         mPassengersResponse.setOrderNo(response.getOrderNo());
         mPassengersResponse.setPickupAddress(response.getPickupAddress());
@@ -688,7 +689,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
             }
         }
         passengersResponseList.addAll(info);
-        if(responses.getDestAddress() != null) {
+        if(responses != null && responses.getDestAddress() != null) {
             pathPlanning(passengersResponseList,driverLatLng.latitude,driverLatLng.longitude, responses.getDestAddress());
         }else{
             pathPlanning(passengersResponseList, driverLatLng.latitude, driverLatLng.longitude, Constant.AIRPORT_T1);
@@ -1283,4 +1284,8 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         mPresenter.getRouteState(response.getBID());
     }
 
+    @Subscriber(tag = EventBusTags.PAYMENT_FINISH)
+    public void travelFinish(boolean flag){
+        finish();
+    }
 }

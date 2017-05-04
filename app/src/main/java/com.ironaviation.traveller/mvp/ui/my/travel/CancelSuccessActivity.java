@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.alipay.sdk.auth.APAuthInfo;
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.my.travel.DaggerCancelSuccessComponent;
@@ -31,6 +32,8 @@ import com.ironaviation.traveller.mvp.ui.widget.SpaceItemDecoration;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
+
+import org.simple.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,6 +128,8 @@ public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> im
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                EventBus.getDefault().post(true, EventBusTags.PAYMENT_FINISH);
+                EventBus.getDefault().post(true,EventBusTags.REFRESH);
                 finish();
             }
         });

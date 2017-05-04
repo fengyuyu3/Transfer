@@ -89,11 +89,11 @@
     <string name="other_estimate">其他评价</string>
     <string name="money_unit">元</string>
     <!--登陆-->
-    <string name="login_input_phone">输入电话号码</string>
+    <string name="login_input_phone">输入手机号</string>
     <string name="login_input_code">输入验证码</string>
     <string name="login_code">获取验证码</string>
     <string name="login_btn">登录</string>
-    <string name="login_no_userInfo">请输入用户信息</string>
+    <string name="login_no_userInfo">请输入手机号码</string>
     <string name="login_no_code">请输入验证码</string>
     <string name="login_no_client_id">初始化中 请稍候</string>
     <string name="login_code_reset">s</string>
@@ -103,12 +103,12 @@
     <string name="inlcude_error_info">请检查网络后点击重新加载</string>
 
     <!--送机-->
-    <string name="airport_no">请输入航班号</string>
-    <string name="airport_time">乘车时间</string>
-    <string name="airport_address">上车地址</string>
+    <string name="airport_no">请输入航班号,例如3U8881</string>
+    <string name="airport_time">请选择乘车时间</string>
+    <string name="airport_address">请输入上车地址</string>
     <string name="airport_airport">选择航站楼</string>
-    <string name="airport_seat">需要2个座位数</string>
-    <string name="airport_validate">请输入身份证号验证</string>
+    <string name="airport_seat">需要1个座位数</string>
+    <string name="airport_validate">输入身份证号或护照验证免费乘坐资格</string>
     <string name="airport_fly">请选择起飞时间</string>
     <string name="airport_cancel">取消</string>
     <string name="airport_affirm">确认</string>
@@ -120,11 +120,11 @@
     <string name="please_point_out_insufficient">请指出不足...</string>
     <string name="airport_validate_text">验证</string>
     <string name="airport_validate_text_all">全部验证</string>
-    <string name="airport_oneself">本人</string>
+    <string name="airport_oneself">乘客本人</string>
     <string name="airport_arrive_time"></string>
     <string name="airport_price">元</string>
     <string name="airport_input_time">请选择乘车时间</string>
-    <string name="airport_sc">现在只支持四川航空</string>
+    <string name="airport_sc">目前只支持四川航空</string>
     <string name="airport_no_open">该城市尚未开通</string>
     <!--other-->
     <string name="qr_code_hint">二维码请在上车时提供给司机扫描</string>
@@ -240,6 +240,13 @@
     <string name="travel_clear_port">取消规则</string>
     <string name="travel_explain_detail">接机说明</string>
     <string name="travel_go_back_time">3-7个工作日</string>
-    <string name="travel_payment_lose">支付失效</string>
+    <string name="travel_payment_lose">支付失败,请检查网络</string>
+    <string name="travel_payment_cancel">支付已取消</string>
+
+    <string name="resultcode_alipay_ERROR_8000">正在处理中！</string>
+    <string name="resultcode_alipay_ERROR_4000">订单支付失败！</string>
+    <string name="resultcode_alipay_ERROR_6001">您取消了本笔订单支付！</string>
+    <string name="resultcode_alipay_ERROR_6002">网络连接出错！</string>
+    <string name="network_error">无网络连接</string>
 
 </resources>

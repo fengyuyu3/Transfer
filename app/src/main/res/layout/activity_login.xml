@@ -11,11 +11,19 @@
         android:src="@mipmap/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+    <TextView
+        android:textSize="32px"
+        android:layout_marginTop="30px"
+        android:textColor="@color/white"
+        android:text="@string/app_name"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
     <com.zhy.autolayout.AutoRelativeLayout
         android:focusableInTouchMode="true"
         android:focusable="true"
         android:layout_gravity="center"
-        android:layout_marginTop="194px"
+        android:layout_marginTop="124px"
         android:paddingLeft="@dimen/interval_input_box"
         android:paddingRight="@dimen/interval_input_box"
         android:background="@drawable/btn_login_edit_shap"

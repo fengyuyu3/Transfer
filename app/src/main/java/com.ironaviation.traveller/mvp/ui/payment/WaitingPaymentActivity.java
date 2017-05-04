@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.utils.CountTimeMiniteUtil;
@@ -42,6 +43,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
+import static com.jess.arms.utils.UiUtils.getString;
 
 /**
  * 通过Template生成对应页面的MVP和Dagger代码,请注意输入框中输入的名字必须相同
@@ -397,6 +399,11 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
             case Constant.TRAVEL_CANCEL:
                 Bundle pBundle=new Bundle();
                 pBundle.putString(Constant.BID,event.getBid());
+                if(Constant.ON.equals(orderStatus)) {
+                    pBundle.putString(Constant.STATUS,Constant.ENTER_PORT);
+                }else{
+                    pBundle.putString(Constant.STATUS,Constant.CLEAR_PORT);
+                }
                 startActivity(TravelCancelActivity.class,pBundle);
                 break;
             case Constant.TRAVEL_CUSTOMER:
@@ -418,4 +425,35 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
 
     }
 
+    @Subscriber(tag = EventBusTags.SHUT_DOWN)
+    public void shutDown(boolean shutDown){
+        if(shutDown){
+            finish();
+        }
+    }
+
+    @Subscriber(tag = EventBusTags.ALIPAY_RESULT)
+    public void result(String resultStatus){
+        if (TextUtils.equals(resultStatus, "9000")) {
+            Intent intent = new Intent(this, TravelActivity.class);
+            startActivity(intent);
+            EventBus.getDefault().post(true, EventBusTags.REFRESH);
+            EventBus.getDefault().post(true, EventBusTags.SHUT_DOWN);
+            finish();
+        } else if (TextUtils.equals(resultStatus, "8000")) {
+            showMessage(getString(R.string.resultcode_alipay_ERROR_8000));
+        } else if (TextUtils.equals(resultStatus, "4000")) {
+            showMessage(getString(R.string.resultcode_alipay_ERROR_4000));
+        } else if (TextUtils.equals(resultStatus, "6001")) {
+            showMessage(getString(R.string.resultcode_alipay_ERROR_6001));
+        } else if (TextUtils.equals(resultStatus, "6002")) {
+            //error.onNext(getString(R.string.resultcode_alipay_ERROR_6002));
+        } else {
+            showMessage(getString(R.string.resultcode_alipay_ERROR_6002));
+        }
+    }
+    @Subscriber(tag = EventBusTags.PAYMENT_FINISH)
+    public void paymentFinish(boolean flag){
+        finish();
+    }
 }

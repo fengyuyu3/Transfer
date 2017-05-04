@@ -135,4 +135,6 @@ public interface Constant {
     int ROUTE_INVALID_ON = 222; //行程已失效 接机
 
     int OTHER_LOGIN = 200; //其他地方登陆
+
+    String CONNECTION_US = "02886868686";
 }

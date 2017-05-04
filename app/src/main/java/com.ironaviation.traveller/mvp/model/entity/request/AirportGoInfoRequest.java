@@ -49,6 +49,24 @@ public class AirportGoInfoRequest {
     private String City;
     private List<PassengersRequest> Passengers;
     private boolean IsEnterPort;
+    private String DestDetailAddress;
+    private String PickupDetailAddress;
+
+    public String getDestDetailAddress() {
+        return DestDetailAddress;
+    }
+
+    public void setDestDetailAddress(String destDetailAddress) {
+        DestDetailAddress = destDetailAddress;
+    }
+
+    public String getPickupDetailAddress() {
+        return PickupDetailAddress;
+    }
+
+    public void setPickupDetailAddress(String pickupDetailAddress) {
+        PickupDetailAddress = pickupDetailAddress;
+    }
 
     public boolean isEnterPort() {
         return IsEnterPort;

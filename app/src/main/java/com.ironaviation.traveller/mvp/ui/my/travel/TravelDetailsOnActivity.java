@@ -37,6 +37,7 @@ import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.my.travel.DaggerTravelDetailsOnComponent;
 import com.ironaviation.traveller.di.module.my.travel.TravelDetailsOnModule;
+import com.ironaviation.traveller.event.TravelCancelEvent;
 import com.ironaviation.traveller.map.overlayutil.DrivingRouteOverlay;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.travel.TravelDetailsOnContract;
@@ -179,7 +180,7 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
                 status = responses.getStatus();
                 bid = responses.getBID();
                 mPresenter.setRouteStateResponse(responses);
-                mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.TRAVEL_DETAILS, responses.getBID());
+                mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.TRAVEL_DETAILS_ON, responses.getBID());
 //                status = Constant.ARRIVED;
                 showStatus(responses);
             } else {
@@ -580,12 +581,32 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
         LatLng dest = new LatLng(responses.getDestLagitude(),
                 responses.getDestLongitude());
         MarkerOptions markerOptions = new MarkerOptions()
-                .position(pickup).icon(end).zIndex(9).draggable(true);
+                .position(pickup).icon(start).zIndex(9).draggable(true);
         MarkerOptions markerOptions1 = new MarkerOptions()
-                .position(dest).icon(start).zIndex(9).draggable(true);
+                .position(dest).icon(end).zIndex(9).draggable(true);
         mBaiduMap.addOverlay(markerOptions);
         mBaiduMap.addOverlay(markerOptions1);
         MapStatus mMapStatus = new MapStatus.Builder().target(dest).build();
         mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(mMapStatus));
+    }
+
+    @Subscriber(tag = EventBusTags.TRAVEL_DETAILS_ON)
+    public void onEventMainThread(TravelCancelEvent event) {
+        switch (event.getEvent()) {
+            case Constant.TRAVEL_CANCEL:
+                Bundle pBundle=new Bundle();
+                pBundle.putString(Constant.BID,event.getBid());
+                pBundle.putString(Constant.STATUS,Constant.ENTER_PORT);
+                startActivity(TravelCancelActivity.class,pBundle);
+                break;
+            case Constant.TRAVEL_CUSTOMER:
+                showMessage(getString(R.string.contact_customer_service));
+                break;
+        }
+    }
+
+    @Subscriber(tag = EventBusTags.PAYMENT_FINISH)
+    public void travelFinish(boolean flag){
+        finish();
     }
 }

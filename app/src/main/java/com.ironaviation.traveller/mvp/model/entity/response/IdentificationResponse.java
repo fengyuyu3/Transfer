@@ -11,7 +11,7 @@ package com.ironaviation.traveller.mvp.model.entity.response;
  */
 public class IdentificationResponse {
     private String IDCard;
-    private String Name;
+    private String RealName;
     private boolean Result;
     private String Reason;
 
@@ -40,11 +40,11 @@ public class IdentificationResponse {
     }
 
     public String getName() {
-        return Name;
+        return RealName;
     }
 
     public void setName(String name) {
-        Name = name;
+        RealName = name;
     }
 
 }

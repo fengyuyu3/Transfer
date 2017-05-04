@@ -99,6 +99,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tw_explain_on"
                         android:layout_marginLeft="32px"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -185,7 +186,10 @@
     <TextView
         android:id="@+id/tw_go_to_order_on"
         style="@style/button_red_style"
-        android:layout_width="@dimen/w_input_box"
+        android:layout_marginLeft="20px"
+        android:layout_marginRight="20px"
+        android:layout_marginBottom="16px"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/h_input_box"
         android:layout_gravity="center_horizontal"
         android:text="@string/travel_order"></TextView>

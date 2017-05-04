@@ -157,7 +157,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     private MyTimePickerView pvTime;
     private MyTimeDialog mMyTimeDialog;
     private TerminalPopupWindow mTerminalPopupWindow;
-    private int terminalNum = -1;
+    private int terminalNum = 0;
     private String format = "MM月dd日 HH点mm分";
     private boolean addressFlag,timeFlag;
     private HistoryPoiInfo info;
@@ -204,7 +204,8 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         mNumDialog = new NumDialog(getActivity(), getNumsData(), this, Constant.AIRPORT_TYPE_SEAT);
         mTerminal = new NumDialog(getActivity(), getTerminal(), this, Constant.AIRPORT_TYPE_TERMINAL);
         mTerminalPopupWindow = new TerminalPopupWindow(getActivity(),getTerminal(),this);
-
+        mPwAirport.setTextInfo(Constant.AIRPORT_T1);
+        mTerminalPopupWindow.setNum(terminalNum);
 //        setRidTimeHide();
         setRidTimeShow();
         initEmptyData();
@@ -374,7 +375,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     public void judgeFlyNo(){ //判断时间
         String fno = mPwFltNo.getTextInfo();
         if(fno.equals(getActivity().getResources().getString(R.string.airport_no))){
-            showMessage("请先选择航班号");
+            showMessage(getString(R.string.airport_no));
         }else {
             long num = (flight.getList().get(0).getTakeOffTime() - System.currentTimeMillis())
                     / (60 * 60 * 1000);
@@ -752,7 +753,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     public void clearData(){
         mPwTime.setInitInfo(getResources().getString(R.string.airport_time));
         mPwAddress.setInitInfo(getResources().getString(R.string.airport_address));
-        mPwAirport.setInitInfo(getResources().getString(R.string.airport_airport));
+        mPwAirport.setTextInfo(Constant.AIRPORT_T1);
         mPwSeat.setTextInfo(getResources().getString(R.string.airport_seat));
         /*mPwSeat.setVisibility(View.GONE);
         llCertification.setVisibility(View.GONE);*/
@@ -761,6 +762,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         setSeat(Constant.DEFULT_SEAT);
         addressFlag = false;
         timeFlag = false;
+        mTwGoToOrder.setEnabled(false);
     }
 
     public void clearAllData(){
@@ -796,7 +798,9 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         request.setArriveDateTime(flight.getList().get(0).getArriveTime());
         request.setTakeOffAddress(flight.getList().get(0).getTakeOff());
         request.setArriveAddress(flight.getList().get(0).getArrive());
-        request.setPickupAddress(info.address);
+        request.setDestDetailAddress("");
+        request.setPickupAddress(info.name);
+        request.setPickupDetailAddress(info.address);
         request.setPickupLatitude(info.location.latitude);
         request.setPickupLongitude(info.location.longitude);
         request.setPickupTime(time);

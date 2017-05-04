@@ -156,7 +156,7 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
         vp.setAdapter(mAdapter);
         final AutoSlidingTabLayout tabLayout_7 = ViewFindUtils.find(decorView, R.id.tl_7);
         tabLayout_7.setViewPager(vp, mTitles);
-        vp.setCurrentItem(4);
+        vp.setCurrentItem(0);
         setTitle(getString(R.string.app_name));
         setRightFunctionText("成都", R.color.white, null);
         setPhone();

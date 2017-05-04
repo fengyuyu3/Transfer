@@ -1,10 +1,13 @@
 package com.ironaviation.traveller.mvp.ui.payment;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
+import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.mvp.ui.my.travel.TravelActivity;
@@ -13,6 +16,8 @@ import org.simple.eventbus.EventBus;
 
 import java.util.Map;
 
+import static com.jess.arms.utils.UiUtils.getString;
+
 /**
  * Created by Administrator on 2017/4/12 0012.
  */
@@ -20,6 +25,12 @@ import java.util.Map;
 public class AlipayUtils {
 
     private static String resultStatus,result1,memo;
+    private static Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+
+        }
+    };
     public static void aliPay(final WEActivity activity, final String info) {
         Runnable payRunnable = new Runnable() {
             @Override
@@ -35,17 +46,10 @@ public class AlipayUtils {
                         memo = result.get(key);
                     }
                 }
-                if(TextUtils.equals(resultStatus,"9000")) {
-                    Intent intent = new Intent(activity, TravelActivity.class);
-                    activity.startActivity(intent);
-                    EventBus.getDefault().post(true, EventBusTags.REFRESH);
-                    activity.finish();
-                }else{
-                    Toast.makeText(activity,"支付失败",Toast.LENGTH_SHORT).show();
-                    activity.finish();
-                }
+                EventBus.getDefault().post(resultStatus,EventBusTags.ALIPAY_RESULT);
             }
         };
+
         Thread payThread = new Thread(payRunnable);
         payThread.start();
     }

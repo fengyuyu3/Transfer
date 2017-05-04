@@ -7,6 +7,7 @@ package com.ironaviation.traveller.mvp.model.api;
 public interface Api {
 //    String APP_DOMAIN = "http://th-api.bestwise.net";// 测试
 //    String APP_DOMAIN = "http://192.168.0.75:8051";
+//    String APP_DOMAIN = "http://192.168.0.20:8050";
     String APP_DOMAIN = "http://th-api.bestwise.net"; //测试服务器
     String LOGIN = "/api/Users/LoginWithSMS";// 登录
     String Travel = "";

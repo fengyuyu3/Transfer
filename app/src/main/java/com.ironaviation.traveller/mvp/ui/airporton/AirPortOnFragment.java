@@ -26,6 +26,7 @@ import com.ironaviation.traveller.di.component.airporton.DaggerAirPortOnComponen
 import com.ironaviation.traveller.di.module.airporton.AirPortOnModule;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.airporton.AirPortOnContract;
+import com.ironaviation.traveller.mvp.model.api.Api;
 import com.ironaviation.traveller.mvp.model.entity.HistoryPoiInfo;
 import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
 import com.ironaviation.traveller.mvp.model.entity.request.AirPortRequest;
@@ -38,6 +39,7 @@ import com.ironaviation.traveller.mvp.ui.airportoff.TravelFloatActivity;
 import com.ironaviation.traveller.mvp.ui.my.AddressActivity;
 import com.ironaviation.traveller.mvp.ui.my.travel.PaymentDetailsActivity;
 import com.ironaviation.traveller.mvp.ui.payment.WaitingPaymentActivity;
+import com.ironaviation.traveller.mvp.ui.webview.WebViewActivity;
 import com.ironaviation.traveller.mvp.ui.widget.FontTextView;
 import com.ironaviation.traveller.mvp.ui.widget.MyTimeDialog;
 import com.ironaviation.traveller.mvp.ui.widget.NumDialog;
@@ -108,15 +110,17 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
     TextView mTwResetPrice;
     @BindView(R.id.ll_set_price_on)
     AutoLinearLayout mLlSetPrice;
+    @BindView(R.id.tw_explain_on)
+    TextView mTwExplainOn;
 
     private NumDialog mNumDialog;
     private List<AirPortRequest> mAirportRequests;
     private TerminalPopupWindow mTerminalPopupWindow;
-    private int terminalNum = -1;
+    private int terminalNum = 0;
     private MyTimeDialog mMyTimeDialog;
     private String phone;
     private Flight flight;
-    private int seatNum = 2;
+    private int seatNum = 1;
     private String fomart = "预计MM/dd EEEE HH:mm到达";
     private HistoryPoiInfo info;
     private String formatDate = "yyyy-MM-dd";
@@ -162,6 +166,8 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
        /* initEmptyData();
         mNumDialog = new NumDialog(getActivity(), getNumsData(), this, Constant.AIRPORT_TYPE_SEAT);
         mMyTimeDialog = new MyTimeDialog(getActivity());*/
+        mPwAirport.setTextInfo(Constant.AIRPORT_T1);
+        mTerminalPopupWindow.setNum(terminalNum);
     }
 
     public void initEmptyData() {
@@ -483,7 +489,7 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
 
     @OnClick({R.id.pw_seat_on, R.id.pw_airport_on,R.id.pw_address_on,
             R.id.pw_flt_no_on,R.id.tv_code_all_on,R.id.tw_reset_price_on,
-            R.id.tw_go_to_order_on,R.id.ll_set_price_on})
+            R.id.tw_go_to_order_on,R.id.ll_set_price_on,R.id.tw_explain_on})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.pw_seat_on:
@@ -511,7 +517,7 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
             case R.id.tv_code_all_on:
                 if(getAirPortInfo().getPassengers() == null ||
                         getAirPortInfo().getPassengers().size() == 0){
-                    showMessage("请输入身份证");
+                    showMessage(getString(R.string.hint_id_numeral));
                 }else{
                     mPresenter.getAirportInfo(getAirPortInfo());
                 }
@@ -524,6 +530,12 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
                 break;
             case R.id.ll_set_price_on:
                 setPaymentDetail();
+                break;
+            case R.id.tw_explain_on:
+                Intent intent2 = new Intent(getActivity(), WebViewActivity.class);
+                intent2.putExtra(Constant.TITLE,getResources().getString(R.string.travel_explain_detail));
+                intent2.putExtra(Constant.URL, Api.PHONE_INTRODUCE);
+                startActivity(intent2);
                 break;
            /* case R.id.pw_time:
                 mMyTimeDialog.showDialog("test");
@@ -591,12 +603,13 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
     //清理数据
     public void clearData(){
         mPwAddress.setInitInfo(getResources().getString(R.string.travel_get_address)); //下车地址
-        mPwAirport.setInitInfo(getResources().getString(R.string.airport_airport));
+        mPwAirport.setTextInfo(Constant.AIRPORT_T1);
         mPwSeat.setTextInfo(getResources().getString(R.string.airport_seat));
 //        mLlPrice.setVisibility(View.GONE);
 //        mPwSeat.setVisibility(View.GONE);
         showPrice(false);
         setSeat(Constant.DEFULT_SEAT);
+        mTwGoToOrder.setEnabled(false);
 //        addressFlag = false;
 //        timeFlag = false;
 
@@ -725,9 +738,11 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
         request.setArriveDateTime(flight.getList().get(0).getArriveTime());
         request.setTakeOffAddress(flight.getList().get(0).getTakeOff());
         request.setArriveAddress(flight.getList().get(0).getArrive());
-        request.setPickupAddress(info.address);
-        request.setPickupLatitude(info.location.latitude);
-        request.setPickupLongitude(info.location.longitude);
+        request.setDestLatitude(info.location.latitude);
+        request.setDestLongitude(info.location.longitude);
+        request.setDestAddress(info.address);
+        request.setDestDetailAddress(info.name);
+        request.setPickupDetailAddress("");
         request.setPickupTime(System.currentTimeMillis());
         request.setCity(Constant.CITY);
         request.setEnterPort(true);
@@ -735,13 +750,13 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
             request.setCallNumber(phone);
         }
         if(terminalNum == 1) {
-            request.setDestAddress(Constant.AIRPORT_T2);
-            request.setDestLatitude(Constant.AIRPORT_T2_LATITUDE);
-            request.setDestLongitude(Constant.AIRPORT_T2_LONGITUDE);
+            request.setPickupAddress(Constant.AIRPORT_T2);
+            request.setPickupLatitude(Constant.AIRPORT_T2_LATITUDE);
+            request.setPickupLongitude(Constant.AIRPORT_T2_LONGITUDE);
         }else{
-            request.setDestAddress(Constant.AIRPORT_T1);
-            request.setDestLatitude(Constant.AIRPORT_T1_LATITUDE);
-            request.setDestLongitude(Constant.AIRPORT_T1_LONGITUDE);
+            request.setPickupAddress(Constant.AIRPORT_T1);
+            request.setPickupLatitude(Constant.AIRPORT_T1_LATITUDE);
+            request.setPickupLongitude(Constant.AIRPORT_T1_LONGITUDE);
         }
         request.setSeatNum(seatNum);
         List<PassengersRequest> list = new ArrayList<>();
