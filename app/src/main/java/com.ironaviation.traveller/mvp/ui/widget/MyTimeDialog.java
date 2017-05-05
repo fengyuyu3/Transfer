@@ -52,7 +52,7 @@ public class MyTimeDialog {
             if(System.currentTimeMillis()+60*60*2000 > currentTime){
                currentTime = System.currentTimeMillis()+60*60*2000;
             }else{
-                currentTime = currentTime-(60*60*2000);
+                currentTime = currentTime+(60*60*2000+10*60*1000);
             }
         }
         public void showDialog(final String title) {

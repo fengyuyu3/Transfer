@@ -38,4 +38,5 @@ public interface EventBusTags {
     String ALIPAY_RESULT = "alipay_result";
     String PAYMENT_FINISH = "payment_finish";
     String WX_FILED = "wx_filed";
+    String TIME_OUT = "time_out"; //订单失效
 }

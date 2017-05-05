@@ -80,6 +80,7 @@ public interface Constant {
     String WECHAT = "WeChat";
     String ALIPAY = "AliPay";
     String UPAY = "UPay";
+    String FREE_PAY = "FreePay";
 
     String PHONE = "phone";
 
@@ -138,4 +139,6 @@ public interface Constant {
     int OTHER_LOGIN = 200; //其他地方登陆
 
     String CONNECTION_US = "02886868686";
+
+    String FREE_PAYMENT_SUCCESS = "paid";
 }

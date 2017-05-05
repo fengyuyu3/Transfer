@@ -116,6 +116,8 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     private String myStatus; //订单过来的状态
     private String orderStatus; //订单列表过来的状态
     private CountTimeMiniteUtil mCountTimeMiniteUtil;
+    private boolean timeOutFlag;
+    private boolean freeFlag;
 
     @BindView(R.id.id_line)
     View idLine;
@@ -179,11 +181,13 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
                         setCountTime(responses.getExpireAt()-responses.getCurrentTime());
                     }else{
                         mTvMoneyUnit.setText(getResources().getText(R.string.travel_payment_lose));
+                        timeOutFlag = true;
                     }
                 }
             }
         }
         setRightFunction(R.mipmap.ic_more, this);
+        setOrderButtonStatus(timeOutFlag);
     }
 
     public void initToolbar(){
@@ -221,12 +225,12 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     }*/
     @Override
     public void showLoading() {
-
+        showProgressDialog();
     }
 
     @Override
     public void hideLoading() {
-
+        dismissProgressDialog();
     }
 
     @Override
@@ -297,14 +301,28 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
                 status = Constant.UPAY;
                 break;
             case R.id.tv_determine_cancel:
-                if(status !=null) {
+                if(freeFlag){
+                    mPresenter.setPayment(bid, Constant.FREE_PAY);
+                }
+                else {
+                    if (status != null) {
 //                    setStatus(status);
-                    mPresenter.setPayment(bid, status);
-                }else{
-                    showMessage("请选择支付方式");
+                        mPresenter.setPayment(bid, status);
+                    } else {
+                        showMessage("请选择支付方式");
+                    }
                 }
                 break;
         }
+    }
+
+    public void hidePayment(){
+        mIviWeChat.setVisibility(View.GONE);
+        mIviAliPay.setVisibility(View.GONE);
+    }
+    public void showPayment(){
+        mIviWeChat.setVisibility(View.VISIBLE);
+        mIviAliPay.setVisibility(View.VISIBLE);
     }
 
     public void setStatus(String status){
@@ -360,15 +378,26 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     @Override
     public void setPrice(float num) {
         mTvMoney.setTextType(num+"");
+        if(num == 0.0){
+            hidePayment();
+            freeFlag = true;
+        }else{
+            showPayment();
+            freeFlag = false;
+
+        }
     }
 
     @Override
     public void setCountdown(long time,long at) {
         if((at - time) > 0){
             setCountTime(at-time);
+            timeOutFlag = false;
         }else{
             mTvMoneyUnit.setText(getResources().getText(R.string.travel_payment_lose));
+            timeOutFlag = true;
         }
+        setOrderButtonStatus(timeOutFlag);
     }
 
     @Override
@@ -387,6 +416,14 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     @Override
     public void setAliPay(String aliPay) {
         AlipayUtils.aliPay(this,aliPay);
+    }
+
+    @Override
+    public void setFreePay(String freePay) {
+        Intent intent = new Intent(this, TravelActivity.class);
+        startActivity(intent);
+        EventBus.getDefault().post(true, EventBusTags.REFRESH);
+        finish();
     }
 
     @Override
@@ -441,7 +478,6 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
             Intent intent = new Intent(this, TravelActivity.class);
             startActivity(intent);
             EventBus.getDefault().post(true, EventBusTags.REFRESH);
-            EventBus.getDefault().post(true, EventBusTags.SHUT_DOWN);
             finish();
         } else if (TextUtils.equals(resultStatus, "8000")) {
             showMessage(getString(R.string.resultcode_alipay_ERROR_8000));
@@ -467,5 +503,22 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
         }else{
             showMessage(getString(R.string.travel_payment_lose));
         }
+    }
+
+    public void setOrderButtonStatus(boolean flag){
+        if(!flag){
+            mTvDetermineCancel.setBackgroundResource(R.drawable.select_but_champagne);
+        }else{
+            mTvDetermineCancel.setBackgroundResource(R.drawable.btn_grey_shap);
+        }
+        mTvDetermineCancel.setEnabled(!flag);
+    }
+
+    @Subscriber(tag =EventBusTags.TIME_OUT)
+    public void orderLose(boolean flag){
+        timeOutFlag = true;
+        mTvMoneyUnit.setTextColor(ContextCompat.getColor(this, R.color.code_grey));
+        mTvMoneyUnit.setText(getResources().getText(R.string.travel_payment_lose));
+        setOrderButtonStatus(timeOutFlag);
     }
 }

@@ -103,6 +103,9 @@ public class WaitingPaymentPresenter extends BasePresenter<WaitingPaymentContrac
                             }else if(Constant.ALIPAY.equals(payment)){
                                 String info = jsonObjectBaseData.getData().toString();
                                 mRootView.setAliPay(info);
+                            }else if(Constant.FREE_PAY.equals(payment)){
+                                String info = jsonObjectBaseData.getData().toString();
+                                mRootView.setFreePay(info);
                             }
                         }
                     }

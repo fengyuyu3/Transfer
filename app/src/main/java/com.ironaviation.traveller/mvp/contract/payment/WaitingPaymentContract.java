@@ -46,6 +46,7 @@ public interface WaitingPaymentContract {
         void setSuccess();
         void setWeChat(WeChaTInfo info);
         void setAliPay(String aliPay);
+        void setFreePay(String freePay);
     }
 
     //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存

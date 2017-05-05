@@ -197,9 +197,14 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
             startActivity(intent);
         }else if(Constant.NOTPAID .equals(status)){ //跳未支付界面
             Bundle bundle = new Bundle();
-            bundle.putSerializable(Constant.STATUS,responses);
-            bundle.putString(Constant.CHILD_STATUS,Constant.OFF);
-            startActivity(WaitingPaymentActivity.class,bundle);
+            if(responses.getCurrentTime()-responses.getExpireAt() >= 0){
+                bundle.putSerializable(Constant.STATUS,responses);
+                startActivity(InvalidationActivity.class,bundle);
+            }else{
+                bundle.putSerializable(Constant.STATUS,responses);
+                bundle.putString(Constant.CHILD_STATUS,Constant.OFF);
+                startActivity(WaitingPaymentActivity.class,bundle);
+            }
         }else if(Constant.INVALIDATION .equals(status) ){ //跳失效界面
             Bundle bundle = new Bundle();
             bundle.putSerializable(Constant.STATUS,responses);
@@ -237,9 +242,14 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
             startActivity(intent);
         }else if(Constant.NOTPAID .equals(status)){ //跳未支付界面
             Bundle bundle = new Bundle();
-            bundle.putSerializable(Constant.STATUS,responses);
-            bundle.putString(Constant.CHILD_STATUS,Constant.ON);
-            startActivity(WaitingPaymentActivity.class,bundle);
+            if(responses.getCurrentTime()-responses.getExpireAt() >= 0){
+                bundle.putSerializable(Constant.STATUS,responses);
+                startActivity(InvalidationActivity.class,bundle);
+            }else{
+                bundle.putSerializable(Constant.STATUS,responses);
+                bundle.putString(Constant.CHILD_STATUS,Constant.ON);
+                startActivity(WaitingPaymentActivity.class,bundle);
+            }
         }else if(Constant.INVALIDATION .equals(status) ){ //跳失效界面
             Bundle bundle = new Bundle();
             bundle.putSerializable(Constant.STATUS,responses);
@@ -300,13 +310,13 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
     public void setDatas(RouteListResponse responses) {
         showNodata(false);
         showError(false);
-        mTravelAdapter.setNewData(responses.getItems());
+        mTravelAdapter.setNewData(dataManage(responses.getItems()));
         mRouteItemResponses = mTravelAdapter.getData();
     }
 
     @Override
     public void setMoreDatas(RouteListResponse responses) {
-        mTravelAdapter.addData(responses.getItems());
+        mTravelAdapter.addData(dataManage(responses.getItems()));
         mRouteItemResponses = mTravelAdapter.getData();
     }
 
@@ -381,5 +391,16 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
     @Subscriber(tag=EventBusTags.REFRESH)
     public void refresh(boolean flag){
         mPresenter.getTravelData(defaultIndex);
+    }
+
+    public List<RouteItemResponse> dataManage(List<RouteItemResponse> responses){
+        for(int i = 0; i < responses.size(); i++) {
+            if (responses.get(i).getStatus().equals(Constant.NOTPAID)) {
+                if (responses.get(i).getCurrentTime() - responses.get(i).getExpireAt() >= 0){
+                    responses.get(i).setStatus(Constant.INVALIDATION);
+                }
+            }
+        }
+        return responses;
     }
 }

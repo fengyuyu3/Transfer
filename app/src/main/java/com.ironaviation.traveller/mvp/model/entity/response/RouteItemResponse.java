@@ -43,6 +43,48 @@ public class RouteItemResponse {
     private String Cdt;
     private boolean IsComment;
     private boolean IsPaied;
+    private long CurrentTime;
+    private long ExpireAt;
+
+    public boolean isDeleted() {
+        return IsDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        IsDeleted = deleted;
+    }
+
+    public boolean isComment() {
+        return IsComment;
+    }
+
+    public void setComment(boolean comment) {
+        IsComment = comment;
+    }
+
+    public boolean isPaied() {
+        return IsPaied;
+    }
+
+    public void setPaied(boolean paied) {
+        IsPaied = paied;
+    }
+
+    public long getCurrentTime() {
+        return CurrentTime;
+    }
+
+    public void setCurrentTime(long currentTime) {
+        CurrentTime = currentTime;
+    }
+
+    public long getExpireAt() {
+        return ExpireAt;
+    }
+
+    public void setExpireAt(long expireAt) {
+        ExpireAt = expireAt;
+    }
 
     public String getBID() {
         return BID;

@@ -5,7 +5,10 @@ import android.support.v4.content.ContextCompat;
 import android.widget.TextView;
 
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.common.WEApplication;
+
+import org.simple.eventbus.EventBus;
 
 /**
  * Created by Administrator on 2017/4/25.
@@ -24,8 +27,9 @@ public class CountTimeMiniteUtil  extends CountDownTimer {
     @Override
     public void onFinish()
     {
-        mSend.setTextColor(ContextCompat.getColor(WEApplication.getContext(), R.color.code_grey));
-        mSend.setText(mSend.getResources().getText(R.string.travel_payment_lose));
+//        mSend.setTextColor(ContextCompat.getColor(WEApplication.getContext(), R.color.code_grey));
+//        mSend.setText(mSend.getResources().getText(R.string.travel_payment_lose));
+        EventBus.getDefault().post(true, EventBusTags.TIME_OUT);
     }
 
     @Override
