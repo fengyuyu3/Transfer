@@ -37,9 +37,15 @@ public interface Api {
     String GET_OTHER_PASSENGER = "/api/Booking/GetOtherPassengersStatus"; //其他乘客
     int RequestSuccess = 1;
 
+
+    String GET_MESSAGES="/api/Users/GetMessages"; //Get 获取用户消息
+
     String PHONE_PRICE_ROLE="http://th-api.bestwise.net/app/view/phonePriceRole.html";
     String PHONE_CANCEL_ROLE_ON ="http://th-api.bestwise.net/app/view/phoneCancelRole.html?type=jieji";
     String PHONE_CANCEL_ROLE_OFF ="http://th-api.bestwise.net/app/view/phoneCancelRole.html";
     String PHONE_ID_CARD ="http://th-api.bestwise.net/app/view/phoneIdCard.html";///*?userName=XXXXXX&number=XXXXXXX*/
     String PHONE_INTRODUCE ="http://th-api.bestwise.net/app/view/phoneIntroduce.html";
+
+
+
 }

@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -70,6 +71,7 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
     private Class userPushService = WEPushService.class;
 
     CountTimerUtil mCountTimerUtil;
+
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerLoginComponent
@@ -94,7 +96,7 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
     protected void initData() {
         initClientId();
         mPresenter.loginRegulation();
-        mCountTimerUtil = new CountTimerUtil(60000,1000,mTvCode);
+        mCountTimerUtil = new CountTimerUtil(60000, 1000, mTvCode);
     }
 
 
@@ -138,7 +140,7 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
 
     @Override
     public String getClientId() {
-        return  PushManager.getInstance().getClientid(getApplicationContext());
+        return PushManager.getInstance().getClientid(getApplicationContext());
     }
 
     @Override
@@ -170,21 +172,42 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
     }
 
 
-    @OnClick({R.id.btn_login,R.id.tv_code})
+    @OnClick({R.id.btn_login, R.id.tv_code})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
                 mPresenter.getLoginInfo();
                 break;
             case R.id.tv_code:
+                etphone.clearFocus();
+                etCode.setFocusable(true);
+                etCode.setFocusableInTouchMode(true);
+                etCode.requestFocus();
                 mPresenter.getValidCode();
                 break;
         }
     }
+
     private void requestPermission() {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE},
                 REQUEST_PERMISSION);
     }
 
     private static final int REQUEST_PERMISSION = 0;
+
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                if (mPresenter.exit()) {
+                    return true;
+                }
+                break;
+            case KeyEvent.KEYCODE_HOME:
+
+                break;
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+
 }

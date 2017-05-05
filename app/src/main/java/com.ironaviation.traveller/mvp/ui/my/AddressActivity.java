@@ -94,15 +94,15 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
     @BindView(R.id.tw_address_text)
     TextView mTwAddressText;
     @BindView(R.id.ll_home_address)
-    AutoLinearLayout mLlHomeAddress;
+    AutoRelativeLayout mLlHomeAddress;
     @BindView(R.id.ll_company_address)
-    AutoLinearLayout mLlCompanyAddress;
+    AutoRelativeLayout mLlCompanyAddress;
     @BindView(R.id.tv_item_detail_address)
     TextView mTvItemDetailAddress;
     @BindView(R.id.tv_company_detail_address)
     TextView mTvCompanyDetailAddress;
     private RecyclerView.LayoutManager mLayoutManager;
-    List<UpdateAddressBookRequest> mUpdateAddressBookRequests=new ArrayList<>();
+    List<UpdateAddressBookRequest> mUpdateAddressBookRequests = new ArrayList<>();
     private PoiSearch mPoiSearch = null;
     private boolean searchFlag = true;
     private boolean searchListFlag = false;
@@ -274,22 +274,17 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
 
 
                                 if (addressType == Constant.AIRPORT_GO) {
-                                    HistoryPoiInfo historyPoiInfo=new HistoryPoiInfo(mUpdateAddressBookRequests.get(i).getAddressName(),
-                                            mUpdateAddressBookRequests.get(i).getAddress(),
-                                            new LatLng(mUpdateAddressBookRequests.get(i).getLatitude(),mUpdateAddressBookRequests.get(i).getLongitude()));
-                                    EventBus.getDefault().post(historyPoiInfo, EventBusTags.AIRPORT_GO);
+                                    EventBus.getDefault().post(newHistoryPoiInfo(mUpdateAddressBookRequests.get(i)), EventBusTags.AIRPORT_GO);
                                     finish();
                                 } else if (addressType == Constant.AIRPORT_ON) {
-                                    HistoryPoiInfo historyPoiInfo=new HistoryPoiInfo(mUpdateAddressBookRequests.get(i).getAddressName(),
-                                            mUpdateAddressBookRequests.get(i).getAddress(),
-                                            new LatLng(mUpdateAddressBookRequests.get(i).getLatitude(),mUpdateAddressBookRequests.get(i).getLongitude()));
-                                    EventBus.getDefault().post(historyPoiInfo, EventBusTags.AIRPORT_ON);
+
+                                    EventBus.getDefault().post(newHistoryPoiInfo(mUpdateAddressBookRequests.get(i)), EventBusTags.AIRPORT_ON);
                                     finish();
                                 } else {
 
                                 }
 
-                            } else if (mUpdateAddressBookRequests.get(i).getViewType() ==1) {
+                            } else if (mUpdateAddressBookRequests.get(i).getViewType() == 1) {
                                 Bundle pBundle = new Bundle();
                                 pBundle.putInt(Constant.ADDRESS_TYPE, Constant.ADDRESS_USUAl_HOME);
                                 startActivity(AddressSearchActivity.class, pBundle);
@@ -309,16 +304,12 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
 
                             if (mUpdateAddressBookRequests.get(i).getViewType() == 0) {
                                 if (addressType == Constant.AIRPORT_GO) {
-                                    HistoryPoiInfo historyPoiInfo=new HistoryPoiInfo(mUpdateAddressBookRequests.get(i).getAddressName(),
-                                            mUpdateAddressBookRequests.get(i).getAddress(),
-                                            new LatLng(mUpdateAddressBookRequests.get(i).getLatitude(),mUpdateAddressBookRequests.get(i).getLongitude()));
-                                    EventBus.getDefault().post(historyPoiInfo, EventBusTags.AIRPORT_GO);
+
+                                    EventBus.getDefault().post(newHistoryPoiInfo(mUpdateAddressBookRequests.get(i)), EventBusTags.AIRPORT_GO);
                                     finish();
                                 } else if (addressType == Constant.AIRPORT_ON) {
-                                    HistoryPoiInfo historyPoiInfo=new HistoryPoiInfo(mUpdateAddressBookRequests.get(i).getAddressName(),
-                                            mUpdateAddressBookRequests.get(i).getAddress(),
-                                            new LatLng(mUpdateAddressBookRequests.get(i).getLatitude(),mUpdateAddressBookRequests.get(i).getLongitude()));
-                                    EventBus.getDefault().post(historyPoiInfo, EventBusTags.AIRPORT_ON);
+
+                                    EventBus.getDefault().post(newHistoryPoiInfo(mUpdateAddressBookRequests.get(i)), EventBusTags.AIRPORT_ON);
                                     finish();
                                 } else {
 
@@ -337,6 +328,12 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
         }
     }
 
+    private HistoryPoiInfo newHistoryPoiInfo(UpdateAddressBookRequest mUpdateAddressBookRequest) {
+        HistoryPoiInfo historyPoiInfo = new HistoryPoiInfo(mUpdateAddressBookRequest.getAddress(),
+                mUpdateAddressBookRequest.getDetailAddress(),
+                new LatLng(mUpdateAddressBookRequest.getLatitude(), mUpdateAddressBookRequest.getLongitude()));
+        return historyPoiInfo;
+    }
 
     private void getAllSearchTextFilter(String keyword) {
         //清除掉之前没有完成的搜索请求
@@ -535,13 +532,14 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
             try {
                 mTwAddressText.setText(info.name);
                 this.info = info;
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
         }
     }
+
     @Subscriber(tag = EventBusTags.ADDRESS)
-    public void getUserAddressBook(String usual_address){
+    public void getUserAddressBook(String usual_address) {
         mPresenter.getUserAddressBook();
     }
 

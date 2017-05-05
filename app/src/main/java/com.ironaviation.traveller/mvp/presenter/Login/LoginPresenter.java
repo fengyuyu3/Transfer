@@ -166,4 +166,21 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
 
         }
     }
+    private long firstTime = 0;
+
+    public boolean exit() {
+        boolean reason = false;
+        long secondTime = System.currentTimeMillis();
+        if (secondTime - firstTime > 2000) { // 如果两次按键时间间隔大于2秒，则不退出
+
+            UiUtils.makeText("再按一次退出程序");
+            firstTime = secondTime;// 更新firstTime
+            reason = true;
+        } else { // 两次按键小于2秒时，退出应用
+
+            UiUtils.killAll();
+            reason = false;
+        }
+        return reason;
+    }
 }

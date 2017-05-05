@@ -10,11 +10,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.my.DaggerMessageComponent;
 import com.ironaviation.traveller.di.module.my.MessageModule;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.MessageContract;
 import com.ironaviation.traveller.mvp.model.entity.response.MessageResponse;
 import com.ironaviation.traveller.mvp.presenter.my.MessagePresenter;
@@ -54,6 +56,7 @@ public class MessageActivity extends WEActivity<MessagePresenter> implements Mes
     SwipeRefreshLayout mSlMessage;
     private MessageAdapter mMessageAdapter;
 
+    int pageIndex=1;
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerMessageComponent
@@ -87,21 +90,29 @@ public class MessageActivity extends WEActivity<MessagePresenter> implements Mes
         });
         mRvMessage.setLayoutManager(new LinearLayoutManager(this));
         mMessageAdapter = new MessageAdapter(R.layout.item_message);
+        mMessageAdapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
+
         mRvMessage.setAdapter(mMessageAdapter);
-        mMessageAdapter.setNewData(getList());
         mSlMessage.setOnRefreshListener(this);
+        mPresenter.getMessageData(pageIndex);
+        mMessageAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+
+                mPresenter.getMessageData(pageIndex);
+            }
+        }, mRvMessage);
 
     }
 
-
     @Override
     public void showLoading() {
-
+        showProgressDialog();
     }
 
     @Override
     public void hideLoading() {
-
+        dismissProgressDialog();
     }
 
     @Override
@@ -123,18 +134,29 @@ public class MessageActivity extends WEActivity<MessagePresenter> implements Mes
 
 
     @Override
-    public void setDatas(List<MessageResponse> mTravelResponses) {
-
-        mMessageAdapter.setNewData(mTravelResponses);
+    public void setDatas(MessageResponse mTravelResponses) {
+        pageIndex++;
+        stopRefreshing();
+        mMessageAdapter.setNewData(mTravelResponses.getItems());
+        mMessageAdapter.disableLoadMoreIfNotFullPage();
     }
 
-    public List<MessageResponse> getList() {
-        List<MessageResponse> list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            list.add(new MessageResponse());
+    @Override
+    public void addDatas(MessageResponse mTravelResponses) {
+        pageIndex++;
+        mMessageAdapter.addData(mTravelResponses.getItems());
+        mMessageAdapter.loadMoreComplete();
+        if (mTravelResponses.getItems().size()< Constant.PAGE_SIZE){
+            mMessageAdapter.loadMoreEnd();
+            mMessageAdapter.disableLoadMoreIfNotFullPage();
         }
-        return list;
     }
+
+    @Override
+    public void loadMoreFail() {
+        mMessageAdapter.loadMoreFail();
+    }
+
 
     @Override
     public void setNodata() {
@@ -147,14 +169,14 @@ public class MessageActivity extends WEActivity<MessagePresenter> implements Mes
     }
 
     @Override
-    public void onRefresh() {
+    public void stopRefreshing() {
+        mSlMessage.setRefreshing(false);
+    }
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                showMessage("有数据");
-                mSlMessage.setRefreshing(false);
-            }
-        }, 1000);
+    @Override
+    public void onRefresh() {
+        pageIndex=1;
+        mPresenter.getMessageData(pageIndex);
+
     }
 }

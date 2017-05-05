@@ -56,6 +56,7 @@ public interface Constant {
     String AIRPORT_T2 = "成都双流国际机场T2航站楼";
 
     int INDEX = 10;
+    int PAGE_SIZE = 10;
     String HOME="家";
     String COMPANY="公司";
     String STATUS = "status";

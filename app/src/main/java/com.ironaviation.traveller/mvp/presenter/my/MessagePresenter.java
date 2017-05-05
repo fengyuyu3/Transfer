@@ -2,13 +2,21 @@ package com.ironaviation.traveller.mvp.presenter.my;
 
 import android.app.Application;
 
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.MessageContract;
+import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.response.CommentTag;
+import com.ironaviation.traveller.mvp.model.entity.response.MessageResponse;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
+import com.jess.arms.utils.RxUtils;
 import com.jess.arms.widget.imageloader.ImageLoader;
 
+import java.util.List;
+
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
 import javax.inject.Inject;
 
@@ -24,16 +32,13 @@ import javax.inject.Inject;
 
 
 /**
- *
- * 项目名称：Traveller      
- * 类描述：   
- * 创建人：starRing  
- * 创建时间：2017-03-27 10:12   
- * 修改人：starRing  
- * 修改时间：2017-03-27 10:12   
- * 修改备注：   
- * @version
- *
+ * 项目名称：Traveller
+ * 类描述：
+ * 创建人：starRing
+ * 创建时间：2017-03-27 10:12
+ * 修改人：starRing
+ * 修改时间：2017-03-27 10:12
+ * 修改备注：
  */
 @ActivityScope
 public class MessagePresenter extends BasePresenter<MessageContract.Model, MessageContract.View> {
@@ -62,4 +67,30 @@ public class MessagePresenter extends BasePresenter<MessageContract.Model, Messa
         this.mApplication = null;
     }
 
+    public void getMessageData(final int pageIndex) {
+        mModel.getMessageData(Constant.PAGE_SIZE, pageIndex)
+                .compose(RxUtils.<BaseData<MessageResponse>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<MessageResponse>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<MessageResponse> commentTagBaseData) {
+                        if (commentTagBaseData.isSuccess()) {
+                            if (commentTagBaseData.getData() != null
+                                    && commentTagBaseData.getData().getItems().size() > 0) {
+                                if (pageIndex == 1) {
+                                    mRootView.setDatas(commentTagBaseData.getData());
+                                } else {
+                                    mRootView.addDatas(commentTagBaseData.getData());
+                                }
+                            }
+                        } else {
+                            mRootView.showMessage(commentTagBaseData.getMessage());
+                            if (pageIndex == 1) {
+                                mRootView.stopRefreshing();
+                            } else {
+                                mRootView.loadMoreFail();
+                            }
+                        }
+                    }
+                });
+    }
 }

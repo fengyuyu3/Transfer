@@ -9,7 +9,6 @@ import com.ironaviation.traveller.mvp.model.api.service.CommonService;
 import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.request.MessageRequest;
-import com.ironaviation.traveller.mvp.model.entity.request.TravelRequest;
 import com.ironaviation.traveller.mvp.model.entity.response.MessageResponse;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BaseModel;
@@ -18,6 +17,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import retrofit2.http.Query;
 import rx.Observable;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
@@ -64,9 +64,9 @@ public class MessageModel extends BaseModel<ServiceManager, CacheManager> implem
     }
 
     @Override
-    public Observable<BaseData<List<MessageResponse>>> getMessageData() {
+    public Observable<BaseData<MessageResponse>> getMessageData(int pageSize, int pageIndex) {
         MessageRequest travelRequest = new MessageRequest();
 
-        return mCommonService.getMessageData(travelRequest);
+        return mCommonService.getMessageData(pageSize, pageIndex);
     }
 }
