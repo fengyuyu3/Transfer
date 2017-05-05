@@ -6,7 +6,7 @@
 
     <com.zhy.autolayout.AutoRelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="94px"
 
         android:fitsSystemWindows="true">
 

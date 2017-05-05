@@ -12,6 +12,7 @@
     <string name="hint_address">请输入地址</string>
     <string name="home">家</string>
     <string name="company">公司</string>
+    <string name="no_track_data">未查询到轨迹</string>
 
     <!--取消行程-->
 

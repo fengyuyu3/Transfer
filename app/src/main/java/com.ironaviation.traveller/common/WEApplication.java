@@ -5,8 +5,10 @@ import android.text.TextUtils;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.trace.LBSTraceClient;
-import com.baidu.trace.LocationMode;
+
 import com.baidu.trace.Trace;
+import com.baidu.trace.model.BaseRequest;
+import com.baidu.trace.model.LocationMode;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
@@ -28,6 +30,8 @@ import com.ironaviation.traveller.di.module.ServiceModule;
 import com.ironaviation.traveller.mvp.model.api.Api;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 import me.jessyan.rxerrorhandler.handler.listener.ResponseErroListener;
 import okhttp3.Interceptor;
@@ -76,6 +80,7 @@ public class WEApplication extends BaseApplication {
     public void initMap(){
         client = new LBSTraceClient(this);
         client.setLocationMode(LocationMode.High_Accuracy);
+        //client.setLocationMode(LocationMode.High_Accuracy);
         /*trace = new Trace(this, Constant.SERVICEID, entityName, traceType);*/
     }
     public LBSTraceClient getClient(){
@@ -201,5 +206,24 @@ public class WEApplication extends BaseApplication {
                 }).build();
     }
 
+    /**
+     * 初始化请求公共参数
+     *
+     * @param request
+     */
+    public void initRequest(BaseRequest request) {
+        request.setTag(getTag());
+        request.setServiceId(Constant.SERVICEID);
+    }
+    private AtomicInteger mSequenceGenerator = new AtomicInteger();
+
+    /**
+     * 获取请求标识
+     *
+     * @return
+     */
+    public int getTag() {
+        return mSequenceGenerator.incrementAndGet();
+    }
 
 }
