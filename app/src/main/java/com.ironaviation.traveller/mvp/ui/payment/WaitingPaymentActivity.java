@@ -140,7 +140,7 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     protected void initData() {
         initToolbar();
         bid =  getIntent().getStringExtra(Constant.BID);
-        myStatus = getIntent().getStringExtra(Constant.STATUS);
+        myStatus = getIntent().getStringExtra(Constant.CHILD_STATUS);
         if(myStatus != null) {
             if (myStatus.equals(Constant.ON)) {
                 mTtRidingTime.setVisibility(View.GONE);
@@ -178,7 +178,7 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
                     if((responses.getExpireAt() - responses.getCurrentTime()) > 0){
                         setCountTime(responses.getExpireAt()-responses.getCurrentTime());
                     }else{
-                        setCountTime(0);
+                        mTvMoneyUnit.setText(getResources().getText(R.string.travel_payment_lose));
                     }
                 }
             }
@@ -315,7 +315,6 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
                 break;*/
             switch (status){
                 case Constant.ALIPAY :
-                    String info = "app_id=2017041706768720&biz_content=%7b%22body%22%3a%22%e7%9c%bc%e9%95%9c%e8%b4%ad%e4%b9%b0%22%2c%22out_trade_no%22%3a%2221234567%22%2c%22product_code%22%3a%22QUICK_MSECURITY_PAY%22%2c%22notify_url%22%3a%22http%3a%2f%2fwww.tralinker.com%2fPay%2fNotifyUrl%22%2c%22subject%22%3a%22%e7%9c%bc%e9%95%9c%22%2c%22timeout_express%22%3a%2230m%22%2c%22total_amount%22%3a%220.01%22%7d&charset=utf-8&format=json&method=alipay.trade.app.pay&sign_type=RSA2&timestamp=2017-04-19+20%3a09%3a11&version=1.0&sign=eR1aP0lie3okd4ZFPnbKEZfGAvct3IrAA1BKUMZzPQSisGk2yvZAsz3T7qUaUYXKKUJWVl6HMvT1HVhBopI9eWqZqi2OENGQebw%2fnNOzyGu1V%2fl%2fUsN%2fz6a983Vvo2Hnwv6zQiNe%2bc2nltZzB3zls0cZBhUhETRYWNMs0Z1lFGNB%2b2SrlL0cUz4hnucFCp4VSI3MsqltjURdbVcqAie%2bVZvZtu2rxMu75PQTULgEiUGbYCvRz%2fKic7cWCNOID3lNCOvaesBnW8w6HCup18hJ944Ajy7bg5Kvt84PdmVa4kMPufnImHxojqNDT82OH%2fj5GkTQjOrhPNwZdO%2foWOV7tQ%3d%3d";
 
                     break;
                 case Constant.WECHAT:
@@ -364,8 +363,12 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     }
 
     @Override
-    public void setCountdown(long time,long cdt) {
-        setCountTime(24*60*60*1000-(time-cdt));
+    public void setCountdown(long time,long at) {
+        if((at - time) > 0){
+            setCountTime(at-time);
+        }else{
+            mTvMoneyUnit.setText(getResources().getText(R.string.travel_payment_lose));
+        }
     }
 
     @Override
@@ -455,5 +458,14 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     @Subscriber(tag = EventBusTags.PAYMENT_FINISH)
     public void paymentFinish(boolean flag){
         finish();
+    }
+
+    @Subscriber(tag = EventBusTags.WX_FILED)
+    public void wxFiled(boolean flag){
+        if(flag){
+            showMessage(getString(R.string.travel_payment_cancel));
+        }else{
+            showMessage(getString(R.string.travel_payment_lose));
+        }
     }
 }

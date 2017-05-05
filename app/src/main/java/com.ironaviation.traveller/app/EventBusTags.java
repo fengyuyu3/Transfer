@@ -37,4 +37,5 @@ public interface EventBusTags {
     String ADDRESS = "Address";
     String ALIPAY_RESULT = "alipay_result";
     String PAYMENT_FINISH = "payment_finish";
+    String WX_FILED = "wx_filed";
 }

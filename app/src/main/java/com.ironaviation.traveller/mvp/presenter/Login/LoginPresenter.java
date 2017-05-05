@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.igexin.sdk.PushManager;
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.utils.CommonUtil;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.login.LoginContract;
@@ -85,6 +86,10 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
             UiUtils.makeText(mApplication.getString(R.string.login_no_userInfo));
             return;
         }
+        if(!CommonUtil.isChinaPhoneLegal(mRootView.getUserInfo())){
+            UiUtils.makeText(mApplication.getString(R.string.login_right_mobile));
+            return;
+        }
         if (TextUtils.isEmpty(mRootView.getCode())) {
             UiUtils.makeText(mApplication.getString(R.string.login_no_code));
             return;
@@ -119,6 +124,10 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
     public void getValidCode(){
         if (TextUtils.isEmpty(mRootView.getUserInfo())) {
             UiUtils.makeText(mApplication.getString(R.string.login_no_userInfo));
+            return;
+        }
+        if(!CommonUtil.isChinaPhoneLegal(mRootView.getUserInfo())){
+            UiUtils.makeText(mApplication.getString(R.string.login_right_mobile));
             return;
         }
         mModel.getValidCode(mRootView.getUserInfo())

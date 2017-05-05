@@ -7,6 +7,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include
+        layout="@layout/include_toolbar"
+        ></include>
 <com.ironaviation.traveller.mvp.ui.widget.AutoScrollView
     android:layout_weight="1"
     android:layout_width="match_parent"
@@ -16,11 +19,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-
-        <include
-            layout="@layout/include_toolbar"
-            ></include>
 
         <com.zhy.autolayout.AutoRelativeLayout
             android:id="@+id/rl_waiting_payment_money"

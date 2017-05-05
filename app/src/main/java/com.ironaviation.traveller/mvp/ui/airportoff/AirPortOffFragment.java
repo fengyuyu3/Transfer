@@ -430,6 +430,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
 
     public void setSeat(int position){
         mPwSeat.setTextInfo("需要" + (position) + "个座位");
+        seatNum = position;
         clearMoreData(position);
         if(mPwFltNo.getTextInfo().substring(0,2).equalsIgnoreCase(Constant.SC_AIRPORT)) {
             List<AirPortRequest> list = new ArrayList<>();
@@ -607,15 +608,26 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
                 }
             }
         });
+
+        holder.mIwDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.mEdtContent.setText("");
+                mAirportRequests.get(position).setStatus(Constant.AIRPORT_NO);
+                mAirportRequests.get(position).setIdCard("");
+                setNomal(holder);
+                mPresenter.getAirportInfo(getAirPortInfo());
+            }
+        });
     }
 
     public void setPrice(double price,double acturlPrice) {
 //        TypefaceUtils.getInstance().setTypeface(getActivity(),mTwBestPrice);
 //        TypefaceUtils.getInstance().setTypeface(getActivity(),mTwOriginalPrice);
 //        String bestPrice = "<font color='#e83328'>" + "22.04" + "</font>" + "<font color='#b2b2b2' size=40> 元</font>";
-        mTwBestPrice.setTextType(price+"");
+        mTwBestPrice.setTextType(acturlPrice+"");
 //        String originalPrice = "<font color='#3a3a3a' >" + "22.04" + "</font>" + "<font color='#3a3a3a' size=40> 元</font>";
-        mTwOriginalPrice.setTextType(acturlPrice+"");
+        mTwOriginalPrice.setTextType(price+"");
         mTwOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         this.price = price;
         this.acturlPrice = acturlPrice;
@@ -623,7 +635,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     }
 
     public void clearMoreData(int position) {
-        for (int i = position + 1; i < Constant.SEAT_NUM; i++) {
+        for (int i = position ; i < Constant.SEAT_NUM; i++) {
             mAirportRequests.get(i).setIdCard("");
             mAirportRequests.get(i).setStatus(Constant.AIRPORT_NO);
         }
@@ -682,7 +694,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         if(flag){
             Intent intent = new Intent(getActivity(), WaitingPaymentActivity.class);
             intent.putExtra(Constant.BID,bid);
-            intent.putExtra(Constant.STATUS,Constant.OFF);
+            intent.putExtra(Constant.CHILD_STATUS,Constant.OFF);
             startActivity(intent);
             clearAllData();
             setRidTimeShow();
@@ -693,7 +705,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     public void setError() {
         showPrice();
         resetPrice();
-        setSeat(Constant.DEFULT_SEAT);
+        setSeat(seatNum);
     }
 
     public void setPrice(){
@@ -762,7 +774,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         setSeat(Constant.DEFULT_SEAT);
         addressFlag = false;
         timeFlag = false;
-        mTwGoToOrder.setEnabled(false);
+        setOrderButtonStatus(false);
     }
 
     public void clearAllData(){

@@ -136,8 +136,8 @@ public class WaitingPaymentPresenter extends BasePresenter<WaitingPaymentContrac
             mRootView.setPrice(response.getActualPrice());
         }
 //        mRootView.setCountdown(); //倒计时
-        if(response.getCurrentTime() != 0 && response.getCdt() != 0){
-            mRootView.setCountdown(response.getCurrentTime(),response.getCdt());
+        if(response.getCurrentTime() != 0 && response.getExpireAt() != 0){
+            mRootView.setCountdown(response.getCurrentTime(),response.getExpireAt());
         }
     }
 }

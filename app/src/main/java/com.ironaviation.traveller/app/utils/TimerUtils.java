@@ -17,11 +17,9 @@ public class TimerUtils {
     public static final int WEEKS = 7;
     public static final int HOURS = 24;
     public static final int MINITES = 6;
-    private int day;
-    private int hour;
-    private int sec;
     private static String format ="MM月dd日 HH点mm分";
     private static String formatDate = "dd";
+    private static final int day = 1;
     public static List<String> getSevenDate(){
         List<String> list = new ArrayList<>();
         for(int i = 0; i < WEEKS ; i++) {
@@ -38,7 +36,6 @@ public class TimerUtils {
     }
 
     public static List<String> getDays(long times,long currentTime){
-        int day = getDay(times,currentTime);
         List<String> list = new ArrayList<>();
         Date date1 = new Date(times);
         if(date1.getMinutes() >= 50 && date1.getHours() == 23){
@@ -64,6 +61,14 @@ public class TimerUtils {
                 list.add(dateString);
             }
         }
+        return list;
+    }
+
+    public static List<String> getOneday(long times){
+        List<String> list = new ArrayList<>();
+        SimpleDateFormat formatter = new SimpleDateFormat("MM月dd日");
+        String dateString = formatter.format(new Date(times));
+        list.add(dateString);
         return list;
     }
 
@@ -231,8 +236,7 @@ public class TimerUtils {
             if(getDateFormat(time,formatDate).equals(getDateFormat(currentTime,formatDate))){
                 return 1;
             }else{
-                double minite = time - currentTime;
-                return (int) Math.ceil(minite/(60*60*1000*24));
+                return 2;
             }
         }
         return 0;

@@ -67,7 +67,7 @@ public class AirPortOnPresenter extends BasePresenter<AirPortOnContract.Model, A
                         if(airportGoInfoRequestBaseData.isSuccess()) {
                             if(airportGoInfoRequestBaseData.getData() != null) {
                                 mRootView.setAirPortPrice(airportGoInfoRequestBaseData.getData().getTotalPrice(),
-                                        airportGoInfoRequestBaseData.getData().getActurlPrice());
+                                        airportGoInfoRequestBaseData.getData().getActualPrice());
                                 if(airportGoInfoRequestBaseData.getData().getBID() != null){
                                     mRootView.setBID(airportGoInfoRequestBaseData.getData().getBID());
                                 }

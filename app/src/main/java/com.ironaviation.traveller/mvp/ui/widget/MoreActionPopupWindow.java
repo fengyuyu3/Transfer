@@ -10,6 +10,7 @@ import android.widget.PopupWindow;
 
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
+import com.ironaviation.traveller.app.utils.Utils;
 import com.ironaviation.traveller.event.TravelCancelEvent;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.zhy.autolayout.AutoLinearLayout;
@@ -47,8 +48,8 @@ public class MoreActionPopupWindow extends PopupWindow implements View.OnClickLi
         this.tags = tags;
         this.bid = bid;
         setContentView(v);
-        setHeight(380);
-        setWidth(450);
+        setHeight(Utils.dip2px(context,110));
+        setWidth(Utils.dip2px(context,120));
         setFocusable(true);
         setOutsideTouchable(true);
         setBackgroundDrawable(new BitmapDrawable());

@@ -43,8 +43,8 @@ public class AirportGoInfoRequest {
     private double DestLongitude;
     private double DestLatitude;
     private int SeatNum;
-    private int TotalPrice;
-    private int ActurlPrice;
+    private float TotalPrice;
+    private float ActualPrice;
     private String CallNumber;
     private String City;
     private List<PassengersRequest> Passengers;
@@ -212,20 +212,20 @@ public class AirportGoInfoRequest {
         this.SeatNum = SeatNum;
     }
 
-    public int getTotalPrice() {
+    public float getTotalPrice() {
         return TotalPrice;
     }
 
-    public void setTotalPrice(int TotalPrice) {
+    public void setTotalPrice(float TotalPrice) {
         this.TotalPrice = TotalPrice;
     }
 
-    public int getActurlPrice() {
-        return ActurlPrice;
+    public float getActualPrice() {
+        return ActualPrice;
     }
 
-    public void setActurlPrice(int ActurlPrice) {
-        this.ActurlPrice = ActurlPrice;
+    public void setActualPrice(float actualPrice) {
+        ActualPrice = actualPrice;
     }
 
     public List<PassengersRequest> getPassengers() {
@@ -255,7 +255,7 @@ public class AirportGoInfoRequest {
                 ", DestLatitude=" + DestLatitude +
                 ", SeatNum=" + SeatNum +
                 ", TotalPrice=" + TotalPrice +
-                ", ActurlPrice=" + ActurlPrice +
+                ", ActurlPrice=" + ActualPrice +
                 ", Passengers=" + Passengers +
                 '}';
     }

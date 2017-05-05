@@ -61,12 +61,12 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 				finish();
 				break;
 			case BaseResp.ErrCode.ERR_USER_CANCEL:
-				Toast.makeText(this,getResources().getString(R.string.travel_payment_cancel),Toast.LENGTH_SHORT).show();
+				EventBus.getDefault().post(true,EventBusTags.WX_FILED);
 				finish();
 				break;
 			case BaseResp.ErrCode.ERR_AUTH_DENIED:
 			case BaseResp.ErrCode.ERR_UNSUPPORT:
-				Toast.makeText(this,getResources().getString(R.string.travel_payment_lose),Toast.LENGTH_SHORT).show();
+				EventBus.getDefault().post(false,EventBusTags.WX_FILED);
 				finish();
 				break;
 		}

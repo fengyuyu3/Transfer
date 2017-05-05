@@ -174,12 +174,12 @@ public class TravelFloatOnActivity extends WEActivity<TravelFloatOnPresenter> im
 
     @Override
     public void showLoading() {
-
+        showProgressDialog();
     }
 
     @Override
     public void hideLoading() {
-
+        dismissProgressDialog();
     }
 
     @Override

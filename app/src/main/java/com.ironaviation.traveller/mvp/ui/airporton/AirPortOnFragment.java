@@ -112,6 +112,8 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
     AutoLinearLayout mLlSetPrice;
     @BindView(R.id.tw_explain_on)
     TextView mTwExplainOn;
+    @BindView(R.id.ll_seat_on)
+    AutoLinearLayout mLlSeat;
 
     private NumDialog mNumDialog;
     private List<AirPortRequest> mAirportRequests;
@@ -186,7 +188,7 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
     }
 
     public void clearMoreData(int position) {
-        for (int i = position + 1; i < Constant.SEAT_NUM; i++) {
+        for (int i = position; i < Constant.SEAT_NUM; i++) {
             mAirportRequests.get(i).setIdCard("");
             mAirportRequests.get(i).setStatus(Constant.AIRPORT_NO);
         }
@@ -195,8 +197,9 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
     public void setHideAll(){
         mPwAirport.setVisibility(View.GONE); //航站楼
         mPwAddress.setVisibility(View.GONE); //下车地址
-        mPwSeat.setVisibility(View.GONE);    //座位数
-        mLlBook.setVisibility(View.GONE); //接机说明和价格
+        mLlSeat.setVisibility(View.GONE);
+//        mPwSeat.setVisibility(View.GONE);    //座位数
+//        mLlBook.setVisibility(View.GONE); //接机说明和价格
         /*llCertification.setVisibility(View.GONE); //接机说明
         mLlPrice.setVisibility(View.GONE);   //设置价格*/
     }
@@ -204,17 +207,20 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
     public void setshowSeat(){
         mPwAirport.setVisibility(View.VISIBLE); //航站楼
         mPwAddress.setVisibility(View.VISIBLE); //下车地址
-        mPwSeat.setVisibility(View.GONE);    //座位数
-        mLlBook.setVisibility(View.GONE);
+        mLlSeat.setVisibility(View.GONE);
+       /* mPwSeat.setVisibility(View.GONE);    //座位数
+        mLlBook.setVisibility(View.GONE);*/
         /*llCertification.setVisibility(View.GONE); //接机说明
         mLlPrice.setVisibility(View.GONE);   //设置价格*/
     }
 
     public void setShowPrice(){
-        mPwAirport.setVisibility(View.VISIBLE); //航站楼
+        mLlSeat.setVisibility(View.VISIBLE);
+        /*mPwAirport.setVisibility(View.VISIBLE); //航站楼
         mPwAddress.setVisibility(View.VISIBLE); //下车地址
-        mPwSeat.setVisibility(View.VISIBLE);    //座位数
-        mLlBook.setVisibility(View.VISIBLE);
+        mLlSeat.setVisibility(View.VISIBLE);*/
+        /*mPwSeat.setVisibility(View.VISIBLE);    //座位数
+        mLlBook.setVisibility(View.VISIBLE);*/
         /*llCertification.setVisibility(View.VISIBLE); //接机说明
         mLlPrice.setVisibility(View.VISIBLE); */  //设置价格
     }
@@ -328,6 +334,16 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
                     setNomal(holder);
                     mAirportRequests.get(position).setStatus(Constant.AIRPORT_NO);
                 }
+            }
+        });
+        holder.mIwDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.mEdtContent.setText("");
+                mAirportRequests.get(position).setStatus(Constant.AIRPORT_NO);
+                mAirportRequests.get(position).setIdCard("");
+                setNomal(holder);
+                mPresenter.getAirportInfo(getAirPortInfo());
             }
         });
     }
@@ -452,9 +468,9 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
         if(flag){
             Intent intent = new Intent(getActivity(), WaitingPaymentActivity.class);
             intent.putExtra(Constant.BID,bid);
-            intent.putExtra(Constant.STATUS,Constant.ON);
+            intent.putExtra(Constant.CHILD_STATUS,Constant.ON);
             startActivity(intent);
-            clearData();
+            clearAllData();
         }
     }
 
@@ -462,7 +478,7 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
     public void setError() {
         showPrice();
         resetPrice();
-        setSeat(Constant.DEFULT_SEAT);
+        setSeat(seatNum);
     }
 
     public void setPrice(){
@@ -609,15 +625,23 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
 //        mPwSeat.setVisibility(View.GONE);
         showPrice(false);
         setSeat(Constant.DEFULT_SEAT);
-        mTwGoToOrder.setEnabled(false);
+        setOrderButtonStatus(false);
+        mLlSeat.setVisibility(View.GONE);
 //        addressFlag = false;
 //        timeFlag = false;
 
     }
 
+    public void clearAllData(){
+        clearData();
+        mPwFltNo.setInitInfo(getResources().getString(R.string.airport_no));
+        mPwFltNo.setArriveTime("");
+    }
+
     public void setSeat(int position){
         mPwSeat.setTextInfo("需要" + (position) + "个座位");
         clearMoreData(position);
+        seatNum = position;
         if(mPwFltNo.getTextInfo().substring(0,2).equalsIgnoreCase(Constant.SC_AIRPORT)) {
             List<AirPortRequest> list = new ArrayList<>();
             for (int i = 0; i < position; i++) {
@@ -656,6 +680,7 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
         if(addressFlag && terminalFlag){
             mPresenter.getAirportInfo(getAirPortInfo());
         }
+        setShowPrice();
         //getAirPortInfo
     }
 
@@ -663,9 +688,9 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
 //        TypefaceUtils.getInstance().setTypeface(getActivity(),mTwBestPrice);
 //        TypefaceUtils.getInstance().setTypeface(getActivity(),mTwOriginalPrice);
 //        String bestPrice = "<font color='#e83328'>" + "22.04" + "</font>" + "<font color='#b2b2b2' size=40> 元</font>";
-        mTwBestPrice.setTextType(price+"");
+        mTwBestPrice.setTextType(acturlPrice+"");
 //        String originalPrice = "<font color='#3a3a3a' >" + "22.04" + "</font>" + "<font color='#3a3a3a' size=40> 元</font>";
-        mTwOriginalPrice.setTextType(acturlPrice+"");
+        mTwOriginalPrice.setTextType(price+"");
         mTwOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         this.price = price;
         this.acturlPrice = acturlPrice;

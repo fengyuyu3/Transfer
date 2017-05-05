@@ -97,6 +97,7 @@
     <string name="login_no_code">请输入验证码</string>
     <string name="login_no_client_id">初始化中 请稍候</string>
     <string name="login_code_reset">s</string>
+    <string name="login_right_mobile">请输入正确的手机号</string>
 
     <!--错误界面-->
     <string name="include_error_hint">数据获取失败</string>
@@ -240,7 +241,7 @@
     <string name="travel_clear_port">取消规则</string>
     <string name="travel_explain_detail">接机说明</string>
     <string name="travel_go_back_time">3-7个工作日</string>
-    <string name="travel_payment_lose">支付失败,请检查网络</string>
+    <string name="travel_payment_lose">支付失效</string>
     <string name="travel_payment_cancel">支付已取消</string>
 
     <string name="resultcode_alipay_ERROR_8000">正在处理中！</string>
@@ -248,5 +249,7 @@
     <string name="resultcode_alipay_ERROR_6001">您取消了本笔订单支付！</string>
     <string name="resultcode_alipay_ERROR_6002">网络连接出错！</string>
     <string name="network_error">无网络连接</string>
+    <string name="lost_travel">行程失效</string>
+    <string name="airport_seat_lost">需要%d个座位数</string>
 
 </resources>

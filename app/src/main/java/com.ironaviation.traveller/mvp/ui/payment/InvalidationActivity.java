@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -90,6 +91,7 @@ public class InvalidationActivity extends WEActivity<InvalidationPresenter> impl
 
     @Override
     protected void initData() {
+        initToolbar();
         Bundle bundle = getIntent().getExtras();
         responses = (RouteStateResponse) bundle.getSerializable(Constant.STATUS);
         if(responses != null){
@@ -102,11 +104,23 @@ public class InvalidationActivity extends WEActivity<InvalidationPresenter> impl
         }
     }
 
+    public void initToolbar(){
+        setTitle(getString(R.string.lost_travel));
+        mToolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_back));
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        setToolbarColor(R.color.base_color);
+    }
+
     public void setData(RouteStateResponse responses){
         mTtOrderNumber.setText(responses.getOrderNo());
         mTtGetOnTheBusAddress.setText(responses.getPickupAddress());
         mTtGetOffTheBusAddress.setText(responses.getDestAddress());
-        mTtNeedSeats.setText(responses.getSeatNum()+"");
+        mTtNeedSeats.setTitle(String.format(getString(R.string.airport_seat_lost),responses.getSeatNum()));
     }
 
 

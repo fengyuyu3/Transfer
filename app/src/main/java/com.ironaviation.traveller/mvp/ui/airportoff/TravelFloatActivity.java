@@ -62,8 +62,6 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  * 类描述：
  * 创建人：flq
  * 创建时间：2017/3/30 16:35
- * 修改人：
- * 修改时间：2017/3/30 16:35
  * 修改备注：
  */
 
@@ -157,7 +155,6 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
     public void killMyself() {
         finish();
     }
-
 
     @Override
     protected void nodataRefresh() {
