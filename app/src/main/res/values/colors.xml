@@ -9,7 +9,11 @@
     <color name="shadow_champagne">#b99e76</color>
 
     <color name="bg_write_grey">#f3f3f3</color>
-
+    <color name="black">#000000</color>
+    <!--自定义dialog-->
+    <color name="alertdialog_line">#c6c6c6</color>
+    <color name="actionsheet_blue">#297DE8</color>
+    <color name="actionsheet_gray">#8F8F8F</color>
 
     <!--common-->
     <color name="word_already_input">#3a3a3a</color>

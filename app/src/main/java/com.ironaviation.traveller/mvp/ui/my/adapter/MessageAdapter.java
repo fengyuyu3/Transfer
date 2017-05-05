@@ -22,10 +22,9 @@ public class MessageAdapter extends BaseQuickAdapter<MessageResponse.Items, Base
     public MessageAdapter(int layoutResId) {
         super(layoutResId);
     }
-
     @Override
     protected void convert(BaseViewHolder helper, MessageResponse.Items item) {
-        helper.setText(R.id.tv_message_text, item.getContents());
+        helper.setText(R.id.tv_message_text, item.getContents().replace("，点击查看行程详情",""));
         helper.setText(R.id.tv_message_title,item.getTitle());
     }
 }
