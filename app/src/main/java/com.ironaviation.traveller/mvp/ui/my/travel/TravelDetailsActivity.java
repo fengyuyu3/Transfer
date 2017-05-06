@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
@@ -75,6 +77,7 @@ import com.ironaviation.traveller.mvp.model.entity.response.PassengersResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.PushResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.RealtimeTrackData;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
+import com.ironaviation.traveller.mvp.presenter.my.travel.TravelDetailsOnPresenter;
 import com.ironaviation.traveller.mvp.presenter.my.travel.TravelDetailsPresenter;
 import com.ironaviation.traveller.mvp.ui.my.CurrentLocation;
 import com.ironaviation.traveller.mvp.ui.my.EstimateActivity;
@@ -191,7 +194,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     private static OverlayOptions endMarker;
     private static PolylineOptions polyline = null;  //路线覆盖物
     private static List<LatLng> pointList = new ArrayList<LatLng>();  //定位点的集合
-    private int packInterval = 3;
+
     private RefreshThread refreshThread = null;  //刷新地图线程以获取实时点
     /*private double driverLongitude;
     private double driverLatitude;*/
@@ -238,7 +241,12 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 
     // 分页索引
     int pageIndex = 1;
+    /**
+     * 实时定位任务
+     */
+    private RealTimeHandler realTimeHandler = new RealTimeHandler();
 
+    private RealTimeLocRunnable realTimeLocRunnable = null;
 
     /**
      * 轨迹点集合
@@ -321,7 +329,6 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
             locRequest = new LocRequest(serviceId);
             initOnStartTraceListener();//事实更新司机位置
         }
-
 
 
 //        mWeApplication.getClient().startTrace(trace, startTraceListener);
@@ -771,6 +778,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         trackApp = (WEApplication) getApplicationContext();
         mapUtil = MapUtil.getInstance();
         mapUtil.init((MapView) findViewById(R.id.mapview));
+        BitmapUtil.init();
         //  mapUtil.setCenter(trackApp);
 
         mBaiduMap = mMapview.getMap();
@@ -786,7 +794,10 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         car = BitmapDescriptorFactory.fromResource(R.mipmap.ic_location_car);
         start = BitmapDescriptorFactory.fromResource(R.mipmap.ic_location_start);
         end = BitmapDescriptorFactory.fromResource(R.mipmap.ic_location_end);
+
+
     }
+
 
     //路径规划 route  stNode设置一个假的 Latitude 30.542191  Longitude 104.066535
     private void pathPlanning(List<PassengersResponse> planningListt, double
@@ -870,23 +881,6 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 
     }
 
-    //测试数据
-    /*public List<PathPlanning> getList(){
-        //104.064317,30.667025  Latitude 30.542191  Longitude 104.066535
-       // 104.050519,30.644657  104.092488,30.655593  104.094788,30.68504
-        List<PathPlanning> pathPlanningList = new ArrayList<>();
-        double[] mLatitude = new double[]
-                {30.667025,30.542191,30.644657,30.655593,30.68504};
-        double[] mLongitude = new double[]
-                {104.064317,104.066535,104.050519,104.092488,104.094788};
-        for(int i= 0; i< mLatitude.length; i++){
-            PathPlanning pathPlanning = new PathPlanning();
-            pathPlanning.setLatitude(mLatitude[i]);
-            pathPlanning.setLongitude(mLongitude[i]);
-            pathPlanningList.add(pathPlanning);
-        }
-        return pathPlanningList;
-    }*/
 
     @Override
     public boolean onMarkerClick(Marker marker) {
@@ -922,9 +916,12 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     protected void onDestroy() {
         // MapView的生命周期与Activity同步，当activity销毁时需调用MapView.destroy()
         mMapview.onDestroy();
-        super.onDestroy();
         // 回收 bitmap 资源
         bd.recycle();
+        BitmapUtil.clear();
+        stopRealTimeLoc();
+        super.onDestroy();
+
     }
 
     /*Handler handler = new Handler(){
@@ -962,7 +959,6 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
             @Override
             public void onStartTraceCallback(int status, String message) {
                 LogUtils.debugLongInfo("鹰眼轨迹服务", "开启服务回调:" + "消息类型=" + status + "消息内容=" + message);
-                startRefreshThread(true);
 
 
             }
@@ -1021,6 +1017,8 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         };
 
         mClient.startTrace(mTrace, mTraceListener);
+        //startRefreshThread(true);
+        startRealTimeLoc(Constant.EAGLE_EYE_NOW_TIME_PACK_INTERVAL);
 
     }
 
@@ -1036,35 +1034,46 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
      * 历史轨迹请求
      */
     private HistoryTrackRequest historyTrackRequest = new HistoryTrackRequest();
+    String arrivedTime = null;
 
     /**
      * 查询历史轨迹
      */
     private void queryHistoryTrack(RouteStateResponse responses) {
         initOnEntityListenerBlue();
-        String entityName = responses.getDriverName();
+        String driverCode = responses.getDriverCode();
         // 是否返回精简的结果（0 : 否，1 : 是）
         int simpleReturn = 0;
-        int startTime = 0;
-        int endTime = 0;
+        long startTime = 0;
+        long endTime = 0;
         // 开始时间
         if (startTime == 0) {
-            startTime = (int) (responses.getPickupTime() / 1000);
+            startTime = (int) (responses.getActualPickupTime() / 1000);
         }
+
+
+        for (int i = 0; i < responses.getExt().size(); i++) {
+
+            if (responses.getExt().get(i).getName().equals(Constant.EXT_ARRIVED_AT)) {
+                arrivedTime = (String) responses.getExt().get(i).getData();
+            }
+        }
+
         if (endTime == 0) {
-            endTime = (int) (System.currentTimeMillis() / 1000);
+            if (TextUtils.isEmpty(arrivedTime)) {
+                endTime = (int) (System.currentTimeMillis() / 1000);
+
+            } else {
+                endTime = Long.parseLong(arrivedTime) / 1000;
+            }
         }
-
-        // 分页大小
-        int pageSize = 1000;
-
-
         trackApp.initRequest(historyTrackRequest);
         historyTrackRequest.setEntityName(driverCode);
         historyTrackRequest.setStartTime(startTime);
         historyTrackRequest.setEndTime(endTime);
         historyTrackRequest.setPageIndex(pageIndex);
         historyTrackRequest.setPageSize(1000);
+        historyTrackRequest.setProcessed(true);
         mClient.queryHistoryTrack(historyTrackRequest, mTrackListener);
     }
 
@@ -1098,11 +1107,11 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
                     }
                 }
 
-                if (total > 1000) {
+                if (total > Constant.EAGLE_EYE_HISTORY_PAGE_SIZE * pageIndex) {
                     historyTrackRequest.setPageIndex(++pageIndex);
                     queryHistoryTrack(historyResponse);
                 } else {
-                    mapUtil.drawHistoryTrack(trackPoints, sortType);
+                    mapUtil.drawHistoryTrack(trackPoints, sortType, arrivedTime);
                 }
 
             }
@@ -1117,29 +1126,6 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
                 super.onLatestPointCallback(response);
             }
         };
-
-    }
-
-
-    /**
-     * 画出实时线路点
-     *
-     * @param point
-     */
-    private void drawRealtimePoint(LatLng point, int color) {
-
-        mBaiduMap.clear();
-        MapStatus mapStatus = new MapStatus.Builder().target(point).zoom(18).build();
-        msUpdate = MapStatusUpdateFactory.newMapStatus(mapStatus);
-        realtimeBitmap = BitmapDescriptorFactory.fromResource(R.mipmap.ic_location_car);
-        overlay1 = new MarkerOptions().position(point)
-                .icon(realtimeBitmap).zIndex(9).draggable(true);
-
-        if (pointList.size() >= 2 && pointList.size() <= 1000) { //Color.TRANSPARENT
-            polyline = new PolylineOptions().width(10).color(color).points(pointList);
-        }
-
-        addMarker();
 
     }
 
@@ -1181,7 +1167,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
                 //queryEntityList();
                 mClient.queryRealTimeLoc(locRequest, entityListener);
                 try {
-                    Thread.sleep(packInterval * 1000);
+                    Thread.sleep(Constant.EAGLE_EYE_NOW_TIME_PACK_INTERVAL * Constant.EAGLE_EYE_LOCATION_SIZE);
                 } catch (InterruptedException e) {
 //                    System.out.println("线程休眠失败");
                 }
@@ -1243,5 +1229,44 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     @Subscriber(tag = EventBusTags.PAYMENT_FINISH)
     public void travelFinish(boolean flag) {
         finish();
+    }
+
+    /**
+     * 实时定位任务
+     *
+     * @author baidu
+     */
+    class RealTimeLocRunnable implements Runnable {
+
+        private int interval = 0;
+
+        public RealTimeLocRunnable(int interval) {
+            this.interval = interval;
+        }
+
+        @Override
+        public void run() {
+            mClient.queryRealTimeLoc(locRequest, entityListener);
+            realTimeHandler.postDelayed(this, interval * 1000);
+        }
+    }
+
+    public void startRealTimeLoc(int interval) {
+        realTimeLocRunnable = new RealTimeLocRunnable(interval);
+        realTimeHandler.post(realTimeLocRunnable);
+    }
+
+    public void stopRealTimeLoc() {
+        if (null != realTimeHandler && null != realTimeLocRunnable) {
+            realTimeHandler.removeCallbacks(realTimeLocRunnable);
+            realTimeLocRunnable = null;
+        }
+    }
+
+    static class RealTimeHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+        }
     }
 }

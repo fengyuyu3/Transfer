@@ -3,6 +3,7 @@ package com.ironaviation.traveller.mvp.ui.my.travel;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 
 import com.baidu.mapapi.map.BaiduMap;
@@ -22,6 +23,8 @@ import com.baidu.mapapi.utils.CoordinateConverter;
 import com.baidu.trace.api.track.SortType;
 import com.baidu.trace.model.CoordType;
 import com.baidu.trace.model.TraceLocation;
+import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.common.WEApplication;
 
 import java.util.List;
 
@@ -29,6 +32,7 @@ import java.util.List;
 import static com.ironaviation.traveller.mvp.ui.my.travel.BitmapUtil.bmArrowPoint;
 import static com.ironaviation.traveller.mvp.ui.my.travel.BitmapUtil.bmEnd;
 import static com.ironaviation.traveller.mvp.ui.my.travel.BitmapUtil.bmStart;
+
 /**
  * Created by baidu on 17/2/9.
  */
@@ -102,7 +106,6 @@ public class MapUtil {
      * 将轨迹实时定位点转换为地图坐标
      *
      * @param location
-     *
      * @return
      */
     public static LatLng convertTraceLocation2Map(TraceLocation location) {
@@ -129,7 +132,6 @@ public class MapUtil {
      * 将地图坐标转换轨迹坐标
      *
      * @param latLng
-     *
      * @return
      */
     public static com.baidu.trace.model.LatLng convertMap2Trace(LatLng latLng) {
@@ -140,7 +142,6 @@ public class MapUtil {
      * 将轨迹坐标对象转换为地图坐标对象
      *
      * @param traceLatLng
-     *
      * @return
      */
     public static LatLng convertTrace2Map(com.baidu.trace.model.LatLng traceLatLng) {
@@ -149,7 +150,8 @@ public class MapUtil {
 /*
 
     */
-/**
+
+    /**
      * 设置地图中心：使用已有定位信息；
      *
      * @param
@@ -174,7 +176,6 @@ public class MapUtil {
         }
     }
 */
-
     public void updateStatus(LatLng currentPoint, boolean showMarker) {
         if (null == baiduMap || null == currentPoint) {
             return;
@@ -255,7 +256,7 @@ public class MapUtil {
     /**
      * 绘制历史轨迹
      */
-    public void drawHistoryTrack(List<LatLng> points, SortType sortType) {
+    public void drawHistoryTrack(List<LatLng> points, SortType sortType, String arrivedTime) {
         // 绘制新覆盖物前，清空之前的覆盖物
         baiduMap.clear();
         if (points == null || points.size() == 0) {
@@ -288,16 +289,22 @@ public class MapUtil {
         OverlayOptions startOptions = new MarkerOptions()
                 .position(startPoint).icon(BitmapUtil.bmStart)
                 .zIndex(9).draggable(true);
-        // 添加终点图标
-        OverlayOptions endOptions = new MarkerOptions().position(endPoint)
-                .icon(bmEnd).zIndex(9).draggable(true);
+        if (TextUtils.isEmpty(arrivedTime)) {
+
+        } else {
+            // 添加终点图标
+            OverlayOptions endOptions = new MarkerOptions().position(endPoint)
+                    .icon(bmEnd).zIndex(9).draggable(true);
+            baiduMap.addOverlay(endOptions);
+        }
+
 
         // 添加路线（轨迹）
         OverlayOptions polylineOptions = new PolylineOptions().width(10)
-                .color(Color.BLUE).points(points);
+                .color(ContextCompat.getColor(WEApplication.getContext(), R.color.bg_champagne)).points(points).dottedLine(true);
 
         baiduMap.addOverlay(startOptions);
-        baiduMap.addOverlay(endOptions);
+
         polylineOverlay = baiduMap.addOverlay(polylineOptions);
 
         OverlayOptions markerOptions =

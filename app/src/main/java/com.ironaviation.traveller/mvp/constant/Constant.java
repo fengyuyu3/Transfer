@@ -48,17 +48,17 @@ public interface Constant {
 
     int AIRPORT_GO = 993;
     int AIRPORT_ON = 994;
-    double AIRPORT_T1_LONGITUDE=103.965305;
-    double AIRPORT_T1_LATITUDE=30.585158;
-    double AIRPORT_T2_LONGITUDE=103.961509;
-    double AIRPORT_T2_LATITUDE=30.575978;
+    double AIRPORT_T1_LONGITUDE = 103.965305;
+    double AIRPORT_T1_LATITUDE = 30.585158;
+    double AIRPORT_T2_LONGITUDE = 103.961509;
+    double AIRPORT_T2_LATITUDE = 30.575978;
     String AIRPORT_T1 = "成都双流国际机场T1航站楼";
     String AIRPORT_T2 = "成都双流国际机场T2航站楼";
 
     int INDEX = 10;
     int PAGE_SIZE = 10;
-    String HOME="家";
-    String COMPANY="公司";
+    String HOME = "家";
+    String COMPANY = "公司";
     String STATUS = "status";
     String CHILD_STATUS = "child_status";
     String REGISTERED = "Registered"; // 预约成功
@@ -86,7 +86,9 @@ public interface Constant {
 
     int TYPE_AIRPORT_OFF = 101;//送機
     int TYPE_AIRPORT_ON = 102; //接機
-
+    int EAGLE_EYE_HISTORY_PAGE_SIZE = 1000;
+    int EAGLE_EYE_LOCATION_SIZE = 1000;
+    int EAGLE_EYE_NOW_TIME_PACK_INTERVAL = 10;
     int SERVICEID = 139760;
     String CITY = "成都";
     String ON = "on";  //接机
@@ -98,14 +100,17 @@ public interface Constant {
     String CLASS_PAY_INFO = "PayInfo";
     String CURRENT_PICKUP = "CurrentPickup";
     String CANCELREASON = "CancelReason"; //取消原因
-    String PAYMENT= "payment"; //付款方式
-    String REAL_PRICE  = "real_price";  //真实价格
+    String PAYMENT = "payment"; //付款方式
+    String REAL_PRICE = "real_price";  //真实价格
     String FIXED_PRICE = "fixed_price"; //一口价
     String FREE_PASSENGER = "free_passenger"; //免费乘客
     String FREE_PASSENGER_PRICE = "free_passenger_price"; //免费乘客
     String PEOPLE_NUM = "num"; //乘客数
     String PAYMENT_NOMAL = "payment_nomal";
     String PAYMETHOD = "PayMethod";
+
+    String EXT_ARRIVED_AT = "ArrivedAt";
+
     String PAY_WECHAT = "微信支付";
     String PAY_ALIPAY = "支付宝支付";
     String URL = "url";
@@ -115,13 +120,13 @@ public interface Constant {
 
     int TIMEOUT_NO_PAY = 210; //超时未支付 送机
     int WAIT_DRIVER = 201;//等待接驾
-    int RECEIVE_ONE_PASSENGER=202; //司机去接第一位乘客
+    int RECEIVE_ONE_PASSENGER = 202; //司机去接第一位乘客
     int RECEIVE_MINE = 203;//司机去接自己
     int RECEIVE_OTHER_PASSENGER = 213; //司机去接其他乘客
     int ALREADY_ABOARD = 204;//已上车
     int ALREADY_ARRIVE = 205;//已到达
-    int AUTO_AFFIRM = 207 ;  //自动确认
-    int ROUTE_CANCEL = 208 ; //行程取消
+    int AUTO_AFFIRM = 207;  //自动确认
+    int ROUTE_CANCEL = 208; //行程取消
     int ORDER_SUCCESS = 211; //付款成功(预约成功)
     int ROUTE_INVALID = 212; //行程已失效
 
@@ -131,8 +136,8 @@ public interface Constant {
     int WAIT_ABOARD = 216;   //等待上车
     int AFFIRM_DEPART = 209; //确认发车
     int ALREADY_ARRIVE_ON = 206; // 确认已到达 接机
-    int AUTO_AFFIRM_ON = 217 ;  //自动确认 接机
-    int ROUTE_CANCEL_ON = 218 ; //行程取消 接机
+    int AUTO_AFFIRM_ON = 217;  //自动确认 接机
+    int ROUTE_CANCEL_ON = 218; //行程取消 接机
     int ORDER_SUCCESS_ON = 221; //付款成功(预约成功)接机
     int ROUTE_INVALID_ON = 222; //行程已失效 接机
 
