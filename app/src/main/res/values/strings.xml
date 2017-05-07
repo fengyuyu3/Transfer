@@ -251,5 +251,10 @@
     <string name="network_error">无网络连接</string>
     <string name="lost_travel">行程失效</string>
     <string name="airport_seat_lost">需要%d个座位数</string>
+    <string name="time_out_four_hours">已超过预约时间,请提前四小时预约</string>
+    <string name="start_jump">跳过</string>
+    <string name="start_experience">立即体验</string>
+    <string name="login_other">您已在其他设备登录</string>
+    <string name="fly_four_time">离起飞时间小于4小时</string>
 
 </resources>

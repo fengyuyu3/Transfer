@@ -10,6 +10,7 @@ import android.widget.PopupWindow;
 
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
+import com.ironaviation.traveller.app.utils.CommonUtil;
 import com.ironaviation.traveller.app.utils.Utils;
 import com.ironaviation.traveller.event.TravelCancelEvent;
 import com.ironaviation.traveller.mvp.constant.Constant;
@@ -34,22 +35,26 @@ import static com.jess.arms.base.AppManager.APPMANAGER_MESSAGE;
 public class MoreActionPopupWindow extends PopupWindow implements View.OnClickListener {
     AutoLinearLayout llCustomer;
     AutoLinearLayout llCancel;
+    AutoLinearLayout llPop;
     private Context mContext;
     private String tags;
     private String bid;
+
 
     public MoreActionPopupWindow(Context context, String tags, String bid) {
         this.mContext = context;
         View v = LayoutInflater.from(context).inflate(R.layout.pop_action_more, null, false);
         llCustomer = (AutoLinearLayout) v.findViewById(R.id.ll_customer);
         llCancel = (AutoLinearLayout) v.findViewById(R.id.ll_cancel);
+        llPop = (AutoLinearLayout) v.findViewById(R.id.ll_pop);
         llCustomer.setOnClickListener(this);
         llCancel.setOnClickListener(this);
+        llPop.setOnClickListener(this);
         this.tags = tags;
         this.bid = bid;
         setContentView(v);
-        setHeight(Utils.dip2px(context,110));
-        setWidth(Utils.dip2px(context,120));
+        setHeight(CommonUtil.getScreenHeight(context));
+        setWidth(CommonUtil.getScreenWidth(context));
         setFocusable(true);
         setOutsideTouchable(true);
         setBackgroundDrawable(new BitmapDrawable());
@@ -57,8 +62,8 @@ public class MoreActionPopupWindow extends PopupWindow implements View.OnClickLi
 
     public void showPopupWindow(View view) {
         if (!isShowing()) {
-//            showAtLocation(view, Gravity.TOP|Gravity.RIGHT,40,80);
-            showAsDropDown(view);
+            showAtLocation(view, Gravity.CENTER,0,0);
+//            showAsDropDown(view);
         } else {
             dismiss();
         }
@@ -71,6 +76,8 @@ public class MoreActionPopupWindow extends PopupWindow implements View.OnClickLi
                 break;
             case R.id.ll_customer:
                 EventBus.getDefault().post(new TravelCancelEvent(Constant.TRAVEL_CUSTOMER, bid), tags);
+                break;
+            case R.id.ll_pop:
                 break;
         }
         dismiss();

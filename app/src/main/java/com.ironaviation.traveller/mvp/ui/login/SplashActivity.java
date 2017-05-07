@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -43,10 +44,10 @@ public class SplashActivity extends WEActivity {
     AutoRelativeLayout ll;
     @BindView(R.id.ll_point)
     AutoLinearLayout point;
-    @BindView(R.id.btn_join)
-    ImageView btn1;
-    @BindView(R.id.img_jump)
-    ImageView jump;
+    @BindView(R.id.tw_join)
+    TextView btn1;
+    @BindView(R.id.tw_jump)
+    TextView jump;
     private Gson gson;
     private ImageView[]  imageViews;
     private static final int SIZE = 4;
@@ -125,7 +126,7 @@ public class SplashActivity extends WEActivity {
     private void firstLaunch() {
         final int[] imgs = new int[]{R.mipmap.ic_launch_one,
                 R.mipmap.ic_launch_two,
-                R.mipmap.ic_launch_three, R.mipmap.ic_launch_four};
+                R.mipmap.ic_launch_three};
         ImageAdapter adapter = new ImageAdapter(this, imgs);
         viewpager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

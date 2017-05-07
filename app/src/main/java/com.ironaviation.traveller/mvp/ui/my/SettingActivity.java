@@ -130,12 +130,12 @@ public class SettingActivity extends WEActivity<SettingPresenter> implements Set
 
     @Override
     public void showLoading() {
-
+        showProgressDialog();
     }
 
     @Override
     public void hideLoading() {
-
+        dismissProgressDialog();
     }
 
     @Override

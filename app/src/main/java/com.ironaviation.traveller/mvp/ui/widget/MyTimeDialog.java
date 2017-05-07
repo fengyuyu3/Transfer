@@ -10,6 +10,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
@@ -49,13 +50,17 @@ public class MyTimeDialog {
             this.mCallBack = mCallBack;
             this.time = time-(60*60*2000);
             currentTime = time-60*60*24*1000;
-            if(System.currentTimeMillis()+60*60*2000 > currentTime){
-               currentTime = System.currentTimeMillis()+60*60*2000;
+            if(System.currentTimeMillis()+60*60*2000+10*60*1000 > currentTime){
+               currentTime = System.currentTimeMillis()+60*60*2000+10*60*1000;
             }else{
                 currentTime = currentTime+(60*60*2000+10*60*1000);
             }
         }
         public void showDialog(final String title) {
+            if (currentTime > time){
+                Toast.makeText(context,context.getString(R.string.time_out_four_hours),Toast.LENGTH_SHORT).show();
+                return;
+            }
             mCameraDialog  = new Dialog(context, R.style.picker_dialog_background);
             LinearLayout root = (LinearLayout) LayoutInflater.from(context).inflate(
                     R.layout.dialog_time_view, null);

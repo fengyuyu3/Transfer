@@ -1,7 +1,9 @@
 package com.ironaviation.traveller.common;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.trace.LBSTraceClient;
@@ -10,6 +12,7 @@ import com.baidu.trace.Trace;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
+import com.ironaviation.traveller.mvp.ui.login.LoginActivity;
 import com.jess.arms.base.BaseApplication;
 import com.jess.arms.di.module.GlobeConfigModule;
 import com.jess.arms.http.GlobeHttpHandler;
@@ -164,6 +167,7 @@ public class WEApplication extends BaseApplication {
                         //如果使用okhttp将新的请求,请求成功后,将返回的response  return出去即可
 
                         //如果不需要返回新的结果,则直接把response参数返回出去
+                        isLogin(httpResult);
                         return response;
                     }
 
@@ -199,6 +203,25 @@ public class WEApplication extends BaseApplication {
                         UiUtils.SnackbarText(getString(R.string.network_error));
                     }
                 }).build();
+    }
+
+    public void isLogin(String httpResult){
+        try {
+            if (TextUtils.isEmpty(httpResult))
+                return;
+            JSONObject object = new JSONObject(httpResult);
+            int code = object.getInt("Status");
+            if(code == Api.OTHER_LOGIN){ //其他设备上登录
+                DataHelper.removeSF(WEApplication.this,Constant.LOGIN);
+                Intent intent = new Intent(WEApplication.this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                UiUtils.SnackbarText(getString(R.string.login_other));
+                WEApplication.this.startActivity(intent);
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

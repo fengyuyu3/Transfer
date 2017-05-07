@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.igexin.sdk.GTIntentService;
@@ -17,10 +18,12 @@ import com.igexin.sdk.message.GTTransmitMessage;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.app.utils.Cache;
+import com.ironaviation.traveller.common.WEApplication;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.BasePushData;
 import com.ironaviation.traveller.mvp.model.entity.response.PushResponse;
+import com.ironaviation.traveller.mvp.ui.login.LoginActivity;
 import com.ironaviation.traveller.mvp.ui.main.MainActivity;
 import com.ironaviation.traveller.mvp.ui.my.travel.PaymentDetailsActivity;
 import com.ironaviation.traveller.mvp.ui.my.travel.TravelActivity;
@@ -28,6 +31,8 @@ import com.ironaviation.traveller.mvp.ui.my.travel.TravelCancelActivity;
 import com.ironaviation.traveller.mvp.ui.my.travel.TravelDetailsActivity;
 import com.ironaviation.traveller.mvp.ui.my.travel.TravelDetailsOnActivity;
 import com.ironaviation.traveller.mvp.ui.payment.InvalidationActivity;
+import com.jess.arms.utils.DataHelper;
+import com.jess.arms.utils.UiUtils;
 
 import org.simple.eventbus.EventBus;
 
@@ -74,14 +79,16 @@ public class WEGTIntentService extends GTIntentService {
         if (payload == null) {
         } else {
             String data = new String(payload);
-            Log.e("kkk",data);
             try{
                 BasePushData response = new Gson().fromJson(data,BasePushData.class);
-                Log.e("kkkk",response.toString());
-                if(!TextUtils.isEmpty(response.getData().getTripType())){
-                    setStatus(response,context);
-                    messageLogic(response,context);
-                    EventBus.getDefault().post(response.getData().getBID(),EventBusTags.REFRESH);
+                if(response.getType() == Constant.OTHER_LOGIN){
+                    otherLogin(context);
+                }else {
+                    if (!TextUtils.isEmpty(response.getData().getTripType())) {
+                        setStatus(response, context);
+                        messageLogic(response, context);
+                        EventBus.getDefault().post(response.getData().getBID(), EventBusTags.REFRESH);
+                    }
                 }
             }catch (Exception e){
                 e.printStackTrace();
@@ -90,6 +97,13 @@ public class WEGTIntentService extends GTIntentService {
                     new Gson().fromJson(data, TransparentMessageEntity.class);*/
         }
 
+    }
+
+    public void otherLogin(Context context){
+        DataHelper.removeSF(context,Constant.LOGIN);
+        Intent intent = new Intent(context, LoginActivity.class);
+        UiUtils.SnackbarText(getString(R.string.login_other));
+        context.startActivity(intent);
     }
 
     public void setStatus(BasePushData response, Context context){

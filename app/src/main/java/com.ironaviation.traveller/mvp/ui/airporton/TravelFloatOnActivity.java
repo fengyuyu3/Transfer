@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ironaviation.traveller.R;
@@ -84,6 +85,8 @@ public class TravelFloatOnActivity extends WEActivity<TravelFloatOnPresenter> im
     RecyclerView mRwCity;
     @BindView(R.id.ll_port)
     AutoLinearLayout mLlPort;
+    @BindView(R.id.rl_child_city)
+    AutoRelativeLayout mRlChildCity;
     private RecyclerView.LayoutManager  layoutManager;
     private TravelFloatAdapter mTravelFloatAdapter;
     private MyDialog mMyDialog;
@@ -111,7 +114,7 @@ public class TravelFloatOnActivity extends WEActivity<TravelFloatOnPresenter> im
         setEditorAction();
         setFlyTime();
         initRecyclerView();
-        mTwCity.setOnClickListener(new View.OnClickListener() { //获取焦点消费事件
+        mRlChildCity.setOnClickListener(new View.OnClickListener() { //获取焦点消费事件
             @Override
             public void onClick(View v) {
 

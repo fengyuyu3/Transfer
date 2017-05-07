@@ -62,4 +62,7 @@
     <color name="line_background">#e3e4e5</color>
     <color name="color_transparent">#00000000</color>
     <color name="color_993a3a3a">#993a3a3a</color>
+    <color name="color_c8af89">#c8af89</color>
+    <color name="color_d1d1d1">#d1d1d1</color>
+    <color name="color_10000000">#11000000</color>
 </resources>

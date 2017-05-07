@@ -73,12 +73,10 @@
             />
         <TextView
             android:id="@+id/tv_code"
-
             android:textSize="28px"
             android:textColor="@color/code_grey"
-            android:gravity="center"
+            android:gravity="center|right"
             android:text="@string/login_code"
-            android:background="@drawable/btn_login_code_shap"
             android:layout_marginRight="36px"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"

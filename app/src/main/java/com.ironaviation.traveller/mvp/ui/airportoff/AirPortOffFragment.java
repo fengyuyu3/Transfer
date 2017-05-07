@@ -1,5 +1,6 @@
 package com.ironaviation.traveller.mvp.ui.airportoff;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -53,6 +54,7 @@ import com.ironaviation.traveller.mvp.ui.my.AddressActivity;
 import com.ironaviation.traveller.mvp.ui.my.travel.PaymentDetailsActivity;
 import com.ironaviation.traveller.mvp.ui.payment.WaitingPaymentActivity;
 import com.ironaviation.traveller.mvp.ui.webview.WebViewActivity;
+import com.ironaviation.traveller.mvp.ui.widget.AlertDialog;
 import com.ironaviation.traveller.mvp.ui.widget.CustomDialog;
 import com.ironaviation.traveller.mvp.ui.widget.FontTextView;
 import com.ironaviation.traveller.mvp.ui.widget.MyTimeDialog;
@@ -345,7 +347,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         int num = 0;
         double myPrice = 0;
         for(int i = 0; i < mPassengersRequests.size(); i++){
-            if(mPassengersRequests.get(i).isIsValid()){
+            if(mPassengersRequests.get(i).isIsValid() && !mPassengersRequests.get(i).isHasBooked()){
                 num++;
                 myPrice = myPrice + mPassengersRequests.get(i).getPrice();
             }
@@ -380,7 +382,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
             long num = (flight.getList().get(0).getTakeOffTime() - System.currentTimeMillis())
                     / (60 * 60 * 1000);
             if (num < 4) {
-                showMessage("离起飞时间小于4小时");
+                showMessage(getString(R.string.fly_four_time));
             } else {
                 mMyTimeDialog.showDialog(getResources().getString(R.string.airport_input_time));
             }
@@ -669,19 +671,40 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     public void setSeatNum(List<PassengersRequest> list) {
         showPrice();
         //seatNum 座位数
+        boolean flag = false;
+        StringBuilder prompt = new StringBuilder();
         for(int i = 0 ; i < list.size(); i++){
             for(int j = 0; j < mAirportRequests.size();j++){
                 if(list.get(i).getIDCardNo() != null && list.get(i).getIDCardNo().equals(mAirportRequests.get(j).getIdCard())){
-                    if(list.get(i).isIsValid()){
+                    if(list.get(i).isIsValid() && !list.get(i).isHasBooked()){
                         mAirportRequests.get(j).setStatus(Constant.AIRPORT_SUCCESS);
+                    }else if(list.get(i).isIsValid() && list.get(i).isHasBooked()){
+                        mAirportRequests.get(j).setStatus(Constant.AIRPORT_FAILURE);
+                        //弹出dialog
+                        flag = true;
+                        prompt.append(list.get(i).getIDCardNo()).append(",");
                     }else{
                         mAirportRequests.get(j).setStatus(Constant.AIRPORT_FAILURE);
                     }
                 }
             }
         }
+        if(flag) {
+            showDialog(prompt.toString().substring(0,prompt.length()-1));
+        }
         setSeat(seatNum);
         this.mPassengersRequests = list;
+    }
+
+    public void showDialog(String msg){
+        AlertDialog dialog = new AlertDialog(getActivity());
+        dialog.builder().setTitle("温馨提示").setMsg(msg +"已经预约此航班")
+                .setOneButton("确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }).show();
     }
 
     @Override

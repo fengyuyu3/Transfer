@@ -88,7 +88,18 @@ public class SettingPresenter extends BasePresenter<SettingContract.Model, Setti
                             DataHelper.removeSF(mApplication, Constant.LOGIN);
                             weActivity.startActivity(LoginActivity.class);
                         } else {
+                            UiUtils.killAll();
+                            DataHelper.removeSF(mApplication, Constant.LOGIN);
+                            weActivity.startActivity(LoginActivity.class);
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        UiUtils.killAll();
+                        DataHelper.removeSF(mApplication, Constant.LOGIN);
+                        weActivity.startActivity(LoginActivity.class);
                     }
                 });
 

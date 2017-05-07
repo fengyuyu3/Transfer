@@ -81,19 +81,33 @@
         android:background="@color/white"
         android:visibility="gone">
         <include layout="@layout/include_line_one"/>
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:id="@+id/rl_child_city"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="112px">
+        <ImageView
+            android:src="@mipmap/ic_city"
+            android:layout_marginLeft="32px"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
         <TextView
+            android:layout_marginLeft="82px"
             android:textColor="@color/word_already_input"
             android:id="@+id/tw_city"
             android:layout_width="match_parent"
-            android:layout_height="112px"
+            android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:background="@null"
             android:gravity="center|left"
             android:maxLines="1"
-            android:paddingLeft="32px"
+            android:paddingLeft="10px"
             android:singleLine="true"
             android:text="@string/airport_city"
             android:textSize="30px"/>
+        </com.zhy.autolayout.AutoRelativeLayout>
         <include layout="@layout/include_line_one"/>
         <android.support.v7.widget.RecyclerView
             android:paddingLeft="60px"

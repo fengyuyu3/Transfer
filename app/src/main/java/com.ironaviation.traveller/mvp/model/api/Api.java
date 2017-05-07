@@ -36,6 +36,7 @@ public interface Api {
     String CONFIRM_PICKUP ="/api/Booking/ConfirmPickup"; //乘客确认上车
     String GET_OTHER_PASSENGER = "/api/Booking/GetOtherPassengersStatus"; //其他乘客
     int RequestSuccess = 1;
+    int OTHER_LOGIN = -1; //在其他设备上登录
 
 
     String GET_MESSAGES="/api/Users/GetMessages"; //Get 获取用户消息

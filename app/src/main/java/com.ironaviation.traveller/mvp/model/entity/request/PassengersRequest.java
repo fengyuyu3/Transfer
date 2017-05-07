@@ -24,8 +24,25 @@ public class PassengersRequest implements Serializable{
     private String Gender;
     private String Phone;
     private String Notes;
-    private int Price;
+    private float Price;
     private boolean IsValid;
+    private boolean HasBooked;
+
+    public boolean isValid() {
+        return IsValid;
+    }
+
+    public void setValid(boolean valid) {
+        IsValid = valid;
+    }
+
+    public boolean isHasBooked() {
+        return HasBooked;
+    }
+
+    public void setHasBooked(boolean hasBooked) {
+        HasBooked = hasBooked;
+    }
 
     public String getName() {
         return Name;
@@ -75,11 +92,11 @@ public class PassengersRequest implements Serializable{
         this.Notes = Notes;
     }
 
-    public int getPrice() {
+    public float getPrice() {
         return Price;
     }
 
-    public void setPrice(int Price) {
+    public void setPrice(float Price) {
         this.Price = Price;
     }
 

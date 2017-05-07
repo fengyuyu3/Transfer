@@ -94,12 +94,12 @@ public class PaymentDetailsActivity extends WEActivity {
     }
 
     public void setData() {
-        mTwActurlPrice.setTextType(price+"");
+        mTwActurlPrice.setTextType(acturlPrice+"");
         mTravelPriceFixedPrice.setText(String.format(getResources().getString(R.string.travel_price_fixed_price),seatNum));
-        mTwFixedPriceDetails.setText(acturlPrice+"");
+        mTwFixedPriceDetails.setText(price+"元");
         mTwFree.setText(String.format(getResources().getString(R.string.travel_price_free),num));
-        mTwFreePrice.setText(myPrice+"");
-        mTwCouponDetail.setText(acturlPrice-price-myPrice+"");
+        mTwFreePrice.setText("-"+myPrice+"元");
+        mTwCouponDetail.setText("-"+(price-acturlPrice-myPrice)+"元");
         if(status.equals(Constant.PAYMENT_NOMAL)){
             mLlPayment.setVisibility(View.INVISIBLE);
         }else{

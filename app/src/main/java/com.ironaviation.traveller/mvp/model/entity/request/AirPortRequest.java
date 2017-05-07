@@ -14,6 +14,15 @@ public class AirPortRequest {
 
     private String idCard;
     private int status;
+    private boolean hasBooked;
+
+    public boolean isHasBooked() {
+        return hasBooked;
+    }
+
+    public void setHasBooked(boolean hasBooked) {
+        this.hasBooked = hasBooked;
+    }
 
     public String getIdCard() {
         return idCard;

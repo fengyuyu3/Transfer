@@ -87,7 +87,9 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
     RecyclerView mRwCity;
     @BindView(R.id.ll_port)
     AutoLinearLayout mLlPort;
-    private RecyclerView.LayoutManager  layoutManager;
+    @BindView(R.id.rl_child_city)
+    AutoRelativeLayout mLlChildCity;
+    private RecyclerView.LayoutManager layoutManager;
     private TravelFloatAdapter mTravelFloatAdapter;
     private MyDialog mMyDialog;
     private Flight mFlight;
@@ -114,7 +116,7 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
         setEditorAction();
         setFlyTime();
         initRecyclerView();
-        mTwCity.setOnClickListener(new View.OnClickListener() { //获取焦点消费事件
+        mLlChildCity.setOnClickListener(new View.OnClickListener() { //获取焦点消费事件
             @Override
             public void onClick(View v) {
 
