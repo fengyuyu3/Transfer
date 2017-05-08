@@ -317,7 +317,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="40px"
-                    android:text="@string/travel_go_on_arrive_time"
                     android:textColor="@color/color_travel_details_font"
                     android:textSize="26px"/>
             </com.zhy.autolayout.AutoLinearLayout>

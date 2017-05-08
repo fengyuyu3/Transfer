@@ -1,7 +1,11 @@
 package com.ironaviation.traveller.mvp.presenter.my.travel;
 
 import android.app.Application;
+import android.text.format.DateUtils;
 
+import com.baidu.mapapi.search.core.RouteLine;
+import com.ironaviation.traveller.app.utils.TimerUtils;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.travel.TravelDetailsContract;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.response.PassengersResponse;
@@ -31,16 +35,13 @@ import javax.inject.Inject;
 
 
 /**
- *
- * 项目名称：Transfer      
- * 类描述：   
- * 创建人：flq  
- * 创建时间：2017/3/29 15:40   
- * 修改人：  
- * 修改时间：2017/3/29 15:40   
- * 修改备注：   
- * @version
- *
+ * 项目名称：Transfer
+ * 类描述：
+ * 创建人：flq
+ * 创建时间：2017/3/29 15:40
+ * 修改人：
+ * 修改时间：2017/3/29 15:40
+ * 修改备注：
  */
 
 @ActivityScope
@@ -50,6 +51,8 @@ public class TravelDetailsPresenter extends BasePresenter<TravelDetailsContract.
     private ImageLoader mImageLoader;
     private AppManager mAppManager;
     private RouteStateResponse mRouteStateResponse;
+
+    private String fomart = "预计 HH:mm 到达机场";
 
     @Inject
     public TravelDetailsPresenter(TravelDetailsContract.Model model, TravelDetailsContract.View rootView
@@ -70,27 +73,28 @@ public class TravelDetailsPresenter extends BasePresenter<TravelDetailsContract.
         this.mImageLoader = null;
         this.mApplication = null;
     }
-    public void getRouteState(String bid){
+
+    public void getRouteState(String bid) {
         mModel.getRouteStateInfo(bid)
                 .compose(RxUtils.<BaseData<RouteStateResponse>>applySchedulers(mRootView))
                 .subscribe(new ErrorHandleSubscriber<BaseData<RouteStateResponse>>(mErrorHandler) {
                     @Override
                     public void onNext(BaseData<RouteStateResponse> routeStateResponseBaseData) {
-                        if(routeStateResponseBaseData.isSuccess()){
-                              if(routeStateResponseBaseData.getData() != null){
-                                  if (routeStateResponseBaseData.getData().getExt() != null) {
-                                      for (int i = 0; i < routeStateResponseBaseData.getData().getExt().size(); i++){
-                                          routeStateResponseBaseData.getData().getExt().get(i).setJsonData(routeStateResponseBaseData.getData().getExt().get(i).getData().toString());
-                                          routeStateResponseBaseData.getData().getExt().get(i).setData(null);
-                                      }
-                                  }
-                                  setRouteStateResponse(routeStateResponseBaseData.getData());
-                                  mRouteStateResponse = routeStateResponseBaseData.getData();
-                                  mRootView.setPassengersResponseInfo(routeStateResponseBaseData.getData());
-                              }else{
+                        if (routeStateResponseBaseData.isSuccess()) {
+                            if (routeStateResponseBaseData.getData() != null) {
+                                if (routeStateResponseBaseData.getData().getExt() != null) {
+                                    for (int i = 0; i < routeStateResponseBaseData.getData().getExt().size(); i++) {
+                                        routeStateResponseBaseData.getData().getExt().get(i).setJsonData(routeStateResponseBaseData.getData().getExt().get(i).getData().toString());
+                                        routeStateResponseBaseData.getData().getExt().get(i).setData(null);
+                                    }
+                                }
+                                setRouteStateResponse(routeStateResponseBaseData.getData());
+                                mRouteStateResponse = routeStateResponseBaseData.getData();
+                                mRootView.setPassengersResponseInfo(routeStateResponseBaseData.getData());
+                            } else {
 
-                              }
-                        }else{
+                            }
+                        } else {
 //                            mRootView.showMessage("");
                         }
                     }
@@ -102,65 +106,76 @@ public class TravelDetailsPresenter extends BasePresenter<TravelDetailsContract.
                 });
     }
 
-    public void isConfirmArrive(final String bid){
+    public void isConfirmArrive(final String bid) {
         mModel.isConfirmArrive(bid)
                 .compose(RxUtils.<BaseData<Boolean>>applySchedulers(mRootView))
                 .subscribe(new ErrorHandleSubscriber<BaseData<Boolean>>(mErrorHandler) {
                     @Override
                     public void onNext(BaseData<Boolean> booleanBaseData) {
-                        if (booleanBaseData.isSuccess()){
+                        if (booleanBaseData.isSuccess()) {
                             mRootView.isSuccess();
-                        }else{
+                        } else {
                             mRootView.showMessage(booleanBaseData.getMessage());
                         }
                     }
                 });
     }
 
-    public void getPassengersInfo(String bid){
+    public void getPassengersInfo(String bid) {
         mModel.getPassengerInfo(bid)
                 .compose(RxUtils.<BaseData<List<PassengersResponse>>>applySchedulers(mRootView))
                 .subscribe(new ErrorHandleSubscriber<BaseData<List<PassengersResponse>>>(mErrorHandler) {
                     @Override
                     public void onNext(BaseData<List<PassengersResponse>> listBaseData) {
-                        if(listBaseData.isSuccess()){
-                            if(listBaseData.getData() != null){
+                        if (listBaseData.isSuccess()) {
+                            if (listBaseData.getData() != null) {
                                 mRootView.setPassengersInfo(listBaseData.getData());
                             }
-                        }else{
+                        } else {
                             mRootView.showMessage(listBaseData.getMessage());
                         }
                     }
                 });
     }
 
-    public RouteStateResponse getData(){
+    public RouteStateResponse getData() {
         return mRouteStateResponse;
     }
 
 
-    public void setRouteStateResponse(RouteStateResponse response){
-        if(response.getDriverName() != null){
+    public void setRouteStateResponse(RouteStateResponse response) {
+        if (response.getDriverName() != null) {
             mRootView.setDriverName(response.getDriverName());
         }
-        if(response.getDriverRate() != null){
+        if (response.getDriverRate() != null) {
             mRootView.setDriverRate(response.getDriverRate());
         }
-        if(response.getDriverPhone() != null){
+        if (response.getDriverPhone() != null) {
             mRootView.setDriverPhone(response.getDriverPhone());
         }
-        if(response.getCarLicense() != null){
+        if (response.getCarLicense() != null) {
             mRootView.setCarLicense(response.getCarLicense());
         }
-        if(response.getCarColor() != null && response.getCarModel() != null){
-            mRootView.setCarColor(response.getCarColor(),response.getCarModel());
+        if (response.getCarColor() != null && response.getCarModel() != null) {
+            mRootView.setCarColor(response.getCarColor(), response.getCarModel());
         }
-        if(response.getStatus() != null){
+        if (response.getStatus() != null) {
             mRootView.setStatus(response.getStatus());
         }
-        if(response.getBID() != null){
+        if (response.getBID() != null) {
             mRootView.setBid(response.getBID());
         }
     }
 
+    public void setScheduledTime(RouteLine route, PassengersResponse mPassengersResponse) {
+
+        if (mPassengersResponse.getChildStatus().equals(Constant.ABORAD)) {
+
+            ;
+            mRootView.setScheduledTime((TimerUtils.getDateFormat(System.currentTimeMillis() + route.getDuration() * 1000, fomart)).toString());
+
+        }
+
+
+    }
 }

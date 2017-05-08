@@ -6,6 +6,7 @@ import android.os.Message;
 import android.text.TextUtils;
 
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.RouteLine;
 import com.baidu.trace.LBSTraceClient;
 import com.baidu.trace.api.entity.LocRequest;
 import com.baidu.trace.api.entity.OnEntityListener;
@@ -22,10 +23,12 @@ import com.baidu.trace.model.StatusCodes;
 import com.baidu.trace.model.TraceLocation;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.utils.CommonUtil;
+import com.ironaviation.traveller.app.utils.TimerUtils;
 import com.ironaviation.traveller.common.WEApplication;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.travel.TravelDetailsOnContract;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.response.PassengersResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.ui.my.CurrentLocation;
 import com.ironaviation.traveller.mvp.ui.my.travel.CommonBaiDuUtil;
@@ -69,12 +72,16 @@ public class TravelDetailsOnPresenter extends BasePresenter<TravelDetailsOnContr
     private ImageLoader mImageLoader;
     private AppManager mAppManager;
     private RouteStateResponse mRouteStateResponse;
+    private RouteStateResponse mRouteStateResponseFormActivity;
     // 分页索引
     int pageIndex = 1;
     String arrivedTime = null;
+    private boolean scheduledTime=false;
     /**
      * 实时定位任务
      */
+    private String fomart = "预计 HH:mm 到达";
+
     private RealTimeHandler realTimeHandler = new RealTimeHandler();
 
     private RealTimeLocRunnable realTimeLocRunnable = null;
@@ -94,7 +101,6 @@ public class TravelDetailsOnPresenter extends BasePresenter<TravelDetailsOnContr
      */
     private OnEntityListener entityListener = null;
 
-    private LocRequest locRequest = null;
     /**
      * 监听器
      */
@@ -209,7 +215,7 @@ public class TravelDetailsOnPresenter extends BasePresenter<TravelDetailsOnContr
     /**
      * 追踪开始
      */
-    public void initOnStartTraceListener() {
+    public void initOnStartTraceListener(final RouteStateResponse responses) {
 
         // 初始化轨迹服务监听器
         mTraceListener = new OnTraceListener() {
@@ -217,8 +223,6 @@ public class TravelDetailsOnPresenter extends BasePresenter<TravelDetailsOnContr
             @Override
             public void onStartTraceCallback(int status, String message) {
                 LogUtils.debugLongInfo("鹰眼轨迹服务", "开启服务回调:" + "消息类型=" + status + "消息内容=" + message);
-
-
             }
 
             // 停止服务回调
@@ -253,6 +257,15 @@ public class TravelDetailsOnPresenter extends BasePresenter<TravelDetailsOnContr
 
                 System.out.println("TraceLocation : " + location);
 
+                if (!scheduledTime) {
+                    scheduledTime=true;
+                    mRootView.pathTwo(location.getLatitude(),
+                            location.getLongitude(),
+                            responses.getDestLagitude(),
+                            responses.getDestLongitude());
+                }else {
+
+                }
 
                 if (StatusCodes.SUCCESS != location.getStatus() || CommonUtil.isZeroPoint(location.getLatitude(),
                         location.getLongitude())) {
@@ -294,7 +307,7 @@ public class TravelDetailsOnPresenter extends BasePresenter<TravelDetailsOnContr
 
             while (refresh) {
                 //queryEntityList();
-                mRootView.getTraceClient().queryRealTimeLoc(locRequest, entityListener);
+                mRootView.getTraceClient().queryRealTimeLoc(mRootView.getLocRequest(), entityListener);
                 try {
                     Thread.sleep(Constant.EAGLE_EYE_NOW_TIME_PACK_INTERVAL * Constant.EAGLE_EYE_LOCATION_SIZE);
                 } catch (InterruptedException e) {
@@ -370,7 +383,7 @@ public class TravelDetailsOnPresenter extends BasePresenter<TravelDetailsOnContr
         historyTrackRequest.setStartTime(startTime);
         historyTrackRequest.setEndTime(endTime);
         historyTrackRequest.setPageIndex(pageIndex);
-        historyTrackRequest.setPageSize(1000);
+        historyTrackRequest.setPageSize(Constant.EAGLE_EYE_HISTORY_PAGE_SIZE);
         historyTrackRequest.setProcessed(true);
         mClient.queryHistoryTrack(historyTrackRequest, mTrackListener);
     }
@@ -442,7 +455,7 @@ public class TravelDetailsOnPresenter extends BasePresenter<TravelDetailsOnContr
 
         @Override
         public void run() {
-            mRootView.getTraceClient().queryRealTimeLoc(locRequest, entityListener);
+            mRootView.getTraceClient().queryRealTimeLoc(mRootView.getLocRequest(), entityListener);
             realTimeHandler.postDelayed(this, interval * 1000);
         }
     }
@@ -458,10 +471,22 @@ public class TravelDetailsOnPresenter extends BasePresenter<TravelDetailsOnContr
             realTimeLocRunnable = null;
         }
     }
+
     static class RealTimeHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
         }
+    }
+    public void setScheduledTime(RouteLine route,RouteStateResponse mRouteStateResponse) {
+
+        if (mRouteStateResponse.getChildStatus().equals(Constant.ABORAD)) {
+
+
+            mRootView.setScheduledTime((TimerUtils.getDateFormat(System.currentTimeMillis() + route.getDuration() * 1000, fomart)).toString());
+
+        }
+
+
     }
 }

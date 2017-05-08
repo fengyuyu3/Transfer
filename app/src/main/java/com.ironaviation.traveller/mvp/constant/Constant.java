@@ -86,7 +86,7 @@ public interface Constant {
 
     int TYPE_AIRPORT_OFF = 101;//送機
     int TYPE_AIRPORT_ON = 102; //接機
-    int EAGLE_EYE_HISTORY_PAGE_SIZE = 1000;
+    int EAGLE_EYE_HISTORY_PAGE_SIZE = 5000;
     int EAGLE_EYE_LOCATION_SIZE = 1000;
     int EAGLE_EYE_NOW_TIME_PACK_INTERVAL = 10;
     int SERVICEID = 139760;
