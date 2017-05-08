@@ -15,9 +15,9 @@ android {
         testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
         multiDexEnabled true
         manifestPlaceholders = [
-                GETUI_APP_ID    : "HDOhHj2zuZ5Mvj9XQb0U09",
-                GETUI_APP_KEY   : "l51RE1LCai6rh8E8OX25G3",
-                GETUI_APP_SECRET: "wTBzjKAmMD8pDLhzACjee3",
+                GETUI_APP_ID    : "5mDVi3xHB49M5q1AW6lAI6",
+                GETUI_APP_KEY   : "E3cvOSQooM7P7HhxLsrcA",
+                GETUI_APP_SECRET: "1C4SddDbDq5RpT4ajRNBA9",
         ]
        /* ndk {
             abiFilters "armeabi", "armeabi-v7a", "x86_64","x86","arm64-v8a"
@@ -111,4 +111,7 @@ dependencies {
     compile files('libs/libammsdk.jar')
     compile files('libs/BaiduTraceSDK_v2_1_15.jar')
     compile files('libs/bos-android-sdk-1.0.2.jar')
+
+    //友盟统计
+    compile 'com.umeng.analytics:analytics:latest.integration'
 }

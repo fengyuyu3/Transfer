@@ -129,7 +129,7 @@ public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> im
             @Override
             public void onClick(View v) {
                 EventBus.getDefault().post(true, EventBusTags.PAYMENT_FINISH);
-                EventBus.getDefault().post(true,EventBusTags.REFRESH);
+                EventBus.getDefault().post(true, EventBusTags.REFRESH);
                 finish();
             }
         });
@@ -142,7 +142,8 @@ public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> im
         getData();
 
     }
-    public void getData(){
+
+    public void getData() {
         Bundle pBundle = getIntent().getExtras();
         if (pBundle.getSerializable(Constant.STATUS) != null) {
             data = (RouteStateResponse) pBundle.getSerializable(Constant.STATUS);
@@ -150,7 +151,7 @@ public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> im
             mPresenter.getRouteStateInfo(data);
         } else if (!TextUtils.isEmpty(pBundle.getString(Constant.BID))) {
             mPresenter.getRouteStateInfo(pBundle.getString(Constant.BID));
-            if(!TextUtils.isEmpty(pBundle.getString(Constant.CANCEL))){
+            if (!TextUtils.isEmpty(pBundle.getString(Constant.CANCEL))) {
                 status = pBundle.getString(Constant.CANCEL);
             }
         }
@@ -200,7 +201,16 @@ public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> im
     @Override
     public void setReasonView(List<TravelCancelReason> strings, String otherReason) {
         if (strings != null) {
-            mCancelSuccessAdapter.setNewData(strings);
+            for (int i = 0; i < strings.size(); i++) {
+                if (TextUtils.isEmpty(strings.get(i).getName())) {
+                    strings.remove(strings.get(i));
+                    i--;
+                }
+            }
+            if (strings.size() > 0) {
+                mCancelSuccessAdapter.setNewData(strings);
+
+            }
         }
         if (!TextUtils.isEmpty(otherReason)) {
             mRvOtherReason.setVisibility(View.VISIBLE);
@@ -247,24 +257,24 @@ public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> im
         this.data = data;
     }
 
-    @OnClick({R.id.tw_cancel_rules,R.id.tv_money})
-    public void onClick(View view){
-        switch (view.getId()){
+    @OnClick({R.id.tw_cancel_rules, R.id.tv_money})
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.tw_cancel_rules: //取消规则
                 Intent intent = new Intent(this, WebViewActivity.class);
-                if(status.equals(Constant.CLEAR_PORT)) { //送机
-                    intent.putExtra(Constant.TITLE,getResources().getString(R.string.travel_enter_port));
+                if (status.equals(Constant.CLEAR_PORT)) { //送机
+                    intent.putExtra(Constant.TITLE, getResources().getString(R.string.travel_enter_port));
                     intent.putExtra(Constant.URL, Api.PHONE_CANCEL_ROLE_OFF);
-                }else if(status.equals(Constant.ENTER_PORT)){ //接机
-                    intent.putExtra(Constant.TITLE,getResources().getString(R.string.travel_clear_port));
+                } else if (status.equals(Constant.ENTER_PORT)) { //接机
+                    intent.putExtra(Constant.TITLE, getResources().getString(R.string.travel_clear_port));
                     intent.putExtra(Constant.URL, Api.PHONE_CANCEL_ROLE_ON);
                 }
                 startActivity(intent);
                 break;
             case R.id.tv_money:
                 Intent intent1 = new Intent(this, RefundActivity.class);
-                if(data != null) {
-                    intent1.putExtra(Constant.STATUS,data);
+                if (data != null) {
+                    intent1.putExtra(Constant.STATUS, data);
                     startActivity(intent1);
                 }
                 break;

@@ -16,34 +16,39 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="32px"
-            android:layout_marginRight="32px"
+            android:layout_marginLeft="24px"
+            android:layout_marginRight="24px"
             android:background="@mipmap/ic_bell"/>
 
         <View
-            android:layout_width="wrap_content"
+            android:layout_width="750px"
             android:layout_height="1px"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="135px"
             android:background="@color/line_little_grey"
             ></View>
 
-        <TextView
-            android:id="@+id/tv_message_title"
-            style="@style/common_text_style"
-            android:layout_marginTop="32px"
-            android:layout_toRightOf="@+id/iv_message"
-            android:textStyle="bold"
-            />
-
-        <TextView
-            android:id="@+id/tv_message_text"
-            style="@style/common_text_content_style"
-            android:layout_below="@+id/tv_message_title"
-            android:layout_toRightOf="@+id/iv_message"
-            android:maxLines="2"
-            android:ellipsize="end"
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:layout_marginRight="@dimen/h_fillet2"
-            />
+            android:layout_toRightOf="@+id/iv_message"
+            >
+
+            <TextView
+                android:id="@+id/tv_message_title"
+                style="@style/common_text_style"
+                />
+
+            <TextView
+                android:id="@+id/tv_message_text"
+                style="@style/common_text_content_style"
+                android:layout_below="@+id/tv_message_title"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="@color/word_deep_grey"
+                />
+        </com.zhy.autolayout.AutoRelativeLayout>
+
     </com.zhy.autolayout.AutoRelativeLayout>
 </com.zhy.autolayout.AutoRelativeLayout>
