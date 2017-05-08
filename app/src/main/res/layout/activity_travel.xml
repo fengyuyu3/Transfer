@@ -24,13 +24,14 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
             <android.support.v7.widget.RecyclerView
                 android:layout_marginTop="30px"
                 android:id="@+id/rv_travel"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
             </android.support.v7.widget.RecyclerView>
+            <include layout="@layout/include_error_nomal"/>
+            <include layout="@layout/include_nodata_nomal"/>
         </com.zhy.autolayout.AutoLinearLayout>
     </com.zhy.autolayout.AutoRelativeLayout>
     </android.support.v4.widget.SwipeRefreshLayout>

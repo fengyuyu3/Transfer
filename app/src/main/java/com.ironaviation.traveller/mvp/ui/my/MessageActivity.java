@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ironaviation.traveller.R;
@@ -22,6 +23,7 @@ import com.ironaviation.traveller.mvp.model.entity.response.MessageResponse;
 import com.ironaviation.traveller.mvp.presenter.my.MessagePresenter;
 import com.ironaviation.traveller.mvp.ui.my.adapter.MessageAdapter;
 import com.jess.arms.utils.UiUtils;
+import com.zhy.autolayout.AutoRelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +56,12 @@ public class MessageActivity extends WEActivity<MessagePresenter> implements Mes
     RecyclerView mRvMessage;
     @BindView(R.id.sl_message)
     SwipeRefreshLayout mSlMessage;
+    @BindView(R.id.nodata)
+    AutoRelativeLayout mNodata;
+    @BindView(R.id.error)
+    AutoRelativeLayout mError;
+    @BindView(R.id.tw_reset_network)
+    TextView mTwResetNetWork;
     private MessageAdapter mMessageAdapter;
 
     int pageIndex=1;
@@ -160,12 +168,25 @@ public class MessageActivity extends WEActivity<MessagePresenter> implements Mes
 
     @Override
     public void setNodata() {
-        showNodata(true);
+//        showNodata(true);
+        mRvMessage.setVisibility(View.GONE);
+        mNodata.setVisibility(View.VISIBLE);
+        mError.setVisibility(View.GONE);
     }
 
     @Override
     public void setError() {
-        showError(true);
+//        showError(true);
+        mRvMessage.setVisibility(View.GONE);
+        mNodata.setVisibility(View.GONE);
+        mError.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void setData(){
+        mRvMessage.setVisibility(View.VISIBLE);
+        mNodata.setVisibility(View.GONE);
+        mError.setVisibility(View.GONE);
     }
 
     @Override

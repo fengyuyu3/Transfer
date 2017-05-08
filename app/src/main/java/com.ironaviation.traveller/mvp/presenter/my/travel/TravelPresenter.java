@@ -100,9 +100,24 @@ public class TravelPresenter extends BasePresenter<TravelContract.Model, TravelC
                 });
     }*/
 
-    public void getTravelData(int index) {
+    public void getTravelData(int index, final boolean flag) {
         mModel.getRouteListMore(index)
-                .compose(RxUtils.<BaseData<RouteListResponse>>applySchedulers(mRootView))
+                .subscribeOn(Schedulers.io())
+                .doOnSubscribe(new Action0() {
+                    @Override
+                    public void call() {//显示进度条
+                        if(flag)
+                        mRootView.showDialog();
+                    }
+                })
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doAfterTerminate(new Action0() {
+                    @Override
+                    public void call() {
+                        mRootView.dismissDialog();
+                    }
+                })
                 .subscribe(new ErrorHandleSubscriber<BaseData<RouteListResponse>>(mErrorHandler) {
                     @Override
                     public void onNext(BaseData<RouteListResponse> responseBaseData) {
@@ -110,6 +125,7 @@ public class TravelPresenter extends BasePresenter<TravelContract.Model, TravelC
                             if (responseBaseData.getData() != null && responseBaseData.getData().getItems() != null
                                     && responseBaseData.getData().getItems().size() > 0) {
                                 mRootView.setDatas(responseBaseData.getData());
+                                mRootView.setData();
                                 if(responseBaseData.getData().getItems().size() <10){
                                     mRootView.setNoMore();
                                 }else{
@@ -142,6 +158,7 @@ public class TravelPresenter extends BasePresenter<TravelContract.Model, TravelC
                                     && responseBaseData.getData().getItems().size() > 0) {
                                 mRootView.setMoreDatas(responseBaseData.getData());
                                 num = responseBaseData.getData().getCurrentPageIndex() + 1;
+                                mRootView.setData();
                                 if (responseBaseData.getData().getItems().size() < 10) {
                                     mRootView.setNoMore();
                                 }else{
@@ -166,7 +183,21 @@ public class TravelPresenter extends BasePresenter<TravelContract.Model, TravelC
 
     public void getRouteState(String bid) {
         mModel.getRouteStateInfo(bid)
-                .compose(RxUtils.<BaseData<RouteStateResponse>>applySchedulers(mRootView))
+                .subscribeOn(Schedulers.io())
+                .doOnSubscribe(new Action0() {
+                    @Override
+                    public void call() {//显示进度条
+                        mRootView.showDialog();
+                    }
+                })
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doAfterTerminate(new Action0() {
+                    @Override
+                    public void call() {
+                        mRootView.dismissDialog();
+                    }
+                })
                 .subscribe(new ErrorHandleSubscriber<BaseData<RouteStateResponse>>(mErrorHandler) {
                     @Override
                     public void onNext(BaseData<RouteStateResponse> routeStateResponseBaseData) {

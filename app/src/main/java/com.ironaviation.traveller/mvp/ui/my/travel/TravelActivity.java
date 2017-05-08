@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ironaviation.traveller.R;
@@ -30,6 +31,7 @@ import com.ironaviation.traveller.mvp.ui.my.adapter.TravelAdapter;
 import com.ironaviation.traveller.mvp.ui.payment.InvalidationActivity;
 import com.ironaviation.traveller.mvp.ui.payment.WaitingPaymentActivity;
 import com.jess.arms.utils.UiUtils;
+import com.zhy.autolayout.AutoRelativeLayout;
 
 import org.simple.eventbus.Subscriber;
 
@@ -37,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -66,6 +69,12 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
     SwipeRefreshLayout mSlTravel;
     @BindView(R.id.rv_travel)
     RecyclerView mRvTravel;
+    @BindView(R.id.nodata)
+    AutoRelativeLayout mNodata;
+    @BindView(R.id.error)
+    AutoRelativeLayout mError;
+    @BindView(R.id.tw_reset_network)
+    TextView mTwResetNetWork;
     private int defaultIndex = 1;
 
     private TravelAdapter mTravelAdapter;
@@ -84,7 +93,7 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
 
     @Override
     protected void nodataRefresh() {
-        mPresenter.getTravelData(defaultIndex);
+        mPresenter.getTravelData(defaultIndex,false);
     }
 
     @Override
@@ -130,7 +139,7 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
                 }
             }
         });
-        mPresenter.getTravelData(defaultIndex);
+        mPresenter.getTravelData(defaultIndex,true);//第一次为true
     }
 
     public void setStatus(String status,RouteStateResponse responses){
@@ -308,8 +317,6 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
 
     @Override
     public void setDatas(RouteListResponse responses) {
-        showNodata(false);
-        showError(false);
         mTravelAdapter.setNewData(dataManage(responses.getItems()));
         mRouteItemResponses = mTravelAdapter.getData();
     }
@@ -322,12 +329,25 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
 
     @Override
     public void setNodata() {
-        showNodata(true);
+//        showNodata(true);
+        mRvTravel.setVisibility(View.GONE);
+        mNodata.setVisibility(View.VISIBLE);
+        mError.setVisibility(View.GONE);
     }
 
     @Override
     public void setError() {
-        showError(true);
+//        showError(true);
+        mRvTravel.setVisibility(View.GONE);
+        mNodata.setVisibility(View.GONE);
+        mError.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void setData(){
+        mRvTravel.setVisibility(View.VISIBLE);
+        mNodata.setVisibility(View.GONE);
+        mError.setVisibility(View.GONE);
     }
 
     @Override
@@ -358,7 +378,7 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
     @Override
     public void onRefresh() {
 //      mPresenter.getTravelData();//刷新数据
-        mPresenter.getTravelData(defaultIndex);
+        mPresenter.getTravelData(defaultIndex,false);
     }
 
     @Override
@@ -368,7 +388,7 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
 
     @Subscriber(tag = EventBusTags.PAYMENT)
     public void refresh(String bid){
-        mPresenter.getTravelData(defaultIndex);
+        mPresenter.getTravelData(defaultIndex,false);
     }
 
     @Override
@@ -390,7 +410,7 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
 
     @Subscriber(tag=EventBusTags.REFRESH)
     public void refresh(boolean flag){
-        mPresenter.getTravelData(defaultIndex);
+        mPresenter.getTravelData(defaultIndex,false);
     }
 
     public List<RouteItemResponse> dataManage(List<RouteItemResponse> responses){
@@ -402,5 +422,13 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
             }
         }
         return responses;
+    }
+    @OnClick({R.id.tw_reset_network})
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.tw_reset_network:
+                mPresenter.getTravelData(defaultIndex,true);
+            break;
+        }
     }
 }

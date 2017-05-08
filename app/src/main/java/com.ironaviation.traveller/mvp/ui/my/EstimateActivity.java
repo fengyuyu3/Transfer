@@ -17,7 +17,9 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
+import com.google.zxing.oned.rss.RSS14Reader;
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.utils.CommonUtil;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.my.DaggerEstimateComponent;
@@ -142,15 +144,18 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
         setRightFunction(ContextCompat.getDrawable(this, R.mipmap.ic_phone_write), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog();
+//                showDialog();
+            if(responses != null){
+                CommonUtil.call(EstimateActivity.this,responses.getDriverPhone() != null ? responses.getDriverPhone():Constant.CONNECTION_US);
+            }else{
+                showMessage(getString(R.string.get_num_failed));
+            }
             }
         });
         mRatingBar.setOnRatingChangeListener(new CustomerRatingBar.OnRatingChangeListener() {
             @Override
             public void onRatingChange(int RatingCount) {
                 setListView(RatingCount + 1);
-
-
             }
         });
         //GridLayout 3列
@@ -195,12 +200,12 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
 
     public void setPaymentDetail(){
         Intent intent = new Intent(this, PaymentDetailsActivity.class);
-        intent.putExtra(Constant.REAL_PRICE,responses.getActualPrice());
-        intent.putExtra(Constant.FIXED_PRICE,responses.getTotalPrice());
+        intent.putExtra(Constant.REAL_PRICE,responses.getTotalPrice());
+        intent.putExtra(Constant.FIXED_PRICE,responses.getActualPrice());
         int num = 0;
         double myPrice = 0;
         for(int i = 0; i < responses.getPassengers().size(); i++){
-            if(responses.getPassengers().get(i).isIsValid()){
+            if(responses.getPassengers().get(i).isIsValid() && !responses.getPassengers().get(i).isHasBooked()){
                 num++;
                 myPrice = myPrice + responses.getPassengers().get(i).getPrice();
             }
@@ -225,7 +230,6 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
 
         startActivity(intent);
     }
-
 
     @Override
     public void showLoading() {

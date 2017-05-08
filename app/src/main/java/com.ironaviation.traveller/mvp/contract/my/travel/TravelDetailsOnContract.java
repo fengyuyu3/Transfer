@@ -1,7 +1,10 @@
 package com.ironaviation.traveller.mvp.contract.my.travel;
 
+import com.baidu.trace.LBSTraceClient;
+import com.baidu.trace.Trace;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
+import com.ironaviation.traveller.mvp.ui.my.travel.MapUtil;
 import com.jess.arms.mvp.BaseView;
 import com.jess.arms.mvp.IModel;
 
@@ -32,6 +35,10 @@ public interface TravelDetailsOnContract {
         void isSuccess();
         void setBid(String bid);
         void isPickUpSuccess();
+        LBSTraceClient getTraceClient();
+        Trace getTrace();
+        RouteStateResponse getRoutStateResponse();
+        MapUtil getMapUtil();
     }
 
     //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存

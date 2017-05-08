@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.utils.CommonUtil;
 import com.ironaviation.traveller.app.utils.CountTimeMiniteUtil;
 import com.ironaviation.traveller.app.utils.TimerUtils;
 import com.ironaviation.traveller.app.EventBusTags;
@@ -376,7 +377,7 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
         mTtNeedSeats.setTitle("需要"+num+"个座位数");
     }
     @Override
-    public void setPrice(float num) {
+    public void setPrice(double num) {
         mTvMoney.setTextType(num+"");
         if(num == 0.0){
             hidePayment();
@@ -447,7 +448,7 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
                 startActivity(TravelCancelActivity.class,pBundle);
                 break;
             case Constant.TRAVEL_CUSTOMER:
-                showMessage(getString(R.string.contact_customer_service));
+                CommonUtil.call(this,Constant.CONNECTION_US);
                 break;
         }
     }

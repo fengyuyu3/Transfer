@@ -41,7 +41,7 @@ public interface WaitingPaymentContract {
         void setPickUpAddress(String address);
         void setDestAddress(String address);
         void setSeatNum(int num);
-        void setPrice(float num);
+        void setPrice(double num);
         void setCountdown(long time,long cdt);
         void setSuccess();
         void setWeChat(WeChaTInfo info);

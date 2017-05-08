@@ -12,6 +12,7 @@
     <string name="hint_address">请输入地址</string>
     <string name="home">家</string>
     <string name="company">公司</string>
+    <string name="no_track_data">未查询到轨迹</string>
 
     <!--取消行程-->
 
@@ -256,5 +257,10 @@
     <string name="start_experience">立即体验</string>
     <string name="login_other">您已在其他设备登录</string>
     <string name="fly_four_time">离起飞时间小于4小时</string>
+    <string name="get_num_failed">获取号码失败,请联系客户,电话028-86868686</string>
+    <string name="no_data">你暂时没有行程</string>
+    <string name="btn_start_travel">开始行程</string>
+    <string name="network_error_nomal">网络出错啦,请检查网络</string>
+    <string name="reset_data">重新加载</string>
 
 </resources>

@@ -67,12 +67,13 @@ public class RouteStateResponse implements Serializable{
     private String PickupAddress;
     private String DestAddress;
     private int SeatNum;
-    private float ActualPrice;
-    private float TotalPrice;
+    private double ActualPrice;
+    private double TotalPrice;
     private String Status;
     private boolean IsDeleted;
     private String TripType;
     private long PickupTime;
+    private long  ActualPickupTime;
     private long Cdt;
     private boolean IsComment;
     private boolean IsPaied;
@@ -355,19 +356,19 @@ public class RouteStateResponse implements Serializable{
         this.SeatNum = SeatNum;
     }
 
-    public float getActualPrice() {
+    public double getActualPrice() {
         return ActualPrice;
     }
 
-    public void setActualPrice(float ActualPrice) {
+    public void setActualPrice(double ActualPrice) {
         this.ActualPrice = ActualPrice;
     }
 
-    public float getTotalPrice() {
+    public double getTotalPrice() {
         return TotalPrice;
     }
 
-    public void setTotalPrice(float TotalPrice) {
+    public void setTotalPrice(double TotalPrice) {
         this.TotalPrice = TotalPrice;
     }
 
@@ -458,5 +459,13 @@ public class RouteStateResponse implements Serializable{
 
     public void setDID(String DID) {
         this.DID = DID;
+    }
+
+    public long getActualPickupTime() {
+        return ActualPickupTime;
+    }
+
+    public void setActualPickupTime(long actualPickupTime) {
+        ActualPickupTime = actualPickupTime;
     }
 }
