@@ -1,8 +1,12 @@
 package com.ironaviation.traveller.mvp.ui.login;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -16,7 +20,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.igexin.sdk.PushManager;
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.service.WEGTIntentService;
+import com.ironaviation.traveller.app.service.WEPushService;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.mvp.constant.Constant;
@@ -56,6 +63,11 @@ public class SplashActivity extends WEActivity {
 //    private final static int LOCATION_TIMES_MAX = 5;//最大定位次数
     private static final String FIRST = "isFirst";
 
+
+    // DemoPushService.class 自定义服务名称, 核心服务
+    private Class userPushService = WEPushService.class;
+    private static final int REQUEST_PERMISSION = 0;
+
     @Override
     protected View initView() {
         return LayoutInflater.from(this).inflate(R.layout.activity_splash, null, false);
@@ -77,6 +89,7 @@ public class SplashActivity extends WEActivity {
                 }
             },2000);
         }
+        initClientId();
         DataHelper.SetStringSF(this,FIRST,"second");
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +117,7 @@ public class SplashActivity extends WEActivity {
             imageViews[i] = imageView;
         }
         imageViews[0].setImageResource(R.drawable.ic_page_indicator_theme_splash_focus);
+
     }
 
     public void Login(){
@@ -210,13 +224,6 @@ public class SplashActivity extends WEActivity {
             imageViews[i].setImageResource(R.drawable.ic_page_indicator_theme_splash);
         }
     }
-//    private Gson getGson() {
-//        if (gson == null) {
-//            gson = new Gson();
-//        }
-//
-//        return gson;
-//    }
 
     public void toggleFullscreen(boolean fullScreen) {
         // fullScreen为true时全屏，否则相反
@@ -227,5 +234,31 @@ public class SplashActivity extends WEActivity {
             attrs.flags &= WindowManager.LayoutParams.FLAG_FULLSCREEN;
         }
         getWindow().setAttributes(attrs);
+    }
+
+    public void initClientId() {
+
+        // com.getui.demo.DemoPushService 为第三方自定义推送服务
+        PackageManager pkgManager = getPackageManager();
+
+        // 读写 sd card 权限非常重要, android6.0默认禁止的, 建议初始化之前就弹窗让用户赋予该权限
+        boolean sdCardWritePermission =
+                pkgManager.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, getPackageName()) == PackageManager.PERMISSION_GRANTED;
+
+        // read phone state用于获取 imei 设备信息
+        boolean phoneSatePermission =
+                pkgManager.checkPermission(Manifest.permission.READ_PHONE_STATE, getPackageName()) == PackageManager.PERMISSION_GRANTED;
+
+        if (Build.VERSION.SDK_INT >= 23 && !sdCardWritePermission || !phoneSatePermission) {
+            requestPermission();
+        } else {
+            PushManager.getInstance().initialize(this.getApplicationContext(), userPushService);
+        }
+        PushManager.getInstance().initialize(this.getApplicationContext(), userPushService);
+        PushManager.getInstance().registerPushIntentService(this.getApplicationContext(), WEGTIntentService.class);
+    }
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE},
+                REQUEST_PERMISSION);
     }
 }

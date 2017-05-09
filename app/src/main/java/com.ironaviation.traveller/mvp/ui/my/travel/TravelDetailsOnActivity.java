@@ -190,7 +190,6 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
     /**
      * Entity监听器(用于接收实时定位回调)
      */
-    private OnEntityListener entityListener = null;
 
     private LocRequest locRequest = null;
     /**
@@ -488,7 +487,6 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
         bd.recycle();
         BitmapUtil.clear();
         mPresenter.stopRealTimeLoc();
-        super.onDestroy();
         super.onDestroy();
     }
 
