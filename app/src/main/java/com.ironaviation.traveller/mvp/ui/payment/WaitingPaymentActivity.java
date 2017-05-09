@@ -1,6 +1,8 @@
 package com.ironaviation.traveller.mvp.ui.payment;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -29,6 +31,7 @@ import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.WeChaTInfo;
 import com.ironaviation.traveller.mvp.presenter.payment.WaitingPaymentPresenter;
 import com.ironaviation.traveller.mvp.ui.my.travel.TravelActivity;
+import com.ironaviation.traveller.mvp.ui.widget.AlertDialog;
 import com.ironaviation.traveller.mvp.ui.my.travel.TravelDetailsActivity;
 import com.ironaviation.traveller.mvp.ui.my.travel.TravelDetailsOnActivity;
 import com.ironaviation.traveller.mvp.ui.widget.AutoToolbar;
@@ -460,6 +463,7 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
                 break;
             case Constant.TRAVEL_CUSTOMER:
                 CommonUtil.call(this,Constant.CONNECTION_US);
+
                 break;
         }
     }
