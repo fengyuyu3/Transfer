@@ -299,9 +299,9 @@ public class TravelFloatOnActivity extends WEActivity<TravelFloatOnPresenter> im
 
         if(flight.getList() != null) {
             mTravelFloatAdapter.setList(flight.getList());
-            mTwCity.setText("本航段共有"+(flight.getList().size())+"个航班");
+            mTwCity.setText(getString(R.string.change_airport_pickup_city));
         }else{
-            mTwCity.setText("本航段无航班");
+            mTwCity.setText("无航班信息");
         }
     }
     @Subscriber(tag = EventBusTags.FLIGHT_INFO_ON)

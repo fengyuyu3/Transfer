@@ -126,13 +126,15 @@
     <string name="airport_arrive_time"></string>
     <string name="airport_price">元</string>
     <string name="airport_input_time">请选择乘车时间</string>
-    <string name="airport_sc">目前只支持四川航空</string>
-    <string name="airport_no_open">该城市尚未开通</string>
+    <string name="airport_sc">目前只支持四川航空接送预约</string>
+    <string name="airport_pickup_no_open">该城市暂未开通接机服务</string>
+    <string name="airport_drop_off_no_open">该城市暂未开通送机服务</string>
     <!--other-->
     <string name="qr_code_hint">二维码请在上车时提供给司机扫描</string>
     <string name="order_qr_code">订单二维码</string>
 
-
+    <string name="change_airport_pickup_city">请选择接机城市</string>
+    <string name="change_airport_drop_off_city">请选择送机城市</string>
     <!--cancel-->
     <string-array name="great_satisfaction_reason_list">
         <item>车内整洁</item>

@@ -21,6 +21,9 @@ import java.util.List;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
+import rx.schedulers.Schedulers;
 
 import javax.inject.Inject;
 
@@ -71,6 +74,35 @@ public class UsualAddressPresenter extends BasePresenter<UsualAddressContract.Mo
         this.mApplication = null;
     }
 
+    public void getUserAddressBookNoDialog() {
+        mModel.getUserAddressBook()
+                .subscribeOn(Schedulers.io())
+                .doOnSubscribe(new Action0() {
+                    @Override
+                    public void call() {//显示进度条
+                    }
+                })
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doAfterTerminate(new Action0() {
+                    @Override
+                    public void call() {
+                        mRootView.hideLoading();
+                    }
+                })
+                .subscribe(new ErrorHandleSubscriber<BaseData<List<UpdateAddressBookRequest>>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<List<UpdateAddressBookRequest>> loginEntityBaseData) {
+
+                        if (loginEntityBaseData.getData() == null || loginEntityBaseData.getData().size() < 2) {
+                            setDefaultData(loginEntityBaseData.getData());
+                        }
+                        mRootView.setView(loginEntityBaseData.getData());
+
+                    }
+                });
+
+    }
     public void getUserAddressBook() {
         mModel.getUserAddressBook()
                 .compose(RxUtils.<BaseData<List<UpdateAddressBookRequest>>>applySchedulers(mRootView))
@@ -96,7 +128,7 @@ public class UsualAddressPresenter extends BasePresenter<UsualAddressContract.Mo
                     @Override
                     public void onNext(BaseData<List<JsonObject>> loginEntityBaseData) {
 
-                        getUserAddressBook();
+                        getUserAddressBookNoDialog();
                     }
                 });
     }

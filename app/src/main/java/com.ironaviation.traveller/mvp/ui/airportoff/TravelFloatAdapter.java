@@ -76,7 +76,11 @@ public class TravelFloatAdapter extends RecyclerView.Adapter<TravelFloatHolder> 
                         EventBus.getDefault().post(flightDetailsList.get(position), EventBusTags.FLIGHT_INFO_ON);
                     }
                 } else {
-                    Toast.makeText(mContext, mContext.getResources().getString(R.string.airport_no_open), Toast.LENGTH_SHORT).show();
+                    if(type == Constant.TYPE_AIRPORT_OFF){
+                        Toast.makeText(mContext, mContext.getResources().getString(R.string.airport_drop_off_no_open), Toast.LENGTH_SHORT).show();
+                    }else if(type == Constant.TYPE_AIRPORT_ON){
+                        Toast.makeText(mContext, mContext.getResources().getString(R.string.airport_pickup_no_open), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });

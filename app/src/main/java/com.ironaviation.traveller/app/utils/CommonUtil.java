@@ -17,12 +17,15 @@ import android.text.TextUtils;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 
+import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.common.WEApplication;
+import com.ironaviation.traveller.mvp.ui.widget.AlertDialog;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
@@ -304,10 +307,24 @@ public class CommonUtil {
      * @param phoneNum
      * @return boolean
      */
-    public static void call(Context context, String phoneNum) {
-        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNum));
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+    public static void call(final Context context, final String phoneNum) {
+
+
+        AlertDialog dialog = new AlertDialog(context);
+        dialog.builder().setTitle(context.getString(R.string.hint)).setMsg("是否拨打电话 " + phoneNum + "?")
+                .setPositiveButton(context.getString(R.string.confirm), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNum));
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }
+                }).setNegativeButton(context.getString(R.string.cancel), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        }).show();
     }
 
     /**
@@ -446,27 +463,28 @@ public class CommonUtil {
         windowManager.getDefaultDisplay().getMetrics(dm);
         return dm.heightPixels;
     }
-/*    public static String getImageUrl(String id,int width,int hight){
-        JSONObject json=new JSONObject();
-        try {
-            json.put("id",id);
-            json.put("width",width+"");
-            json.put("hight",hight+"");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        String url= Api.APP_DOMAIN+Api.IMAGE_URL+json.toString();
-        logDebug(url);
-        return url;
-    }*/
-    public static float numformater4(float f){
+
+    /*    public static String getImageUrl(String id,int width,int hight){
+            JSONObject json=new JSONObject();
+            try {
+                json.put("id",id);
+                json.put("width",width+"");
+                json.put("hight",hight+"");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            String url= Api.APP_DOMAIN+Api.IMAGE_URL+json.toString();
+            logDebug(url);
+            return url;
+        }*/
+    public static float numformater4(float f) {
         BigDecimal b = new BigDecimal(f);
         float f1 = b.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
         return f1;
     }
 
-    public static String getDeviceId(Context context){
-        return Settings.Secure.getString(context.getContentResolver(),Settings.Secure.ANDROID_ID);
+    public static String getDeviceId(Context context) {
+        return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
     /**
@@ -482,7 +500,6 @@ public class CommonUtil {
      * 校验double数值是否为0
      *
      * @param value
-     *
      * @return
      */
     public static boolean isEqualToZero(double value) {
