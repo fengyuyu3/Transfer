@@ -73,7 +73,7 @@
     <string name="setting_identification">实名认证</string>
     <string name="usual_address">常用地址</string>
     <string name="connect_us">联系我们</string>
-    <string name="cancellation_account">注销账号</string>
+    <string name="cancellation_account">退出登录</string>
     <string name="about_us">关于我们</string>
     <string name="about_us_title">版本V2.0新增功能</string>
     <string name="about_us_text">新增付费模式，随时查看订单状态，贴心提醒，为您提供优质服务</string>
@@ -264,6 +264,8 @@
     <string name="reset_data">重新加载</string>
     <string name="code_has_send">验证码已发送</string>
     <string name="submit_order">提交订单</string>
+    <string name="china_id_card">目前仅支持大陆居民身份认证</string>
+    <string name="identification_success">恭喜您,已认证成功</string>
 
 
 </resources>

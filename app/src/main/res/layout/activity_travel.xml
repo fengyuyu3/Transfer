@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"/>
 
         <com.zhy.autolayout.AutoLinearLayout
+            android:layout_marginTop="@dimen/h_fillet2"
             android:paddingRight="@dimen/h_fillet2"
             android:paddingLeft="@dimen/h_fillet2"
             android:orientation="vertical"

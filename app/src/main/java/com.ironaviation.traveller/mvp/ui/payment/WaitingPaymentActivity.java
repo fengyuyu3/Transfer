@@ -30,6 +30,7 @@ import com.ironaviation.traveller.mvp.model.entity.response.WeChaTInfo;
 import com.ironaviation.traveller.mvp.presenter.payment.WaitingPaymentPresenter;
 import com.ironaviation.traveller.mvp.ui.my.travel.TravelActivity;
 import com.ironaviation.traveller.mvp.ui.my.travel.TravelDetailsActivity;
+import com.ironaviation.traveller.mvp.ui.my.travel.TravelDetailsOnActivity;
 import com.ironaviation.traveller.mvp.ui.widget.AutoToolbar;
 import com.ironaviation.traveller.mvp.ui.widget.FontTextView;
 import com.ironaviation.traveller.mvp.ui.my.travel.TravelCancelActivity;
@@ -428,7 +429,11 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
         if(bid != null) {
             bundle.putString(Constant.BID, bid);
         }
-        startActivity(TravelDetailsActivity.class,bundle);
+        if(Constant.ON.equals(orderStatus)) {
+            startActivity(TravelDetailsOnActivity.class,bundle);
+        }else{
+            startActivity(TravelDetailsActivity.class,bundle);
+        }
         EventBus.getDefault().post(true, EventBusTags.REFRESH);
         finish();
     }
@@ -469,7 +474,6 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
         if(response.getData().getBID() != null){
             mPresenter.getRouteStateInfo(response.getData().getBID());
         }
-
     }
 
     @Subscriber(tag = EventBusTags.WX_PAY)
@@ -479,7 +483,11 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
             if(bid != null) {
                 bundle.putString(Constant.BID, bid);
             }
-            startActivity(TravelDetailsActivity.class,bundle);
+            if(Constant.ON.equals(orderStatus)) {
+                startActivity(TravelDetailsOnActivity.class,bundle);
+            }else{
+                startActivity(TravelDetailsActivity.class,bundle);
+            }
             EventBus.getDefault().post(true, EventBusTags.REFRESH);
             finish();
         }
@@ -492,7 +500,11 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
             if(bid != null) {
                 bundle.putString(Constant.BID, bid);
             }
-            startActivity(TravelDetailsActivity.class,bundle);
+            if(Constant.ON.equals(orderStatus)) {
+                startActivity(TravelDetailsOnActivity.class,bundle);
+            }else{
+                startActivity(TravelDetailsActivity.class,bundle);
+            }
             EventBus.getDefault().post(true, EventBusTags.REFRESH);
             finish();
         } else if (TextUtils.equals(resultStatus, "8000")) {

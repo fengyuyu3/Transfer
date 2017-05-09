@@ -67,9 +67,9 @@ public class SettingActivity extends WEActivity<SettingPresenter> implements Set
     @BindView(R.id.tti_connect_us)
     TextTextImageView mTtiConnectUs;
     @BindView(R.id.tti_cancellation_account)
-    TextTextImageView mTtiCancellationAccount;
-    @BindView(R.id.tv_version_name)
-    TextView mTvVersionName;
+    TextView mTtiCancellationAccount;
+   /* @BindView(R.id.tv_version_name)
+    TextView mTvVersionName;*/
     @BindView(R.id.tti_about_us)
     TextTextImageView mTtiAboutUs;
     private boolean flag;
@@ -114,16 +114,21 @@ public class SettingActivity extends WEActivity<SettingPresenter> implements Set
                     idCard = login.getIDCard();
                     name = login.getName();
                 }
+                mTtiIdentification.setImg(R.mipmap.ic_identificationed);
+                mTtiIdentification.setTextColor(ContextCompat.getColor(this, R.color.word_deep_grey));
                 flag = true;
             }else{
+                mTtiIdentification.setImg(R.mipmap.ic_un_identificationed);
+                mTtiIdentification.setTextColor(ContextCompat.getColor(this, R.color.word_red));
                 mTtiIdentification.setText(getString(R.string.unauthorized));
                 flag = false;
             }
         }else{
+            mTtiIdentification.setImg(R.mipmap.ic_un_identificationed);
+            mTtiIdentification.setTextColor(ContextCompat.getColor(this, R.color.word_red));
             mTtiIdentification.setText(getString(R.string.unauthorized));
             flag = false;
         }
-        mTtiIdentification.setTextColor(ContextCompat.getColor(this, R.color.word_red));
         setTv_version_name();
     }
 
@@ -214,7 +219,7 @@ public class SettingActivity extends WEActivity<SettingPresenter> implements Set
     private void setTv_version_name() {
         String versionName = DeviceUtils.getVersionName(this);
         if (!TextUtils.isEmpty(versionName)) {
-            mTvVersionName.setText(getResources().getString(R.string.app_name) + " " + versionName);
+            mTtiAboutUs.setText(getResources().getString(R.string.app_name) + " " + versionName);
         }
     }
 

@@ -21,6 +21,7 @@ import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.login.IdentificationContract;
 import com.ironaviation.traveller.mvp.presenter.Login.IdentificationPresenter;
 import com.ironaviation.traveller.mvp.ui.main.MainActivity;
+import com.ironaviation.traveller.mvp.ui.widget.AlertDialog;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoRelativeLayout;
 
@@ -148,6 +149,22 @@ public class IdentificationActivity extends WEActivity<IdentificationPresenter> 
     @Override
     public String getNumeral() {
         return mEtNumeral.getText().toString().trim();
+    }
+
+    @Override
+    public void isSuccess() {
+        showDialog();
+    }
+    public void showDialog(){
+        AlertDialog dialog = new AlertDialog(this);
+        dialog.builder().setTitle("温馨提示").setMsg(getString(R.string.identification_success))
+                .setOneButton("立即体验", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(MainActivity.class);
+                        finish();
+                    }
+                }).show();
     }
 
     @Override

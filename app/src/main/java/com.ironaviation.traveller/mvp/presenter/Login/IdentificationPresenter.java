@@ -104,12 +104,13 @@ public class IdentificationPresenter extends BasePresenter<IdentificationContrac
                             if(data.getData().isResult()) {
                                 saveIdentificationInfo(data.getData());
                                 if(data.getData().getName() != null && data.getData().getIDCard() != null) {
-                                    Intent intent = new Intent(weActivity, WebViewActivity.class);
+                                   /* Intent intent = new Intent(weActivity, WebViewActivity.class);
                                     intent.putExtra(Constant.URL, Api.PHONE_ID_CARD + "?userName=" + data.getData().getName() + "&number=" + setTextIDCard(data.getData().getIDCard()));
                                     intent.putExtra(Constant.TITLE, weActivity.getResources().getString(R.string.authenticated_success));
                                     intent.putExtra(Constant.STATUS, Constant.AUTO_SETTTING);
-                                    weActivity.startActivity(intent);
-                                    mRootView.killMyself();
+                                    weActivity.startActivity(intent);*/
+//                                    mRootView.killMyself();
+                                    mRootView.isSuccess();
                                 }
                             }else{
                                 mRootView.showMessage(weActivity.getResources().getString(R.string.authenticated_filed));

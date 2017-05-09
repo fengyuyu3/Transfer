@@ -41,18 +41,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tti_title="@string/about_us"
+        app:tti_right_go_on="@mipmap/ic_goon_grey"
         ></com.ironaviation.traveller.mvp.ui.widget.TextTextImageView>
 
-    <com.ironaviation.traveller.mvp.ui.widget.TextTextImageView
+    <!--<com.ironaviation.traveller.mvp.ui.widget.TextTextImageView
         android:id="@+id/tti_cancellation_account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32px"
         app:tti_title="@string/cancellation_account"
-        ></com.ironaviation.traveller.mvp.ui.widget.TextTextImageView>
-
+        ></com.ironaviation.traveller.mvp.ui.widget.TextTextImageView>-->
 
     <TextView
+        android:background="@drawable/select_btn_grey"
+        android:textSize="30px"
+        android:id="@+id/tti_cancellation_account"
+        android:textColor="@color/red_deep"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_marginTop="32px"
+        android:text="@string/cancellation_account"
+        android:layout_width="match_parent"
+        android:layout_height="112px"/>
+
+   <!-- <TextView
         android:id="@+id/tv_version_name"
         style="@style/common_text_content_style"
         android:layout_width="wrap_content"
@@ -62,5 +74,5 @@
         android:gravity="bottom"
 
         android:textColor="@color/input_box_grey_un_select"
-        />
+        />-->
 </com.zhy.autolayout.AutoLinearLayout>

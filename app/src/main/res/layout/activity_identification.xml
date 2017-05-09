@@ -89,6 +89,29 @@
 
     </RelativeLayout>
 
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30px"
+        android:layout_below="@+id/rl_id_numeral"
+        android:layout_width="@dimen/w_input_box"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="15px"
+            android:layout_height="15px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10px"
+            android:src="@drawable/dot_grey"/>
+        <TextView
+            android:textSize="24px"
+            android:textColor="@color/word_wait_input"
+            android:text="@string/china_id_card"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </com.zhy.autolayout.AutoLinearLayout>
+
     <RelativeLayout
         android:id="@+id/rl_identification"
         android:layout_width="@dimen/w_input_box"
