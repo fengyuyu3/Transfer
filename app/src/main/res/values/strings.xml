@@ -176,7 +176,7 @@
     <string name="travel_pickup_info">司机预计11:30分到达</string>
     <string name="travel_peer">司机正在接同行乘客</string>
     <string name="travel_already">您已上车</string>
-    <string name="travel_already_info">预计30分钟到达机场</string>
+    <string name="travel_already_info">正在计算到达时间...</string>
     <string name="travel_arrvice">行程已结束</string>
 
     <!--接机-->
@@ -210,7 +210,7 @@
     <string name="travel_go_on_status">请确认您已上车,确认后司机才可发车</string>
     <string name="travel_go_on_wait">等待上车</string>
     <string name="travel_go_on_train">司机已发车</string>
-    <string name="travel_go_on_arrive_time">预计10:40到达</string>
+    <string name="travel_go_on_arrive_time">正在计算到达时间...</string>
     <string name="travel_go_on_car">已上车</string>
     <string name="travel_go_on_wait_driver">等待司机发车</string>
     <string name="travel_arrive_info">航班到达后,司机会提前在指定地点等候您,即来即上车,无需担心航班延误或提前到达</string>

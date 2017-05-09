@@ -50,6 +50,7 @@ import com.ironaviation.traveller.map.overlayutil.DrivingRouteOverlay;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.travel.TravelDetailsOnContract;
 import com.ironaviation.traveller.mvp.model.entity.request.PathPlanning;
+import com.ironaviation.traveller.mvp.model.entity.response.PassengersResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.PushResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.presenter.my.travel.TravelDetailsOnPresenter;
@@ -345,6 +346,11 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
     }
 
     @Override
+    public LocRequest getLocRequest() {
+        return locRequest;
+    }
+
+    @Override
     public LBSTraceClient getTraceClient() {
         return mClient;
     }
@@ -450,7 +456,7 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
                 break;
             case Constant.INHAND:
                 GoOn();
-                mPresenter.initOnStartTraceListener();//事实更新司机位置
+                mPresenter.initOnStartTraceListener(responses);//事实更新司机位置
                 mPresenter.initOnEntityListenerBlue();
                 mPresenter.queryHistoryTrack(responses, getTraceClient());
                 break;
@@ -537,7 +543,8 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
                 break;
         }
     }
-    public void showConfirmDialog(){
+
+    public void showConfirmDialog() {
         final AlertDialog dialog = new AlertDialog(this);
         dialog.builder().setTitle("温馨提示").setMsg("请确认您已乘坐指定车辆")
                 .setPositiveButton("确认上车", new View.OnClickListener() {
@@ -596,17 +603,21 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
         end = BitmapDescriptorFactory.fromResource(R.mipmap.ic_location_end);
     }
 
-    private void pathTwo(double startlatitude, double startlongitude
-            , double endlatitude, double endlongitude, String address) {
-        stNode = PlanNode.withLocation(new LatLng(startlatitude, startlongitude));//起点 104.083864,30.622657
-        etNode = PlanNode.withLocation(new LatLng(endlatitude, endlongitude));
-        /*mSearch.drivingSearch((new DrivingRoutePlanOption())
-                .from(stNode).to(enNode));*/
+    public void pathTwo(double startlatitude, double startlongitude
+            , double endlatitude, double endlongitude) {
+        PlanNode stNode = PlanNode.withLocation(new LatLng(startlatitude, startlongitude));//起点 104.083864,30.622657
+        PlanNode etNode = PlanNode.withLocation(new LatLng(endlatitude, endlongitude));
+
         DrivingRoutePlanOption drivingRoutePlanOption = new DrivingRoutePlanOption();
         drivingRoutePlanOption.from(stNode);
-//        drivingRoutePlanOption.to(etNode);
-        drivingRoutePlanOption.to(PlanNode.withCityNameAndPlaceName("成都", address));
+        drivingRoutePlanOption.to(etNode);
+        //drivingRoutePlanOption.to(PlanNode.withCityNameAndPlaceName("成都", address));
         mSearch.drivingSearch(drivingRoutePlanOption);
+    }
+
+    @Override
+    public void setScheduledTime(String time) {
+        mTwTextOn.setText(time);
     }
 
     @Override
@@ -635,12 +646,31 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
             return;
         }
         if (result.error == SearchResult.ERRORNO.NO_ERROR) {
-            route = result.getRouteLines().get(0);
-            DrivingRouteOverlay overlay = new DrivingRouteOverlay(mBaiduMap, this);
+            if (result.getRouteLines().size() == 1) {
+                route = result.getRouteLines().get(0);
+
+            } else {
+                int index = 0;
+                int distance = 0;
+                for (int i = 0; i < result.getRouteLines().size(); i++) {
+                    if (distance <= result.getRouteLines().get(i).getDistance()) {
+                        index = i;
+                        distance = result.getRouteLines().get(i).getDistance();
+                    }
+                }
+                route = result.getRouteLines().get(index);
+
+            }
+            route.getDuration();
+
+            mPresenter.setScheduledTime(route,responses);
+
+        /*    route = result.getRouteLines().get(0);
+      *//*      DrivingRouteOverlay overlay = new DrivingRouteOverlay(mBaiduMap, this);
             mBaiduMap.setOnMarkerClickListener(overlay);
             overlay.setData(result.getRouteLines().get(0));
             overlay.addToMap();
-            overlay.zoomToSpan();
+            overlay.zoomToSpan();*/
             return;
         }
     }
@@ -708,22 +738,22 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
     public void onEventMainThread(TravelCancelEvent event) {
         switch (event.getEvent()) {
             case Constant.TRAVEL_CANCEL:
-                if(responses != null){
-                    setCancelTravel(responses,event);
+                if (responses != null) {
+                    setCancelTravel(responses, event);
                 }
                 break;
             case Constant.TRAVEL_CUSTOMER:
-                CommonUtil.call(this,Constant.CONNECTION_US);
+                CommonUtil.call(this, Constant.CONNECTION_US);
                 break;
         }
     }
 
-    public void setCancelTravel(RouteStateResponse responses,TravelCancelEvent event){
-        if(responses.getStatus().equals(Constant.ARRIVED)){
+    public void setCancelTravel(RouteStateResponse responses, TravelCancelEvent event) {
+        if (responses.getStatus().equals(Constant.ARRIVED)) {
             showDialog();
-        }else if(responses.getStatus().equals(Constant.INHAND)){
+        } else if (responses.getStatus().equals(Constant.INHAND)) {
             showDialog();
-        }else{
+        } else {
             Bundle pBundle = new Bundle();
             pBundle.putString(Constant.BID, event.getBid());
             pBundle.putString(Constant.STATUS, Constant.ENTER_PORT);
@@ -731,7 +761,7 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
         }
     }
 
-    public void showDialog(){
+    public void showDialog() {
         AlertDialog dialog = new AlertDialog(this);
         dialog.builder().setTitle("温馨提示").setMsg("现在不能取消行程")
                 .setOneButton("确定", new View.OnClickListener() {
@@ -747,7 +777,5 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
         finish();
     }
 
-
-    /*鹰眼轨迹方法区*/
 
 }

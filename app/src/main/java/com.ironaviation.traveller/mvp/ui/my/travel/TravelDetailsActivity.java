@@ -49,7 +49,6 @@ import com.baidu.trace.api.entity.OnEntityListener;
 import com.baidu.trace.api.track.DistanceResponse;
 import com.baidu.trace.api.track.HistoryTrackRequest;
 import com.baidu.trace.api.track.HistoryTrackResponse;
-import com.baidu.trace.api.track.LatestPoint;
 import com.baidu.trace.api.track.LatestPointResponse;
 import com.baidu.trace.api.track.OnTrackListener;
 import com.baidu.trace.api.track.SortType;
@@ -58,7 +57,6 @@ import com.baidu.trace.model.OnTraceListener;
 import com.baidu.trace.model.PushMessage;
 import com.baidu.trace.model.StatusCodes;
 import com.baidu.trace.model.TraceLocation;
-import com.google.gson.Gson;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.app.utils.CommonUtil;
@@ -72,12 +70,9 @@ import com.ironaviation.traveller.map.overlayutil.DrivingRouteOverlay;
 import com.ironaviation.traveller.map.overlayutil.OverlayManager;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.travel.TravelDetailsContract;
-import com.ironaviation.traveller.mvp.model.entity.response.HistoryTrackData;
 import com.ironaviation.traveller.mvp.model.entity.response.PassengersResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.PushResponse;
-import com.ironaviation.traveller.mvp.model.entity.response.RealtimeTrackData;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
-import com.ironaviation.traveller.mvp.presenter.my.travel.TravelDetailsOnPresenter;
 import com.ironaviation.traveller.mvp.presenter.my.travel.TravelDetailsPresenter;
 import com.ironaviation.traveller.mvp.ui.my.CurrentLocation;
 import com.ironaviation.traveller.mvp.ui.my.EstimateActivity;
@@ -93,7 +88,6 @@ import org.simple.eventbus.Subscriber;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -345,6 +339,11 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         showStatus(status, response);
     }
 
+    @Override
+    public void setScheduledTime(String scheduledTime) {
+        mTwText.setText(scheduledTime);
+    }
+
     public void initTitle() {
         setTitle(getString(R.string.travel_detail));
         mToolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_back));
@@ -500,23 +499,23 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     public void onEventMainThread(TravelCancelEvent event) {
         switch (event.getEvent()) {
             case Constant.TRAVEL_CANCEL:
-                if(responses != null) {
-                    setCancelTravel(responses,event);
+                if (responses != null) {
+                    setCancelTravel(responses, event);
                 }
                 break;
             case Constant.TRAVEL_CUSTOMER:
-                CommonUtil.call(this,Constant.CONNECTION_US);
+                CommonUtil.call(this, Constant.CONNECTION_US);
                 break;
         }
     }
 
-    public void setCancelTravel(RouteStateResponse responses,TravelCancelEvent event){
-        if(responses.getStatus().equals(Constant.ARRIVED)){
+    public void setCancelTravel(RouteStateResponse responses, TravelCancelEvent event) {
+        if (responses.getStatus().equals(Constant.ARRIVED)) {
             showDialog();
-        }else if(responses.getStatus().equals(Constant.INHAND) &&
-                responses.getChildStatus().equals(Constant.ABORAD)){
+        } else if (responses.getStatus().equals(Constant.INHAND) &&
+                responses.getChildStatus().equals(Constant.ABORAD)) {
             showDialog();
-        }else{
+        } else {
             Bundle pBundle = new Bundle();
             pBundle.putString(Constant.BID, event.getBid());
             pBundle.putString(Constant.STATUS, Constant.CLEAR_PORT);
@@ -524,7 +523,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         }
     }
 
-    public void showDialog(){
+    public void showDialog() {
         AlertDialog dialog = new AlertDialog(this);
         dialog.builder().setTitle("温馨提示").setMsg("现在不能取消行程")
                 .setOneButton("确定", new View.OnClickListener() {
@@ -885,13 +884,29 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
             return;
         }
         if (result.error == SearchResult.ERRORNO.NO_ERROR) {
-            route = result.getRouteLines().get(0);
+            if (result.getRouteLines().size() == 1) {
+                route = result.getRouteLines().get(0);
+
+            } else {
+                int index = 0;
+                int distance = 0;
+                for (int i = 0; i < result.getRouteLines().size(); i++) {
+                    if (distance <= result.getRouteLines().get(i).getDistance()) {
+                        index = i;
+                        distance = result.getRouteLines().get(i).getDistance();
+                    }
+                }
+                route = result.getRouteLines().get(index);
+
+            }
             MyDrivingRouteOverlay overlay = new MyDrivingRouteOverlay(mBaiduMap, this);
             mOverlayManager = overlay;
+            route.getDuration();
             mBaiduMap.setOnMarkerClickListener(overlay);
             overlay.setData(result.getRouteLines().get(0));
             overlay.addToMap();
             overlay.zoomToSpan();
+            mPresenter.setScheduledTime(route, mPassengersResponse);
             return;
         }
     }
@@ -1101,7 +1116,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         historyTrackRequest.setStartTime(startTime);
         historyTrackRequest.setEndTime(endTime);
         historyTrackRequest.setPageIndex(pageIndex);
-        historyTrackRequest.setPageSize(1000);
+        historyTrackRequest.setPageSize(Constant.EAGLE_EYE_HISTORY_PAGE_SIZE);
         historyTrackRequest.setProcessed(true);
         mClient.queryHistoryTrack(historyTrackRequest, mTrackListener);
     }

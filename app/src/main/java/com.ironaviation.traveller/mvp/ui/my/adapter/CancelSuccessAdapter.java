@@ -23,6 +23,7 @@ public class CancelSuccessAdapter extends BaseQuickAdapter<TravelCancelReason, B
 
     @Override
     protected void convert(BaseViewHolder helper, TravelCancelReason item) {
+
         helper.setText(R.id.tv_item_cancel_success, item.getName());
 
     }

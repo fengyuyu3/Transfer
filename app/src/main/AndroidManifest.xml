@@ -47,6 +47,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!--友盟-->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="590aa1f1bbea8327d5001e34"/>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="test"/>
+
 
         <!--引导页-->
         <activity

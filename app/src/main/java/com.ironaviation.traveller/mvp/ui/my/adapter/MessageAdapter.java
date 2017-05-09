@@ -1,5 +1,7 @@
 package com.ironaviation.traveller.mvp.ui.my.adapter;
 
+import android.text.TextUtils;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ironaviation.traveller.R;
@@ -22,9 +24,15 @@ public class MessageAdapter extends BaseQuickAdapter<MessageResponse.Items, Base
     public MessageAdapter(int layoutResId) {
         super(layoutResId);
     }
+
     @Override
     protected void convert(BaseViewHolder helper, MessageResponse.Items item) {
-        helper.setText(R.id.tv_message_text, item.getContents().replace("，点击查看行程详情",""));
-        helper.setText(R.id.tv_message_title,item.getTitle());
+        helper.setText(R.id.tv_message_title, item.getTitle());
+
+        if (!TextUtils.isEmpty(item.getTitle())) {
+            helper.setText(R.id.tv_message_text, item.getContents().replace("，点击查看行程详情", ""));
+        } else {
+            helper.setVisible(R.id.tv_message_text, false);
+        }
     }
 }

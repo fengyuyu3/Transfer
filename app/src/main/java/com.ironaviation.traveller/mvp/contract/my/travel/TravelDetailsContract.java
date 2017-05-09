@@ -45,6 +45,7 @@ public interface TravelDetailsContract {
         void setBid(String bid);
         void setPassengersInfo(List<PassengersResponse> info);
         void setPassengersResponseInfo(RouteStateResponse response);
+        void setScheduledTime(String scheduledTime);
     }
 
     //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存

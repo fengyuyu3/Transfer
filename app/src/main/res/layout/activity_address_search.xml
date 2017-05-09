@@ -28,10 +28,9 @@
         <ImageView
             android:id="@+id/v_line"
             android:layout_width="1px"
-            android:layout_height="65px"
+            android:layout_height="32px"
             android:layout_centerVertical="true"
             android:layout_marginLeft="23px"
-
             android:layout_toRightOf="@+id/tv_city"
             android:background="@color/line_little_grey"/>
 
