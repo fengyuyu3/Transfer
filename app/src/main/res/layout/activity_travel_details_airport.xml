@@ -26,6 +26,7 @@
             android:background="@color/color_transparent"></View>
 
         <com.zhy.autolayout.AutoLinearLayout
+            android:visibility="gone"
             android:id="@+id/ll_driver_info_airport"
             android:layout_width="match_parent"
             android:layout_height="203px"

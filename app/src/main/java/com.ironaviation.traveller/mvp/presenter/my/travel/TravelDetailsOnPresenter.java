@@ -133,9 +133,22 @@ public class TravelDetailsOnPresenter extends BasePresenter<TravelDetailsOnContr
                     @Override
                     public void onNext(BaseData<RouteStateResponse> routeStateResponseBaseData) {
                         if (routeStateResponseBaseData.isSuccess()) {
-                            if (routeStateResponseBaseData.getData() != null) {
+                            /*if (routeStateResponseBaseData.getData() != null) {
                                 setRouteStateResponse(routeStateResponseBaseData.getData());
                                 mRouteStateResponse = routeStateResponseBaseData.getData();
+                            } else {
+
+                            }*/
+                            if (routeStateResponseBaseData.getData() != null) {
+                                if (routeStateResponseBaseData.getData().getExt() != null) {
+                                    for (int i = 0; i < routeStateResponseBaseData.getData().getExt().size(); i++) {
+                                        routeStateResponseBaseData.getData().getExt().get(i).setJsonData(routeStateResponseBaseData.getData().getExt().get(i).getData().toString());
+                                        routeStateResponseBaseData.getData().getExt().get(i).setData(null);
+                                    }
+                                }
+                                setRouteStateResponse(routeStateResponseBaseData.getData());
+                                mRouteStateResponse = routeStateResponseBaseData.getData();
+                                mRootView.setDataResponse(routeStateResponseBaseData.getData());
                             } else {
 
                             }

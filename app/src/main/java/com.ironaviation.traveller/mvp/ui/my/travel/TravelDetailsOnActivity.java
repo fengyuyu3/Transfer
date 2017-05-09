@@ -227,7 +227,6 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
                 mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.TRAVEL_DETAILS_ON, responses.getBID());
 //                status = Constant.ARRIVED;
 
-
                 String driverCode = responses.getDriverCode();
                 if (!TextUtils.isEmpty(driverCode)) {
                     mClient = new LBSTraceClient(this);
@@ -244,6 +243,25 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
                 }
             }
         }
+    }
+
+    @Override
+    public void setDataResponse(RouteStateResponse response) {
+        this.responses = response;
+        status = response.getStatus();
+        bid = response.getBID();
+        mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.TRAVEL_DETAILS_ON, response.getBID());
+//                status = Constant.ARRIVED;
+
+
+        String driverCode = response.getDriverCode();
+        if (!TextUtils.isEmpty(driverCode)) {
+            mClient = new LBSTraceClient(this);
+            mTrace = new Trace(serviceId, driverCode);
+            locRequest = new LocRequest(serviceId);
+            //nitOnStartTraceListener();//事实更新司机位置
+        }
+        showStatus(response);
     }
 
     public void initTitle() {

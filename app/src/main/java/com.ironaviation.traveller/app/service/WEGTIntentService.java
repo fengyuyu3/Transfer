@@ -96,7 +96,6 @@ public class WEGTIntentService extends GTIntentService {
             /*TransparentMessageEntity transparentMessageEntity =
                     new Gson().fromJson(data, TransparentMessageEntity.class);*/
         }
-
     }
 
     public void otherLogin(Context context){
@@ -274,11 +273,17 @@ public class WEGTIntentService extends GTIntentService {
         if(response.getData().getTripType()!= null){
             if(response.getData().getTripType().equals(Constant.CLEAR_PORT)){
                 intent = setChildCodeNotification(response,context,intent);
+                setPush(context,intent,response);
             }else if(response.getData().getTripType().equals(Constant.ENTER_PORT)){
                 intent = setChildCodeOnNotification(response,context,intent);
+                setPush(context,intent,response);
             }
         }
 
+
+    }
+
+    public void setPush(Context context,Intent intent,BasePushData response){
         Cache.PUSH_ID++;
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK), PendingIntent.FLAG_CANCEL_CURRENT);
         Notification notify = new Notification.Builder(context)

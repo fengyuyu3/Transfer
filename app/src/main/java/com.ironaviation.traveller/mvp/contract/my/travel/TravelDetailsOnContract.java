@@ -44,6 +44,7 @@ public interface TravelDetailsOnContract {
         void pathTwo(double startlatitude, double startlongitude
                 , double endlatitude, double endlongitude);
         void setScheduledTime(String time);
+        void setDataResponse(RouteStateResponse response);
     }
 
     //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存

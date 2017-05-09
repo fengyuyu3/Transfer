@@ -898,7 +898,6 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
                     }
                 }
                 route = result.getRouteLines().get(index);
-
             }
             MyDrivingRouteOverlay overlay = new MyDrivingRouteOverlay(mBaiduMap, this);
             mOverlayManager = overlay;

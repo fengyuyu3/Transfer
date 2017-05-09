@@ -118,7 +118,7 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     private String bid;
     private RouteStateResponse responses;
     private String myStatus; //订单过来的状态
-    private String orderStatus; //订单列表过来的状态
+//    private String myStatus; //订单列表过来的状态
     private CountTimeMiniteUtil mCountTimeMiniteUtil;
     private boolean timeOutFlag;
     private boolean freeFlag;
@@ -167,11 +167,11 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
                     mPresenter.setValue(responses);
 //                    setResponsesData(responses);
                 }
-                orderStatus = pBundle.getString(Constant.CHILD_STATUS);
-                if(orderStatus != null){
-                    if (orderStatus.equals(Constant.ON)) {
+                myStatus = pBundle.getString(Constant.CHILD_STATUS);
+                if(myStatus != null){
+                    if (myStatus.equals(Constant.ON)) {
                         mTtRidingTime.setVisibility(View.GONE);
-                    } else if (orderStatus.equals(Constant.OFF)) {
+                    } else if (myStatus.equals(Constant.OFF)) {
                         mTtRidingTime.setVisibility(View.VISIBLE);
                     }
                 }
@@ -429,7 +429,7 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
         if(bid != null) {
             bundle.putString(Constant.BID, bid);
         }
-        if(Constant.ON.equals(orderStatus)) {
+        if(Constant.ON.equals(myStatus)) {
             startActivity(TravelDetailsOnActivity.class,bundle);
         }else{
             startActivity(TravelDetailsActivity.class,bundle);
@@ -451,7 +451,7 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
             case Constant.TRAVEL_CANCEL:
                 Bundle pBundle=new Bundle();
                 pBundle.putString(Constant.BID,event.getBid());
-                if(Constant.ON.equals(orderStatus)) {
+                if(Constant.ON.equals(myStatus)) {
                     pBundle.putString(Constant.STATUS,Constant.ENTER_PORT);
                 }else{
                     pBundle.putString(Constant.STATUS,Constant.CLEAR_PORT);
@@ -483,7 +483,7 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
             if(bid != null) {
                 bundle.putString(Constant.BID, bid);
             }
-            if(Constant.ON.equals(orderStatus)) {
+            if(Constant.ON.equals(myStatus)) {
                 startActivity(TravelDetailsOnActivity.class,bundle);
             }else{
                 startActivity(TravelDetailsActivity.class,bundle);
@@ -500,7 +500,7 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
             if(bid != null) {
                 bundle.putString(Constant.BID, bid);
             }
-            if(Constant.ON.equals(orderStatus)) {
+            if(Constant.ON.equals(myStatus)) {
                 startActivity(TravelDetailsOnActivity.class,bundle);
             }else{
                 startActivity(TravelDetailsActivity.class,bundle);
