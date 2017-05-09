@@ -32,7 +32,7 @@
 
         <ImageView
             android:layout_centerVertical="true"
-            android:src="@mipmap/ic_phone"
+            android:src="@mipmap/ic_login_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <EditText
@@ -56,12 +56,10 @@
         android:layout_height="@dimen/h_input_box">
 
         <ImageView
-            android:layout_width="20px"
-            android:layout_height="20px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10px"
-
-            android:src="@drawable/dot_grey"
+            android:src="@mipmap/ic_key"
             />
         <EditText
             android:id="@+id/et_code"
@@ -89,10 +87,10 @@
             android:textSize="34px"
             android:layout_gravity="center"
             android:layout_marginTop="120px"
-            android:background="@drawable/btn_login_edit_shap"
+            android:background="@mipmap/ic_login_btn"
             android:textColor="@color/login_btn"
-            android:gravity="center"
             android:text="@string/login_btn"
+            android:paddingBottom="20px"
             android:layout_width="@dimen/w_input_box"
-            android:layout_height="@dimen/h_input_box" />
+            android:layout_height="124px" />
 </com.zhy.autolayout.AutoLinearLayout>

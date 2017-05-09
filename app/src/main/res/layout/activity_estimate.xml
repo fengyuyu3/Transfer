@@ -46,7 +46,7 @@
                     android:id="@+id/it_driver_name"
                     style="@style/common_text_style"
                     android:gravity="center"
-                    android:text="李师傅"
+                    android:text=""
                     android:textColor="@color/white"
                     android:textSize="@dimen/word_title_little"
                     />
@@ -64,7 +64,7 @@
                     style="@style/common_text_style"
                     android:layout_marginLeft="9px"
                     android:gravity="center"
-                    android:text="5.0"
+                    android:text=""
                     android:textColor="@color/white"
 
                     android:textSize="@dimen/word_content_little"
@@ -81,7 +81,7 @@
                 android:layout_marginTop="15px"
                 android:background="@drawable/box_red_grey"
                 android:gravity="center"
-                android:text="穿A123456"
+                android:text=""
                 android:textColor="@color/white"
                 android:textSize="26px"
 
@@ -112,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_final_payment"
                 android:layout_marginTop="8px"
-                android:text="12.00"
+                android:text=""
                 android:textColor="@color/white"
                 android:textSize="56px"
                 />

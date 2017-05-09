@@ -4,15 +4,6 @@
     android:layout_height="match_parent"
     android:id="@+id/ll">
 
-    <com.zhy.autolayout.AutoLinearLayout
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="100px"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/ll_point"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </com.zhy.autolayout.AutoLinearLayout>
-
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
@@ -48,4 +39,12 @@
         android:id="@+id/tw_jump"
         android:layout_width="78px"
         android:layout_height="78px" />
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="100px"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/ll_point"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </com.zhy.autolayout.AutoLinearLayout>
 </com.zhy.autolayout.AutoRelativeLayout>

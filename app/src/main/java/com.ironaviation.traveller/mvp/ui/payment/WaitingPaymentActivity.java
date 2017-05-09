@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.utils.CommonUtil;
 import com.ironaviation.traveller.app.utils.CountTimeMiniteUtil;
+import com.ironaviation.traveller.app.utils.PriceUtil;
 import com.ironaviation.traveller.app.utils.TimerUtils;
 import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.common.AppComponent;
@@ -378,8 +379,8 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     }
     @Override
     public void setPrice(double num) {
-        mTvMoney.setTextType(num+"");
-        if(num == 0.0){
+        mTvMoney.setTextType(PriceUtil.getPrecent(num));
+        if(num == 0.0 || num == 0.00 || num == 0){
             hidePayment();
             freeFlag = true;
         }else{

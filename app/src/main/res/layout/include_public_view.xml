@@ -5,8 +5,8 @@
      android:orientation="vertical"
      android:background="@color/white"
      android:id="@+id/pw_ll"
-     android:paddingLeft="32px"
-     android:paddingRight="32px">
+     android:paddingLeft="@dimen/margin_left"
+     android:paddingRight="@dimen/margin_left">
 
     <com.zhy.autolayout.AutoRelativeLayout
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
             android:id="@+id/line_edt"
             android:layout_marginLeft="50px"
             android:layout_alignParentBottom="true"
-            android:background="@color/airport_edit_gray"
+            android:background="@color/line_little_grey"
             android:layout_width="match_parent"
             android:layout_height="1px"/>
 

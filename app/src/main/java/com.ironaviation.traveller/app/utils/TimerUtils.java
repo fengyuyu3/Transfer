@@ -20,6 +20,21 @@ public class TimerUtils {
     private static String format ="MM月dd日 HH点mm分";
     private static String formatDate = "dd";
     private static final int day = 1;
+
+    public static List<String> getEightDate(){
+        List<String> list = new ArrayList<>();
+        for(int i = 0; i < WEEKS+1 ; i++) {
+            Date date=new Date();//取时间
+            Calendar calendar = new GregorianCalendar();
+            calendar.setTime(date);
+            calendar.add(calendar.DATE, i-1);//把日期往后增加一天.整数往后推,负数往前移动
+            date = calendar.getTime(); //这个时间就是日期往后推一天的结果
+            SimpleDateFormat formatter = new SimpleDateFormat("MM月dd日");
+            String dateString = formatter.format(date);
+            list.add(dateString);
+        }
+        return list;
+    }
     public static List<String> getSevenDate(){
         List<String> list = new ArrayList<>();
         for(int i = 0; i < WEEKS ; i++) {

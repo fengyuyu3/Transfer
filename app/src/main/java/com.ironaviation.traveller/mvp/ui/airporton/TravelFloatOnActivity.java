@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -109,6 +110,11 @@ public class TravelFloatOnActivity extends WEActivity<TravelFloatOnPresenter> im
 
     @Override
     protected void initData() {
+        Intent intent = getIntent();
+        String flightNo = intent.getStringExtra(Constant.FLIGHT_NO);
+        if(!TextUtils.isEmpty(flightNo)){
+            mEdtTravelNum.setText(flightNo);
+        }
         mMyDialog = new MyDialog(this);
         setTravelNum();
         setEditorAction();
@@ -210,7 +216,7 @@ public class TravelFloatOnActivity extends WEActivity<TravelFloatOnPresenter> im
 
     //设置集合数据
     public List<String> getList(){
-        return TimerUtils.getSevenDate();
+        return TimerUtils.getEightDate();
     }
 
     public void setFlyTime(){
@@ -272,7 +278,7 @@ public class TravelFloatOnActivity extends WEActivity<TravelFloatOnPresenter> im
         Date date=new Date();//取时间
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(date);
-        calendar.add(calendar.DATE, index);//把日期往后增加一天.整数往后推,负数往前移动
+        calendar.add(calendar.DATE, index-1);//把日期往后增加一天.整数往后推,负数往前移动
         date = calendar.getTime(); //这个时间就是日期往后推一天的结果
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String dateString = formatter.format(date);

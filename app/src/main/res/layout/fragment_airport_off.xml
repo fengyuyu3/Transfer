@@ -7,6 +7,7 @@
     android:orientation="vertical">
 
     <com.ironaviation.traveller.mvp.ui.widget.AutoScrollView
+        android:scrollbars="none"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -107,7 +108,7 @@
                 <com.zhy.autolayout.AutoRelativeLayout
                     android:id="@+id/ll_state"
                     android:layout_width="match_parent"
-                    android:layout_height="71px"
+                    android:layout_height="86px"
                     android:background="@color/white"
                     android:orientation="horizontal">
 
@@ -202,7 +203,7 @@
         style="@style/button_red_style"
         android:layout_marginLeft="20px"
         android:layout_marginRight="20px"
-        android:layout_marginBottom="16px"
+        android:layout_marginBottom="40px"
         android:layout_width="match_parent"
         android:layout_height="@dimen/h_input_box"
         android:layout_gravity="center_horizontal"

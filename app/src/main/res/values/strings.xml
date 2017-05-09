@@ -90,8 +90,8 @@
     <string name="other_estimate">其他评价</string>
     <string name="money_unit">元</string>
     <!--登陆-->
-    <string name="login_input_phone">输入手机号</string>
-    <string name="login_input_code">输入验证码</string>
+    <string name="login_input_phone">请输入手机号</string>
+    <string name="login_input_code">请输入短信验证码</string>
     <string name="login_code">获取验证码</string>
     <string name="login_btn">登录</string>
     <string name="login_no_userInfo">请输入手机号码</string>
@@ -262,5 +262,6 @@
     <string name="btn_start_travel">开始行程</string>
     <string name="network_error_nomal">网络出错啦,请检查网络</string>
     <string name="reset_data">重新加载</string>
+    <string name="code_has_send">验证码已发送</string>
 
 </resources>

@@ -176,6 +176,7 @@ public class SettingActivity extends WEActivity<SettingPresenter> implements Set
                     startActivity(intent);
                 }else{
                     Intent intent = new Intent(this, IdentificationActivity.class);
+                    intent.putExtra(Constant.STATUS,Constant.SETTING_NOMAL);
                     startActivity(intent);
                 }
                 break;

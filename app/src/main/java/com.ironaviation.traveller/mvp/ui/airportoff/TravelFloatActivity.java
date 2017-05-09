@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -111,6 +112,11 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
 
     @Override
     protected void initData() {
+        Intent intent = getIntent();
+        String flightNo = intent.getStringExtra(Constant.FLIGHT_NO);
+        if(!TextUtils.isEmpty(flightNo)){
+            mEdtTravelNum.setText(flightNo);
+        }
         mMyDialog = new MyDialog(this);
         setTravelNum();
         setEditorAction();

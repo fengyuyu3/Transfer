@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -16,6 +17,7 @@ import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.login.DaggerIdentificationComponent;
 import com.ironaviation.traveller.di.module.login.IdentificationModule;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.login.IdentificationContract;
 import com.ironaviation.traveller.mvp.presenter.Login.IdentificationPresenter;
 import com.ironaviation.traveller.mvp.ui.main.MainActivity;
@@ -85,14 +87,26 @@ public class IdentificationActivity extends WEActivity<IdentificationPresenter> 
     @Override
     protected void initData() {
         setTitle(getString(R.string.title_identification));
-        setRightFunctionText(getString(R.string.function_skip), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        Intent intent = getIntent();
+        String status = intent.getStringExtra(Constant.STATUS);
+        if(status != null && status.equals(Constant.LOGIN)) {
+            setRightFunctionText(getString(R.string.function_skip), new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                startActivity(MainActivity.class);
-                finish();
-            }
-        });
+                    startActivity(MainActivity.class);
+                    finish();
+                }
+            });
+        }else if(status != null && status.equals(Constant.SETTING_NOMAL)){
+            mToolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_back));
+            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        }
         mEtName.setOnFocusChangeListener(this);
 //        mRlIdNumeralgitgit .setOnFocusChangeListeadbner(this);
     }

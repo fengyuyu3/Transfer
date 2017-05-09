@@ -62,7 +62,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="李师傅"
+                        android:text=""
                         android:textColor="@color/color_travel_details_font"
                         android:textSize="32px"/>
 
@@ -79,7 +79,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="10px"
-                        android:text="5.0"
+                        android:text=""
                         android:textSize="26px"/>
 
                 </com.zhy.autolayout.AutoLinearLayout>
@@ -91,7 +91,7 @@
                     android:layout_marginTop="12px"
                     android:background="@drawable/txt_gray_shap"
                     android:padding="10px"
-                    android:text="川A.M878D"
+                    android:text=""
                     android:textColor="@color/color_travel_details_font"
                     android:textSize="26px"/>
 
@@ -100,7 +100,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12px"
-                    android:text="白色.江淮"
+                    android:text=""
                     android:textColor="@color/color_travel_details_font"
                     android:textSize="26px"/>
             </com.zhy.autolayout.AutoLinearLayout>

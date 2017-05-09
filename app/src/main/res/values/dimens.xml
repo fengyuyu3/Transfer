@@ -6,7 +6,7 @@
     <dimen name="h_box">112px</dimen>
     <dimen name="w_input_box">600px</dimen>
     <dimen name="h_fillet">16px</dimen>
-    <dimen name="h_fillet2">32px</dimen>
+    <dimen name="h_fillet2">24px</dimen>
 
     <dimen name="fillet_little_input">10px</dimen>
     <dimen name="word_button">34px</dimen>
@@ -26,4 +26,5 @@
     <dimen name="pickerview_topbar_paddingleft">10dp</dimen>
     <dimen name="pickerview_topbar_paddingright">30dp</dimen>
     <dimen name="pickerview_topbar_title_textsize">21sp</dimen>
+    <dimen name="margin_left">24px</dimen>
 </resources>

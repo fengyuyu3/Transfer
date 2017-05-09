@@ -5,15 +5,14 @@
      android:orientation="vertical"
      android:background="@color/white"
      android:id="@+id/pw_ll1"
-     android:paddingLeft="32px"
-     android:paddingRight="32px">
+     android:paddingLeft="@dimen/margin_left"
+     android:paddingRight="@dimen/margin_left">
 
     <com.zhy.autolayout.AutoRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="112px">
 
         <ImageView
-            android:layout_marginLeft="2px"
             android:id="@+id/iv_logo1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,7 +23,7 @@
             android:id="@+id/line_edt1"
             android:layout_marginLeft="50px"
             android:layout_alignParentBottom="true"
-            android:background="@color/airport_edit_gray"
+            android:background="@color/line_little_grey"
             android:layout_width="match_parent"
             android:layout_height="1px"/>
 
@@ -52,7 +51,7 @@
             android:paddingLeft="10px"
             android:textColor="@color/word_middle_grey"
             android:textSize="30px"
-            android:layout_marginLeft="50px"
+            android:layout_marginLeft="48px"
             android:singleLine="true"
             android:maxLines="1"
             android:id="@+id/edt_content1"

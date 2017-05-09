@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.utils.PriceUtil;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.my.travel.DaggerRefundComponent;
@@ -123,11 +124,11 @@ public class RefundActivity extends WEActivity<RefundPresenter> implements Refun
                 }
             }
         }
-        mTwGoBackMoney.setTextType(payInfo.getRebate()+"");
+        mTwGoBackMoney.setTextType(PriceUtil.getPrecent(payInfo.getRebate()));
         mTwOrderNo.setText(info.getOrderNo() != null ? info.getOrderNo():"");
-        mTwPaymentMoney.setText(payInfo.getAmount()+"");
-        mTwAppointmentMoney.setText((payInfo.getAmount()-payInfo.getRebate())+"");
-        mTwBackMoney.setText(payInfo.getRebate()+"");
+        mTwPaymentMoney.setText(PriceUtil.getPrecent(payInfo.getAmount()));
+        mTwAppointmentMoney.setText(PriceUtil.getPrecent(payInfo.getAmount()-payInfo.getRebate()));
+        mTwBackMoney.setText(PriceUtil.getPrecent(payInfo.getRebate()));
     }
 
     @Override

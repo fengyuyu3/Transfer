@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.utils.PriceUtil;
 import com.ironaviation.traveller.common.WEApplication;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.travel.CancelSuccessContract;
@@ -156,7 +157,7 @@ public class CancelSuccessPresenter extends BasePresenter<CancelSuccessContract.
         if (payInfo != null) {
             if (payInfo.getIsFreeCancel()) {
                 mRootView.setResponsibilityView(WEApplication.getContext().getString(R.string.penal_sum_hint));
-                mRootView.setMoneyView(payInfo.getRebate() + "");
+                mRootView.setMoneyView(PriceUtil.getPrecent(payInfo.getRebate()));
             } else {
                 mRootView.setResponsibilityView(WEApplication.getContext().getString(R.string.free_hint));
 

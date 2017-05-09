@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.app.MediaRouteActionProvider;
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.TextView;
 
@@ -109,7 +110,9 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
                             if(loginEntityBaseData.getData().isRealValid()) {
                                 weActivity.startActivity(MainActivity.class);
                             }else{
-                                weActivity.startActivity(IdentificationActivity.class);
+                                Intent intent = new Intent(weActivity,IdentificationActivity.class);
+                                intent.putExtra(Constant.STATUS,Constant.LOGIN_NOMAL);
+                                weActivity.startActivity(intent);
                             }
                             mRootView.killMyself();
                             saveLoginInfo(loginEntityBaseData.getData());
@@ -137,7 +140,8 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
                     public void onNext(BaseData<Boolean> booleanBaseData) {
                         if(booleanBaseData.isSuccess()){
                             mRootView.isSuccess();
-                            mRootView.showMessage(booleanBaseData.getMessage());
+//                            mRootView.showMessage(booleanBaseData.getMessage());
+                            mRootView.showMessage(mApplication.getString(R.string.code_has_send));
                         }else{
                             mRootView.showMessage(booleanBaseData.getMessage());
                         }

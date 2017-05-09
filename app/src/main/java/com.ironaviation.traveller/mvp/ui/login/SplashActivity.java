@@ -50,7 +50,7 @@ public class SplashActivity extends WEActivity {
     TextView jump;
     private Gson gson;
     private ImageView[]  imageViews;
-    private static final int SIZE = 4;
+    private static final int SIZE = 3;
     //    private String locationMsg;
     //    private int locationTimes = 0;//当前定位次数
 //    private final static int LOCATION_TIMES_MAX = 5;//最大定位次数

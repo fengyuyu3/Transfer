@@ -37,7 +37,7 @@
 
 
     <com.zhy.autolayout.AutoLinearLayout
-        android:paddingLeft="32px"
+        android:paddingLeft="@dimen/h_fillet2"
         android:layout_marginTop="8px"
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -53,7 +53,7 @@
             android:maxLines="1"
             android:textSize="30px"
             android:textColor="@color/login_edit"
-            android:layout_marginLeft="24px"
+            android:layout_marginLeft="@dimen/h_fillet2"
             android:id="@+id/tv_time"
             android:layout_gravity="center"
             android:text="2017/03/08 10:20"
@@ -68,7 +68,7 @@
         android:layout_height="wrap_content">
 
         <com.zhy.autolayout.AutoLinearLayout
-            android:paddingLeft="32px"
+            android:paddingLeft="@dimen/h_fillet2"
             android:layout_weight="1"
             android:orientation="vertical"
             android:layout_width="wrap_content"
@@ -86,7 +86,7 @@
                     android:maxLines="1"
                     android:textSize="30px"
                     android:textColor="@color/login_edit"
-                    android:layout_marginLeft="24px"
+                    android:layout_marginLeft="@dimen/h_fillet2"
                     android:id="@+id/tv_airport"
                     android:layout_gravity="center"
                     android:text="双流机场"
@@ -108,7 +108,7 @@
                     android:maxLines="1"
                     android:textSize="30px"
                     android:textColor="@color/login_edit"
-                    android:layout_marginLeft="24px"
+                    android:layout_marginLeft="@dimen/h_fillet2"
                     android:id="@+id/tv_hotel"
                     android:text="城市名人酒店"
                     android:layout_gravity="center"

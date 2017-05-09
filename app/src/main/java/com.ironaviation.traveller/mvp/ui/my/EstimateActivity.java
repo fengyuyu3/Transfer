@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import com.google.zxing.oned.rss.RSS14Reader;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.utils.CommonUtil;
+import com.ironaviation.traveller.app.utils.PriceUtil;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.my.DaggerEstimateComponent;
@@ -194,7 +195,7 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
             mItDriverName.setText(responses.getDriverName() != null ? responses.getDriverName() : "");
             mItDriverGrade.setText(responses.getDriverRate() != null ? responses.getDriverRate() : "");
             mTwCarNum.setText(responses.getCarLicense() != null ? responses.getCarLicense() : "");
-            mTvMoney.setText(responses.getTotalPrice() + "");
+            mTvMoney.setText(PriceUtil.getPrecent(responses.getTotalPrice()));
         }
     }
 

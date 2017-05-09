@@ -539,7 +539,7 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
     }
     public void showConfirmDialog(){
         final AlertDialog dialog = new AlertDialog(this);
-        dialog.builder().setTitle("").setMsg("请确认您已乘坐指定车辆")
+        dialog.builder().setTitle("温馨提示").setMsg("请确认您已乘坐指定车辆")
                 .setPositiveButton("确认上车", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

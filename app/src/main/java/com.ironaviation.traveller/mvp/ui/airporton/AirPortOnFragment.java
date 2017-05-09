@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.app.utils.CheckIdCardUtils;
+import com.ironaviation.traveller.app.utils.PriceUtil;
 import com.ironaviation.traveller.app.utils.TimerUtils;
 import com.ironaviation.traveller.app.utils.UserInfoUtils;
 import com.ironaviation.traveller.common.AppComponent;
@@ -128,10 +129,11 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
     private HistoryPoiInfo info;
     private String formatDate = "yyyy-MM-dd";
     private String bid;
-    private boolean addressFlag,terminalFlag;
+    private boolean addressFlag,terminalFlag = true;
     private List<PassengersRequest> mPassengersRequests;
     private double price,acturlPrice;
     private String idCard;
+    private String flightNo="";
 
 
     public static AirPortOnFragment newInstance() {
@@ -292,7 +294,7 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
             } else {
                 setNomal(holder);
             }
-            if (i == position) {
+            if (i == position-1) {
                 holder.mLineEdt.setVisibility(View.GONE);
             }
             setAirportData(holder, mAirportRequests.get(i));
@@ -407,7 +409,6 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
         terminalNum = position;
         mPwAirport.setTextInfo("成都双流国际机场T" + (position + 1) + "航站楼");
         mTerminalPopupWindow.dismiss();
-        terminalFlag = true;
         if(terminalFlag && addressFlag){
             mPresenter.getAirportInfo(getAirPortInfo());
         }
@@ -549,6 +550,7 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
                 break;
             case R.id.pw_flt_no_on:
                 Intent intent = new Intent(getActivity(), TravelFloatOnActivity.class);
+                intent.putExtra(Constant.FLIGHT_NO,flightNo);
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.left_in_alpha, R.anim.right_out_alpha);
                 break;
@@ -631,6 +633,9 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
         if(flight.getList().get(0).getArriveTime() != 0){
             mPwFltNo.setArriveTime(getDateInfo(flight.getList().get(0).getArriveTime()));
         }
+        if(flight.getInfo().getFlightNo() != null){
+            flightNo = flight.getInfo().getFlightNo();
+        }
     }
 
 
@@ -710,9 +715,9 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
 //        TypefaceUtils.getInstance().setTypeface(getActivity(),mTwBestPrice);
 //        TypefaceUtils.getInstance().setTypeface(getActivity(),mTwOriginalPrice);
 //        String bestPrice = "<font color='#e83328'>" + "22.04" + "</font>" + "<font color='#b2b2b2' size=40> 元</font>";
-        mTwBestPrice.setTextType(acturlPrice+"");
+        mTwBestPrice.setTextType(PriceUtil.getPrecent(acturlPrice));
 //        String originalPrice = "<font color='#3a3a3a' >" + "22.04" + "</font>" + "<font color='#3a3a3a' size=40> 元</font>";
-        mTwOriginalPrice.setTextType(price+"");
+        mTwOriginalPrice.setTextType(PriceUtil.getPrecent(price));
         mTwOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         this.price = price;
         this.acturlPrice = acturlPrice;

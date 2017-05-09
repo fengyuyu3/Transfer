@@ -85,7 +85,7 @@ public class PublicTextView extends AutoLinearLayout {
         setPersonVisible(rightPeroson);
         setCodeVisible(rightCode);
         setLineVisiable(line);
-        setPaddingLeft(padding_left);
+//        setPaddingLeft(padding_left);
         showArriveTime(rightTime);
         showAddress(rightAddress);
 //        setDelete(rightDelete);

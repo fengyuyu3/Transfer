@@ -102,12 +102,12 @@ public class MessageActivity extends WEActivity<MessagePresenter> implements Mes
 
         mRvMessage.setAdapter(mMessageAdapter);
         mSlMessage.setOnRefreshListener(this);
-        mPresenter.getMessageData(pageIndex);
+        mPresenter.getFirstMessageData(pageIndex,true);
         mMessageAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
 
-                mPresenter.getMessageData(pageIndex);
+                mPresenter.getMessageData(mPresenter.getPage());
             }
         }, mRvMessage);
 
@@ -115,12 +115,12 @@ public class MessageActivity extends WEActivity<MessagePresenter> implements Mes
 
     @Override
     public void showLoading() {
-        showProgressDialog();
+
     }
 
     @Override
     public void hideLoading() {
-        dismissProgressDialog();
+
     }
 
     @Override
@@ -143,21 +143,14 @@ public class MessageActivity extends WEActivity<MessagePresenter> implements Mes
 
     @Override
     public void setDatas(MessageResponse mTravelResponses) {
-        pageIndex++;
-        stopRefreshing();
         mMessageAdapter.setNewData(mTravelResponses.getItems());
         mMessageAdapter.disableLoadMoreIfNotFullPage();
     }
 
     @Override
     public void addDatas(MessageResponse mTravelResponses) {
-        pageIndex++;
         mMessageAdapter.addData(mTravelResponses.getItems());
-        mMessageAdapter.loadMoreComplete();
-        if (mTravelResponses.getItems().size()< Constant.PAGE_SIZE){
-            mMessageAdapter.loadMoreEnd();
-            mMessageAdapter.disableLoadMoreIfNotFullPage();
-        }
+        mMessageAdapter.disableLoadMoreIfNotFullPage();
     }
 
     @Override
@@ -190,14 +183,32 @@ public class MessageActivity extends WEActivity<MessagePresenter> implements Mes
     }
 
     @Override
+    public void showDialog() {
+        showProgressDialog();
+    }
+
+    @Override
+    public void dismissDialog() {
+        dismissProgressDialog();
+    }
+
+    @Override
     public void stopRefreshing() {
         mSlMessage.setRefreshing(false);
     }
 
     @Override
     public void onRefresh() {
-        pageIndex=1;
-        mPresenter.getMessageData(pageIndex);
+        mPresenter.getFirstMessageData(pageIndex,false);
+    }
 
+    @Override
+    public void setNoMore() {
+        mMessageAdapter.loadMoreEnd(true);
+    }
+
+    @Override
+    public void setMoreComplete() {
+        mMessageAdapter.loadMoreComplete();
     }
 }

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.alipay.sdk.auth.APAuthInfo;
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.utils.PriceUtil;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.mvp.constant.Constant;
@@ -94,12 +95,12 @@ public class PaymentDetailsActivity extends WEActivity {
     }
 
     public void setData() {
-        mTwActurlPrice.setTextType(acturlPrice+"");
+        mTwActurlPrice.setTextType(PriceUtil.getPrecent(acturlPrice)+"");
         mTravelPriceFixedPrice.setText(String.format(getResources().getString(R.string.travel_price_fixed_price),seatNum));
-        mTwFixedPriceDetails.setText(price+"元");
+        mTwFixedPriceDetails.setText(PriceUtil.getPrecent(price)+"元");
         mTwFree.setText(String.format(getResources().getString(R.string.travel_price_free),num));
-        mTwFreePrice.setText("-"+myPrice+"元");
-        mTwCouponDetail.setText("-"+(price-acturlPrice-myPrice)+"元");
+        mTwFreePrice.setText("-"+PriceUtil.getPrecent(myPrice)+"元");
+        mTwCouponDetail.setText("-"+PriceUtil.getPrecent(price-acturlPrice-myPrice)+"元");
         if(status.equals(Constant.PAYMENT_NOMAL)){
             mLlPayment.setVisibility(View.INVISIBLE);
         }else{

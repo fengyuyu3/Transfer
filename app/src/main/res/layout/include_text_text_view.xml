@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="44px"
+        android:layout_marginLeft="@dimen/h_fillet2"
         android:text=""
         android:textSize="30px"
         android:visibility="visible"/>
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="180px"
-        android:layout_marginRight="44px"
+        android:layout_marginRight="@dimen/h_fillet2"
         android:layout_marginTop="30px"
         android:layout_marginBottom="30px"
         android:text=""

@@ -1080,7 +1080,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         for (int i = 0; i < responses.getExt().size(); i++) {
 
             if (responses.getExt().get(i).getName().equals(Constant.EXT_ARRIVED_AT)) {
-                arrivedTime = (String) responses.getExt().get(i).getData();
+                arrivedTime = (String) responses.getExt().get(i).getJsonData();
             }
         }
 
@@ -1089,7 +1089,11 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
                 endTime = (int) (System.currentTimeMillis() / 1000);
 
             } else {
-                endTime = Long.parseLong(arrivedTime) / 1000;
+                try {
+                    endTime = Long.parseLong(arrivedTime)/1000;
+                }catch (Exception e){
+
+                }
             }
         }
         trackApp.initRequest(historyTrackRequest);

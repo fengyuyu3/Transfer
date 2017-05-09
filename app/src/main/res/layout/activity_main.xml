@@ -34,7 +34,6 @@
                     android:layout_below="@+id/appbar"
                     android:background="@color/white"
                     tl:tl_indicator_color="@color/word_toolbar_select"
-                    tl:tl_indicator_corner_radius="4.5px"
                     tl:tl_indicator_height="9px"
                     tl:tl_indicator_width_equal_title="true"
                     tl:tl_tab_space_equal="true"
@@ -44,14 +43,13 @@
                 <View
                     android:id="@+id/v_shadow"
                     android:layout_width="match_parent"
-                    android:layout_height="10px"
+                    android:layout_height="16px"
                     android:layout_below="@+id/tl_7"
                     android:background="@drawable/shadow_grey"/>
                 <android.support.v4.view.ViewPager
                     android:id="@+id/vp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-
                     android:layout_below="@+id/v_shadow"/>
             </com.zhy.autolayout.AutoRelativeLayout>
         </android.support.design.widget.CoordinatorLayout>

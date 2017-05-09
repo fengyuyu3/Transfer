@@ -146,4 +146,8 @@ public interface Constant {
     String CONNECTION_US = "02886868686";
 
     String FREE_PAYMENT_SUCCESS = "paid";
+
+    String LOGIN_NOMAL = "login";
+    String SETTING_NOMAL = "setting";
+    String FLIGHT_NO = "flight_no";
 }

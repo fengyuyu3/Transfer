@@ -17,6 +17,9 @@ import java.util.List;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
+import rx.schedulers.Schedulers;
 
 import javax.inject.Inject;
 
@@ -46,6 +49,7 @@ public class MessagePresenter extends BasePresenter<MessageContract.Model, Messa
     private Application mApplication;
     private ImageLoader mImageLoader;
     private AppManager mAppManager;
+    private int page;
 
     @Inject
     public MessagePresenter(MessageContract.Model model, MessageContract.View rootView
@@ -67,6 +71,54 @@ public class MessagePresenter extends BasePresenter<MessageContract.Model, Messa
         this.mApplication = null;
     }
 
+    public void getFirstMessageData(final int pageIndex, final boolean flag) {
+        mModel.getMessageData(Constant.PAGE_SIZE, pageIndex)
+                .subscribeOn(Schedulers.io())
+                .doOnSubscribe(new Action0() {
+                    @Override
+                    public void call() {//显示进度条
+                        if(flag)
+                            mRootView.showDialog();
+                    }
+                })
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doAfterTerminate(new Action0() {
+                    @Override
+                    public void call() {
+                        mRootView.dismissDialog();
+                        mRootView.stopRefreshing();
+                    }
+                })
+                .subscribe(new ErrorHandleSubscriber<BaseData<MessageResponse>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<MessageResponse> commentTagBaseData) {
+                        if (commentTagBaseData.isSuccess()) {
+                            if (commentTagBaseData.getData() != null
+                                    && commentTagBaseData.getData().getItems().size() > 0) {
+                                    mRootView.setDatas(commentTagBaseData.getData());
+                                if(commentTagBaseData.getData().getItems().size() <10){
+                                    mRootView.setNoMore();
+                                }else{
+                                    page = commentTagBaseData.getData().getCurrentPageIndex()+1;
+                                }
+                            }else{
+                                mRootView.setNodata();
+                            }
+                        } else {
+                            mRootView.showMessage(commentTagBaseData.getMessage());
+                            mRootView.setError();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        mRootView.setError();
+                    }
+                });
+    }
+
     public void getMessageData(final int pageIndex) {
         mModel.getMessageData(Constant.PAGE_SIZE, pageIndex)
                 .compose(RxUtils.<BaseData<MessageResponse>>applySchedulers(mRootView))
@@ -76,21 +128,26 @@ public class MessagePresenter extends BasePresenter<MessageContract.Model, Messa
                         if (commentTagBaseData.isSuccess()) {
                             if (commentTagBaseData.getData() != null
                                     && commentTagBaseData.getData().getItems().size() > 0) {
-                                if (pageIndex == 1) {
-                                    mRootView.setDatas(commentTagBaseData.getData());
-                                } else {
                                     mRootView.addDatas(commentTagBaseData.getData());
+                                    page = commentTagBaseData.getData().getCurrentPageIndex() + 1;
+                                if (commentTagBaseData.getData().getItems().size() < 10) {
+                                    mRootView.setNoMore();
+                                }else{
+                                    mRootView.setMoreComplete();
                                 }
+                            }else{
+                                mRootView.setNoMore();
+                                mRootView.showMessage(commentTagBaseData.getMessage());
                             }
                         } else {
-                            mRootView.showMessage(commentTagBaseData.getMessage());
-                            if (pageIndex == 1) {
-                                mRootView.stopRefreshing();
-                            } else {
-                                mRootView.loadMoreFail();
-                            }
+
                         }
                     }
+
                 });
+    }
+
+    public int getPage(){
+        return page;
     }
 }
