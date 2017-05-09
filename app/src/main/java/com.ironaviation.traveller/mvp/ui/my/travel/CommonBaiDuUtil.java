@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.telephony.TelephonyManager;
 
 import com.baidu.mapapi.model.LatLng;
+import com.ironaviation.traveller.common.WEApplication;
+import com.umeng.analytics.MobclickAgent;
 
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
@@ -110,6 +112,8 @@ public class CommonBaiDuUtil {
             return sdf.format(new Timestamp(timestamp));
         } catch (Exception e) {
             e.printStackTrace();
+            MobclickAgent.reportError(WEApplication.getContext(), e);
+
         }
         return String.valueOf(timestamp);
     }

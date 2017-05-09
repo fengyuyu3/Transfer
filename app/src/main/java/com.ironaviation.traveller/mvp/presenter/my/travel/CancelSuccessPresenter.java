@@ -20,6 +20,7 @@ import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.utils.RxUtils;
 import com.jess.arms.widget.imageloader.ImageLoader;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -148,6 +149,8 @@ public class CancelSuccessPresenter extends BasePresenter<CancelSuccessContract.
                         payInfo = new Gson().fromJson(Ext.get(i).getJsonData(),PayInfo.class);
                     }catch (Exception e){
                         //友盟
+                        MobclickAgent.reportError(WEApplication.getContext(), e);
+
                     }
 
                 }
@@ -188,6 +191,7 @@ public class CancelSuccessPresenter extends BasePresenter<CancelSuccessContract.
                     try {
                         info1.setAmount(Double.parseDouble(c[1]));
                     }catch (Exception e){
+                        MobclickAgent.reportError(WEApplication.getContext(), e);
 
                     }
                 }
@@ -203,6 +207,7 @@ public class CancelSuccessPresenter extends BasePresenter<CancelSuccessContract.
                     try {
                         info1.setRebate(Double.parseDouble(c[1]));
                     }catch (Exception e){
+                        MobclickAgent.reportError(WEApplication.getContext(), e);
 
                     }
                 }
@@ -249,6 +254,7 @@ public class CancelSuccessPresenter extends BasePresenter<CancelSuccessContract.
                     otherReason = reasonsList[1];
                     reasons = reasonsList[0].split(Constant.SEPARATOR);
                 }catch (Exception e){
+                    MobclickAgent.reportError(WEApplication.getContext(), e);
 
                 }
 

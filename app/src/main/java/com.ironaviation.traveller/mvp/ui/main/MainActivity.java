@@ -48,6 +48,7 @@ import com.ironaviation.traveller.mvp.ui.widget.AutoSlidingTabLayout;
 import com.ironaviation.traveller.mvp.ui.widget.AutoToolbar;
 import com.jess.arms.utils.DataHelper;
 import com.jess.arms.utils.UiUtils;
+import com.umeng.analytics.MobclickAgent;
 import com.zhy.autolayout.AutoRelativeLayout;
 
 import java.util.ArrayList;
@@ -276,5 +277,6 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
         }
         return super.onKeyUp(keyCode, event);
     }
+
 
 }

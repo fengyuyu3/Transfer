@@ -33,6 +33,7 @@ import com.ironaviation.traveller.di.module.ServiceModule;
 import com.ironaviation.traveller.mvp.model.api.Api;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -206,6 +207,8 @@ public class WEApplication extends BaseApplication {
                     public void handleResponseError(Context context, Exception e) {
                         Timber.tag(TAG).w("------------>" + e.getMessage());
                         UiUtils.SnackbarText(getString(R.string.network_error));
+                        MobclickAgent.reportError(WEApplication.getContext(), e);
+
                     }
                 }).build();
     }
@@ -245,6 +248,8 @@ public class WEApplication extends BaseApplication {
 
         }catch (Exception e){
             e.printStackTrace();
+            MobclickAgent.reportError(WEApplication.getContext(), e);
+
         }
     }
 

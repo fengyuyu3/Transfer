@@ -364,6 +364,7 @@ public class UiUtils {
                     string.getBytes("UTF-8"));
         } catch (Exception e) {
             e.printStackTrace();
+
         }
         StringBuilder hex = new StringBuilder(hash.length * 2);
         for (byte b : hash) {

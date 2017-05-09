@@ -18,31 +18,28 @@
         app:tti_right_go_on="@mipmap/ic_goon_grey"
         app:tti_title="@string/setting_identification"
         ></com.ironaviation.traveller.mvp.ui.widget.TextTextImageView>
-
+    <include layout="@layout/include_line_one"/>
     <com.ironaviation.traveller.mvp.ui.widget.TextTextImageView
         android:id="@+id/tti_usual_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/h_fillet"
         app:tti_right_go_on="@mipmap/ic_goon_grey"
         app:tti_title="@string/usual_address"
         ></com.ironaviation.traveller.mvp.ui.widget.TextTextImageView>
-
+    <include layout="@layout/include_line_one"/>
     <com.ironaviation.traveller.mvp.ui.widget.TextTextImageView
         android:id="@+id/tti_connect_us"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/h_fillet"
         app:tti_right_go_on="@mipmap/ic_goon_grey"
         app:tti_text="@string/us_phone"
         app:tti_title="@string/connect_us"
         ></com.ironaviation.traveller.mvp.ui.widget.TextTextImageView>
-
+    <include layout="@layout/include_line_one"/>
     <com.ironaviation.traveller.mvp.ui.widget.TextTextImageView
         android:id="@+id/tti_about_us"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/h_fillet2"
         app:tti_title="@string/about_us"
         ></com.ironaviation.traveller.mvp.ui.widget.TextTextImageView>
 
@@ -50,7 +47,7 @@
         android:id="@+id/tti_cancellation_account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/h_fillet"
+        android:layout_marginTop="32px"
         app:tti_title="@string/cancellation_account"
         ></com.ironaviation.traveller.mvp.ui.widget.TextTextImageView>
 

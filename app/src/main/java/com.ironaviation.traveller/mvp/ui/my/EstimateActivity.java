@@ -195,7 +195,7 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
             mItDriverName.setText(responses.getDriverName() != null ? responses.getDriverName() : "");
             mItDriverGrade.setText(responses.getDriverRate() != null ? responses.getDriverRate() : "");
             mTwCarNum.setText(responses.getCarLicense() != null ? responses.getCarLicense() : "");
-            mTvMoney.setText(PriceUtil.getPrecent(responses.getTotalPrice()));
+            mTvMoney.setText(PriceUtil.getPrecent(responses.getActualPrice()));
         }
     }
 

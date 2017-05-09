@@ -31,11 +31,11 @@ public class TextTextImageView extends AutoLinearLayout {
 
     private String text, title;
     private int textColor = -1;
-    private int rightGoOn;
+    private int rightGoOn,img;
 
     private TextView tvText;
     private TextView tvTitle;
-    private ImageView ivGoOn;
+    private ImageView ivGoOn,iwImg;
 
     private View v;
 
@@ -60,16 +60,19 @@ public class TextTextImageView extends AutoLinearLayout {
         text = a.getString(R.styleable.TextTextImageView_tti_text);
         title = a.getString(R.styleable.TextTextImageView_tti_title);
         textColor = a.getColor(R.styleable.TextTextImageView_tti_text_color, ContextCompat.getColor(context, R.color.word_already_input));
+        img = a.getResourceId(R.styleable.TextTextImageView_tti_img,-1);
         a.recycle();
         setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         v = LayoutInflater.from(context).inflate(R.layout.include_text_text_image_view, this);
         ivGoOn = (ImageView) v.findViewById(R.id.iv_go_on);
         tvText = (TextView) v.findViewById(R.id.tv_tti_text);
         tvTitle = (TextView) v.findViewById(R.id.tv_tti_title);
+        iwImg = (ImageView) v.findViewById(R.id.iw_identification);
         setText(text);
         setTitle(title);
         setGoOn(rightGoOn);
         setTextColor(textColor);
+        setImg(img);
     }
 
 
@@ -101,6 +104,15 @@ public class TextTextImageView extends AutoLinearLayout {
             ivGoOn.setVisibility(VISIBLE);
         } else {
             ivGoOn.setVisibility(GONE);
+        }
+    }
+
+    public void setImg(int resId){
+        if(resId != -1){
+            iwImg.setImageResource(resId);
+            iwImg.setVisibility(VISIBLE);
+        }else{
+            iwImg.setVisibility(GONE);
         }
     }
 

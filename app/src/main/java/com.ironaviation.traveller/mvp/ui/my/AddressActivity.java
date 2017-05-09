@@ -35,6 +35,7 @@ import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.app.utils.LocationService;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
+import com.ironaviation.traveller.common.WEApplication;
 import com.ironaviation.traveller.di.component.my.DaggerAddressComponent;
 import com.ironaviation.traveller.di.module.my.AddressModule;
 import com.ironaviation.traveller.mvp.constant.Constant;
@@ -45,6 +46,7 @@ import com.ironaviation.traveller.mvp.presenter.my.AddressPresenter;
 import com.ironaviation.traveller.mvp.ui.manager.FullyLinearLayoutManager;
 import com.ironaviation.traveller.mvp.ui.my.adapter.AddressAdapter;
 import com.jess.arms.utils.UiUtils;
+import com.umeng.analytics.MobclickAgent;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
 
@@ -533,6 +535,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
                 mTwAddressText.setText(info.name);
                 this.info = info;
             } catch (Exception e) {
+                MobclickAgent.reportError(WEApplication.getContext(), e);
 
             }
         }

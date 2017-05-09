@@ -49,6 +49,7 @@ import com.ironaviation.traveller.mvp.ui.widget.PublicTextView;
 import com.ironaviation.traveller.mvp.ui.widget.TerminalPopupWindow;
 import com.jess.arms.utils.DataHelper;
 import com.jess.arms.utils.UiUtils;
+import com.umeng.analytics.MobclickAgent;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
 
@@ -790,7 +791,11 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
         request.setFlightNo(flight.getInfo().getFlightNo());
         request.setFlightDate(TimerUtils.getDateFormat(flight.getList().get(0).getTakeOffTime(),formatDate));
         request.setTakeOffDateTime(flight.getList().get(0).getTakeOffTime());
-        request.setArriveDateTime(flight.getList().get(0).getArriveTime());
+        if(flight.getList().get(0).getRealityArriveTime() != null) {
+            request.setArriveDateTime(flight.getList().get(0).getRealityArriveTime());
+        }else{
+            request.setArriveDateTime(flight.getList().get(0).getArriveTime());
+        }
         request.setTakeOffAddress(flight.getList().get(0).getTakeOff());
         request.setArriveAddress(flight.getList().get(0).getArrive());
         request.setDestLatitude(info.location.latitude);
@@ -842,4 +847,15 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
             mLlBook.setVisibility(View.GONE);
         }
     }
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(getClass().getSimpleName()); //统计页面，"MainScreen"为页面名称，可自定义
+    }
+
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(getClass().getSimpleName());
+    }
+
 }

@@ -22,6 +22,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 
+import com.ironaviation.traveller.common.WEApplication;
+import com.umeng.analytics.MobclickAgent;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -80,6 +83,7 @@ public class CommonUtil {
 
         } catch (Exception e) {
             e.printStackTrace();
+            MobclickAgent.reportError(WEApplication.getContext(), e);
 
         }
         return version;
@@ -104,6 +108,8 @@ public class CommonUtil {
             version = info.versionName;
         } catch (Exception e) {
             e.printStackTrace();
+            MobclickAgent.reportError(WEApplication.getContext(), e);
+
         }
         return version;
     }
@@ -118,6 +124,8 @@ public class CommonUtil {
             return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
         } catch (Exception e) {
             e.printStackTrace();
+            MobclickAgent.reportError(WEApplication.getContext(), e);
+
         }
         return false;
     }
@@ -198,6 +206,8 @@ public class CommonUtil {
             imei = telephonyManager.getDeviceId();
         } catch (Exception e) {
             Log.d("", e.getMessage());
+            MobclickAgent.reportError(WEApplication.getContext(), e);
+
         }
         return imei;
     }
@@ -244,6 +254,8 @@ public class CommonUtil {
             return Base64.encodeToString(encryptedData, Base64.DEFAULT);
         } catch (Exception e) {
             e.printStackTrace();
+            MobclickAgent.reportError(WEApplication.getContext(), e);
+
         }
 
         return null;
@@ -266,6 +278,8 @@ public class CommonUtil {
             return new String(decryptedData);
         } catch (Exception e) {
             e.printStackTrace();
+            MobclickAgent.reportError(WEApplication.getContext(), e);
+
         }
         return null;
     }
@@ -307,6 +321,8 @@ public class CommonUtil {
                     Environment.MEDIA_MOUNTED);
         } catch (Exception e) {
             e.printStackTrace();
+            MobclickAgent.reportError(WEApplication.getContext(), e);
+
         }
         return false;
     }

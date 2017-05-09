@@ -50,6 +50,7 @@
         <attr name="tti_text" format="string"/>
         <attr name="tti_text_color" format="color"/>
         <attr name="tti_title" format="string"/>
+        <attr name="tti_img" format="reference"/>
     </declare-styleable>
     <declare-styleable name="TextTextView">
         <attr name="tt_title" format="string"/>

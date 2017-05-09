@@ -17,16 +17,28 @@
         android:textColor="@color/word_already_input"
         android:visibility="visible"/>
 
-    <TextView
-        android:id="@+id/tv_tti_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_toLeftOf="@+id/iv_go_on"
         android:layout_marginLeft="64px"
         android:layout_marginRight="16px"
-        android:layout_toLeftOf="@+id/iv_go_on"
-        android:visibility="visible"/>
-
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_gravity="center"
+            android:visibility="visible"
+            android:id="@+id/iw_identification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:textColor="@color/word_deep_grey"
+            android:layout_gravity="center"
+            android:layout_marginLeft="6px"
+            android:id="@+id/tv_tti_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"/>
+    </com.zhy.autolayout.AutoLinearLayout>
 
     <ImageView
         android:id="@+id/iv_go_on"
