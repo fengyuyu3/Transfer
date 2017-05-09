@@ -1,6 +1,9 @@
 package com.ironaviation.traveller.app.utils;
 
 
+import com.ironaviation.traveller.common.WEApplication;
+import com.umeng.analytics.MobclickAgent;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -135,6 +138,8 @@ public class CheckIdCardUtils {
                 birthDate = new SimpleDateFormat("yyMMdd").parse(birthday);
             } catch (ParseException e) {
                 e.printStackTrace();
+                MobclickAgent.reportError(WEApplication.getContext(), e);
+
             }
             Calendar cal = Calendar.getInstance();
             if (birthDate != null)

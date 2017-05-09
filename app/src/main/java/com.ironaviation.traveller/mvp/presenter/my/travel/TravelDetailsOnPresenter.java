@@ -255,7 +255,6 @@ public class TravelDetailsOnPresenter extends BasePresenter<TravelDetailsOnContr
             @Override
             public void onReceiveLocation(TraceLocation location) {
 
-                System.out.println("TraceLocation : " + location);
 
                 if (!scheduledTime) {
                     scheduledTime=true;
@@ -292,54 +291,7 @@ public class TravelDetailsOnPresenter extends BasePresenter<TravelDetailsOnContr
         startRealTimeLoc(Constant.EAGLE_EYE_NOW_TIME_PACK_INTERVAL);
     }
 
-    private TravelDetailsOnPresenter.RefreshThread refreshThread = null;  //刷新地图线程以获取实时点
 
-    /**
-     * 轨迹刷新线程
-     *
-     * @author BLYang
-     */
-    private class RefreshThread extends Thread {
-
-        protected boolean refresh = true;
-
-        public void run() {
-
-            while (refresh) {
-                //queryEntityList();
-                mRootView.getTraceClient().queryRealTimeLoc(mRootView.getLocRequest(), entityListener);
-                try {
-                    Thread.sleep(Constant.EAGLE_EYE_NOW_TIME_PACK_INTERVAL * Constant.EAGLE_EYE_LOCATION_SIZE);
-                } catch (InterruptedException e) {
-//                    System.out.println("线程休眠失败");
-                }
-            }
-
-        }
-    }
-
-
-    /**
-     * 启动刷新线程
-     *
-     * @param isStart
-     */
-    private void startRefreshThread(boolean isStart) {
-
-        if (refreshThread == null) {
-            refreshThread = new RefreshThread();
-        }
-
-        refreshThread.refresh = isStart;
-
-        if (isStart) {
-            if (!refreshThread.isAlive()) {
-                refreshThread.start();
-            }
-        } else {
-            refreshThread = null;
-        }
-    }
 
     /**
      * 历史轨迹请求
@@ -366,6 +318,7 @@ public class TravelDetailsOnPresenter extends BasePresenter<TravelDetailsOnContr
 
             if (responses.getExt().get(i).getName().equals(Constant.EXT_ARRIVED_AT)) {
                 arrivedTime = responses.getExt().get(i).getJsonData().toString();
+                break;
             }
         }
 
@@ -374,7 +327,7 @@ public class TravelDetailsOnPresenter extends BasePresenter<TravelDetailsOnContr
                 endTime = (int) (System.currentTimeMillis() / 1000);
 
             } else {
-                endTime = Long.parseLong(arrivedTime);
+                endTime = Long.parseLong(arrivedTime)/ 1000;
             }
         }
 

@@ -67,6 +67,7 @@ import com.ironaviation.traveller.mvp.ui.widget.TerminalPopupWindow;
 import com.ironaviation.traveller.mvp.ui.widget.TravelPopupwindow;
 import com.jess.arms.utils.DataHelper;
 import com.jess.arms.utils.UiUtils;
+import com.umeng.analytics.MobclickAgent;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
 
@@ -163,7 +164,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     private TerminalPopupWindow mTerminalPopupWindow;
     private int terminalNum = 0;
     private String format = "MM月dd日 HH点mm分";
-    private boolean addressFlag,timeFlag;
+    private boolean addressFlag, timeFlag;
     private HistoryPoiInfo info;
     private Flight flight;
     private String formatDate = "yyyy-MM-dd";
@@ -172,7 +173,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     private String bid;
     private String phone;
     private String fomart = "预计MM/dd EEEE HH:mm起飞";
-    private double price,acturlPrice;
+    private double price, acturlPrice;
     private List<PassengersRequest> mPassengersRequests;
     private String idCard;
     private String flightNo="";
@@ -284,8 +285,8 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         return TimerUtils.getDateFormat(time,fomart);
     }
 
-    @OnClick({R.id.pw_seat, R.id.pw_airport, R.id.pw_flt,R.id.pw_time,R.id.pw_address,
-            R.id.tv_code_all,R.id.tw_go_to_order,R.id.tw_reset_price,R.id.ll_set_price,
+    @OnClick({R.id.pw_seat, R.id.pw_airport, R.id.pw_flt, R.id.pw_time, R.id.pw_address,
+            R.id.tv_code_all, R.id.tw_go_to_order, R.id.tw_reset_price, R.id.ll_set_price,
             R.id.tw_explain})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -293,7 +294,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
                 mNumDialog.show();
                 break;
             case R.id.pw_airport:
-                if(mTerminalPopupWindow != null){
+                if (mTerminalPopupWindow != null) {
                     mTerminalPopupWindow.setNum(terminalNum);
                     mTerminalPopupWindow.show(mPwSeat);
                 }
@@ -378,11 +379,11 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
                 });
     }
 
-    public void judgeFlyNo(){ //判断时间
+    public void judgeFlyNo() { //判断时间
         String fno = mPwFltNo.getTextInfo();
-        if(fno.equals(getActivity().getResources().getString(R.string.airport_no))){
+        if (fno.equals(getActivity().getResources().getString(R.string.airport_no))) {
             showMessage(getString(R.string.airport_no));
-        }else {
+        } else {
             long num = (flight.getList().get(0).getTakeOffTime() - System.currentTimeMillis())
                     / (60 * 60 * 1000);
             if (num < 4) {
@@ -639,6 +640,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         this.acturlPrice = acturlPrice;
 
     }
+
 
     public void clearMoreData(int position) {
         for (int i = position ; i < Constant.SEAT_NUM; i++) {
@@ -900,6 +902,16 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
             mTwGoToOrder.setBackgroundResource(R.drawable.btn_grey_shap);
         }
         mTwGoToOrder.setEnabled(flag);
+    }
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(getClass().getSimpleName()); //统计页面，"MainScreen"为页面名称，可自定义
+    }
+
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(getClass().getSimpleName());
     }
 
 }

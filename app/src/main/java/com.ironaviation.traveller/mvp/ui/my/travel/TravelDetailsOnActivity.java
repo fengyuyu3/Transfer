@@ -463,15 +463,32 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
         }
     }
 
+
+
+    @Override
+    public void onPause() {
+        // MapView的生命周期与Activity同步，当activity挂起时需调用MapView.onPause()
+        mapUtil.onPause();
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        // MapView的生命周期与Activity同步，当activity恢复时需调用MapView.onResume()
+        mapUtil.onResume();
+        super.onResume();
+    }
+
     @Override
     protected void onDestroy() {
         // MapView的生命周期与Activity同步，当activity销毁时需调用MapView.destroy()
-        mMapview.onDestroy();
 
-        // 回收 bitmap 资源
+        mapUtil.clear();
+        mSearch.destroy();
         bd.recycle();
         BitmapUtil.clear();
         mPresenter.stopRealTimeLoc();
+        super.onDestroy();
         super.onDestroy();
     }
 

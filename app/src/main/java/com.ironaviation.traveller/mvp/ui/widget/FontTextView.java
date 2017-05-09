@@ -5,6 +5,9 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+import com.ironaviation.traveller.common.WEApplication;
+import com.umeng.analytics.MobclickAgent;
+
 /**
  * Created by Administrator on 2017/4/11 0011.
  */
@@ -40,6 +43,8 @@ public class FontTextView extends TextView {
             textView.setTypeface(getTypeface(context, font));
         } catch (Exception e) {
             e.printStackTrace();
+            MobclickAgent.reportError(WEApplication.getContext(), e);
+
         }
     }
 

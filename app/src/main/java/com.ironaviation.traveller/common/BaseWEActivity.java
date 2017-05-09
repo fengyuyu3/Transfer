@@ -16,6 +16,7 @@ import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.mvp.ui.widget.CustomProgress;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.mvp.Presenter;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 项目名称：Transfer
@@ -65,6 +66,8 @@ public abstract class  BaseWEActivity<P extends Presenter> extends BaseActivity<
             customProgress.show(this, "", true, null);
         } catch (WindowManager.BadTokenException exception) {
             exception.printStackTrace();
+            MobclickAgent.reportError(WEApplication.getContext(), exception);
+
         }
     }
 
@@ -79,6 +82,8 @@ public abstract class  BaseWEActivity<P extends Presenter> extends BaseActivity<
             customProgress.show(this, msg, true, null);
         } catch (WindowManager.BadTokenException exception) {
             exception.printStackTrace();
+            MobclickAgent.reportError(WEApplication.getContext(), exception);
+
         }
     }
 

@@ -80,6 +80,7 @@ import com.ironaviation.traveller.mvp.ui.widget.AlertDialog;
 import com.ironaviation.traveller.mvp.ui.widget.MoreActionPopupWindow;
 import com.jess.arms.utils.LogUtils;
 import com.jess.arms.utils.UiUtils;
+import com.umeng.analytics.MobclickAgent;
 import com.zhy.autolayout.AutoLinearLayout;
 
 
@@ -939,24 +940,25 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         // MapView的生命周期与Activity同步，当activity挂起时需调用MapView.onPause()
-        mMapview.onPause();
+        mapUtil.onPause();
         super.onPause();
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         // MapView的生命周期与Activity同步，当activity恢复时需调用MapView.onResume()
-        mMapview.onResume();
+        mapUtil.onResume();
         super.onResume();
     }
 
     @Override
     protected void onDestroy() {
         // MapView的生命周期与Activity同步，当activity销毁时需调用MapView.destroy()
-        mMapview.onDestroy();
         // 回收 bitmap 资源
+        mapUtil.clear();
+        mSearch.destroy();
         bd.recycle();
         BitmapUtil.clear();
         stopRealTimeLoc();
@@ -1105,8 +1107,8 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 
             } else {
                 try {
-                    endTime = Long.parseLong(arrivedTime)/1000;
-                }catch (Exception e){
+                    endTime = Long.parseLong(arrivedTime) / 1000;
+                } catch (Exception e) {
 
                 }
             }
@@ -1214,6 +1216,8 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
                     Thread.sleep(Constant.EAGLE_EYE_NOW_TIME_PACK_INTERVAL * Constant.EAGLE_EYE_LOCATION_SIZE);
                 } catch (InterruptedException e) {
 //                    System.out.println("线程休眠失败");
+                    MobclickAgent.reportError(WEApplication.getContext(), e);
+
                 }
             }
 

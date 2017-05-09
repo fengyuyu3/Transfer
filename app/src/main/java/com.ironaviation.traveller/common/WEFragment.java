@@ -7,6 +7,7 @@ import com.ironaviation.traveller.mvp.ui.widget.CustomProgress;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.mvp.Presenter;
 import com.squareup.leakcanary.RefWatcher;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * Created by jess on 8/5/16 14:11
@@ -49,6 +50,8 @@ public abstract class WEFragment<P extends Presenter> extends BaseFragment<P> {
             customProgress.show(getActivity(), "", true, null);
         } catch (WindowManager.BadTokenException exception) {
             exception.printStackTrace();
+            MobclickAgent.reportError(WEApplication.getContext(), exception);
+
         }
     }
 
@@ -63,6 +66,8 @@ public abstract class WEFragment<P extends Presenter> extends BaseFragment<P> {
             customProgress.show(getActivity(), msg, true, null);
         } catch (WindowManager.BadTokenException exception) {
             exception.printStackTrace();
+            MobclickAgent.reportError(WEApplication.getContext(), exception);
+
         }
     }
 

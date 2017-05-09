@@ -38,6 +38,8 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.common.WEApplication;
+import com.umeng.analytics.MobclickAgent;
 
 public class CircleImageView extends ImageView {
 
@@ -346,6 +348,8 @@ public class CircleImageView extends ImageView {
             return bitmap;
         } catch (Exception e) {
             e.printStackTrace();
+            MobclickAgent.reportError(WEApplication.getContext(), e);
+
             return null;
         }
     }

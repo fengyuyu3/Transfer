@@ -14,6 +14,7 @@ import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.utils.PriceUtil;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
+import com.ironaviation.traveller.common.WEApplication;
 import com.ironaviation.traveller.di.component.my.travel.DaggerRefundComponent;
 import com.ironaviation.traveller.di.module.my.travel.RefundModule;
 import com.ironaviation.traveller.mvp.constant.Constant;
@@ -27,6 +28,7 @@ import com.ironaviation.traveller.mvp.ui.webview.WebViewActivity;
 import com.ironaviation.traveller.mvp.ui.widget.AutoToolbar;
 import com.ironaviation.traveller.mvp.ui.widget.FontTextView;
 import com.jess.arms.utils.UiUtils;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
 
@@ -120,6 +122,8 @@ public class RefundActivity extends WEActivity<RefundPresenter> implements Refun
                         payInfo = new Gson().fromJson(Ext.get(i).getJsonData(),PayInfo.class);
                     }catch (Exception e){
                         //友盟
+                        MobclickAgent.reportError(WEApplication.getContext(), e);
+
                     }
                 }
             }
