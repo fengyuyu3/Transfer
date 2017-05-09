@@ -168,8 +168,8 @@
     <string name="travel_order">确认预约</string>
 
 
-    <string name="travel_ordering_info">在您出行前一天21:00为您发送司机的信息</string>
-    <string name="travel_ordering_info_day">在您起飞前4小时为您发送司机的信息</string>
+    <string name="travel_ordering_info">在您出行前一天为您发送司机的信息</string>
+    <string name="travel_ordering_info_day">在您乘车前2小时为您发送司机信息</string>
     <string name="travel_wait">等待接驾</string>
     <string name="travel_wait_info">您预约的上车时间为2月2日11:00,请您提前5分钟到达预约地点,做好上车准备</string>
     <string name="travel_pickup">司机正在接您的途中</string>
@@ -263,5 +263,7 @@
     <string name="network_error_nomal">网络出错啦,请检查网络</string>
     <string name="reset_data">重新加载</string>
     <string name="code_has_send">验证码已发送</string>
+    <string name="submit_order">提交订单</string>
+
 
 </resources>

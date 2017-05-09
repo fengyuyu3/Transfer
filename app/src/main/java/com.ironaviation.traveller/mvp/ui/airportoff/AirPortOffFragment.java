@@ -725,6 +725,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
             startActivity(intent);
             clearAllData();
             setRidTimeShow();
+            flightNo = "";
         }
     }
 
@@ -811,6 +812,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         mPwFltNo.setInitInfo(getResources().getString(R.string.airport_no));
         mPwFltNo.setArriveTime("");
         clearData();
+        initEmptyData();
     }
 
     //显示价格

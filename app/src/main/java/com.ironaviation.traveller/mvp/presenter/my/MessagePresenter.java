@@ -143,14 +143,6 @@ public class MessagePresenter extends BasePresenter<MessageContract.Model, Messa
 
                         }
                     }
-
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        mRootView.setError();
-                        mRootView.stopRefreshing();
-                    }
                 });
     }
 

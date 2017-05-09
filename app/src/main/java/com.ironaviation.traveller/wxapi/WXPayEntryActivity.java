@@ -54,10 +54,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
 		switch (resp.errCode) {
 			case BaseResp.ErrCode.ERR_OK:
-				Intent intent = new Intent(this, TravelActivity.class);
-				startActivity(intent);
-				EventBus.getDefault().post(true,EventBusTags.REFRESH);
-				EventBus.getDefault().post(true,EventBusTags.SHUT_DOWN);
+				EventBus.getDefault().post(true,EventBusTags.WX_PAY);
 				finish();
 				break;
 			case BaseResp.ErrCode.ERR_USER_CANCEL:

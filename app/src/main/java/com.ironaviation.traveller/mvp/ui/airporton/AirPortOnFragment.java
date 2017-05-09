@@ -494,6 +494,7 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
             intent.putExtra(Constant.CHILD_STATUS,Constant.ON);
             startActivity(intent);
             clearAllData();
+            flightNo = "";
         }
     }
 
@@ -663,6 +664,7 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
         clearData();
         mPwFltNo.setInitInfo(getResources().getString(R.string.airport_no));
         mPwFltNo.setArriveTime("");
+        initEmptyData();
     }
 
     public void setSeat(int position){

@@ -29,6 +29,7 @@ import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.WeChaTInfo;
 import com.ironaviation.traveller.mvp.presenter.payment.WaitingPaymentPresenter;
 import com.ironaviation.traveller.mvp.ui.my.travel.TravelActivity;
+import com.ironaviation.traveller.mvp.ui.my.travel.TravelDetailsActivity;
 import com.ironaviation.traveller.mvp.ui.widget.AutoToolbar;
 import com.ironaviation.traveller.mvp.ui.widget.FontTextView;
 import com.ironaviation.traveller.mvp.ui.my.travel.TravelCancelActivity;
@@ -381,6 +382,7 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     public void setPrice(double num) {
         mTvMoney.setTextType(PriceUtil.getPrecent(num));
         if(num == 0.0 || num == 0.00 || num == 0){
+            mTvDetermineCancel.setText(getString(R.string.submit_order));
             hidePayment();
             freeFlag = true;
         }else{
@@ -404,9 +406,9 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
 
     @Override
     public void setSuccess() {
-        EventBus.getDefault().post(bid,EventBusTags.PAYMENT);
+        /*EventBus.getDefault().post(bid,EventBusTags.PAYMENT);
         startActivity(new Intent(this, TravelActivity.class));
-        finish();
+        finish();*/
     }
 
     @Override
@@ -422,8 +424,11 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
 
     @Override
     public void setFreePay(String freePay) {
-        Intent intent = new Intent(this, TravelActivity.class);
-        startActivity(intent);
+        Bundle bundle = new Bundle();
+        if(bid != null) {
+            bundle.putString(Constant.BID, bid);
+        }
+        startActivity(TravelDetailsActivity.class,bundle);
         EventBus.getDefault().post(true, EventBusTags.REFRESH);
         finish();
     }
@@ -467,9 +472,15 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
 
     }
 
-    @Subscriber(tag = EventBusTags.SHUT_DOWN)
+    @Subscriber(tag = EventBusTags.WX_PAY)
     public void shutDown(boolean shutDown){
         if(shutDown){
+            Bundle bundle = new Bundle();
+            if(bid != null) {
+                bundle.putString(Constant.BID, bid);
+            }
+            startActivity(TravelDetailsActivity.class,bundle);
+            EventBus.getDefault().post(true, EventBusTags.REFRESH);
             finish();
         }
     }
@@ -477,8 +488,11 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
     @Subscriber(tag = EventBusTags.ALIPAY_RESULT)
     public void result(String resultStatus){
         if (TextUtils.equals(resultStatus, "9000")) {
-            Intent intent = new Intent(this, TravelActivity.class);
-            startActivity(intent);
+            Bundle bundle = new Bundle();
+            if(bid != null) {
+                bundle.putString(Constant.BID, bid);
+            }
+            startActivity(TravelDetailsActivity.class,bundle);
             EventBus.getDefault().post(true, EventBusTags.REFRESH);
             finish();
         } else if (TextUtils.equals(resultStatus, "8000")) {

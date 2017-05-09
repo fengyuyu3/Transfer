@@ -36,6 +36,7 @@ public interface EventBusTags {
     String USUAL_ADDRESS = "UsualAddress";
     String ADDRESS = "Address";
     String ALIPAY_RESULT = "alipay_result";
+    String WX_PAY = "wx_pay";
     String PAYMENT_FINISH = "payment_finish";
     String WX_FILED = "wx_filed";
     String TIME_OUT = "time_out"; //订单失效

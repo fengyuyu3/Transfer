@@ -549,7 +549,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         mLlDriverInfo.setVisibility(View.GONE); //司机信息
         mLlArrive.setVisibility(View.GONE);  // 确认到达
         mTwTitle.setText(getResources().getString(R.string.travel_ordering_success));
-        mTwText.setText(getResources().getString(R.string.travel_ordering_info_day));
+        mTwText.setText(getResources().getString(R.string.travel_ordering_info));
         /*if(responses != null &&responses.getDestAddress() != null) {
             pathTwo(responses.getPickupLatitude(), responses.getPickupLongitude(),
                     responses.getDestLagitude(), responses.getDestLongitude(),responses.getDestAddress());
@@ -564,7 +564,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         mLlDriverInfo.setVisibility(View.GONE); //司机信息
         mLlArrive.setVisibility(View.GONE);  // 确认到达
         mTwTitle.setText(getResources().getString(R.string.travel_ordering_success));
-        mTwText.setText(getResources().getString(R.string.travel_ordering_info));
+        mTwText.setText(getResources().getString(R.string.travel_ordering_info_day));
         /*if(responses != null &&responses.getDestAddress() != null) {
             pathTwo(responses.getPickupLatitude(), responses.getPickupLongitude(),
                     responses.getDestLagitude(), responses.getDestLongitude(),responses.getDestAddress());
