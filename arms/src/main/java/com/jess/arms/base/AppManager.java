@@ -9,7 +9,6 @@ import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
-import com.jess.arms.R;
 
 import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
@@ -124,7 +123,7 @@ public class AppManager {
     }
 
     public void startAnimation(){
-        getCurrentActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
+       // getCurrentActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }
 
     /**

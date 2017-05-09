@@ -76,7 +76,7 @@ public class TravelDetailsOnPresenter extends BasePresenter<TravelDetailsOnContr
     // 分页索引
     int pageIndex = 1;
     String arrivedTime = null;
-    private boolean scheduledTime=false;
+    private boolean scheduledTime = false;
     /**
      * 实时定位任务
      */
@@ -257,12 +257,16 @@ public class TravelDetailsOnPresenter extends BasePresenter<TravelDetailsOnContr
 
 
                 if (!scheduledTime) {
-                    scheduledTime=true;
-                    mRootView.pathTwo(location.getLatitude(),
-                            location.getLongitude(),
-                            responses.getDestLagitude(),
-                            responses.getDestLongitude());
-                }else {
+
+                    if (null != mRootView.getMapUtil()) {
+                        scheduledTime = true;
+                        mRootView.pathTwo(location.getLatitude(),
+                                location.getLongitude(),
+                                responses.getDestLagitude(),
+                                responses.getDestLongitude());
+                    }
+
+                } else {
 
                 }
 
@@ -290,7 +294,6 @@ public class TravelDetailsOnPresenter extends BasePresenter<TravelDetailsOnContr
         //startRefreshThread(true);
         startRealTimeLoc(Constant.EAGLE_EYE_NOW_TIME_PACK_INTERVAL);
     }
-
 
 
     /**
@@ -327,7 +330,7 @@ public class TravelDetailsOnPresenter extends BasePresenter<TravelDetailsOnContr
                 endTime = (int) (System.currentTimeMillis() / 1000);
 
             } else {
-                endTime = Long.parseLong(arrivedTime)/ 1000;
+                endTime = Long.parseLong(arrivedTime) / 1000;
             }
         }
 
@@ -375,7 +378,9 @@ public class TravelDetailsOnPresenter extends BasePresenter<TravelDetailsOnContr
                     historyTrackRequest.setPageIndex(++pageIndex);
                     queryHistoryTrack(mRootView.getRoutStateResponse(), mRootView.getTraceClient());
                 } else {
-                    mRootView.getMapUtil().drawHistoryTrack(trackPoints, sortType, arrivedTime);
+                    if (mRootView.getMapUtil() != null) {
+                        mRootView.getMapUtil().drawHistoryTrack(trackPoints, sortType, arrivedTime);
+                    }
                 }
 
             }
@@ -431,7 +436,8 @@ public class TravelDetailsOnPresenter extends BasePresenter<TravelDetailsOnContr
             super.handleMessage(msg);
         }
     }
-    public void setScheduledTime(RouteLine route,RouteStateResponse mRouteStateResponse) {
+
+    public void setScheduledTime(RouteLine route, RouteStateResponse mRouteStateResponse) {
 
         if (mRouteStateResponse.getChildStatus().equals(Constant.ABORAD)) {
 

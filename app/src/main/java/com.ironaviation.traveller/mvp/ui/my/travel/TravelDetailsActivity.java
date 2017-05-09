@@ -939,6 +939,8 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         }
     }
 
+
+
     @Override
     public void onPause() {
         // MapView的生命周期与Activity同步，当activity挂起时需调用MapView.onPause()
@@ -964,9 +966,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         stopRealTimeLoc();
         super.onDestroy();
 
-    }
-
-    /*Handler handler = new Handler(){
+    }   /*Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what){
