@@ -345,7 +345,6 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
 
     @Override
     public void isSuccess() {
-        responses = mPresenter.getData();
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constant.STATUS, responses);
         startActivity(EstimateActivity.class, bundle);
