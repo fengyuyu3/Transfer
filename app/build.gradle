@@ -114,7 +114,4 @@ dependencies {
 
     //友盟统计
     compile 'com.umeng.analytics:analytics:latest.integration'
-    compile('com.github.Triggertrap:SeekArc:v1.1') {
-        exclude group: 'com.android.support'
-    }
 }
