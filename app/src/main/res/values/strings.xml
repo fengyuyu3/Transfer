@@ -208,6 +208,9 @@
     <string name="travel_status_invalidation">已失效</string>
     <string name="travel_status_wait">等待评价</string>
     <string name="travel_status_completed">已完成</string>
+    <string name="travel_status_wait_train">等待接驾</string>
+    <string name="travel_status_wait_pickup">等待上车</string>
+    <string name="travel_status_wait_come">等待发车</string>
 
     <!--接机行程详情-->
     <string name="travel_go_on_status">请确认您已上车,确认后司机才可发车</string>

@@ -45,6 +45,15 @@ public class RouteItemResponse {
     private boolean IsPaied;
     private long CurrentTime;
     private long ExpireAt;
+    private String ChildStatus;
+
+    public String getChildStatus() {
+        return ChildStatus;
+    }
+
+    public void setChildStatus(String childStatus) {
+        ChildStatus = childStatus;
+    }
 
     public boolean isDeleted() {
         return IsDeleted;

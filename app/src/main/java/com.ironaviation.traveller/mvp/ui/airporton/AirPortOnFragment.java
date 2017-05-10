@@ -110,7 +110,7 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
     @BindView(R.id.tv_code_all_on)
     TextView mTvCodeAll;
     @BindView(R.id.tw_reset_price_on)
-    TextView mTwResetPrice;
+    ImageView mTwResetPrice;
     @BindView(R.id.ll_set_price_on)
     AutoLinearLayout mLlSetPrice;
     @BindView(R.id.tw_explain_on)

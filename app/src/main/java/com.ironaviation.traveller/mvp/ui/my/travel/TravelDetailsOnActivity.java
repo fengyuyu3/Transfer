@@ -65,6 +65,7 @@ import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
 
+import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
 
 import java.util.ArrayList;
@@ -628,7 +629,7 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
         mapUtil.init((MapView) findViewById(R.id.mapview_on));
         BitmapUtil.init();
         mBaiduMap = mMapview.getMap();
-        // 隐藏缩放控件
+        //隐藏缩放控件
         mMapview.showZoomControls(false);
         //地图上比例尺
         mMapview.showScaleControl(false);
@@ -755,7 +756,13 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
 
     @Subscriber(tag = EventBusTags.TRAVEL_DETAIL_ON)
     public void travelDetailOn(PushResponse response) {
-        mPresenter.getRouteState(response.getBID());
+        if(bid != null && response.getBID() != null){
+            if(bid.equals(response.getBID())){
+                mPresenter.getRouteState(response.getBID());
+            }else{
+                EventBus.getDefault().post(response.getBID(),EventBusTags.REFRESH);
+            }
+        }
     }
 
     public void setMark(RouteStateResponse responses) {

@@ -3,7 +3,7 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:id="@+id/ll_pop"
-             android:background="#22999999"
+             android:background="#55999999"
              android:orientation="vertical">
 
     <include layout="@layout/include_toolbar"

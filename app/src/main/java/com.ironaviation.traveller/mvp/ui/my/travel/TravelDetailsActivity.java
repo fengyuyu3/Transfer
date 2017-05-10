@@ -84,6 +84,7 @@ import com.umeng.analytics.MobclickAgent;
 import com.zhy.autolayout.AutoLinearLayout;
 
 
+import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
 
 import java.util.ArrayList;
@@ -1270,7 +1271,13 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 
     @Subscriber(tag = EventBusTags.TRAVEL_DETAIL)
     public void travelDetail(PushResponse response) {
-        mPresenter.getRouteState(response.getBID());
+        if(bid != null && response.getBID() != null){
+            if(bid.equals(response.getBID())){
+                mPresenter.getRouteState(response.getBID());
+            }else{
+                EventBus.getDefault().post(response.getBID(),EventBusTags.REFRESH);
+            }
+        }
     }
 
     @Subscriber(tag = EventBusTags.PAYMENT_FINISH)

@@ -31,6 +31,7 @@ import com.ironaviation.traveller.app.service.WEGTIntentService;
 import com.ironaviation.traveller.app.service.WEPushService;
 import com.ironaviation.traveller.app.utils.CountTimerUtil;
 import com.ironaviation.traveller.app.utils.PushClientUtil;
+import com.ironaviation.traveller.app.utils.PushCountTimerUtil;
 import com.ironaviation.traveller.app.utils.ViewFindUtils;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
@@ -122,6 +123,7 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
     @BindView(R.id.rl_setting)
     AutoRelativeLayout mRlSetting;
     private ArrayList<Fragment> mFragments = new ArrayList<>();
+    private PushCountTimerUtil mPushCountTimerUtil;
     private final String[] mTitles = {
             "接机", "送机"
     };
@@ -173,8 +175,8 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
                 mDrawerLayout.openDrawer(Gravity.LEFT);
             }
         });
-
-
+        mPushCountTimerUtil = new PushCountTimerUtil(this,2*60*60*1000,5*60*1000);
+        mPushCountTimerUtil.start();
     }
 
     @OnClick({R.id.rl_message, R.id.rl_setting, R.id.rl_trip})

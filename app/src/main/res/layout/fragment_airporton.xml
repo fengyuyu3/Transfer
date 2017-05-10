@@ -137,12 +137,12 @@
                     android:background="@color/white"
                     android:orientation="vertical">
 
-                    <TextView
+                    <ImageView
+                        android:src="@mipmap/ic_refresh"
                         android:id="@+id/tw_reset_price_on"
                         android:visibility="gone"
-                        android:layout_marginTop="74px"
+                        android:layout_marginTop="48px"
                         android:textSize="40px"
-                        android:text="@string/travel_reset_price"
                         android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -151,7 +151,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginTop="74px"
+                        android:layout_marginTop="48px"
                         android:orientation="horizontal">
 
                         <com.ironaviation.traveller.mvp.ui.widget.FontTextView

@@ -73,22 +73,33 @@ public class TravelFloatAdapter extends RecyclerView.Adapter<TravelFloatHolder> 
                 if(type == Constant.TYPE_AIRPORT_OFF){
                     if((flightDetailsList.get(position).getTakeOffTime())-System.currentTimeMillis()-4*60*60*1000 < 0){
                         Toast.makeText(mContext, mContext.getResources().getString(R.string.fly_four_time), Toast.LENGTH_SHORT).show();
-                    }
-                }else {
-                    if (flag) {
-                        if (type == Constant.TYPE_AIRPORT_OFF) {
+                    }else{
+                        if(flag){
                             EventBus.getDefault().post(flightDetailsList.get(position), EventBusTags.FLIGHT_INFO);
-                        } else if (type == Constant.TYPE_AIRPORT_ON) {
-                            EventBus.getDefault().post(flightDetailsList.get(position), EventBusTags.FLIGHT_INFO_ON);
-                        }
-                    } else {
-                        if (type == Constant.TYPE_AIRPORT_OFF) {
+                        }else{
                             Toast.makeText(mContext, mContext.getResources().getString(R.string.airport_drop_off_no_open), Toast.LENGTH_SHORT).show();
-                        } else if (type == Constant.TYPE_AIRPORT_ON) {
-                            Toast.makeText(mContext, mContext.getResources().getString(R.string.airport_pickup_no_open), Toast.LENGTH_SHORT).show();
                         }
+                    }
+                }else if(type == Constant.TYPE_AIRPORT_ON){
+                    if(flag){
+                        EventBus.getDefault().post(flightDetailsList.get(position), EventBusTags.FLIGHT_INFO_ON);
+                    }else{
+                        Toast.makeText(mContext, mContext.getResources().getString(R.string.airport_pickup_no_open), Toast.LENGTH_SHORT).show();
                     }
                 }
+               /* if (flag) {
+                    if (type == Constant.TYPE_AIRPORT_OFF) {
+                        EventBus.getDefault().post(flightDetailsList.get(position), EventBusTags.FLIGHT_INFO);
+                    } else if (type == Constant.TYPE_AIRPORT_ON) {
+                        EventBus.getDefault().post(flightDetailsList.get(position), EventBusTags.FLIGHT_INFO_ON);
+                    }
+                } else {
+                    if (type == Constant.TYPE_AIRPORT_OFF) {
+                        Toast.makeText(mContext, mContext.getResources().getString(R.string.airport_drop_off_no_open), Toast.LENGTH_SHORT).show();
+                    } else if (type == Constant.TYPE_AIRPORT_ON) {
+                        Toast.makeText(mContext, mContext.getResources().getString(R.string.airport_pickup_no_open), Toast.LENGTH_SHORT).show();
+                    }
+                }*/
             }
         });
     }

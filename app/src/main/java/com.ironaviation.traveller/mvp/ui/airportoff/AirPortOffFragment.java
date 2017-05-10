@@ -141,7 +141,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     @BindView(R.id.ll_book)
     AutoLinearLayout llBook;
     @BindView(R.id.tw_reset_price)
-    TextView mTwResetPrice;
+    ImageView mTwResetPrice;
     @BindView(R.id.ll_set_price)
     AutoLinearLayout mLlSetPrice;
     @BindView(R.id.tw_explain)

@@ -2,6 +2,7 @@
 <com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/id_cord_background"
     android:orientation="vertical">
 
     <include layout="@layout/include_toolbar"/>
@@ -33,7 +34,7 @@
             android:layout_marginLeft="18px"
             android:layout_marginRight="18px"
             android:layout_marginTop="16px"
-            android:background="@drawable/btn_login_edit_shap"
+            android:background="@drawable/bg_white_shap"
             android:orientation="horizontal">
 
             <com.ironaviation.traveller.mvp.ui.widget.CircleImageView
@@ -42,7 +43,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="48px"
                 android:layout_marginTop="30px"
-                android:src="@mipmap/ic_travel_head"
+                android:src="@mipmap/ic_location_head"
                 />
 
             <com.zhy.autolayout.AutoLinearLayout
@@ -140,8 +141,7 @@
                 android:layout_marginBottom="16px"
                 android:layout_marginLeft="18px"
                 android:layout_marginRight="18px"
-                android:background="@drawable/btn_login_edit_shap"
-                android:orientation="vertical"
+                android:background="@drawable/bg_white_shap"                android:orientation="vertical"
                 android:visibility="gone">
 
                 <com.zhy.autolayout.AutoLinearLayout
@@ -185,8 +185,7 @@
                 android:layout_marginBottom="16px"
                 android:layout_marginLeft="18px"
                 android:layout_marginRight="18px"
-                android:background="@drawable/btn_login_edit_shap"
-                android:orientation="vertical"
+                android:background="@drawable/bg_white_shap"                android:orientation="vertical"
                 android:visibility="gone">
 
                 <TextView
@@ -225,8 +224,7 @@
                 android:layout_alignLeft="@+id/autoLinearLayout"
                 android:layout_alignParentBottom="true"
                 android:layout_alignStart="@+id/autoLinearLayout"
-                android:background="@drawable/btn_login_edit_shap"
-                android:orientation="vertical"
+                android:background="@drawable/bg_white_shap"                android:orientation="vertical"
                 android:visibility="gone">
 
                 <TextView
@@ -265,8 +263,7 @@
                 android:layout_alignLeft="@+id/autoLinearLayout"
                 android:layout_alignParentBottom="true"
                 android:layout_alignStart="@+id/autoLinearLayout"
-                android:background="@drawable/btn_login_edit_shap"
-                android:orientation="vertical"
+                android:background="@drawable/bg_white_shap"                android:orientation="vertical"
                 android:visibility="gone">
 
                 <TextView
@@ -298,8 +295,7 @@
                 android:layout_marginBottom="16px"
                 android:layout_marginLeft="18px"
                 android:layout_marginRight="18px"
-                android:background="@drawable/btn_login_edit_shap"
-                android:orientation="vertical"
+                android:background="@drawable/bg_white_shap"                android:orientation="vertical"
                 android:visibility="gone">
 
                 <TextView
@@ -371,8 +367,7 @@
             <com.zhy.autolayout.AutoLinearLayout
                 android:visibility="gone"
                 android:id="@+id/rl_successful"
-                android:background="@color/white"
-                android:orientation="vertical"
+                android:background="@drawable/bg_white_shap"                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="420px">
 

@@ -100,6 +100,8 @@ public class SettingActivity extends WEActivity<SettingPresenter> implements Set
     @Override
     protected void initData() {
         setTitle(getString(R.string.setting));
+        mTtiConnectUs.setTextColor(ContextCompat.getColor(this, R.color.word_deep_grey));
+        mTtiAboutUs.setTextColor(ContextCompat.getColor(this, R.color.word_deep_grey));
         setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_back));
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

@@ -27,7 +27,7 @@ public class TravelAdapter extends BaseQuickAdapter<RouteItemResponse,BaseViewHo
 
     @Override
     protected void convert(BaseViewHolder helper, RouteItemResponse item) {
-        String status = setStatus(item.getStatus());
+        String status = setStatus(item.getStatus(),item);
         if(status != null){
             helper.setText(R.id.tv_status,status);
         }else{
@@ -38,7 +38,7 @@ public class TravelAdapter extends BaseQuickAdapter<RouteItemResponse,BaseViewHo
         helper.setText(R.id.tv_hotel,item.getDestAddress());
     }
 
-    public String setStatus(String status){
+    public String setStatus(String status,RouteItemResponse item){
         String st = null;
         if(Constant.REGISTERED.equalsIgnoreCase(status)){
             st = WEApplication.getContext().getResources().getString(R.string.travel_status_registered);
@@ -49,7 +49,20 @@ public class TravelAdapter extends BaseQuickAdapter<RouteItemResponse,BaseViewHo
         }else if(Constant.CANCEL.equalsIgnoreCase(status)){
             st = WEApplication.getContext().getResources().getString(R.string.travel_status_cancel);
         }else if(Constant.BOOKSUCCESS.equalsIgnoreCase(status)){
-            st = WEApplication.getContext().getResources().getString(R.string.travel_status_booksuccess);
+            if(item.getTripType().equals(Constant.CLEAR_PORT)){ //送机
+                    st = WEApplication.getContext().getResources().getString(R.string.travel_status_wait_train);
+            }else if(item.getTripType().equals(Constant.ENTER_PORT)){ //接机
+                if(item.getChildStatus().equals(Constant.PICKUP)){
+                    st = WEApplication.getContext().getResources().getString(R.string.travel_status_wait_pickup);
+                }else if(item.getChildStatus().equals(Constant.ABORAD)) {
+                    st = WEApplication.getContext().getResources().getString(R.string.travel_status_wait_come);
+                }else{
+                    st = WEApplication.getContext().getResources().getString(R.string.travel_status_booksuccess);
+                }
+            }else{
+               st = WEApplication.getContext().getResources().getString(R.string.travel_status_booksuccess);
+            }
+
         }else if(Constant.COMPLETED.equalsIgnoreCase(status)){
             st = WEApplication.getContext().getResources().getString(R.string.travel_status_completed);
         }else if(Constant.NOTPAID.equalsIgnoreCase(status)){
