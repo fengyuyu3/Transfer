@@ -175,8 +175,8 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
                 mDrawerLayout.openDrawer(Gravity.LEFT);
             }
         });
-        mPushCountTimerUtil = new PushCountTimerUtil(this,2*60*60*1000,5*60*1000);
-        mPushCountTimerUtil.start();
+        /*mPushCountTimerUtil = new PushCountTimerUtil(this,2*60*60*1000,5*60*1000);
+        mPushCountTimerUtil.start();*/
     }
 
     @OnClick({R.id.rl_message, R.id.rl_setting, R.id.rl_trip})

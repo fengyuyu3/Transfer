@@ -21,8 +21,8 @@
     <string name="refund_Amount">退款金额</string>
     <string name="cancel_rules_hint">查看取消规则</string>
     <string name="determine_cancel">确定取消</string>
-    <string name="penal_sum_hint">您取消了本次行程，本次行程为有责取消</string>
-    <string name="free_hint">您取消了本次行程，本次爽约金由平台减免</string>
+    <string name="penal_sum_hint">您的行程已取消，本次行程为有责取消</string>
+    <string name="free_hint">您的行程已取消，本次爽约金由平台减免</string>
     <string name="cancel_travel_hint">请选择取消原因</string>
     <string name="cancel_travel_cost_hint_1">现在取消将会支付</string>
     <string name="cancel_travel_cost_hint_2">元作为爽约金</string>

@@ -70,6 +70,7 @@ import com.ironaviation.traveller.map.overlayutil.DrivingRouteOverlay;
 import com.ironaviation.traveller.map.overlayutil.OverlayManager;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.travel.TravelDetailsContract;
+import com.ironaviation.traveller.mvp.model.entity.BasePushData;
 import com.ironaviation.traveller.mvp.model.entity.response.PassengersResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.PushResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
@@ -1270,12 +1271,12 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     }
 
     @Subscriber(tag = EventBusTags.TRAVEL_DETAIL)
-    public void travelDetail(PushResponse response) {
-        if(bid != null && response.getBID() != null){
-            if(bid.equals(response.getBID())){
-                mPresenter.getRouteState(response.getBID());
+    public void travelDetail(BasePushData response) {
+        if(bid != null && response.getData() != null && response.getData().getBID()!=null){
+            if(bid.equals(response.getData().getBID())){
+                mPresenter.getRouteState(response.getData().getBID());
             }else{
-                EventBus.getDefault().post(response.getBID(),EventBusTags.REFRESH);
+                EventBus.getDefault().post(response.getData().getBID(),EventBusTags.REFRESH);
             }
         }
     }

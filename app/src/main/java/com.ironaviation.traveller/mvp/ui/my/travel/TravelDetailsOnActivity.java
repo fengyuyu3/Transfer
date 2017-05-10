@@ -50,6 +50,7 @@ import com.ironaviation.traveller.map.overlayutil.DrivingRouteOverlay;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.travel.TravelDetailsOnContract;
 import com.ironaviation.traveller.mvp.model.api.Api;
+import com.ironaviation.traveller.mvp.model.entity.BasePushData;
 import com.ironaviation.traveller.mvp.model.entity.request.PathPlanning;
 import com.ironaviation.traveller.mvp.model.entity.response.PassengersResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.PushResponse;
@@ -629,7 +630,7 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
         mapUtil.init((MapView) findViewById(R.id.mapview_on));
         BitmapUtil.init();
         mBaiduMap = mMapview.getMap();
-        //隐藏缩放控件
+        // 隐藏缩放控件
         mMapview.showZoomControls(false);
         //地图上比例尺
         mMapview.showScaleControl(false);
@@ -755,12 +756,12 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
     }
 
     @Subscriber(tag = EventBusTags.TRAVEL_DETAIL_ON)
-    public void travelDetailOn(PushResponse response) {
-        if(bid != null && response.getBID() != null){
-            if(bid.equals(response.getBID())){
-                mPresenter.getRouteState(response.getBID());
+    public void travelDetailOn(BasePushData response) {
+        if(bid != null && response.getData()!= null && response.getData().getBID() != null){
+            if(bid.equals(response.getData().getBID())){
+                mPresenter.getRouteState(response.getData().getBID());
             }else{
-                EventBus.getDefault().post(response.getBID(),EventBusTags.REFRESH);
+                EventBus.getDefault().post(response.getData().getBID(),EventBusTags.REFRESH);
             }
         }
     }

@@ -85,7 +85,7 @@ public class WEGTIntentService extends GTIntentService {
                 if(response.getType() == Constant.OTHER_LOGIN){
                     otherLogin(context);
                 }else {
-                    if (!TextUtils.isEmpty(response.getData().getTripType()) && !response.getData().getStatus().equals(Constant.ORDER_SUCCESS) && !response.getData().getStatus().equals(Constant.ORDER_SUCCESS_ON)) {
+                    if (!TextUtils.isEmpty(response.getData().getTripType()) && !(response.getData().getCode()==Constant.ORDER_SUCCESS) && !(response.getData().getCode()==Constant.ORDER_SUCCESS_ON)) {
                         setStatus(response, context);
                         messageLogic(response, context);
                         EventBus.getDefault().post(response.getData().getBID(), EventBusTags.REFRESH);
