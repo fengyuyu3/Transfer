@@ -91,10 +91,9 @@ public class IdentificationActivity extends WEActivity<IdentificationPresenter> 
         Intent intent = getIntent();
         String status = intent.getStringExtra(Constant.STATUS);
         if(status != null && status.equals(Constant.LOGIN)) {
-            setRightFunctionText(getString(R.string.function_skip), new View.OnClickListener() {
+            setRightFunctionText(getString(R.string.function_skip),R.color.color_eec0be, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     startActivity(MainActivity.class);
                     finish();
                 }

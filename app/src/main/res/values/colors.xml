@@ -69,4 +69,13 @@
     <color name="color_5c5c5c">#5c5c5c</color>
     <color name="color_dfdfdf">#dfdfdf</color>
     <color name="color_d23b32">#d23b32</color>
+    <color name="color_eec0be">#eec0be</color>
+
+    <color name="textDarkColor">#333333</color>
+    <color name="textLightDarkColor">#666666</color>
+    <color name="colorDivide">#e5e5e5</color>
+    <color name="titleBGColor">#004b92</color>
+    <color name="colorOrange">#f4723e</color>
+    <color name="transparent_background">#00111111</color>
+
 </resources>

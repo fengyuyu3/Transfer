@@ -46,6 +46,8 @@ public interface Api {
     String PHONE_CANCEL_ROLE_OFF ="http://th-api.bestwise.net/app/view/phoneCancelRole.html";
     String PHONE_ID_CARD ="http://th-api.bestwise.net/app/view/phoneIdCard.html";///*?userName=XXXXXX&number=XXXXXXX*/
     String PHONE_INTRODUCE ="http://th-api.bestwise.net/app/view/phoneIntroduce.html";
+    String ADDRESS_DEST = APP_DOMAIN+"/app/view/phonePickup.html";
+    String ADDRESS_LIMIT = "/api/MapLimit/IsPositionValidate"; //地址范围
 
 
 

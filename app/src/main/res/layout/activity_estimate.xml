@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/h_fillet2"
-            android:background="@mipmap/ic_head_grey"
+            android:background="@mipmap/ic_user_head"
             />
 
 

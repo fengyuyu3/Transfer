@@ -49,6 +49,7 @@ import com.ironaviation.traveller.event.TravelCancelEvent;
 import com.ironaviation.traveller.map.overlayutil.DrivingRouteOverlay;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.my.travel.TravelDetailsOnContract;
+import com.ironaviation.traveller.mvp.model.api.Api;
 import com.ironaviation.traveller.mvp.model.entity.request.PathPlanning;
 import com.ironaviation.traveller.mvp.model.entity.response.PassengersResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.PushResponse;
@@ -56,6 +57,7 @@ import com.ironaviation.traveller.mvp.model.entity.response.RouteStateResponse;
 import com.ironaviation.traveller.mvp.presenter.my.travel.TravelDetailsOnPresenter;
 import com.ironaviation.traveller.mvp.ui.my.EstimateActivity;
 import com.ironaviation.traveller.mvp.ui.my.QRCodeActivity;
+import com.ironaviation.traveller.mvp.ui.webview.WebViewActivity;
 import com.ironaviation.traveller.mvp.ui.widget.AlertDialog;
 import com.ironaviation.traveller.mvp.ui.widget.AutoToolbar;
 import com.ironaviation.traveller.mvp.ui.widget.MoreActionPopupWindow;
@@ -559,6 +561,10 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
                 twoDimenSion();
                 break;
             case R.id.tw_address:           //查看地址
+                Intent intent1 = new Intent(this, WebViewActivity.class);
+                intent1.putExtra(Constant.URL, Api.ADDRESS_DEST);
+                intent1.putExtra(Constant.TITLE, getResources().getString(R.string.pickup_address));
+                startActivity(intent1);
                 break;
             case R.id.iw_zoom_nomal_airport: //隐藏
                 if (status != null) {
@@ -569,10 +575,11 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
                 AllGone();
                 break;
             case R.id.iw_mobile_airport:
-                Intent intent = new Intent(Intent.ACTION_DIAL);
+                /*Intent intent = new Intent(Intent.ACTION_DIAL);
                 Uri data = Uri.parse("tel:" + phone);
                 intent.setData(data);
-                startActivity(intent);
+                startActivity(intent);*/
+                CommonUtil.call(this,phone !=null?phone:Constant.CONNECTION_US);
                 break;
         }
     }

@@ -40,4 +40,5 @@ public interface EventBusTags {
     String PAYMENT_FINISH = "payment_finish";
     String WX_FILED = "wx_filed";
     String TIME_OUT = "time_out"; //订单失效
+    String PUSH_ONLINE = "push_online";
 }

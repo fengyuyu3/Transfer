@@ -133,6 +133,7 @@ public class IdentificationPresenter extends BasePresenter<IdentificationContrac
             loginEntity.setIDCard(identificationResponse.getIDCard());
             loginEntity.setName(identificationResponse.getName());
             loginEntity.setRealValid(true);
+            DataHelper.saveDeviceData(mApplication, Constant.LOGIN, loginEntity);
         }else{ //登录信息没有
 
         }

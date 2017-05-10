@@ -188,16 +188,10 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 mPresenter.saveAddress(infos.get(position));
-
-                if (addressType == Constant.AIRPORT_GO) {
-                    EventBus.getDefault().post(infos.get(position), EventBusTags.AIRPORT_GO);
-                    finish();
-                } else if (addressType == Constant.AIRPORT_ON) {
-                    EventBus.getDefault().post(infos.get(position), EventBusTags.AIRPORT_ON);
-                    finish();
-                } else {
-
-                }
+                mPresenter.isAddress(Constant.CHENGDU_CTU,
+                        infos.get(position).location.longitude,
+                        infos.get(position).location.latitude,
+                        infos.get(position));
             }
         });
     }
@@ -252,7 +246,13 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
                 finish();
                 break;
             case R.id.ll_address:
-                if (addressType == Constant.AIRPORT_GO) {
+                if(info != null) {
+                    mPresenter.isAddress(Constant.CHENGDU_CTU, info.location.longitude,
+                            info.location.latitude, info);
+                }else{
+                    showMessage("没有定位成功!");
+                }
+                /*if (addressType == Constant.AIRPORT_GO) {
                     if (info != null) {
                         EventBus.getDefault().post(info, EventBusTags.AIRPORT_GO);
                     } else {
@@ -265,7 +265,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
                         showMessage("没有定位成功!");
                     }
                 }
-                finish();
+                finish();*/
                 break;
             case R.id.ll_home_address:
                 for (int i = 0; i < mUpdateAddressBookRequests.size(); i++) {
@@ -274,8 +274,9 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
 
                             if (mUpdateAddressBookRequests.get(i).getViewType() == 0) {
 
-
-                                if (addressType == Constant.AIRPORT_GO) {
+                                mPresenter.isAddress(Constant.CHENGDU_CTU,mUpdateAddressBookRequests.get(i).getLongitude()
+                                ,mUpdateAddressBookRequests.get(i).getLatitude(),newHistoryPoiInfo(mUpdateAddressBookRequests.get(i)));
+                                /*if (addressType == Constant.AIRPORT_GO) {
                                     EventBus.getDefault().post(newHistoryPoiInfo(mUpdateAddressBookRequests.get(i)), EventBusTags.AIRPORT_GO);
                                     finish();
                                 } else if (addressType == Constant.AIRPORT_ON) {
@@ -284,7 +285,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
                                     finish();
                                 } else {
 
-                                }
+                                }*/
 
                             } else if (mUpdateAddressBookRequests.get(i).getViewType() == 1) {
                                 Bundle pBundle = new Bundle();
@@ -305,7 +306,9 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
                         case Constant.COMPANY:
 
                             if (mUpdateAddressBookRequests.get(i).getViewType() == 0) {
-                                if (addressType == Constant.AIRPORT_GO) {
+                                mPresenter.isAddress(Constant.CHENGDU_CTU,mUpdateAddressBookRequests.get(i).getLongitude()
+                                        ,mUpdateAddressBookRequests.get(i).getLatitude(),newHistoryPoiInfo(mUpdateAddressBookRequests.get(i)));
+                                /*if (addressType == Constant.AIRPORT_GO) {
 
                                     EventBus.getDefault().post(newHistoryPoiInfo(mUpdateAddressBookRequests.get(i)), EventBusTags.AIRPORT_GO);
                                     finish();
@@ -315,7 +318,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
                                     finish();
                                 } else {
 
-                                }
+                                }*/
                             } else if (mUpdateAddressBookRequests.get(i).getViewType() == 1) {
                                 Bundle pBundle = new Bundle();
                                 pBundle.putInt(Constant.ADDRESS_TYPE, Constant.ADDRESS_USUAl_COMPANY);
@@ -365,7 +368,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
         infos = new ArrayList<>();
 
         for (PoiInfo info : result.getAllPoi()) {
-            if (info.location != null) {
+            if (info.location != null && info.city.equals(getString(R.string.address_city))) {
                 infos.add(new HistoryPoiInfo(info, false));
             }
         }
@@ -417,6 +420,21 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
             }
         }
 
+    }
+
+    @Override
+    public void isAddressSuccess(boolean flag,HistoryPoiInfo info) {
+        if(flag){
+            if (addressType == Constant.AIRPORT_GO) {
+                EventBus.getDefault().post(info, EventBusTags.AIRPORT_GO);
+                finish();
+            } else if (addressType == Constant.AIRPORT_ON) {
+                EventBus.getDefault().post(info, EventBusTags.AIRPORT_ON);
+                finish();
+            } else {
+
+            }
+        }
     }
 
 
@@ -536,8 +554,9 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
                 this.info = info;
             } catch (Exception e) {
                 MobclickAgent.reportError(WEApplication.getContext(), e);
-
             }
+        }else{
+            initLocation();
         }
     }
 

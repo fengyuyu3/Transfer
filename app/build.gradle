@@ -19,7 +19,7 @@ android {
                 GETUI_APP_KEY   : "E3cvOSQooM7P7HhxLsrcA",
                 GETUI_APP_SECRET: "1C4SddDbDq5RpT4ajRNBA9",
         ]
-       /* ndk {
+        /*ndk {
             abiFilters "armeabi", "armeabi-v7a", "x86_64","x86","arm64-v8a"
         }*/
     }
@@ -114,4 +114,7 @@ dependencies {
 
     //友盟统计
     compile 'com.umeng.analytics:analytics:latest.integration'
+    compile('com.github.Triggertrap:SeekArc:v1.1') {
+        exclude group: 'com.android.support'
+    }
 }

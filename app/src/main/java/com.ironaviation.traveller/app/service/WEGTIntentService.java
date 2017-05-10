@@ -18,6 +18,7 @@ import com.igexin.sdk.message.GTTransmitMessage;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.app.utils.Cache;
+import com.ironaviation.traveller.app.utils.PushClientUtil;
 import com.ironaviation.traveller.common.WEApplication;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
@@ -101,6 +102,7 @@ public class WEGTIntentService extends GTIntentService {
     public void otherLogin(Context context){
         DataHelper.removeSF(context,Constant.LOGIN);
         Intent intent = new Intent(context, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         UiUtils.SnackbarText(getString(R.string.login_other));
         context.startActivity(intent);
     }
@@ -161,7 +163,6 @@ public class WEGTIntentService extends GTIntentService {
                 break;
         }
     }
-
 
     public Intent setChildCodeNotification(BasePushData response, Context context,Intent intent){
         switch (response.getData().getCode()){
@@ -255,6 +256,9 @@ public class WEGTIntentService extends GTIntentService {
 
     @Override
     public void onReceiveOnlineState(Context context, boolean online) {
+        if(!online){
+            EventBus.getDefault().post(true,EventBusTags.PUSH_ONLINE);
+        }
 
         Log.e(TAG, "onReceiveClientId -> " + "online = " + online);
     }

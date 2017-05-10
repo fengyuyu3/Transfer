@@ -11,7 +11,9 @@ import com.ironaviation.traveller.mvp.model.api.cache.CacheManager;
 import com.ironaviation.traveller.mvp.model.api.service.CommonService;
 import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.request.AddressLimitRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.UpdateAddressBookRequest;
+import com.ironaviation.traveller.mvp.model.entity.response.AddressResponse;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BaseModel;
 
@@ -69,4 +71,14 @@ public class AddressModel extends BaseModel<ServiceManager, CacheManager> implem
     public Observable<BaseData<List<UpdateAddressBookRequest>>> getUserAddressBook() {
         return mCommonService.getUserAddressBook();
     }
+
+    @Override
+    public Observable<BaseData<AddressResponse>> isAddress(String address, double longitude, double latitude) {
+        AddressLimitRequest request = new AddressLimitRequest();
+        request.setAddress(address);
+        request.setLatitude(latitude);
+        request.setLongitude(longitude);
+        return mCommonService.isAddress(request);
+    }
+
 }

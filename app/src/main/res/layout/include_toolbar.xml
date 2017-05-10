@@ -12,7 +12,7 @@
         <com.ironaviation.traveller.mvp.ui.widget.AutoToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="90px"
             android:background="@color/color_d23b32"
             >
 
@@ -33,7 +33,7 @@
                 android:singleLine="true"
                 android:text=""
                 android:textColor="@color/white"
-                android:textSize="44px"/>
+                android:textSize="40px"/>
 
 
             <TextView

@@ -5,6 +5,7 @@ import com.ironaviation.traveller.mvp.model.api.Api;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.Login;
 import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
+import com.ironaviation.traveller.mvp.model.entity.request.AddressLimitRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.AirportGoInfoRequest;
 //import com.ironaviation.traveller.mvp.model.entity.request.CancelBookingRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.BIDRequest;
@@ -16,6 +17,7 @@ import com.ironaviation.traveller.mvp.model.entity.request.PhoneRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.RouteListMoreRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.TravelRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.UpdateAddressBookRequest;
+import com.ironaviation.traveller.mvp.model.entity.response.AddressResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.CancelBookingInfo;
 import com.ironaviation.traveller.mvp.model.entity.response.CommentTag;
 import com.ironaviation.traveller.mvp.model.entity.response.CommentsInfo;
@@ -118,6 +120,9 @@ public interface CommonService {
 
     @GET(Api.GET_OTHER_PASSENGER)
     Observable<BaseData<List<PassengersResponse>>> getOtherPassengerInfo(@Query("bid") String bid);
+
+    @POST(Api.ADDRESS_LIMIT)
+    Observable<BaseData<AddressResponse>> isAddress(@Body AddressLimitRequest params);
 
 
 }

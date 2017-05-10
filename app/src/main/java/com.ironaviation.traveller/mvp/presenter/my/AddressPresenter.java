@@ -13,7 +13,9 @@ import com.ironaviation.traveller.mvp.contract.my.AddressContract;
 import com.ironaviation.traveller.mvp.model.entity.AddressHistory;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.HistoryPoiInfo;
+import com.ironaviation.traveller.mvp.model.entity.request.AddressLimitRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.UpdateAddressBookRequest;
+import com.ironaviation.traveller.mvp.model.entity.response.AddressResponse;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
@@ -163,6 +165,30 @@ public class AddressPresenter extends BasePresenter<AddressContract.Model, Addre
                         }
                         mRootView.setView(loginEntityBaseData.getData());
 
+                    }
+                });
+
+    }
+
+    public void isAddress(String address, double longitude, double latitude, final HistoryPoiInfo info){
+        mModel.isAddress(address,longitude,latitude)
+                .compose(RxUtils.<BaseData<AddressResponse>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<AddressResponse>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<AddressResponse> booleanBaseData) {
+                        if(booleanBaseData.isSuccess()){
+                            if(booleanBaseData.getData() != null) {
+                                if(booleanBaseData.getData().isValid()) {
+                                    mRootView.isAddressSuccess(booleanBaseData.getData().isValid(), info);
+                                }else{
+                                    mRootView.showMessage(booleanBaseData.getData().getMessage());
+                                }
+                            }else{
+                                mRootView.showMessage("数据出错,请重新请求");
+                            }
+                        }else{
+                            mRootView.showMessage(booleanBaseData.getMessage());
+                        }
                     }
                 });
 

@@ -26,7 +26,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:id="@+id/tv_status"
-            android:text="test"
+            android:text=""
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <ImageView
@@ -56,7 +56,7 @@
             android:layout_marginLeft="@dimen/h_fillet2"
             android:id="@+id/tv_time"
             android:layout_gravity="center"
-            android:text="2017/03/08 10:20"
+            android:text=""
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </com.zhy.autolayout.AutoLinearLayout>
@@ -89,7 +89,7 @@
                     android:layout_marginLeft="@dimen/h_fillet2"
                     android:id="@+id/tv_airport"
                     android:layout_gravity="center"
-                    android:text="双流机场"
+                    android:text=""
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             </com.zhy.autolayout.AutoLinearLayout>
@@ -110,7 +110,7 @@
                     android:textColor="@color/login_edit"
                     android:layout_marginLeft="@dimen/h_fillet2"
                     android:id="@+id/tv_hotel"
-                    android:text="城市名人酒店"
+                    android:text=""
                     android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>

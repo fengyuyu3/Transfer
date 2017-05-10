@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.utils.CommonUtil;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.my.DaggerSettingComponent;
@@ -189,10 +190,11 @@ public class SettingActivity extends WEActivity<SettingPresenter> implements Set
                 startActivity(UsualAddressActivity.class);
                 break;
             case R.id.tti_connect_us:
-                Intent intent = new Intent(Intent.ACTION_DIAL);
+                /*Intent intent = new Intent(Intent.ACTION_DIAL);
                 Uri data = Uri.parse("tel:" + Constant.CONNECTION_US);
                 intent.setData(data);
-                startActivity(intent);
+                startActivity(intent);*/
+                CommonUtil.call(this,Constant.CONNECTION_US);
                 break;
             case R.id.tti_cancellation_account:
 

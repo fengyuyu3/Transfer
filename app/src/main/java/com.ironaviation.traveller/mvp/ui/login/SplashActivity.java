@@ -24,6 +24,7 @@ import com.igexin.sdk.PushManager;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.service.WEGTIntentService;
 import com.ironaviation.traveller.app.service.WEPushService;
+import com.ironaviation.traveller.app.utils.PushClientUtil;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.mvp.constant.Constant;
@@ -89,7 +90,8 @@ public class SplashActivity extends WEActivity {
                 }
             },2000);
         }
-        initClientId();
+//        initClientId();
+        PushClientUtil.initClientId(this);
         DataHelper.SetStringSF(this,FIRST,"second");
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -236,7 +238,7 @@ public class SplashActivity extends WEActivity {
         getWindow().setAttributes(attrs);
     }
 
-    public void initClientId() {
+    /*public void initClientId() {
 
         // com.getui.demo.DemoPushService 为第三方自定义推送服务
         PackageManager pkgManager = getPackageManager();
@@ -260,5 +262,5 @@ public class SplashActivity extends WEActivity {
     private void requestPermission() {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE},
                 REQUEST_PERMISSION);
-    }
+    }*/
 }

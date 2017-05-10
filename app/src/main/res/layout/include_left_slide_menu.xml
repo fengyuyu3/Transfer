@@ -31,7 +31,7 @@
             android:id="@+id/iv_head_portrait"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_head_portrait_default"
+            android:src="@mipmap/ic_user_head"
             />
 
         <TextView

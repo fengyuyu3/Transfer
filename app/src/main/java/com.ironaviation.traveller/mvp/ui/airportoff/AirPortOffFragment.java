@@ -324,14 +324,16 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
                         getAirPortInfo().getPassengers().size() == 0){
                     showMessage("请输入身份证");
                 }else{
-                    mPresenter.getAirportInfo(getAirPortInfo());
+                    setRepeatIdCard(mAirportRequests,getAirPortInfo());
+//                    mPresenter.getAirportInfo(getAirPortInfo());
                 }
                 break;
             case R.id.tw_go_to_order:
                 mPresenter.isOrderSuccess(bid);
                 break;
             case R.id.tw_reset_price:
-                mPresenter.getAirportInfo(getAirPortInfo());
+                setRepeatIdCard(mAirportRequests,getAirPortInfo());
+//                mPresenter.getAirportInfo(getAirPortInfo());
                 break;
             case R.id.ll_set_price:
                 setPaymentDetail();
@@ -430,7 +432,8 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         if (type == Constant.AIRPORT_TYPE_SEAT) {
             mNumDialog.dismiss();
             seatNum = position+1;
-            mPresenter.getAirportInfo(getAirPortInfo());
+            setRepeatIdCard(mAirportRequests,getAirPortInfo());
+//            mPresenter.getAirportInfo(getAirPortInfo());
 //            setSeat(position);
         }
     }
@@ -623,6 +626,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
                 mAirportRequests.get(position).setStatus(Constant.AIRPORT_NO);
                 mAirportRequests.get(position).setIdCard("");
                 setNomal(holder);
+//                setRepeatIdCard(mPassengersRequests,getAirPortInfo());
                 mPresenter.getAirportInfo(getAirPortInfo());
             }
         });
@@ -663,6 +667,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         mPwTime.setTextInfo(TimerUtils.getDateFormat(time,format));
         timeFlag = true;
         if(timeFlag && addressFlag ){
+//            setRepeatIdCard(mPassengersRequests,getAirPortInfo());
             mPresenter.getAirportInfo(getAirPortInfo());
         }
     }
@@ -786,6 +791,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         mPwAddress.setTextInfo(info.name);
         //getAirPortInfo
         if(timeFlag && addressFlag ){
+//            setRepeatIdCard(mPassengersRequests,getAirPortInfo());
             mPresenter.getAirportInfo(getAirPortInfo());
         }
     }
@@ -921,17 +927,17 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         MobclickAgent.onPageEnd(getClass().getSimpleName());
     }
 
-    /*public void set(List<PassengersRequest> requests,AirportGoInfoRequest info){
-        if(!getRepeatIDCard(requests)) {
-
+    public void setRepeatIdCard(List<AirPortRequest> requests,AirportGoInfoRequest info){
+        if(getRepeatIDCard(requests)) {
+            showIDCardDialog();
         }else{
             mPresenter.getAirportInfo(info);
         }
     }
 
-    public void showIDCardDialog(String msg){
+    public void showIDCardDialog(){
         AlertDialog dialog = new AlertDialog(getActivity());
-        dialog.builder().setTitle("温馨提示").setMsg(msg +"已经预约此航班")
+        dialog.builder().setTitle("温馨提示").setMsg(getString(R.string.repeat_idcard))
                 .setOneButton("确定", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -940,18 +946,18 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
                 }).show();
     }
 
-    public boolean getRepeatIDCard(List<PassengersRequest> requests){
+    public boolean getRepeatIDCard(List<AirPortRequest> requests){
         for(int i = 0; i < requests.size(); i++){
             for(int j = i+1; j < requests.size(); j++){
-                if(requests.get(i).getIDCardNo() != null &&
-                        requests.get(j).getIDCardNo() != null){
-                    if(requests.get(i).getIDCardNo().equals(requests.get(j).getIDCardNo())){
+                if(!TextUtils.isEmpty(requests.get(i).getIdCard()) &&
+                        !TextUtils.isEmpty(requests.get(j).getIdCard())){
+                    if(requests.get(i).getIdCard().equals(requests.get(j).getIdCard())){
                         return true;
                     }
                 }
             }
         }
         return false;
-    }*/
+    }
 
 }

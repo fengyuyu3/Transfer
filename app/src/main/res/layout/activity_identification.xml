@@ -73,11 +73,10 @@
         >
 
         <ImageView
-            android:layout_width="20px"
-            android:layout_height="20px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10px"
-            android:src="@drawable/dot_grey"/>
+            android:src="@mipmap/ic_validate"/>
 
         <EditText
             android:id="@+id/et_numeral"
@@ -97,8 +96,8 @@
         android:layout_height="wrap_content">
         <ImageView
             android:layout_gravity="center"
-            android:layout_width="15px"
-            android:layout_height="15px"
+            android:layout_width="8px"
+            android:layout_height="8px"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10px"
             android:src="@drawable/dot_grey"/>

@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">机场专线</string>
+    <string name="app_name">铁航专线</string>
 
+    <string name="main_title">航空铁路专线</string>
     <string name="city">成都</string>
     <string name="copyright">Copyright @ 2017 All Rights Reserved</string>
     <string name="our_company">四川铁航信息技术有限公司</string>
@@ -96,8 +97,8 @@
     <string name="login_btn">登录</string>
     <string name="login_no_userInfo">请输入手机号码</string>
     <string name="login_no_code">请输入验证码</string>
-    <string name="login_no_client_id">初始化中 请稍候</string>
-    <string name="login_code_reset">s</string>
+    <string name="login_no_client_id">网络无法连接,请检查网络</string>
+    <string name="login_code_reset">s后重发</string>
     <string name="login_right_mobile">请输入正确的手机号</string>
 
     <!--错误界面-->
@@ -258,7 +259,7 @@
     <string name="start_jump">跳过</string>
     <string name="start_experience">立即体验</string>
     <string name="login_other">您已在其他设备登录</string>
-    <string name="fly_four_time">离起飞时间小于4小时</string>
+    <string name="fly_four_time">送机需在起飞时间前4小时预约</string>
     <string name="get_num_failed">获取号码失败,请联系客户,电话028-86868686</string>
     <string name="no_data">你暂时没有行程</string>
     <string name="btn_start_travel">开始行程</string>
@@ -268,6 +269,10 @@
     <string name="submit_order">提交订单</string>
     <string name="china_id_card">目前仅支持大陆居民身份认证</string>
     <string name="identification_success">恭喜您,已认证成功</string>
+    <string name="repeat_idcard">有重复的证件号,请输入不同的证件号验证</string>
+    <string name="address_city">成都市</string>
+    <string name="price_details">拼车合乘,经济省钱</string>
+    <string name="pickup_address">上车地点</string>
 
 
 </resources>

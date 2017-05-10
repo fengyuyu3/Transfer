@@ -96,7 +96,6 @@ public interface Constant {
     String CLEAR_PORT = "ClearPort"; //送机
     String ENTER_PORT = "EnterPort"; //接机
 
-
     String CLASS_PAY_INFO = "PayInfo";
     String CURRENT_PICKUP = "CurrentPickup";
     String CANCELREASON = "CancelReason"; //取消原因
@@ -150,4 +149,5 @@ public interface Constant {
     String LOGIN_NOMAL = "login";
     String SETTING_NOMAL = "setting";
     String FLIGHT_NO = "flight_no";
+    String CHENGDU_CTU = "CTU";
 }

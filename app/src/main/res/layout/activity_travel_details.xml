@@ -41,7 +41,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="48px"
                 android:layout_marginTop="30px"
-                android:src="@mipmap/ic_location_head"
+                android:src="@mipmap/ic_travel_head"
                 />
 
             <com.zhy.autolayout.AutoLinearLayout

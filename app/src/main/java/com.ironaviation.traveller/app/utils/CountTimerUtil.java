@@ -25,7 +25,6 @@ public class CountTimerUtil extends CountDownTimer {
     @Override
     public void onFinish()
     {
-
         mSend.setTextColor(ContextCompat.getColor(WEApplication.getContext(), R.color.code_grey));
         mSend.setText(mSend.getResources().getText(R.string.login_code));
         mSend.setClickable(true);

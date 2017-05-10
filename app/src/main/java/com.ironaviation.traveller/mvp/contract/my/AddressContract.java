@@ -2,7 +2,10 @@ package com.ironaviation.traveller.mvp.contract.my;
 
 import com.google.gson.JsonObject;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.HistoryPoiInfo;
+import com.ironaviation.traveller.mvp.model.entity.request.AddressLimitRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.UpdateAddressBookRequest;
+import com.ironaviation.traveller.mvp.model.entity.response.AddressResponse;
 import com.jess.arms.mvp.BaseView;
 import com.jess.arms.mvp.IModel;
 
@@ -35,12 +38,12 @@ public interface AddressContract {
     //对于经常使用的关于UI的方法可以定义到BaseView中,如显示隐藏进度条,和显示文字消息
     interface View extends BaseView {
         void setView(List<UpdateAddressBookRequest> mUpdateAddressBookRequests);
-
+        void isAddressSuccess(boolean flag,HistoryPoiInfo info);
     }
 
     //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存
     interface Model extends IModel {
         Observable<BaseData<List<UpdateAddressBookRequest>>> getUserAddressBook();
-
+        Observable<BaseData<AddressResponse>> isAddress(String address, double longitude, double latitude);
     }
 }

@@ -22,6 +22,7 @@ import com.ironaviation.traveller.app.service.WEGTIntentService;
 import com.ironaviation.traveller.app.service.WEPushService;
 import com.ironaviation.traveller.app.utils.BarUtils;
 import com.ironaviation.traveller.app.utils.CountTimerUtil;
+import com.ironaviation.traveller.app.utils.PushClientUtil;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.login.DaggerLoginComponent;
@@ -94,7 +95,8 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
 
     @Override
     protected void initData() {
-        initClientId();
+//        initClientId();
+        PushClientUtil.initClientId(this);
         mPresenter.loginRegulation();
         mCountTimerUtil = new CountTimerUtil(60000, 1000, mTvCode);
     }

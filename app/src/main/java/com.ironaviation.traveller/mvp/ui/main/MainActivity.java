@@ -26,9 +26,11 @@ import android.widget.TextView;
 
 import com.igexin.sdk.PushManager;
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.app.service.WEGTIntentService;
 import com.ironaviation.traveller.app.service.WEPushService;
 import com.ironaviation.traveller.app.utils.CountTimerUtil;
+import com.ironaviation.traveller.app.utils.PushClientUtil;
 import com.ironaviation.traveller.app.utils.ViewFindUtils;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
@@ -50,6 +52,8 @@ import com.jess.arms.utils.DataHelper;
 import com.jess.arms.utils.UiUtils;
 import com.umeng.analytics.MobclickAgent;
 import com.zhy.autolayout.AutoRelativeLayout;
+
+import org.simple.eventbus.Subscriber;
 
 import java.util.ArrayList;
 
@@ -146,6 +150,7 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
     @Override
     protected void initData() {
 
+        PushClientUtil.initClientId(this);
         mFragments.add(new AirPortOnFragment());
         mFragments.add(new AirPortOffFragment());
         /*for (String title : mTitles) {
@@ -158,7 +163,7 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
         final AutoSlidingTabLayout tabLayout_7 = ViewFindUtils.find(decorView, R.id.tl_7);
         tabLayout_7.setViewPager(vp, mTitles);
         vp.setCurrentItem(0);
-        setTitle(getString(R.string.app_name));
+        setTitle(getString(R.string.main_title));
         setRightFunctionText("成都", R.color.white, null);
         setPhone();
         setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_head));
@@ -276,6 +281,11 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
                 break;
         }
         return super.onKeyUp(keyCode, event);
+    }
+
+    @Subscriber(tag = EventBusTags.PUSH_ONLINE)
+    public void pushOnline(boolean flag){
+        PushClientUtil.initClientId(this);
     }
 
 

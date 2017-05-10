@@ -69,6 +69,13 @@
             android:layout_marginLeft="62px"
             android:hint="@string/login_input_code"
             />
+        <View
+            android:background="@color/code_grey"
+            android:layout_marginRight="190px"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="2px"
+            android:layout_height="40px"/>
         <TextView
             android:id="@+id/tv_code"
             android:textSize="28px"

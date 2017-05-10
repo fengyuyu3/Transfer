@@ -477,7 +477,8 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
         if (type == Constant.AIRPORT_TYPE_SEAT) {
             mNumDialog.dismiss();
             seatNum = position+1;
-            mPresenter.getAirportInfo(getAirPortInfo());
+            setRepeatIdCard(mAirportRequests,getAirPortInfo());
+//            mPresenter.getAirportInfo(getAirPortInfo());
 //            setSeat(position);
         }
     }
@@ -561,11 +562,13 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
                         getAirPortInfo().getPassengers().size() == 0){
                     showMessage(getString(R.string.hint_id_numeral));
                 }else{
-                    mPresenter.getAirportInfo(getAirPortInfo());
+                    setRepeatIdCard(mAirportRequests,getAirPortInfo());
+//                    mPresenter.getAirportInfo(getAirPortInfo());
                 }
                 break;
             case R.id.tw_reset_price_on:
-                mPresenter.getAirportInfo(getAirPortInfo());
+                setRepeatIdCard(mAirportRequests,getAirPortInfo());
+//                mPresenter.getAirportInfo(getAirPortInfo());
                 break;
             case R.id.tw_go_to_order_on:
                 mPresenter.isOrderSuccess(bid);
@@ -857,5 +860,39 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
         super.onPause();
         MobclickAgent.onPageEnd(getClass().getSimpleName());
     }
+
+    public void setRepeatIdCard(List<AirPortRequest> requests,AirportGoInfoRequest info){
+        if(getRepeatIDCard(requests)) {
+            showIDCardDialog();
+        }else{
+            mPresenter.getAirportInfo(info);
+        }
+    }
+
+    public void showIDCardDialog(){
+        AlertDialog dialog = new AlertDialog(getActivity());
+        dialog.builder().setTitle("温馨提示").setMsg(getString(R.string.repeat_idcard))
+                .setOneButton("确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }).show();
+    }
+
+    public boolean getRepeatIDCard(List<AirPortRequest> requests){
+        for(int i = 0; i < requests.size(); i++){
+            for(int j = i+1; j < requests.size(); j++){
+                if(!TextUtils.isEmpty(requests.get(i).getIdCard()) &&
+                        !TextUtils.isEmpty(requests.get(j).getIdCard())){
+                    if(requests.get(i).getIdCard().equals(requests.get(j).getIdCard())){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 
 }
