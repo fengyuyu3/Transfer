@@ -19,6 +19,7 @@ import java.util.List;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
+import rx.functions.Action0;
 
 import javax.inject.Inject;
 
@@ -98,7 +99,48 @@ public class EstimatePresenter extends BasePresenter<EstimateContract.Model, Est
                         if (routeStateResponseBaseData.isSuccess()) {
                             if (routeStateResponseBaseData.getData() != null) {
                                 if (routeStateResponseBaseData.getData().getExt() != null) {
-                                    for (int i = 0; i < routeStateResponseBaseData.getData().getExt().size(); i++){
+                                    for (int i = 0; i < routeStateResponseBaseData.getData().getExt().size(); i++) {
+                                        routeStateResponseBaseData.getData().getExt().get(i).setJsonData(routeStateResponseBaseData.getData().getExt().get(i).getData().toString());
+                                        routeStateResponseBaseData.getData().getExt().get(i).setData(null);
+                                    }
+                                }
+                            } else {
+
+                            }
+
+                            mRootView.setAlreadyComment(routeStateResponseBaseData.getData());
+                        } else {
+//                            mRootView.showMessage("");
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+                });
+    }
+
+    public void getRouteStateNoDialog(String bid) {
+        mModel.getRouteStateInfo(bid)
+                .doOnSubscribe(new Action0() {
+                    @Override
+                    public void call() {//显示进度条
+                    }
+                }).doAfterTerminate(new Action0() {
+            @Override
+            public void call() {
+                mRootView.hideLoading();
+            }
+        })
+
+                .subscribe(new ErrorHandleSubscriber<BaseData<RouteStateResponse>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<RouteStateResponse> routeStateResponseBaseData) {
+                        if (routeStateResponseBaseData.isSuccess()) {
+                            if (routeStateResponseBaseData.getData() != null) {
+                                if (routeStateResponseBaseData.getData().getExt() != null) {
+                                    for (int i = 0; i < routeStateResponseBaseData.getData().getExt().size(); i++) {
                                         routeStateResponseBaseData.getData().getExt().get(i).setJsonData(routeStateResponseBaseData.getData().getExt().get(i).getData().toString());
                                         routeStateResponseBaseData.getData().getExt().get(i).setData(null);
                                     }
@@ -127,7 +169,7 @@ public class EstimatePresenter extends BasePresenter<EstimateContract.Model, Est
                     @Override
                     public void onNext(BaseData<Boolean> booleanBaseData) {
                         if (booleanBaseData.isSuccess()) {
-                            getRouteState(mRootView.getRouteStateResponse().getBID());
+                            getRouteStateNoDialog(mRootView.getRouteStateResponse().getBID());
                         } else {
                             mRootView.showMessage(booleanBaseData.getMessage());
                         }

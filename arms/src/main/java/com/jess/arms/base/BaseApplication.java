@@ -2,6 +2,7 @@ package com.jess.arms.base;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 
 import com.jess.arms.di.component.DaggerBaseComponent;
 import com.jess.arms.di.module.AppModule;
@@ -22,7 +23,7 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  * +androideventbus
  * +butterknife组成
  */
-public abstract class BaseApplication extends Application {
+public abstract class BaseApplication extends MultiDexApplication {
     static private BaseApplication mApplication;
     private ClientModule mClientModule;
     private AppModule mAppModule;

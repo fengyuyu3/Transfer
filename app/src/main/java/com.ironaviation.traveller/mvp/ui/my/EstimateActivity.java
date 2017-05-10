@@ -106,10 +106,6 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
     private EstimateAdapter mEstimateAdapter;
     private RouteStateResponse responses;
 
-    private String[] great_satisfaction_reasons;
-    private String[] insufficient_reasons;
-    private List<EstimateResponse> greatSatisfactionReasonList = new ArrayList<>();
-    private List<EstimateResponse> insufficientReasonList = new ArrayList<>();
     private List<CommentTag> commentShowTags = new ArrayList<>();
     private List<CommentTag> commentDataTags = new ArrayList<>();
     private int rate;
@@ -146,11 +142,11 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
             @Override
             public void onClick(View v) {
 //                showDialog();
-            if(responses != null){
-                CommonUtil.call(EstimateActivity.this,responses.getDriverPhone() != null ? responses.getDriverPhone():Constant.CONNECTION_US);
-            }else{
-                showMessage(getString(R.string.get_num_failed));
-            }
+                if (responses != null) {
+                    CommonUtil.call(EstimateActivity.this, responses.getDriverPhone() != null ? responses.getDriverPhone() : Constant.CONNECTION_US);
+                } else {
+                    showMessage(getString(R.string.get_num_failed));
+                }
             }
         });
         mRatingBar.setOnRatingChangeListener(new CustomerRatingBar.OnRatingChangeListener() {
@@ -165,23 +161,24 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
         mEstimateAdapter = new EstimateAdapter(R.layout.item_estimate);
         mRvEvaluationContent.setAdapter(mEstimateAdapter);
         mRvEvaluationContent.addItemDecoration(new SpaceItemDecoration(20));
-        mEstimateAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public boolean onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                CommentTag estimateResponse = (CommentTag) adapter.getData().get(position);
-                if (estimateResponse.isType()) {
-                    estimateResponse.setType(false);
-                    view.setBackgroundResource(R.drawable.btn_write_un_select);
-                } else {
-                    estimateResponse.setType(true);
-                    view.setBackgroundResource(R.drawable.btn_grey_select);
-                }
-                return false;
-            }
-        });
-        if(responses != null) {
+
+        if (responses != null) {
             if (!responses.isComment()) {
                 mPresenter.getCommentTagInfo();
+                mEstimateAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+                    @Override
+                    public boolean onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                        CommentTag estimateResponse = (CommentTag) adapter.getData().get(position);
+                        if (estimateResponse.isType()) {
+                            estimateResponse.setType(false);
+                            view.setBackgroundResource(R.drawable.btn_write_un_select);
+                        } else {
+                            estimateResponse.setType(true);
+                            view.setBackgroundResource(R.drawable.btn_grey_select);
+                        }
+                        return false;
+                    }
+                });
             } else {
                 setAlreadyComment(responses);
             }
@@ -191,7 +188,7 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
     public void getInitData() {
         Bundle bundle = getIntent().getExtras();
         responses = (RouteStateResponse) bundle.getSerializable(Constant.STATUS);
-        if(responses!=null) {
+        if (responses != null) {
             mItDriverName.setText(responses.getDriverName() != null ? responses.getDriverName() : "");
             mItDriverGrade.setText(responses.getDriverRate() != null ? responses.getDriverRate() : "");
             mTwCarNum.setText(responses.getCarLicense() != null ? responses.getCarLicense() : "");
@@ -199,31 +196,31 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
         }
     }
 
-    public void setPaymentDetail(){
+    public void setPaymentDetail() {
         Intent intent = new Intent(this, PaymentDetailsActivity.class);
-        intent.putExtra(Constant.REAL_PRICE,responses.getTotalPrice());
-        intent.putExtra(Constant.FIXED_PRICE,responses.getActualPrice());
+        intent.putExtra(Constant.REAL_PRICE, responses.getTotalPrice());
+        intent.putExtra(Constant.FIXED_PRICE, responses.getActualPrice());
         int num = 0;
         double myPrice = 0;
-        for(int i = 0; i < responses.getPassengers().size(); i++){
-            if(responses.getPassengers().get(i).isIsValid() && !responses.getPassengers().get(i).isHasBooked()){
+        for (int i = 0; i < responses.getPassengers().size(); i++) {
+            if (responses.getPassengers().get(i).isIsValid() && !responses.getPassengers().get(i).isHasBooked()) {
                 num++;
                 myPrice = myPrice + responses.getPassengers().get(i).getPrice();
             }
         }
-        intent.putExtra(Constant.PEOPLE_NUM,responses.getPassengers().size());
-        intent.putExtra(Constant.FREE_PASSENGER,num);
-        intent.putExtra(Constant.FREE_PASSENGER_PRICE,myPrice);
-        if(responses.getExt() != null && responses.getExt().size() > 0){
-            for(int i = 0; i < responses.getExt().size(); i++){
-                if(responses.getExt().get(i).getName().equals(Constant.PAYMETHOD)){
+        intent.putExtra(Constant.PEOPLE_NUM, responses.getPassengers().size());
+        intent.putExtra(Constant.FREE_PASSENGER, num);
+        intent.putExtra(Constant.FREE_PASSENGER_PRICE, myPrice);
+        if (responses.getExt() != null && responses.getExt().size() > 0) {
+            for (int i = 0; i < responses.getExt().size(); i++) {
+                if (responses.getExt().get(i).getName().equals(Constant.PAYMETHOD)) {
                     String payment = responses.getExt().get(i).getJsonData();
-                    if(Constant.WECHAT.equals(payment)) {
+                    if (Constant.WECHAT.equals(payment)) {
                         intent.putExtra(Constant.PAYMENT, Constant.PAY_WECHAT);
-                    }else if(Constant.ALIPAY.equals(payment)){
-                        intent.putExtra(Constant.PAYMENT,Constant.PAY_ALIPAY);
-                    }else{
-                        intent.putExtra(Constant.PAYMENT,Constant.PAYMENT_NOMAL);
+                    } else if (Constant.ALIPAY.equals(payment)) {
+                        intent.putExtra(Constant.PAYMENT, Constant.PAY_ALIPAY);
+                    } else {
+                        intent.putExtra(Constant.PAYMENT, Constant.PAYMENT_NOMAL);
                     }
                 }
             }
@@ -364,6 +361,14 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
                     mEtOtherEstimate.setText(commentsResponse.getNotes());
                 }
                 mEstimateAdapter.setNewData(commentsResponse.getTags());
+
+                mEstimateAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+                    @Override
+                    public boolean onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+
+                        return false;
+                    }
+                });
             }
         }
 
@@ -392,7 +397,7 @@ public class EstimateActivity extends WEActivity<EstimatePresenter> implements E
     }
 
 
-    @OnClick({R.id.tv_anonymous_evaluation,R.id.tv_money})
+    @OnClick({R.id.tv_anonymous_evaluation, R.id.tv_money})
     public void onClick(View view) {
 
         switch (view.getId()) {

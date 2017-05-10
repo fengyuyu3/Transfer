@@ -96,4 +96,5 @@ dependencies {
     compile (project(':rxerrorhandler')){
         exclude module: 'rxjava'
     }
+    compile 'com.android.support:multidex:1.0.1'
 }
