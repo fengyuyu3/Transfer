@@ -9,6 +9,7 @@ import com.ironaviation.traveller.mvp.contract.MainContract;
 import com.ironaviation.traveller.mvp.model.api.cache.CacheManager;
 import com.ironaviation.traveller.mvp.model.api.service.CommonService;
 import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
+import com.ironaviation.traveller.mvp.model.entity.AppVersionEntity;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.Login;
 import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
@@ -80,5 +81,10 @@ public class MainModel extends BaseModel<ServiceManager, CacheManager> implement
 
 
         return mCommonService.login(login);
+    }
+
+    @Override
+    public Observable<BaseData<AppVersionEntity>> getLatestVersion() {
+        return mCommonService.getLatestVersion();
     }
 }

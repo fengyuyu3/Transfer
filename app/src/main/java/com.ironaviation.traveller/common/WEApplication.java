@@ -2,6 +2,7 @@ package com.ironaviation.traveller.common;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.text.TextUtils;
 import android.widget.Toast;
 
@@ -81,13 +82,14 @@ public class WEApplication extends BaseApplication {
         initMap();
     }
 
-    public void initMap(){
+    public void initMap() {
         client = new LBSTraceClient(this);
         client.setLocationMode(LocationMode.High_Accuracy);
         //client.setLocationMode(LocationMode.High_Accuracy);
         /*trace = new Trace(this, Constant.SERVICEID, entityName, traceType);*/
     }
-    public LBSTraceClient getClient(){
+
+    public LBSTraceClient getClient() {
         return client;
     }
 
@@ -194,7 +196,9 @@ public class WEApplication extends BaseApplication {
                         } else {
 
                         }
-                        builder.addHeader("ClientType","App");
+                        builder.addHeader("ClientType", "App");
+                        builder.addHeader("appType", "Passenger");
+                        builder.addHeader("systemType", "Android");
                         return builder.build();
 
 //                        return request;
@@ -222,6 +226,7 @@ public class WEApplication extends BaseApplication {
         request.setTag(getTag());
         request.setServiceId(Constant.SERVICEID);
     }
+
     private AtomicInteger mSequenceGenerator = new AtomicInteger();
 
     /**
@@ -232,21 +237,22 @@ public class WEApplication extends BaseApplication {
     public int getTag() {
         return mSequenceGenerator.incrementAndGet();
     }
-    public void isLogin(String httpResult){
+
+    public void isLogin(String httpResult) {
         try {
             if (TextUtils.isEmpty(httpResult))
                 return;
             JSONObject object = new JSONObject(httpResult);
             int code = object.getInt("Status");
-            if(code == Api.OTHER_LOGIN){ //其他设备上登录
-                DataHelper.removeSF(WEApplication.this,Constant.LOGIN);
+            if (code == Api.OTHER_LOGIN) { //其他设备上登录
+                DataHelper.removeSF(WEApplication.this, Constant.LOGIN);
                 Intent intent = new Intent(WEApplication.this, LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 UiUtils.SnackbarText(getString(R.string.login_other));
                 WEApplication.this.startActivity(intent);
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             MobclickAgent.reportError(WEApplication.getContext(), e);
 

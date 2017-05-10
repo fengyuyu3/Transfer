@@ -2,6 +2,7 @@ package com.ironaviation.traveller.mvp.model.api.service;
 
 import com.google.gson.JsonObject;
 import com.ironaviation.traveller.mvp.model.api.Api;
+import com.ironaviation.traveller.mvp.model.entity.AppVersionEntity;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.Login;
 import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
@@ -124,5 +125,6 @@ public interface CommonService {
     @POST(Api.ADDRESS_LIMIT)
     Observable<BaseData<AddressResponse>> isAddress(@Body AddressLimitRequest params);
 
-
+    @GET(Api.GET_LATEST_VERSION)
+    Observable<BaseData<AppVersionEntity>> getLatestVersion();
 }
