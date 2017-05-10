@@ -123,7 +123,6 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
     @BindView(R.id.rl_setting)
     AutoRelativeLayout mRlSetting;
     private ArrayList<Fragment> mFragments = new ArrayList<>();
-    private PushCountTimerUtil mPushCountTimerUtil;
     private final String[] mTitles = {
             "接机", "送机"
     };
@@ -177,6 +176,8 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
         });
         mPushCountTimerUtil = new PushCountTimerUtil(this,2*60*60*1000,5*60*1000);
         mPushCountTimerUtil.start();
+        mPresenter.getLatestVersion();
+
     }
 
     @OnClick({R.id.rl_message, R.id.rl_setting, R.id.rl_trip})

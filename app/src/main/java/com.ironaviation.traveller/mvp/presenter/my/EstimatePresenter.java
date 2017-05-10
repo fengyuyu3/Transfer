@@ -19,7 +19,9 @@ import java.util.List;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
+import rx.schedulers.Schedulers;
 
 import javax.inject.Inject;
 
@@ -123,16 +125,20 @@ public class EstimatePresenter extends BasePresenter<EstimateContract.Model, Est
 
     public void getRouteStateNoDialog(String bid) {
         mModel.getRouteStateInfo(bid)
+                .subscribeOn(Schedulers.io())
                 .doOnSubscribe(new Action0() {
                     @Override
                     public void call() {//显示进度条
                     }
-                }).doAfterTerminate(new Action0() {
-            @Override
-            public void call() {
-                mRootView.hideLoading();
-            }
-        })
+                })
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doAfterTerminate(new Action0() {
+                    @Override
+                    public void call() {
+                        mRootView.hideLoading();
+                    }
+                })
 
                 .subscribe(new ErrorHandleSubscriber<BaseData<RouteStateResponse>>(mErrorHandler) {
                     @Override

@@ -32,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -186,7 +187,28 @@ public class CommonUtil {
         return cm.getActiveNetworkInfo().getType() == ConnectivityManager.TYPE_WIFI;
 
     }
+    /**
+     * 防止发生内存重启导致的数据丢失
+     *
+     * @Override protected void onSaveInstanceState(Bundle outState) {
+     * super.onSaveInstanceState(outState);
+     * outState.putSerializable("tempFile", tempFile);
+     * }
+     * <p/>
+     * /**
+     * 检查文件是否存在
+     */
 
+    public static String checkDirPath(String dirPath) {
+        if (TextUtils.isEmpty(dirPath)) {
+            return "";
+        }
+        File dir = new File(dirPath);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        return dirPath;
+    }
     /**
      * 描述： 打开网络设置界面
      */

@@ -17,7 +17,9 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowNoTitle">true</item>
     </style>
-
+    <style name="customViewDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@color/C_Alpha_00000000</item><!--背景透明-->
+    </style>
     <!-- 自定义仿IOS的AlertDialog的样式 -->
     <style name="AlertDialogStyle" parent="@android:style/Theme.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
