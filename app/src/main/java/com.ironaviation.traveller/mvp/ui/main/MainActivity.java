@@ -234,6 +234,11 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
         mIvPhone.setText(setPhoneSecret(response.getPhone()));
     }
 
+    @Override
+    public WEActivity getActivity() {
+        return this;
+    }
+
     private String setPhoneSecret(String pNumber) {
         StringBuilder sb = new StringBuilder();
 

@@ -168,7 +168,7 @@ public class MainPresenter extends BasePresenter<MainContract.Model, MainContrac
 
                                 } else {
                                     AlertDialog dialog = new AlertDialog(mApplication);
-                                    dialog.builder().setTitle("提示").setMsg("当前网络非Wife状态App" + versionEntity.getFileSize() / (1024 * 1024) + "MB" + "是否下载？")
+                                    dialog.builder().setTitle("提示").setMsg("当前网络非Wifi状态App" + versionEntity.getFileSize() / (1024 * 1024) + "MB" + "是否下载？")
                                             .setCancelable(false).setPositiveButton("确认", new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {

@@ -328,7 +328,7 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
         mIviAliPay.setVisibility(View.GONE);
     }
     public void showPayment(){
-        mIviWeChat.setVisibility(View.VISIBLE);
+//        mIviWeChat.setVisibility(View.VISIBLE);
         mIviAliPay.setVisibility(View.VISIBLE);
     }
 

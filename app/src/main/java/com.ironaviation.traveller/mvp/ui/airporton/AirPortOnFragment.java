@@ -828,6 +828,7 @@ public class AirPortOnFragment extends WEFragment<AirPortOnPresenter> implements
             if(mAirportRequests.get(i) != null  &&
                     !TextUtils.isEmpty(mAirportRequests.get(i).getIdCard())) {
                 request1.setIDCardNo(mAirportRequests.get(i).getIdCard().toUpperCase());
+                mAirportRequests.get(i).setIdCard(mAirportRequests.get(i).getIdCard().toUpperCase());
                 list.add(request1);
             }else{
                 mAirportRequests.get(i).setStatus(Constant.AIRPORT_NO);
