@@ -108,7 +108,7 @@ public class TimerUtils {
         List<String> list = new ArrayList<>();
         double currentSec = date.getMinutes();
         if(currentSec >= 50){
-            for(int i = 0 ; i <= MINITES; i++){
+            for(int i = 0 ; i < MINITES; i++){
                 if(i == 0){
                     list.add("00分");
                 }else {

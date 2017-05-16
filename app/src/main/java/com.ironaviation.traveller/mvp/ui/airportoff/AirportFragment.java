@@ -180,7 +180,6 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
         mPwAirportOff.setTextInfo(Constant.AIRPORT_T1);
         mLlOffAddress.setVisibility(View.VISIBLE);
         mLlOnAddress.setVisibility(View.GONE);
-
     }
 
     public void showPrice(boolean flag){
@@ -255,16 +254,28 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
                 mNumDialog.show();
                 break;
             case R.id.ll_set_price:
-                setPaymentDetail();
+                if(status != null && status.equals(Constant.CLEAR_PORT)) {
+                    setPaymentDetail();
+                }else if(status != null && status.equals(Constant.ENTER_PORT)){
+                    setPaymentDetail();
+                }
                 break;
             case R.id.pw_expain_free:
                 expainFree();
                 break;
             case R.id.tw_reset_price:
-                mPresenter.getAirportInfo(getAirPortInfo());
+                if(status != null && status.equals(Constant.CLEAR_PORT)) {
+                    mPresenter.getAirportInfo(getAirPortInfo());
+                }else if(status != null && status.equals(Constant.ENTER_PORT)){
+                    mPresenter.getAirportInfo(getAirPortInfo());
+                }
                 break;
             case R.id.tw_go_to_order:
-                mPresenter.isOrderSuccess(bid);
+                if(status != null && status.equals(Constant.CLEAR_PORT)) {
+                    mPresenter.isOrderSuccess(bid);
+                }else if(status != null && status.equals(Constant.ENTER_PORT)){
+                    mPresenter.isOrderSuccess(bid);
+                }
                 break;
             case R.id.pw_airport_on:
                 if (mTerminalPopupWindow != null) {
@@ -577,6 +588,7 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
                 mPwFlt.setInitInfo(getResources().getString(R.string.airport_no));
                 mPwFlt.setArriveTime("");
                 flightNo = "";
+                bid = null;
             }else if(status != null && status.equals(Constant.ENTER_PORT)){
                 intent.putExtra(Constant.CHILD_STATUS, Constant.ON);
                 mPassengersRequests = null;
@@ -584,6 +596,7 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
                 mPwFlt.setInitInfo(getResources().getString(R.string.airport_no));
                 mPwFlt.setArriveTime("");
                 flightNo = "";
+                bid = null;
             }
             startActivity(intent);
             clearData();
@@ -648,6 +661,9 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
                     mPwSeat.setFreeInfo(num+"人免费");
                 }
             }
+            if(info.getBID() != null){
+                bid = info.getBID();
+            }
         }
     }
 
@@ -669,6 +685,9 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
                 if(num != 0){
                     mPwSeat.setFreeInfo(num+"人免费");
                 }
+            }
+            if(info.getBID() != null){
+                bid = info.getBID();
             }
         }
     }

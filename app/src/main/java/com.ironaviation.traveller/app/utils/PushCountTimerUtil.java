@@ -5,6 +5,7 @@ import android.os.CountDownTimer;
 import android.support.v4.content.ContextCompat;
 import android.widget.TextView;
 
+import com.igexin.sdk.PushManager;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.common.WEApplication;
 
@@ -26,6 +27,6 @@ public class PushCountTimerUtil extends CountDownTimer {
 
     @Override
     public void onTick(long millisUntilFinished) {
-        PushClientUtil.initClientId(mActivity);
+        PushManager.getInstance().initialize(mActivity);
     }
 }

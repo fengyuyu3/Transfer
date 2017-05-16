@@ -280,6 +280,8 @@
     <string name="travel_submit">提交</string>
     <string name="travel_free_expain">四川航空可享受免费接送</string>
     <string name="travel_free_verify">免费接送验证</string>
+    <string name="travel_time_out">网络连接超时</string>
+    <string name="travel_gson">系统异常，请稍后再试</string>
 
 
 </resources>

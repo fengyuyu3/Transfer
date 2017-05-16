@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.weigan.loopview.LoopView;
 import com.weigan.loopview.OnItemSelectedListener;
 
@@ -33,8 +34,10 @@ public class MyDialog{
         private int myIndex;
         private Dialog  mCameraDialog;
         private Context context;
-        public MyDialog(Context context){
+        private String status;
+        public MyDialog(Context context,String status){
             this.context = context;
+            this.status = status;
         }
         public void showDialog(List<String> list,String title) {
             mCameraDialog  = new Dialog(context, R.style.picker_dialog);
@@ -58,6 +61,10 @@ public class MyDialog{
             });
             // 设置原始数据
             loopView.setItems(list);
+            if(Constant.ENTER_PORT.equals(status)){
+                myIndex = 1;
+                loopView.setCurrentPosition(myIndex);
+            }
             WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
             lp.x = 0; // 新位置X坐标
             lp.y = -20; // 新位置Y坐标

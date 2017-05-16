@@ -167,7 +167,7 @@ public class CancelSuccessPresenter extends BasePresenter<CancelSuccessContract.
             }
 
         } else {
-            mRootView.setResponsibilityView(WEApplication.getContext().getString(R.string.penal_sum_hint));
+            mRootView.setResponsibilityView(WEApplication.getContext().getString(R.string.free_hint));
         }
     }
 

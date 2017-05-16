@@ -164,8 +164,8 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
         mFragments.add(airportFragment);
         mFragments.add(mAirportFragment);
         PushManager.getInstance().initialize(this);
-        mFragments.add(new AirPortOnFragment());
-        mFragments.add(new AirPortOffFragment());
+      /*  mFragments.add(new AirPortOnFragment());
+        mFragments.add(new AirPortOffFragment());*/
         /*for (String title : mTitles) {
             mFragments.add(SimpleCardFragment.getInstance(title));
         }*/
@@ -187,6 +187,8 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
             }
         });
         mPresenter.getLatestVersion();
+        PushCountTimerUtil pushCountTimerUtil = new PushCountTimerUtil(this,5*60*1000,3*60*60*1000);
+        pushCountTimerUtil.start();
 
     }
 

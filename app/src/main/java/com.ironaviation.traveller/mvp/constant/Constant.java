@@ -158,4 +158,7 @@ public interface Constant {
 
     String CLIENTID = "client_id";//个推id
     String AIRPORT_GO_INFO = "AirportGoInfoRequest";
+    String SOCKET_TIME_OUT = "java.net.SocketTimeoutException";
+    String UNKNOWN_HOST = "java.net.UnknownHostException";
+    String GSON = "com.google.gson.JsonSyntaxException";
 }

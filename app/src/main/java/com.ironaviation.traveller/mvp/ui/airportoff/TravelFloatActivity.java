@@ -117,7 +117,7 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
         if(!TextUtils.isEmpty(flightNo)){
             mEdtTravelNum.setText(flightNo);
         }
-        mMyDialog = new MyDialog(this);
+        mMyDialog = new MyDialog(this,Constant.CLEAR_PORT);
         setTravelNum();
         setEditorAction();
         setFlyTime();

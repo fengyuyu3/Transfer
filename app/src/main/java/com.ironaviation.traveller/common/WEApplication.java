@@ -212,7 +212,16 @@ public class WEApplication extends BaseApplication {
                     @Override
                     public void handleResponseError(Context context, Exception e) {
                         Timber.tag(TAG).w("------------>" + e.getMessage());
-                        UiUtils.SnackbarText(getString(R.string.network_error));
+                        if(e.toString().contains(Constant.SOCKET_TIME_OUT)){
+                            UiUtils.SnackbarText(getString(R.string.travel_time_out));
+                        }else if(e.toString().contains(Constant.UNKNOWN_HOST)){
+                            UiUtils.SnackbarText(getString(R.string.network_error));
+                        }else if(e.toString().contains(Constant.GSON)){
+                            UiUtils.SnackbarText(getString(R.string.travel_gson));
+                        }else{
+                            UiUtils.SnackbarText(getString(R.string.network_error));
+                        }
+
                         MobclickAgent.reportError(WEApplication.getContext(), e);
 
                     }

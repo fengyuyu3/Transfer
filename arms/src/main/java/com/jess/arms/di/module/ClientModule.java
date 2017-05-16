@@ -31,7 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 @Module
 public class ClientModule {
-    private static final int TIME_OUT = 10;
+    private static final int TIME_OUT = 20;
     private AppManager mAppManager;
 
 
