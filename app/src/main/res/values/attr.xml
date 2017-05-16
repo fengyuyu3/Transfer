@@ -31,6 +31,8 @@
         <attr name="right_address1" format="boolean" />
         <attr name="right_time1" format="boolean"/>
         <attr name="right_delete1" format="boolean"/>
+        <attr name="right_back" format="boolean"/>
+        <attr name="right_free_info" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="CircleImageView">

@@ -309,7 +309,8 @@ public class TravelFloatOnActivity extends WEActivity<TravelFloatOnPresenter> im
         List<FlightDetails> list = new ArrayList<>();
         list.add(flightDetails);
         mFlight.setList(list);
-        EventBus.getDefault().post(mFlight, EventBusTags.FLIGHT_ON);
+        mFlight.setStatus(Constant.ENTER_PORT);
+        EventBus.getDefault().post(mFlight, EventBusTags.FLIGHT);
         finish();
     }
 }

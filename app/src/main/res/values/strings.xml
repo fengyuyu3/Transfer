@@ -276,6 +276,10 @@
     <string name="address_city">成都市</string>
     <string name="price_details">拼车合乘,经济省钱</string>
     <string name="pickup_address">上车地点</string>
+    <string name="no_data_message">你暂时没有信息</string>
+    <string name="travel_submit">提交</string>
+    <string name="travel_free_expain">四川航空可享受免费接送</string>
+    <string name="travel_free_verify">免费接送验证</string>
 
 
 </resources>

@@ -42,6 +42,7 @@ import com.ironaviation.traveller.mvp.contract.MainContract;
 import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
 import com.ironaviation.traveller.mvp.presenter.MainPresenter;
 import com.ironaviation.traveller.mvp.ui.airportoff.AirPortOffFragment;
+import com.ironaviation.traveller.mvp.ui.airportoff.AirportFragment;
 import com.ironaviation.traveller.mvp.ui.airporton.AirPortOnFragment;
 import com.ironaviation.traveller.mvp.ui.login.IdentificationActivity;
 import com.ironaviation.traveller.mvp.ui.my.MessageActivity;
@@ -152,8 +153,18 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
     protected void initData() {
 
         PushClientUtil.initClientId(this);
-        mFragments.add(new AirPortOnFragment());
-        mFragments.add(new AirPortOffFragment());
+        /*mFragments.add(new AirPortOnFragment());
+        mFragments.add(new AirPortOffFragment());*/
+        Bundle bundle = new Bundle();
+        bundle.putString(Constant.STATUS,Constant.ENTER_PORT);
+        AirportFragment airportFragment = new AirportFragment();
+        airportFragment.setArguments(bundle);
+        Bundle bundle1 = new Bundle();
+        bundle1.putString(Constant.STATUS,Constant.CLEAR_PORT);
+        AirportFragment mAirportFragment = new AirportFragment();
+        mAirportFragment.setArguments(bundle1);
+        mFragments.add(airportFragment);
+        mFragments.add(mAirportFragment);
         /*for (String title : mTitles) {
             mFragments.add(SimpleCardFragment.getInstance(title));
         }*/

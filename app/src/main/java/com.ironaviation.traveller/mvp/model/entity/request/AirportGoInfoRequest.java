@@ -1,12 +1,13 @@
 package com.ironaviation.traveller.mvp.model.entity.request;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Administrator on 2017/4/12 0012.
  */
 
-public class AirportGoInfoRequest {
+public class AirportGoInfoRequest implements Serializable{
     /**
      * BID : string
      * FlightNo : string

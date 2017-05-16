@@ -150,4 +150,5 @@ public interface Constant {
     String SETTING_NOMAL = "setting";
     String FLIGHT_NO = "flight_no";
     String CHENGDU_CTU = "CTU";
+    String AIRPORT_GO_INFO = "AirportGoInfoRequest";
 }

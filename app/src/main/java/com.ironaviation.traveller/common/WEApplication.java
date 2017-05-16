@@ -13,6 +13,7 @@ import com.baidu.trace.Trace;
 import com.baidu.trace.model.BaseRequest;
 import com.baidu.trace.model.LocationMode;
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
 import com.ironaviation.traveller.mvp.ui.login.LoginActivity;
@@ -27,6 +28,7 @@ import com.squareup.leakcanary.RefWatcher;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.simple.eventbus.EventBus;
 
 import com.ironaviation.traveller.BuildConfig;
 import com.ironaviation.traveller.di.module.CacheModule;
@@ -249,6 +251,7 @@ public class WEApplication extends BaseApplication {
                 Intent intent = new Intent(WEApplication.this, LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 UiUtils.SnackbarText(getString(R.string.login_other));
+                EventBus.getDefault().post(true, EventBusTags.LOGIN_OTHER);
                 WEApplication.this.startActivity(intent);
             }
 

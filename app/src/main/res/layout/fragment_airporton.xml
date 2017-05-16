@@ -66,6 +66,14 @@
                 app:hint1="@string/airport_seat"
                 app:left_logo1="@mipmap/ic_seat" />
 
+            <com.ironaviation.traveller.mvp.ui.widget.PublicTextView
+                android:id="@+id/pw_expain_free_on"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hint1="@string/travel_free_expain"
+                app:textColor="@color/color_brown"
+                app:left_logo1="@mipmap/ic_car_id_card" />
+
             <com.zhy.autolayout.AutoLinearLayout
                 android:id="@+id/ll_certification_on"
                 android:layout_width="match_parent"
@@ -98,6 +106,7 @@
                     android:background="@color/bg_write_grey"></View>
 
                 <com.zhy.autolayout.AutoRelativeLayout
+                    android:visibility="gone"
                     android:id="@+id/ll_state_on"
                     android:layout_width="match_parent"
                     android:layout_height="71px"

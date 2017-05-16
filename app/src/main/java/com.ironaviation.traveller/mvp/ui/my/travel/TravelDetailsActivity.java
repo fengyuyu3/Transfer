@@ -59,6 +59,7 @@ import com.baidu.trace.model.StatusCodes;
 import com.baidu.trace.model.TraceLocation;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
+import com.ironaviation.traveller.app.utils.AnimationUtil;
 import com.ironaviation.traveller.app.utils.CommonUtil;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
@@ -162,6 +163,8 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     TextView mTwWaitTwo;
     @BindView(R.id.tw_title_wait)
     TextView mTwTitleWait;
+    @BindView(R.id.ll_layout)
+    AutoLinearLayout mLlLayout;
 
     private MoreActionPopupWindow mPopupWindow;
     private String phone;
@@ -254,6 +257,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
      * 轨迹排序规则
      */
     private SortType sortType = SortType.asc;
+    private AnimationUtil mAnimationUtil;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -304,6 +308,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 
 //        pathPlanning(getList());//路径规划
 //        initQuery();
+        mAnimationUtil = AnimationUtil.getInstance(this);
     }
 
     @Override
@@ -406,6 +411,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     public void myOnClick(View view) {
         switch (view.getId()) {
             case R.id.iw_zoom:
+//                mAnimationUtil.moveToViewBottom(mLlLayout);
                 AllGone();
                 break;
             case R.id.iw_zoom_nomal:
@@ -453,7 +459,6 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
             case Constant.ARRIVED://绘制历史轨迹
                 historyResponse = responses;
                 queryHistoryTrack(historyResponse);
-
                 arrive();
                 break;
         }
@@ -477,6 +482,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     public void showStatusAll(String status, RouteStateResponse responses) {
         /*route = null;
         mBaiduMap.clear();*/
+//        mAnimationUtil.moveToViewLocation(mLlLayout);
         switch (status) {
             case Constant.INHAND: //派单进行中
                 showChildStatus(responses.getChildStatus());

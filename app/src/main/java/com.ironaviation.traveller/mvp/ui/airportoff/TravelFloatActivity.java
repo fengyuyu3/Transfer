@@ -318,6 +318,7 @@ public class TravelFloatActivity extends WEActivity<TravelFloatPresenter> implem
         List<FlightDetails> list = new ArrayList<>();
         list.add(flightDetails);
         mFlight.setList(list);
+        mFlight.setStatus(Constant.CLEAR_PORT);
         EventBus.getDefault().post(mFlight, EventBusTags.FLIGHT);
         finish();
     }

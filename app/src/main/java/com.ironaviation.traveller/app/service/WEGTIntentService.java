@@ -103,7 +103,8 @@ public class WEGTIntentService extends GTIntentService {
         DataHelper.removeSF(context,Constant.LOGIN);
         Intent intent = new Intent(context, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        UiUtils.SnackbarText(getString(R.string.login_other));
+        EventBus.getDefault().post(true, EventBusTags.LOGIN_OTHER);
+//        UiUtils.SnackbarText(getString(R.string.login_other));
         context.startActivity(intent);
     }
 

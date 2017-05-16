@@ -25,11 +25,11 @@ import com.zhy.autolayout.AutoLinearLayout;
 
 public class PublicTextView extends AutoLinearLayout {
     private String hint,text;
-    private boolean rightPeroson,rightCode,line,enable,rightAddress,rightTime,rightDelete;
+    private boolean rightPeroson,rightCode,line,enable,rightAddress,rightTime,rightDelete,rightBack,freeInfo;
     private int leftLogo,padding_left,backColor;
 
-    private TextView tvPerson,tvCode,tvInfo,tvArriveTime,tvAddress;
-    private ImageView ivLogo,iwDelete;
+    private TextView tvPerson,tvCode,tvInfo,tvArriveTime,tvAddress,tvFreeInfo;
+    private ImageView ivLogo,iwDelete,iwBack;
     private View lineView;
     private AutoLinearLayout ll;
 
@@ -62,6 +62,8 @@ public class PublicTextView extends AutoLinearLayout {
         backColor = a.getColor(R.styleable.PublicTextView_textColor,-1);
         rightAddress = a.getBoolean(R.styleable.PublicTextView_right_address1,false);
         rightTime = a.getBoolean(R.styleable.PublicTextView_right_time1,false);
+        rightBack = a.getBoolean(R.styleable.PublicTextView_right_back,false);
+        freeInfo = a.getBoolean(R.styleable.PublicTextView_right_free_info,false);
 //        rightDelete = a.getBoolean(R.styleable.PublicTextView_right_delete1,false);
 
         a.recycle();
@@ -78,8 +80,11 @@ public class PublicTextView extends AutoLinearLayout {
         ll = (AutoLinearLayout) v.findViewById(R.id.pw_ll1);
         tvArriveTime = (TextView) v.findViewById(R.id.tv_arrive_time);
         tvAddress = (TextView) v.findViewById(R.id.tv_address);
+        tvFreeInfo = (TextView) v.findViewById(R.id.tw_free_info);
+        iwBack = (ImageView) v.findViewById(R.id.iw_right_back);
 //        iwDelete = (ImageView) v.findViewById(R.id.iw_delete);
 
+//        setFirstTextColor(backColor);
         setEditHint(hint);
         setLogo(leftLogo);
         setPersonVisible(rightPeroson);
@@ -88,6 +93,8 @@ public class PublicTextView extends AutoLinearLayout {
 //        setPaddingLeft(padding_left);
         showArriveTime(rightTime);
         showAddress(rightAddress);
+        setRightBack(rightBack);
+        setFreeInfo(freeInfo);
 //        setDelete(rightDelete);
         tvCode.setOnClickListener(new OnClickListener() {
             @Override
@@ -97,12 +104,28 @@ public class PublicTextView extends AutoLinearLayout {
         });
     }
 
+    public void setFreeInfo(String text){
+        if(text != null) {
+            tvFreeInfo.setText(text);
+        }else{
+            tvFreeInfo.setText("");
+        }
+    }
+
+    public void setRightBack(boolean flag){
+        iwBack.setVisibility(flag ? VISIBLE : GONE);
+    }
+
+    public void setFreeInfo(boolean flag){
+        tvFreeInfo.setVisibility(flag ? VISIBLE :GONE);
+    }
+
     public void setPaddingLeft(int px){
         ivLogo.setPadding(px,0,32,0);
     }
 
     public void setLineVisiable(boolean flag){
-        lineView.setVisibility(flag == true ? VISIBLE : GONE);
+        lineView.setVisibility(flag  ? VISIBLE : GONE);
 
     }
 
@@ -113,6 +136,14 @@ public class PublicTextView extends AutoLinearLayout {
             tvInfo.setText("");
         }
     }
+
+    public void setFirstTextColor(int color){
+        if(color != 0){
+            tvInfo.setTextColor(color);
+        }else{
+            tvInfo.setTextColor(getResources().getColor(R.color.login_edit));
+        }
+    }
     /*public void setDelete(boolean flag){
         if(flag){
             iwDelete.setVisibility(VISIBLE);
@@ -120,6 +151,7 @@ public class PublicTextView extends AutoLinearLayout {
             iwDelete.setVisibility(GONE);
         }
     }*/
+
 
     public void showArriveTime(boolean flag){
         if(flag){
@@ -188,6 +220,15 @@ public class PublicTextView extends AutoLinearLayout {
         if(text != null){
             tvInfo.setText(text);
             tvInfo.setTextColor(getResources().getColor(R.color.login_edit));
+        }else{
+            tvInfo.setText("");
+        }
+    }
+
+    public void setTextInfo(String text,int color){
+        if(text != null){
+            tvInfo.setText(text);
+            tvInfo.setTextColor(getResources().getColor(color));
         }else{
             tvInfo.setText("");
         }

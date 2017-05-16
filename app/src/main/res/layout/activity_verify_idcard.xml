@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout
+     xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     android:orientation="vertical"
+     android:background="@color/bg_write_grey"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent">
+
+    <include layout="@layout/include_toolbar"/>
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:id="@+id/ll_state_id_card"
+        android:layout_width="match_parent"
+        android:layout_height="84px"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="32px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:drawableLeft="@mipmap/ic_expain_id_card"
+            android:drawablePadding="14px"
+            android:text="@string/travel_explain"
+            android:textColor="@color/color_brown" />
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+    <com.ironaviation.traveller.mvp.ui.widget.PublicTextView
+        android:layout_marginTop="16px"
+        android:id="@+id/pw_seat_id_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:hint1="@string/airport_seat"
+        app:left_logo1="@mipmap/ic_seat"
+        app:right_back="true"/>
+    <TextView
+        android:id="@+id/tw_explain_free"
+        android:textColor="@color/word_deep_grey"
+        android:layout_marginLeft="@dimen/h_fillet2"
+        android:layout_marginTop="28px"
+        android:text="输入乘机人证件号,验证是否符合免费接送条件"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <com.zhy.autolayout.AutoLinearLayout
+        android:orientation="vertical"
+        android:layout_marginTop="26px"
+        android:id="@+id/ll_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </com.zhy.autolayout.AutoLinearLayout>
+
+    <TextView
+        android:layout_marginTop="128px"
+        android:layout_marginRight="@dimen/h_fillet2"
+        android:layout_marginLeft="@dimen/h_fillet2"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="32px"
+        android:layout_width="match_parent"
+        android:layout_height="96px"
+        android:background="@drawable/select_but_champagne"
+        android:id="@+id/tv_submit"
+        android:text="@string/travel_submit"
+        ></TextView>
+</com.zhy.autolayout.AutoLinearLayout>

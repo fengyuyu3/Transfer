@@ -88,5 +88,23 @@
             android:layout_centerVertical="true"
             android:text="@string/airport_validate_text"/>
 
+        <TextView
+            android:textColor="@color/login_edit"
+            android:id="@+id/tw_free_info"
+            android:visibility="gone"
+            android:layout_marginRight="60px"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/iw_right_back"
+            android:visibility="gone"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_right_ic_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
     </com.zhy.autolayout.AutoRelativeLayout>
 </com.zhy.autolayout.AutoLinearLayout>

@@ -42,4 +42,7 @@ public interface EventBusTags {
     String TIME_OUT = "time_out"; //订单失效
     String PUSH_ONLINE = "push_online";
     String PUSH_REFRESH = "push_refresh";
+    String LOGIN_OTHER = "login_other";
+    String ID_CARD_ON = "id_card_on"; //接机
+    String ID_CARD = "id_card";  //送机
 }

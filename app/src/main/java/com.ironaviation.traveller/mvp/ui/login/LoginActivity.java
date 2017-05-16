@@ -15,9 +15,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.igexin.sdk.PushManager;
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.app.service.WEGTIntentService;
 import com.ironaviation.traveller.app.service.WEPushService;
 import com.ironaviation.traveller.app.utils.BarUtils;
@@ -31,6 +33,8 @@ import com.ironaviation.traveller.mvp.contract.login.LoginContract;
 import com.ironaviation.traveller.mvp.presenter.Login.LoginPresenter;
 import com.ironaviation.traveller.mvp.ui.main.MainActivity;
 import com.jess.arms.utils.UiUtils;
+
+import org.simple.eventbus.Subscriber;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -212,4 +216,8 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
         return super.onKeyUp(keyCode, event);
     }
 
+    @Subscriber(tag = EventBusTags.LOGIN_OTHER)
+    public void loginOther(boolean flag){
+        showMessage(getString(R.string.login_other));
+    }
 }

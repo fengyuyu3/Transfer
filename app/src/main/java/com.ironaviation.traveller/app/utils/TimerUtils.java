@@ -88,8 +88,7 @@ public class TimerUtils {
     }
 
     public static List<String> getStartHours(long time){
-        Date date = null;
-        date = new Date(time);
+        Date date = new Date(time);
         List<String> list = new ArrayList<>();
         int currentHour = 0;
         if(date.getMinutes()/10 == 5){
@@ -247,8 +246,15 @@ public class TimerUtils {
     }
 
     public static int getDay(long time, long currentTime){
+        Date date = new Date(time);
+        int currentHour = 0;
+        if(date.getMinutes()/10 == 5){
+            currentHour = date.getHours()+1;
+        }
         if(time != 0 && currentTime != 0){
-            if(getDateFormat(time,formatDate).equals(getDateFormat(currentTime,formatDate))){
+            if(currentHour == 24){
+                return 1;
+            }else if(getDateFormat(time,formatDate).equals(getDateFormat(currentTime,formatDate))){
                 return 1;
             }else{
                 return 2;

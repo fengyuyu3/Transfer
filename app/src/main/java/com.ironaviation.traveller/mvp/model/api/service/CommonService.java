@@ -127,4 +127,7 @@ public interface CommonService {
 
     @GET(Api.GET_LATEST_VERSION)
     Observable<BaseData<AppVersionEntity>> getLatestVersion();
+
+    @POST(Api.HAS_BOOK)
+    Observable<BaseData<AirportGoInfoRequest>> getHasBookInfo(@Body AirportGoInfoRequest params);
 }

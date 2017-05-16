@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/id_cord_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <com.ironaviation.traveller.mvp.ui.widget.AutoScrollView
+        android:scrollbars="none"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.ironaviation.traveller.mvp.ui.widget.PublicTextView
+                android:id="@+id/pw_person_airport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hint1="@string/login_input_phone"
+                app:left_logo1="@mipmap/ic_person"
+                app:my_enable1="true"
+                app:right_peroson1="true" />
+            <com.ironaviation.traveller.mvp.ui.widget.PublicTextView
+                android:id="@+id/pw_flt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hint1="@string/airport_no"
+                app:left_logo1="@mipmap/ic_airport"
+                app:line1="false"
+                app:right_time1="true"/>
+            <com.zhy.autolayout.AutoLinearLayout
+                android:visibility="gone"
+                android:id="@+id/ll_off_address"
+                android:layout_marginTop="16px"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.ironaviation.traveller.mvp.ui.widget.PublicTextView
+                    android:id="@+id/pw_time_off"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hint1="@string/airport_time"
+                    app:left_logo1="@mipmap/ic_airport_time" />
+
+                <com.ironaviation.traveller.mvp.ui.widget.PublicTextView
+                    android:id="@+id/pw_address_off"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hint1="@string/airport_address"
+                    app:left_logo1="@mipmap/ic_blue_big_point"
+                    />
+
+                <com.ironaviation.traveller.mvp.ui.widget.PublicTextView
+                    android:id="@+id/pw_airport_off"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hint1="@string/airport_airport"
+                    app:left_logo1="@mipmap/ic_green_big_point"
+                    app:line1="false"
+                    />
+            </com.zhy.autolayout.AutoLinearLayout>
+            <com.zhy.autolayout.AutoLinearLayout
+                android:visibility="gone"
+                android:layout_marginTop="16px"
+                android:id="@+id/ll_on_address"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.ironaviation.traveller.mvp.ui.widget.PublicTextView
+                    android:id="@+id/pw_airport_on"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hint1="@string/airport_airport"
+                    app:left_logo1="@mipmap/ic_green_big_point"
+                    />
+
+                <com.ironaviation.traveller.mvp.ui.widget.PublicTextView
+                    android:id="@+id/pw_address_on"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hint1="@string/meet_input_address"
+                    app:left_logo1="@mipmap/ic_blue_big_point"
+                    app:line1="false"/>
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:visibility="gone"
+                android:layout_marginTop="16px"
+                android:id="@+id/ll_price_seat"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.ironaviation.traveller.mvp.ui.widget.PublicTextView
+                    android:id="@+id/pw_seat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hint1="@string/airport_seat"
+                    app:left_logo1="@mipmap/ic_seat"
+                    app:right_back="true"
+                    app:right_free_info="true"/>
+                <com.ironaviation.traveller.mvp.ui.widget.PublicTextView
+                    android:id="@+id/pw_expain_free"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hint1="@string/travel_free_expain"
+                    app:left_logo1="@mipmap/ic_car_id_card"
+                    app:line1="false"
+                    app:textColor="@color/color_brown"
+                    app:right_back="true"/>
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:id="@+id/ll_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16px"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/tw_reset_price"
+                        android:visibility="gone"
+                        android:layout_marginTop="48px"
+                        android:textSize="40px"
+                        android:src="@mipmap/ic_refresh"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:id="@+id/ll_set_price"
+                        android:visibility="visible"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="48px"
+                        android:orientation="horizontal">
+
+                        <com.ironaviation.traveller.mvp.ui.widget.FontTextView
+                            android:textSize="80px"
+                            android:id="@+id/tw_best_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="12.00"
+                            android:textColor="@color/word_red" />
+                        <TextView
+                            android:layout_marginLeft="10px"
+                            android:textSize="30px"
+                            android:text="@string/airport_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <com.ironaviation.traveller.mvp.ui.widget.FontTextView
+                            android:layout_marginLeft="10px"
+                            android:textColor="@color/word_already_input"
+                            android:textSize="50px"
+                            android:id="@+id/tw_original_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="24.01" />
+                        <TextView
+                            android:layout_marginLeft="5px"
+                            android:text="@string/airport_price"
+                            android:textSize="30px"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </com.zhy.autolayout.AutoLinearLayout>
+                    <TextView
+                        android:layout_marginTop="22px"
+                        android:drawablePadding="20px"
+                        android:gravity="center"
+                        android:drawableLeft="@mipmap/ic_grey_car"
+                        android:layout_gravity="center"
+                        android:textSize="26px"
+                        android:textColor="@color/word_middle_grey"
+                        android:text="@string/price_details"
+                        android:layout_marginBottom="26px"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </com.zhy.autolayout.AutoLinearLayout>
+            </com.zhy.autolayout.AutoLinearLayout>
+        </com.zhy.autolayout.AutoLinearLayout>
+
+    </com.ironaviation.traveller.mvp.ui.widget.AutoScrollView>
+    <TextView
+        android:id="@+id/tw_go_to_order"
+        style="@style/button_red_style"
+        android:layout_marginLeft="20px"
+        android:layout_marginRight="20px"
+        android:layout_marginBottom="40px"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/h_input_box"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/travel_order"></TextView>
+</com.zhy.autolayout.AutoLinearLayout>

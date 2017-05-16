@@ -2,6 +2,7 @@ package com.ironaviation.traveller.mvp.ui.widget;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -50,8 +51,8 @@ public class MyTimeDialog {
             this.mCallBack = mCallBack;
             this.time = time-(60*60*2000);
             currentTime = time-60*60*24*1000;
-            if(System.currentTimeMillis()+60*60*2000+10*60*1000 > currentTime){
-               currentTime = System.currentTimeMillis()+60*60*2000+10*60*1000;
+            if(System.currentTimeMillis()+60*60*2000+40*60*1000 > currentTime){
+               currentTime = System.currentTimeMillis()+60*60*2000+40*60*1000;
             }else{
 //                currentTime = currentTime+(60*60*2000+10*60*1000);
             }
@@ -179,12 +180,17 @@ public class MyTimeDialog {
             twConfirm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    EventBus.getDefault().post(myIndex, EventBusTags.DIALOG_EVENT);
-                    String date = TimerUtils.getYear(currentTime+indexDay*24*60*60)
-                    +list.get(indexDay) + hours.get(indexHour)+minites.get(indexMinite);
-//                    Log.e("kkk",date+"   "+TimerUtils.getTimeMillis(date));
-                    mCallBack.setTime(TimerUtils.getTimeMillis(date));
-                    mCameraDialog.dismiss();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+//                      EventBus.getDefault().post(myIndex, EventBusTags.DIALOG_EVENT);
+                            String date = TimerUtils.getYear(currentTime+indexDay*24*60*60)
+                                    +list.get(indexDay) + hours.get(indexHour)+minites.get(indexMinite);
+//                      Log.e("kkk",date+"   "+TimerUtils.getTimeMillis(date));
+                            mCallBack.setTime(TimerUtils.getTimeMillis(date));
+                            mCameraDialog.dismiss();
+                        }
+                    },200);
                 }
             });
 

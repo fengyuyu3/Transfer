@@ -123,6 +123,8 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     PublicTextView mPwAirport;
     @BindView(R.id.pw_seat)
     PublicTextView mPwSeat;
+    @BindView(R.id.pw_expain_free)
+    PublicTextView mPwExpainFree;
     @BindView(R.id.rw_airport)
     RecyclerView rwAirport;
     @BindView(R.id.ll_certification)
@@ -214,7 +216,8 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         mTerminalPopupWindow.setNum(terminalNum);
 //        setRidTimeHide();
         setRidTimeShow();
-        initEmptyData();
+        mPwExpainFree.setFirstTextColor(getResources().getColor(R.color.color_brown));
+//        initEmptyData();
 //        initLocation();
 //        setPrice();
         /*pvTime = new MyTimePickerView(getActivity(), MyTimePickerView.Type.MONTH_DAY_HOUR_TEN_MIN);
@@ -287,7 +290,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
 
     @OnClick({R.id.pw_seat, R.id.pw_airport, R.id.pw_flt, R.id.pw_time, R.id.pw_address,
             R.id.tv_code_all, R.id.tw_go_to_order, R.id.tw_reset_price, R.id.ll_set_price,
-            R.id.tw_explain})
+            R.id.tw_explain,R.id.pw_expain_free})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.pw_seat:
@@ -319,7 +322,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
                 intent1.putExtras(bundle);
                 launchActivity(intent1);
                 break;
-            case R.id.tv_code_all:
+            /*case R.id.tv_code_all:
                 if(getAirPortInfo().getPassengers() == null ||
                         getAirPortInfo().getPassengers().size() == 0){
                     showMessage("请输入身份证");
@@ -327,12 +330,12 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
                     setRepeatIdCard(mAirportRequests,getAirPortInfo());
 //                    mPresenter.getAirportInfo(getAirPortInfo());
                 }
-                break;
+                break;*/
             case R.id.tw_go_to_order:
                 mPresenter.isOrderSuccess(bid);
                 break;
             case R.id.tw_reset_price:
-                setRepeatIdCard(mAirportRequests,getAirPortInfo());
+                setRepeatIdCard(/*mAirportRequests,*/getAirPortInfo());
 //                mPresenter.getAirportInfo(getAirPortInfo());
                 break;
             case R.id.ll_set_price:
@@ -343,6 +346,19 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
                 intent2.putExtra(Constant.TITLE,getResources().getString(R.string.travel_explain_detail));
                 intent2.putExtra(Constant.URL, Api.PHONE_INTRODUCE);
                 startActivity(intent2);
+                break;
+            case R.id.pw_expain_free:
+                Intent intent3 = new Intent(getActivity(),VerifyIdCardActivity.class);
+                Bundle bundle1 = new Bundle();
+                bundle1.putString(Constant.STATUS,Constant.CLEAR_PORT);
+                bundle1.putInt(Constant.PEOPLE_NUM,seatNum != 0 ? seatNum :1);
+                AirportGoInfoRequest mRequest = getAirPortInfo();
+                if(mPassengersRequests != null && mPassengersRequests.size() > 0){
+                    mRequest.setPassengers(mPassengersRequests);
+                }
+                bundle1.putSerializable(Constant.AIRPORT_GO_INFO,mRequest);
+                intent3.putExtras(bundle1);
+                startActivity(intent3);
                 break;
         }
     }
@@ -432,7 +448,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         if (type == Constant.AIRPORT_TYPE_SEAT) {
             mNumDialog.dismiss();
             seatNum = position+1;
-            setRepeatIdCard(mAirportRequests,getAirPortInfo());
+            setRepeatIdCard(/*mAirportRequests,*/getAirPortInfo());
 //            mPresenter.getAirportInfo(getAirPortInfo());
 //            setSeat(position);
         }
@@ -441,7 +457,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     public void setSeat(int position){
         mPwSeat.setTextInfo("需要" + (position) + "个座位");
         seatNum = position;
-        clearMoreData(position);
+        /*clearMoreData(position);
         if(mPwFltNo.getTextInfo().substring(0,2).equalsIgnoreCase(Constant.SC_AIRPORT)) {
             List<AirPortRequest> list = new ArrayList<>();
             for (int i = 0; i < position; i++) {
@@ -451,7 +467,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
             mPwSeat.setLineVisiable(true);
         }else{
             mPwSeat.setLineVisiable(false);
-        }
+        }*/
     }
 
     //获取验证身份号码的位置和身份证号码
@@ -520,17 +536,17 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
             holder.mTvCode = (TextView) view.findViewById(R.id.tv_code);  //验证按钮
             holder.mPwLl = (AutoLinearLayout) view.findViewById(R.id.pw_ll); //整个布局
             holder.mIwDelete = (ImageView) view.findViewById(R.id.iw_delete);
-            if (mAirportRequests.get(i).getStatus() == Constant.AIRPORT_SUCCESS) {
+            /*if (mAirportRequests.get(i).getStatus() == Constant.AIRPORT_SUCCESS) {
                 setSuccess(holder);
             } else if (mAirportRequests.get(i).getStatus() == Constant.AIRPORT_FAILURE) {
                 setFailure(holder);
             } else {
                 setNomal(holder);
-            }
+            }*/
             if (i == position-1) {
                 holder.mLineEdt.setVisibility(View.GONE);
             }
-            setAirportData(holder, mAirportRequests.get(i));
+//            setAirportData(holder, mAirportRequests.get(i));
             setlistener(holder, i);
             llCertification.addView(view);
         }
@@ -596,11 +612,11 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
 
             @Override
             public void afterTextChanged(Editable editable) {
-                mAirportRequests.get(position).setIdCard(editable.toString());
+//                mAirportRequests.get(position).setIdCard(editable.toString());
             }
         });
 
-        holder.mTvCode.setOnClickListener(new View.OnClickListener() {
+       /* holder.mTvCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mAirportRequests.get(position).getStatus() != Constant.AIRPORT_SUCCESS) {
@@ -629,7 +645,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
 //                setRepeatIdCard(mPassengersRequests,getAirPortInfo());
                 mPresenter.getAirportInfo(getAirPortInfo());
             }
-        });
+        });*/
     }
 
     public void setPrice(double price,double acturlPrice) {
@@ -646,12 +662,12 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
     }
 
 
-    public void clearMoreData(int position) {
+    /*public void clearMoreData(int position) {
         for (int i = position ; i < Constant.SEAT_NUM; i++) {
             mAirportRequests.get(i).setIdCard("");
             mAirportRequests.get(i).setStatus(Constant.AIRPORT_NO);
         }
-    }
+    }*/
     //获取航站楼位置
     @Override
     public void getItem(int position) {
@@ -683,7 +699,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         showPrice();
         //seatNum 座位数
         boolean flag = false;
-        StringBuilder prompt = new StringBuilder();
+        /*StringBuilder prompt = new StringBuilder();
         for(int i = 0 ; i < list.size(); i++){
             for(int j = 0; j < mAirportRequests.size();j++){
                 if(list.get(i).getIDCardNo() != null && list.get(i).getIDCardNo().equals(mAirportRequests.get(j).getIdCard())){
@@ -702,9 +718,9 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         }
         if(flag) {
             showDialog(prompt.toString().substring(0,prompt.length()-1));
-        }
+        }*/
         setSeat(seatNum);
-        this.mPassengersRequests = list;
+//        this.mPassengersRequests = list;
     }
 
     public void showDialog(String msg){
@@ -814,13 +830,14 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         addressFlag = false;
         timeFlag = false;
         setOrderButtonStatus(false);
+        initEmptyData();
     }
 
     public void clearAllData(){
         mPwFltNo.setInitInfo(getResources().getString(R.string.airport_no));
         mPwFltNo.setArriveTime("");
         clearData();
-        initEmptyData();
+//        initEmptyData();
     }
 
     //显示价格
@@ -876,7 +893,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
             request.setDestLongitude(Constant.AIRPORT_T1_LONGITUDE);
         }
         request.setSeatNum(seatNum);
-        List<PassengersRequest> list = new ArrayList<>();
+        /*List<PassengersRequest> list = new ArrayList<>();
         for(int i = 0; i< seatNum;i++){
             PassengersRequest request1 = new PassengersRequest();
             if(mAirportRequests.get(i) != null  &&
@@ -889,7 +906,7 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         }
         if(list.size() > 0){
             request.setPassengers(list);
-        }
+        }*/
         if(bid != null){
             request.setBID(bid);
         }
@@ -927,12 +944,12 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         MobclickAgent.onPageEnd(getClass().getSimpleName());
     }
 
-    public void setRepeatIdCard(List<AirPortRequest> requests,AirportGoInfoRequest info){
-        if(getRepeatIDCard(requests)) {
+    public void setRepeatIdCard(/*List<AirPortRequest> requests,*/AirportGoInfoRequest info){
+        /*if(getRepeatIDCard(requests)) {
             showIDCardDialog();
-        }else{
+        }else{*/
             mPresenter.getAirportInfo(info);
-        }
+//        }
     }
 
     public void showIDCardDialog(){
@@ -960,4 +977,13 @@ public class AirPortOffFragment extends WEFragment<AirPortOffPresenter> implemen
         return false;
     }
 
+    @Subscriber(tag = EventBusTags.ID_CARD)
+    public void setPriceInfo(AirportGoInfoRequest info){
+        setPrice(info.getTotalPrice(),info.getActualPrice());
+        setPrice();//设置显示价格
+        setSeat(info.getSeatNum());
+        if(info.getPassengers() != null && info.getPassengers().size() > 0){
+            mPassengersRequests = info.getPassengers();
+        }
+    }
 }

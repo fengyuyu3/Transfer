@@ -72,9 +72,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:hint1="@string/airport_seat"
-                app:left_logo1="@mipmap/ic_seat" />
+                app:left_logo1="@mipmap/ic_seat"/>
 
+        <com.ironaviation.traveller.mvp.ui.widget.PublicTextView
+            android:id="@+id/pw_expain_free"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hint1="@string/travel_free_expain"
+            app:left_logo1="@mipmap/ic_car_id_card"
+            app:line1="false"
+            app:textColor="@color/color_brown"/>
             <com.zhy.autolayout.AutoLinearLayout
+                android:visibility="gone"
                 android:id="@+id/ll_certification"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -101,11 +110,13 @@
                 android:orientation="vertical">
 
                 <View
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:background="@color/bg_write_grey"></View>
 
                 <com.zhy.autolayout.AutoRelativeLayout
+                    android:visibility="gone"
                     android:id="@+id/ll_state"
                     android:layout_width="match_parent"
                     android:layout_height="86px"

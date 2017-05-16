@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -62,6 +63,10 @@ public class MessageActivity extends WEActivity<MessagePresenter> implements Mes
     AutoRelativeLayout mError;
     @BindView(R.id.tw_reset_network)
     TextView mTwResetNetWork;
+    @BindView(R.id.tw_nodata)
+    TextView mTwNodata;
+    @BindView(R.id.iw_nodata)
+    ImageView mIwNodata;
     private MessageAdapter mMessageAdapter;
 
     int pageIndex=1;
@@ -164,6 +169,8 @@ public class MessageActivity extends WEActivity<MessagePresenter> implements Mes
 //        showNodata(true);
         mRvMessage.setVisibility(View.GONE);
         mNodata.setVisibility(View.VISIBLE);
+        mIwNodata.setImageResource(R.mipmap.ic_nodata_img);
+        mTwNodata.setText(getResources().getString(R.string.no_data_message));
         mError.setVisibility(View.GONE);
     }
 
