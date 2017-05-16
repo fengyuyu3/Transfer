@@ -27,8 +27,6 @@ import android.widget.TextView;
 import com.igexin.sdk.PushManager;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
-import com.ironaviation.traveller.app.service.WEGTIntentService;
-import com.ironaviation.traveller.app.service.WEPushService;
 import com.ironaviation.traveller.app.utils.CountTimerUtil;
 import com.ironaviation.traveller.app.utils.PushClientUtil;
 import com.ironaviation.traveller.app.utils.PushCountTimerUtil;
@@ -165,6 +163,9 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
         mAirportFragment.setArguments(bundle1);
         mFragments.add(airportFragment);
         mFragments.add(mAirportFragment);
+        PushManager.getInstance().initialize(this);
+        mFragments.add(new AirPortOnFragment());
+        mFragments.add(new AirPortOffFragment());
         /*for (String title : mTitles) {
             mFragments.add(SimpleCardFragment.getInstance(title));
         }*/

@@ -56,6 +56,15 @@
             android:value="test"/>
 
 
+        <!-- 个推推送 广播接收器 -->
+        <receiver
+            android:name=".app.receiver.PushGetuiBroadcastReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.igexin.sdk.action.${GETUI_APP_ID}"/>
+            </intent-filter>
+        </receiver>
+
         <!--引导页-->
         <activity
             android:name=".mvp.ui.login.SplashActivity"
@@ -314,30 +323,7 @@
         <meta-data
             android:name="PUSH_APPSECRET"
             android:value="${GETUI_APP_SECRET}"/>
-        <!-- 配置个推SDK核心服务 -->
-        <service android:name=".app.service.WEGTIntentService"/>
-        <service
-            android:name=".app.service.WEPushService"
-            android:exported="true"
-            android:label="PushService"
-            android:process=":pushservice">
-            <intent-filter>
-                <action android:name="com.igexin.sdk.action.service.message"/>
-            </intent-filter>
-        </service>
 
-        <receiver android:name="com.igexin.sdk.PushReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
-                <action android:name="android.intent.action.USER_PRESENT"/>
-                <action android:name="com.igexin.sdk.action.refreshls"/>
-                <!-- 以下三项为可选的action声明，可大大提高service存活率和消息到达速度 -->
-                <action android:name="android.intent.action.MEDIA_MOUNTED"/>
-                <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
-                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
-            </intent-filter>
-        </receiver>
         <!-- autolayout meta
         将设计图的宽高配置后,配合AutoLauout控件使用,在设计图尺寸以外的其它尺寸手机上,也能达到和设计图一样的效果
         -->

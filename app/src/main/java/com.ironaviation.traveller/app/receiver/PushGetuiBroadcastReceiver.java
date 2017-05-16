@@ -1,110 +1,99 @@
-package com.ironaviation.traveller.app.service;
+package com.ironaviation.traveller.app.receiver;
 
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.igexin.sdk.GTIntentService;
-import com.igexin.sdk.PushManager;
-import com.igexin.sdk.message.GTCmdMessage;
-import com.igexin.sdk.message.GTTransmitMessage;
+import com.igexin.sdk.PushConsts;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.app.utils.Cache;
-import com.ironaviation.traveller.app.utils.PushClientUtil;
 import com.ironaviation.traveller.common.WEApplication;
 import com.ironaviation.traveller.mvp.constant.Constant;
-import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.BasePushData;
-import com.ironaviation.traveller.mvp.model.entity.response.PushResponse;
 import com.ironaviation.traveller.mvp.ui.login.LoginActivity;
-import com.ironaviation.traveller.mvp.ui.main.MainActivity;
 import com.ironaviation.traveller.mvp.ui.my.travel.PaymentDetailsActivity;
-import com.ironaviation.traveller.mvp.ui.my.travel.TravelActivity;
 import com.ironaviation.traveller.mvp.ui.my.travel.TravelCancelActivity;
 import com.ironaviation.traveller.mvp.ui.my.travel.TravelDetailsActivity;
 import com.ironaviation.traveller.mvp.ui.my.travel.TravelDetailsOnActivity;
 import com.ironaviation.traveller.mvp.ui.payment.InvalidationActivity;
 import com.jess.arms.utils.DataHelper;
 import com.jess.arms.utils.UiUtils;
+import com.umeng.analytics.MobclickAgent;
 
 import org.simple.eventbus.EventBus;
-
-import java.util.concurrent.CopyOnWriteArrayList;
-
 
 /**
  * 项目名称：Traveller
  * 类描述：
  * 创建人：starRing
- * 创建时间：2017-03-27 14:59
+ * 创建时间：2017/5/16 11:05
  * 修改人：starRing
- * 修改时间：2017-03-27 14:59
+ * 修改时间：2017/5/16 11:05
  * 修改备注：
  */
-/**
- * 继承 GTIntentService 接收来自个推的消息, 所有消息在线程中回调, 如果注册了该服务, 则务必要在 AndroidManifest中声明, 否则无法接受消息<br>
- * onReceiveMessageData 处理透传消息<br>
- * onReceiveClientId 接收 cid <br>
- * onReceiveOnlineState cid 离线上线通知 <br>
- * onReceiveCommandResult 各种事件处理回执 <br>
- */
-public class WEGTIntentService extends GTIntentService {
+public class PushGetuiBroadcastReceiver extends BroadcastReceiver {
 
-    private Context mContext;
 
-    public WEGTIntentService() {
+    public PushGetuiBroadcastReceiver() {
 
     }
 
     @Override
-    public void onReceiveServicePid(Context context, int pid) {
-        this.mContext = context;
-    }
+    public void onReceive(Context context, Intent intent) {
+        try {
+            Bundle bundle = intent.getExtras();
 
-    @Override
-    public void onReceiveMessageData(Context context, GTTransmitMessage msg) {
-        this.mContext = context;
-        String taskid = msg.getTaskId();
-        String messageid = msg.getMessageId();
-        byte[] payload = msg.getPayload();
-        boolean result = PushManager.getInstance()
-                .sendFeedbackMessage(context, taskid, messageid, 90001);
-        if (payload == null) {
-        } else {
-            String data = new String(payload);
-            try{
-                BasePushData response = new Gson().fromJson(data,BasePushData.class);
-                if(response.getType() == Constant.OTHER_LOGIN){
-                    otherLogin(context);
-                }else {
-                    if (!TextUtils.isEmpty(response.getData().getTripType()) && !(response.getData().getCode()==Constant.ORDER_SUCCESS) && !(response.getData().getCode()==Constant.ORDER_SUCCESS_ON)) {
-                        setStatus(response, context);
-                        messageLogic(response, context);
-                        EventBus.getDefault().post(response.getData().getBID(), EventBusTags.REFRESH);
+            switch (bundle.getInt(PushConsts.CMD_ACTION)) {
+                case PushConsts.GET_MSG_DATA:
+                    byte[] payload = bundle.getByteArray("payload");
+                    if (payload == null) {
+                    } else {
+                        String data = new String(payload);
+                        try{
+                            BasePushData response = new Gson().fromJson(data,BasePushData.class);
+                            if(response.getType() == Constant.OTHER_LOGIN){
+                                otherLogin(context);
+                            }else {
+                                if (!TextUtils.isEmpty(response.getData().getTripType()) && !(response.getData().getCode()==Constant.ORDER_SUCCESS) && !(response.getData().getCode()==Constant.ORDER_SUCCESS_ON)) {
+                                    setStatus(response, context);
+                                    messageLogic(response, context);
+                                    EventBus.getDefault().post(response.getData().getBID(), EventBusTags.REFRESH);
+                                }
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                     }
-                }
-            }catch (Exception e){
-                e.printStackTrace();
+
+
+                    break;
+                case PushConsts.GET_CLIENTID:
+                    String clientid = bundle.getString("clientid");
+                    if (!TextUtils.isEmpty(clientid)) {
+                        DataHelper.SetStringSF(WEApplication.getContext(), Constant.CLIENTID, clientid);
+                    }
+                    break;
             }
-            /*TransparentMessageEntity transparentMessageEntity =
-                    new Gson().fromJson(data, TransparentMessageEntity.class);*/
+        } catch (Exception e) {
+            e.printStackTrace();
+            MobclickAgent.reportError(WEApplication.getContext(), e);
         }
     }
+
 
     public void otherLogin(Context context){
         DataHelper.removeSF(context,Constant.LOGIN);
         Intent intent = new Intent(context, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        EventBus.getDefault().post(true, EventBusTags.LOGIN_OTHER);
-//        UiUtils.SnackbarText(getString(R.string.login_other));
+        UiUtils.SnackbarText(context.getResources().getString(R.string.login_other));
         context.startActivity(intent);
     }
 
@@ -247,28 +236,10 @@ public class WEGTIntentService extends GTIntentService {
                 intent.putExtras(bundle1);
                 break;
         }
-       return intent;
+        return intent;
     }
 
-    @Override
-    public void onReceiveClientId(Context context, String clientid) {
-        Log.e(TAG, "onReceiveClientId -> " + "clientid = " + clientid);
-    }
 
-    @Override
-    public void onReceiveOnlineState(Context context, boolean online) {
-        if(!online){
-            EventBus.getDefault().post(true,EventBusTags.PUSH_ONLINE);
-        }
-
-        Log.e(TAG, "onReceiveClientId -> " + "online = " + online);
-    }
-
-    @Override
-    public void onReceiveCommandResult(Context context, GTCmdMessage cmdMessage) {
-        Log.e(TAG, "onReceiveClientId -> " + "cmdMessage = " + cmdMessage.toString());
-
-    }
 
     private void messageLogic(BasePushData response,Context context) {
 

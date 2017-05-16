@@ -150,5 +150,12 @@ public interface Constant {
     String SETTING_NOMAL = "setting";
     String FLIGHT_NO = "flight_no";
     String CHENGDU_CTU = "CTU";
+
+    /****
+     * @ 配置信息
+     */
+    String ALLOCATION_INFO = "allocationInfo";
+
+    String CLIENTID = "client_id";//个推id
     String AIRPORT_GO_INFO = "AirportGoInfoRequest";
 }

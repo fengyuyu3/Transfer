@@ -22,15 +22,12 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.igexin.sdk.PushManager;
 import com.ironaviation.traveller.R;
-import com.ironaviation.traveller.app.service.WEGTIntentService;
-import com.ironaviation.traveller.app.service.WEPushService;
 import com.ironaviation.traveller.app.utils.PushClientUtil;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.ui.main.MainActivity;
 import com.jess.arms.utils.DataHelper;
-import com.jess.arms.utils.PermissionUtil;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
 
@@ -66,7 +63,6 @@ public class SplashActivity extends WEActivity {
 
 
     // DemoPushService.class 自定义服务名称, 核心服务
-    private Class userPushService = WEPushService.class;
     private static final int REQUEST_PERMISSION = 0;
 
     @Override
@@ -91,7 +87,7 @@ public class SplashActivity extends WEActivity {
             },2000);
         }
 //        initClientId();
-        PushClientUtil.initClientId(this);
+        PushManager.getInstance().initialize(this);
         DataHelper.SetStringSF(this,FIRST,"second");
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override

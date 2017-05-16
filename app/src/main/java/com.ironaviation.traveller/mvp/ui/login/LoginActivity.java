@@ -20,8 +20,6 @@ import android.widget.Toast;
 import com.igexin.sdk.PushManager;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
-import com.ironaviation.traveller.app.service.WEGTIntentService;
-import com.ironaviation.traveller.app.service.WEPushService;
 import com.ironaviation.traveller.app.utils.BarUtils;
 import com.ironaviation.traveller.app.utils.CountTimerUtil;
 import com.ironaviation.traveller.app.utils.PushClientUtil;
@@ -29,9 +27,11 @@ import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.login.DaggerLoginComponent;
 import com.ironaviation.traveller.di.module.login.LoginModule;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.login.LoginContract;
 import com.ironaviation.traveller.mvp.presenter.Login.LoginPresenter;
 import com.ironaviation.traveller.mvp.ui.main.MainActivity;
+import com.jess.arms.utils.DataHelper;
 import com.jess.arms.utils.UiUtils;
 
 import org.simple.eventbus.Subscriber;
@@ -73,7 +73,6 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
     TextView mTvCode;
 
     // DemoPushService.class 自定义服务名称, 核心服务
-    private Class userPushService = WEPushService.class;
 
     CountTimerUtil mCountTimerUtil;
 
@@ -146,30 +145,13 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
 
     @Override
     public String getClientId() {
-        return PushManager.getInstance().getClientid(getApplicationContext());
+        return DataHelper.getStringSF(this, Constant.CLIENTID);
     }
 
     @Override
     public void initClientId() {
+        PushManager.getInstance().initialize(this);
 
-        // com.getui.demo.DemoPushService 为第三方自定义推送服务
-        PackageManager pkgManager = getPackageManager();
-
-        // 读写 sd card 权限非常重要, android6.0默认禁止的, 建议初始化之前就弹窗让用户赋予该权限
-        boolean sdCardWritePermission =
-                pkgManager.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, getPackageName()) == PackageManager.PERMISSION_GRANTED;
-
-        // read phone state用于获取 imei 设备信息
-        boolean phoneSatePermission =
-                pkgManager.checkPermission(Manifest.permission.READ_PHONE_STATE, getPackageName()) == PackageManager.PERMISSION_GRANTED;
-
-        if (Build.VERSION.SDK_INT >= 23 && !sdCardWritePermission || !phoneSatePermission) {
-            requestPermission();
-        } else {
-            PushManager.getInstance().initialize(this.getApplicationContext(), userPushService);
-        }
-        PushManager.getInstance().initialize(this.getApplicationContext(), userPushService);
-        PushManager.getInstance().registerPushIntentService(this.getApplicationContext(), WEGTIntentService.class);
     }
 
     @Override
