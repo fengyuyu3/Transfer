@@ -51,6 +51,7 @@ import com.ironaviation.traveller.mvp.ui.widget.AutoToolbar;
 import com.jess.arms.utils.DataHelper;
 import com.jess.arms.utils.UiUtils;
 import com.umeng.analytics.MobclickAgent;
+import com.yanzhenjie.permission.AndPermission;
 import com.zhy.autolayout.AutoRelativeLayout;
 
 import org.simple.eventbus.Subscriber;
@@ -150,15 +151,21 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
     @Override
     protected void initData() {
 
+        AndPermission.with(this)
+                .requestCode(100)
+                .permission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .send();
+
+
         PushClientUtil.initClientId(this);
         /*mFragments.add(new AirPortOnFragment());
         mFragments.add(new AirPortOffFragment());*/
         Bundle bundle = new Bundle();
-        bundle.putString(Constant.STATUS,Constant.ENTER_PORT);
+        bundle.putString(Constant.STATUS, Constant.ENTER_PORT);
         AirportFragment airportFragment = new AirportFragment();
         airportFragment.setArguments(bundle);
         Bundle bundle1 = new Bundle();
-        bundle1.putString(Constant.STATUS,Constant.CLEAR_PORT);
+        bundle1.putString(Constant.STATUS, Constant.CLEAR_PORT);
         AirportFragment mAirportFragment = new AirportFragment();
         mAirportFragment.setArguments(bundle1);
         mFragments.add(airportFragment);
@@ -187,7 +194,7 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
             }
         });
         mPresenter.getLatestVersion();
-        PushCountTimerUtil pushCountTimerUtil = new PushCountTimerUtil(this,5*60*1000,3*60*60*1000);
+        PushCountTimerUtil pushCountTimerUtil = new PushCountTimerUtil(this, 5 * 60 * 1000, 3 * 60 * 60 * 1000);
         pushCountTimerUtil.start();
 
     }
@@ -304,7 +311,7 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
     }
 
     @Subscriber(tag = EventBusTags.PUSH_ONLINE)
-    public void pushOnline(boolean flag){
+    public void pushOnline(boolean flag) {
         PushClientUtil.initClientId(this);
     }
 
