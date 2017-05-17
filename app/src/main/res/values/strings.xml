@@ -109,6 +109,7 @@
     <string name="airport_no">请输入航班号,例如3U8881</string>
     <string name="airport_time">请选择乘车时间</string>
     <string name="airport_address">请输入上车地址</string>
+    <string name="airport_down_address">请输入下车地址</string>
     <string name="airport_airport">选择航站楼</string>
     <string name="airport_seat">需要1个座位数</string>
     <string name="airport_validate">输入身份证号或护照验证免费乘坐资格</string>

@@ -181,8 +181,8 @@ public class MyTimeDialog {
                 lwDay.setItems(list);
                 hours = getStartHour();
                 lwHour.setItems(hours);
-                /*minites =getStartMinite();
-                lwSec.setItems(minites);*/
+                minites = getStartMinite();
+                lwSec.setItems(minites);
             }
             WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
             lp.x = 0; // 新位置X坐标

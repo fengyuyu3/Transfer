@@ -5,6 +5,7 @@ import android.app.Application;
 import com.ironaviation.traveller.mvp.contract.airportoff.AirportContract;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.request.AirportGoInfoRequest;
+import com.ironaviation.traveller.mvp.model.entity.request.BIDRequest;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
@@ -13,6 +14,7 @@ import com.jess.arms.widget.imageloader.ImageLoader;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
+import rx.Observable;
 
 import javax.inject.Inject;
 
@@ -90,6 +92,23 @@ public class AirportPresenter extends BasePresenter<AirportContract.Model, Airpo
 
     public void isOrderSuccess(String bid){
         mModel.isOrderSuccess(bid)
+                .compose(RxUtils.<BaseData<Boolean>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<Boolean>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<Boolean> booleanBaseData) {
+                        if(booleanBaseData.isSuccess()){
+                            if(booleanBaseData.getData() != null) {
+                                mRootView.isOrderSuccess(booleanBaseData.getData());
+                            }
+                        }else{
+                            mRootView.showMessage(booleanBaseData.getMessage());
+                        }
+                    }
+                });
+    }
+
+    public void isOrderOnSuccess(String bid){
+        mModel.isOrderOnSuccess(bid)
                 .compose(RxUtils.<BaseData<Boolean>>applySchedulers(mRootView))
                 .subscribe(new ErrorHandleSubscriber<BaseData<Boolean>>(mErrorHandler) {
                     @Override

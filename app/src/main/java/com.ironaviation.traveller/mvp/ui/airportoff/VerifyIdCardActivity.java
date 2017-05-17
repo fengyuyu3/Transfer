@@ -345,7 +345,7 @@ public class VerifyIdCardActivity extends WEActivity<VerifyIdCardPresenter> impl
                     && setPassengers(mRequest,mAirportRequests,seatNum).getPassengers().size() > 0){
                 setRepeatIdCard(mAirportRequests,setPassengers(mRequest, mAirportRequests, seatNum));
             }else{
-                showMessage("请输入身份证");
+                showMessage("请输入证件号验证");
             }
         }
     }

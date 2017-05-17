@@ -66,4 +66,11 @@ public class AirportModel extends BaseModel<ServiceManager, CacheManager> implem
         params.setBID(bid);
         return mCommonService.isOrderSuccess(params);
     }
+
+    @Override
+    public Observable<BaseData<Boolean>> isOrderOnSuccess(String bid) {
+        BIDRequest params = new BIDRequest();
+        params.setBID(bid);
+        return mCommonService.isOrderSuccessOn(params);
+    }
 }
