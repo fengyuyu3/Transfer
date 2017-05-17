@@ -183,6 +183,7 @@ public class VerifyIdCardActivity extends WEActivity<VerifyIdCardPresenter> impl
                               List<AirPortRequest> mRequests,int num){
         mInfo.setSeatNum(num);
         List<PassengersRequest> list = new ArrayList<>();
+        mInfo.setPassengers(list);
         for(int i = 0; i< num;i++){
             PassengersRequest request1 = new PassengersRequest();
             if(mRequests.get(i) != null  &&
@@ -269,12 +270,12 @@ public class VerifyIdCardActivity extends WEActivity<VerifyIdCardPresenter> impl
                 num++;
             }
         }
-        if(num == info.getPassengers().size()){
+        if(num == seatNum){
             text = "符合免费乘坐资格，可免费乘坐。";
         }else if(num == 0){
             text = "不符合免费乘坐资格，需付费乘坐。";
         }else{
-            text = num+"人符合免费乘坐资格，可免费乘坐。";
+            text = num+"人符合免费乘坐资格，其他人需付费乘坐。";
         }
         AlertDialog dialog = new AlertDialog(this);
         dialog.builder().setTitle("温馨提示").setMsg(text)
@@ -409,7 +410,7 @@ public class VerifyIdCardActivity extends WEActivity<VerifyIdCardPresenter> impl
 
     //失败状态
     public void setFailure(MyAirportHolder holder) {
-        holder.mIvLogo.setImageResource(R.mipmap.ic_failure);
+        holder.mIvLogo.setImageResource(R.mipmap.ic_failure_id_card);
         holder.mIwDelete.setVisibility(View.GONE);
         holder.mEdtContent.setEnabled(true);
     }

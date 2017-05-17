@@ -463,20 +463,22 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
     public void clearData(){
         if(status != null && status.equals(Constant.CLEAR_PORT)){
             mPwTimeOff.setInitInfo(getResources().getString(R.string.airport_time));
-            mPwAddressOff.setInitInfo(getResources().getString(R.string.airport_address));
+            /*mPwAddressOff.setInitInfo(getResources().getString(R.string.airport_address));
             mPwAirportOff.setTextInfo(Constant.AIRPORT_T1);
-            mPwSeat.setTextInfo(getResources().getString(R.string.airport_seat));
-            addressFlagOFF = false;
+            mPwSeat.setTextInfo(getResources().getString(R.string.airport_seat));*/
+//            addressFlagOFF = false;
             timeFlag = false;
             setOrderButtonStatus(false);
             showPrice(false);
+//            mPwSeat.setFreeInfo("");
         }else if(status != null && status.equals(Constant.ENTER_PORT)){
-            mPwSeat.setTextInfo(getResources().getString(R.string.airport_seat));
+            /*mPwSeat.setTextInfo(getResources().getString(R.string.airport_seat));
             mPwAirportOn.setTextInfo(Constant.AIRPORT_T1);
             mPwAddressOn.setInitInfo(getResources().getString(R.string.airport_address));
-            addressFlagON = false;
+            addressFlagON = false;*/
             setOrderButtonStatus(false);
             showPrice(false);
+//            mPwSeat.setFreeInfo("");
         }
     }
 
@@ -534,7 +536,11 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
         request.setPickupLongitude(info.location.longitude);
         request.setPickupTime(time);
         request.setCity(Constant.CITY);
-        request.setEnterPort(false);
+        if(status.equals(Constant.CLEAR_PORT)) {
+            request.setEnterPort(false);
+        }else if(status.equals(Constant.ENTER_PORT)){
+            request.setEnterPort(true);
+        }
         if(phone != null){
             request.setCallNumber(phone);
         }
@@ -583,23 +589,46 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
             intent.putExtra(Constant.BID,bid);
             if(status != null && status.equals(Constant.CLEAR_PORT)) {
                 intent.putExtra(Constant.CHILD_STATUS, Constant.OFF);
-                mPassengersRequests = null;
-                seatNum = 1;
-                mPwFlt.setInitInfo(getResources().getString(R.string.airport_no));
-                mPwFlt.setArriveTime("");
-                flightNo = "";
-                bid = null;
+
             }else if(status != null && status.equals(Constant.ENTER_PORT)){
                 intent.putExtra(Constant.CHILD_STATUS, Constant.ON);
-                mPassengersRequests = null;
-                seatNum = 1;
-                mPwFlt.setInitInfo(getResources().getString(R.string.airport_no));
-                mPwFlt.setArriveTime("");
-                flightNo = "";
-                bid = null;
             }
             startActivity(intent);
-            clearData();
+            clearAll();
+        }
+    }
+
+    public void clearAll(){
+        if(status != null && status.equals(Constant.CLEAR_PORT)){
+            mPwTimeOff.setInitInfo(getResources().getString(R.string.airport_time));
+            mPwAddressOff.setInitInfo(getResources().getString(R.string.airport_address));
+            mPwAirportOff.setTextInfo(Constant.AIRPORT_T1);
+            mPwSeat.setTextInfo(getResources().getString(R.string.airport_seat));
+            addressFlagOFF = false;
+            timeFlag = false;
+            setOrderButtonStatus(false);
+            showPrice(false);
+            mPwSeat.setFreeInfo("");
+            mPassengersRequests = null;
+            seatNum = 1;
+            mPwFlt.setInitInfo(getResources().getString(R.string.airport_no));
+            mPwFlt.setArriveTime("");
+            flightNo = "";
+            bid = null;
+        }else if(status != null && status.equals(Constant.ENTER_PORT)){
+            mPwSeat.setTextInfo(getResources().getString(R.string.airport_seat));
+            mPwAirportOn.setTextInfo(Constant.AIRPORT_T1);
+            mPwAddressOn.setInitInfo(getResources().getString(R.string.airport_address));
+            addressFlagON = false;
+            setOrderButtonStatus(false);
+            showPrice(false);
+            mPwSeat.setFreeInfo("");
+            mPassengersRequests = null;
+            seatNum = 1;
+            mPwFlt.setInitInfo(getResources().getString(R.string.airport_no));
+            mPwFlt.setArriveTime("");
+            flightNo = "";
+            bid = null;
         }
     }
 
@@ -638,6 +667,7 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
     public void getItem(int position, int type) {
         mNumDialog.dismiss();
         seatNum = position+1;
+        mPwSeat.setFreeInfo("");
         mPresenter.getAirportInfo(getAirPortInfo());
         mPwSeat.setTextInfo("需要" + seatNum + "个座位");
     }

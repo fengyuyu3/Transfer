@@ -44,6 +44,7 @@ import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.baidu.trace.LBSTraceClient;
 import com.baidu.trace.Trace;
+import com.baidu.trace.api.entity.EntityListResponse;
 import com.baidu.trace.api.entity.LocRequest;
 import com.baidu.trace.api.entity.OnEntityListener;
 import com.baidu.trace.api.track.DistanceResponse;
@@ -96,6 +97,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.ironaviation.traveller.R.id.one;
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 /**
@@ -180,6 +182,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     private BitmapDescriptor car;
     private BitmapDescriptor start;
     private BitmapDescriptor end;
+    private BitmapDescriptor my;
 
 
     protected static OverlayOptions overlayOptions;
@@ -693,6 +696,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
             bundle.putSerializable(Constant.STATUS, responses);
         }
         startActivity(EstimateActivity.class, bundle);
+        EventBus.getDefault().post(true,EventBusTags.REFRESH);
         /*Intent intent = new Intent(this,EstimateActivity.class);
         launchActivity(intent);*/
         finish();
@@ -705,28 +709,37 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     }
 
     @Override
-    public void setPassengersInfo(List<PassengersResponse> info) {
+    public void setPassengersInfo(final List<PassengersResponse> info) {
         initOnEntityListener();
         setTraceServer();
         mPassengersResponseList = info;
+        mClient.queryRealTimeLoc(locRequest, new OnEntityListener() {
+            @Override
+            public void onReceiveLocation(TraceLocation location) {
 
-        /*for(int i= 0 ; i < info.size() ;i++){
-            if(mPassengersResponse.getChildStatus().equals(Constant.ABORAD)){
-                info.remove(info.get(i));
+                System.out.println("TraceLocation : " + location);
+
+
+                if (StatusCodes.SUCCESS != location.getStatus() || CommonUtil.isZeroPoint(location.getLatitude(),
+                        location.getLongitude())) {
+                    return;
+                }
+                LatLng currentLatLng = mapUtil.convertTraceLocation2Map(location);
+                if (null == currentLatLng) {
+                    return;
+                }
+                CurrentLocation.locTime = CommonBaiDuUtil.toTimeStamp(location.getTime());
+                CurrentLocation.latitude = currentLatLng.latitude;
+                CurrentLocation.longitude = currentLatLng.longitude;
+
+                if (null != mapUtil) {
+                    mapUtil.updateStatus(currentLatLng, true);
+                }
+                mapNewLocation(info, mPassengersResponse, currentLatLng);
             }
-        }
-        if(!mPassengersResponse.getChildStatus().equals(Constant.TOSEND) ||
-                mPassengersResponse.getChildStatus().equals(Constant.PICKUP)) {
-            info.add(mPassengersResponse);
-        }
-        Collections.sort(info);
-        if(responses.getDestAddress() != null) {
-            pathPlanning(info, driverLatitude, driverLongitude, responses.getDestAddress());
-        }else{
-            pathPlanning(info, driverLatitude, driverLongitude, Constant.AIRPORT_T1);
-        }*/ //Latitude 30.542191  Longitude 104.066535
-        LatLng latLng = new LatLng(30.542191, 104.066535);
-        mapNewLocation(info, mPassengersResponse, latLng);
+        });
+
+
     }
 
     public void mapLocation(List<PassengersResponse> info, PassengersResponse mPassengersResponse) {
@@ -758,11 +771,11 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         double latitude = passengersResponseList.get(0).getPickupLatitude();
         double longtude = passengersResponseList.get(0).getPickupLongitude();
         passengersResponseList.remove(0);
-        if (responses.getDestAddress() != null) {
+        /*if (responses.getDestAddress() != null) {
             pathPlanning(passengersResponseList, latitude, longtude, responses.getDestAddress());
         } else {
             pathPlanning(passengersResponseList, latitude, longtude, Constant.AIRPORT_T1);
-        }
+        }*/
     }
 
     //正在进行中
@@ -790,9 +803,9 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         }
         passengersResponseList.addAll(info);
         if (responses != null && responses.getDestAddress() != null) {
-            pathPlanning(passengersResponseList, driverLatLng.latitude, driverLatLng.longitude, responses.getDestAddress());
+            pathPlanning(passengersResponseList, driverLatLng, responses.getDestAddress(),responses);
         } else {
-            pathPlanning(passengersResponseList, driverLatLng.latitude, driverLatLng.longitude, Constant.AIRPORT_T1);
+            pathPlanning(passengersResponseList, driverLatLng, Constant.AIRPORT_T1,responses);
         }
     }
 
@@ -822,8 +835,8 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         mSearch = RoutePlanSearch.newInstance();
         mSearch.setOnGetRoutePlanResultListener(this);
         //覆盖物初始化
-        bd = BitmapDescriptorFactory
-                .fromResource(R.mipmap.ic_location_customer);
+        my = BitmapDescriptorFactory.fromResource(R.mipmap.ic_location_mine);
+        bd = BitmapDescriptorFactory.fromResource(R.mipmap.ic_location_customer);
         car = BitmapDescriptorFactory.fromResource(R.mipmap.ic_location_car);
         start = BitmapDescriptorFactory.fromResource(R.mipmap.ic_location_start);
         end = BitmapDescriptorFactory.fromResource(R.mipmap.ic_location_end);
@@ -833,10 +846,9 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 
 
     //路径规划 route  stNode设置一个假的 Latitude 30.542191  Longitude 104.066535
-    private void pathPlanning(List<PassengersResponse> planningListt, double
-            latitude, double longitudu, String address) {
+    private void pathPlanning(List<PassengersResponse> planningListt,LatLng driver, String address,RouteStateResponse response) {
         mPlanNodes = new ArrayList<>();
-        stNode = PlanNode.withLocation(new LatLng(latitude, longitudu));//起点 104.083864,30.622657
+        stNode = PlanNode.withLocation(driver);//起点 104.083864,30.622657
         /*mSearch.drivingSearch((new DrivingRoutePlanOption())
                 .from(stNode).to(enNode));*/
         for (int i = 0; i < planningListt.size(); i++) {
@@ -852,6 +864,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         }
         mSearch.drivingSearch(drivingRoutePlanOption);
         initMarker(planningListt); //初始化覆盖物
+        setEndMarker(response.getDestLagitude(),response.getDestLongitude());
     }
 
     private void pathTwo(double startlatitude, double startlongitude
@@ -865,6 +878,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 //        drivingRoutePlanOption.to(etNode);
         drivingRoutePlanOption.to(PlanNode.withCityNameAndPlaceName("成都", address));
         mSearch.drivingSearch(drivingRoutePlanOption);
+        setStartEndMarker(startlatitude,startlongitude,endlatitude,endlongitude);
     }
 
     @Override
@@ -940,12 +954,39 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         for (int i = 0; i < planningListt.size(); i++) {
             LatLng ll = new LatLng(planningListt.get(i).getPickupLatitude(),
                     planningListt.get(i).getPickupLongitude());
-            MarkerOptions markerOptions = new MarkerOptions()
-                    .position(ll).icon(bd).zIndex(9).draggable(true);
+            MarkerOptions markerOptions = null;
+            if(mPassengersResponse != null) {
+                if (ll.latitude == mPassengersResponse.getPickupLatitude() &&
+                        ll.longitude == mPassengersResponse.getPickupLongitude()) {
+                    markerOptions = new MarkerOptions()
+                            .position(ll).icon(my).zIndex(9).draggable(true);
+                } else {
+                    markerOptions = new MarkerOptions()
+                            .position(ll).icon(bd).zIndex(9).draggable(true);
+                }
+            }
             mBaiduMap.addOverlay(markerOptions);
         }
     }
 
+    public void setStartEndMarker(double startlatitude, double startlongitude
+            , double endlatitude, double endlongitude){
+        LatLng llStart = new LatLng(startlatitude, startlongitude);
+        LatLng llEnd = new LatLng(endlatitude,endlongitude);
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(llStart).icon(start).zIndex(9).draggable(true);
+        MarkerOptions markerOptionEnd = new MarkerOptions()
+                .position(llEnd).icon(end).zIndex(9).draggable(true);
+        mBaiduMap.addOverlay(markerOptions);
+        mBaiduMap.addOverlay(markerOptionEnd);
+    }
+
+    public void setEndMarker(double endlatitude, double endlongitude){
+        LatLng llEnd = new LatLng(endlatitude,endlongitude);
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(llEnd).icon(end).zIndex(9).draggable(true);
+        mBaiduMap.addOverlay(markerOptions);
+    }
 
 
     @Override
@@ -1008,7 +1049,6 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
             @Override
             public void onStartTraceCallback(int status, String message) {
                 LogUtils.debugLongInfo("鹰眼轨迹服务", "开启服务回调:" + "消息类型=" + status + "消息内容=" + message);
-
 
             }
 
@@ -1267,14 +1307,15 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 
         @Override
         public BitmapDescriptor getStartMarker() {
-            return BitmapDescriptorFactory.fromResource(R.mipmap.ic_location_start);
+            return BitmapDescriptorFactory.fromResource(R.mipmap.ic_transfer);
         }
 
         @Override
         public BitmapDescriptor getTerminalMarker() {
-            return BitmapDescriptorFactory.fromResource(R.mipmap.ic_location_end);
+            return BitmapDescriptorFactory.fromResource(R.mipmap.ic_transfer);
         }
     }
+
 
     @Subscriber(tag = EventBusTags.TRAVEL_DETAIL)
     public void travelDetail(BasePushData response) {

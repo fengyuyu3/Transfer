@@ -352,6 +352,7 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constant.STATUS, responses);
         startActivity(EstimateActivity.class, bundle);
+        EventBus.getDefault().post(true,EventBusTags.REFRESH);
         finish();
     }
 
@@ -362,6 +363,7 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
 
     @Override
     public void isPickUpSuccess() {
+        EventBus.getDefault().post(true,EventBusTags.REFRESH);
         aready();
     }
 

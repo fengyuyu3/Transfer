@@ -278,9 +278,9 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
                 mIviWeChat.show(true, R.mipmap.ic_pay_select);
                 mIviAliPay.show(false, R.mipmap.ic_pay_select);
                 mIviUnionPay.show(false, R.mipmap.ic_pay_select);
-                mIviAliPay.setBackGround(ContextCompat.getColor(this, R.color.white));
-                mIviWeChat.setBackGround(ContextCompat.getColor(this, R.color.id_cord_background));
-                mIviUnionPay.setBackGround(ContextCompat.getColor(this, R.color.white));
+//                mIviAliPay.setBackGround(ContextCompat.getColor(this, R.color.white));
+//                mIviWeChat.setBackGround(ContextCompat.getColor(this, R.color.id_cord_background));
+//                mIviUnionPay.setBackGround(ContextCompat.getColor(this, R.color.white));
                 status = Constant.WECHAT;
                 break;
             case R.id.ivi_ali_pay:
@@ -290,9 +290,9 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
                 mIviAliPay.show(true, R.mipmap.ic_pay_select);
                 mIviWeChat.show(false, R.mipmap.ic_pay_select);
                 mIviUnionPay.show(false, R.mipmap.ic_pay_select);
-                mIviAliPay.setBackGround(ContextCompat.getColor(this, R.color.id_cord_background));
-                mIviWeChat.setBackGround(ContextCompat.getColor(this, R.color.white));
-                mIviUnionPay.setBackGround(ContextCompat.getColor(this, R.color.white));
+//                mIviAliPay.setBackGround(ContextCompat.getColor(this, R.color.id_cord_background));
+//                mIviWeChat.setBackGround(ContextCompat.getColor(this, R.color.white));
+//                mIviUnionPay.setBackGround(ContextCompat.getColor(this, R.color.white));
                 status = Constant.ALIPAY;
                 break;
             case R.id.ivi_union_pay:
@@ -302,9 +302,9 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
                 mIviUnionPay.show(true, R.mipmap.ic_pay_select);
                 mIviWeChat.show(false, R.mipmap.ic_pay_select);
                 mIviAliPay.show(false, R.mipmap.ic_pay_select);
-                mIviAliPay.setBackGround(ContextCompat.getColor(this, R.color.white));
-                mIviWeChat.setBackGround(ContextCompat.getColor(this, R.color.white));
-                mIviUnionPay.setBackGround(ContextCompat.getColor(this, R.color.id_cord_background));
+//                mIviAliPay.setBackGround(ContextCompat.getColor(this, R.color.white));
+//                mIviWeChat.setBackGround(ContextCompat.getColor(this, R.color.white));
+//                mIviUnionPay.setBackGround(ContextCompat.getColor(this, R.color.id_cord_background));
                 status = Constant.UPAY;
                 break;
             case R.id.tv_determine_cancel:
@@ -328,7 +328,7 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
         mIviAliPay.setVisibility(View.GONE);
     }
     public void showPayment(){
-//        mIviWeChat.setVisibility(View.VISIBLE);
+        mIviWeChat.setVisibility(View.VISIBLE);
         mIviAliPay.setVisibility(View.VISIBLE);
     }
 

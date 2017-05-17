@@ -177,7 +177,12 @@ public class TimerUtils {
         currentDate = new Date(currentTime);
         Date date = new Date(times);
         int hour = date.getHours();
-        int currentHour = currentDate.getHours();
+        int currentHour;
+        if(currentDate.getMinutes()/10 == 5){
+            currentHour = currentDate.getHours()+1;
+        }else{
+            currentHour = currentDate.getHours();
+        }
         for(int i = currentHour ; i<= hour; i++){
             list.add(i+"点");
         }
@@ -190,8 +195,8 @@ public class TimerUtils {
         currentDate = new Date(currentTime);
         Date date = new Date(times);
         int currentMinite = currentDate.getMinutes();
-        double minite = date.getMinutes();
-        for(int i = currentMinite/10 ; i< (int)Math.ceil(minite/10); i++){
+        int minite = date.getMinutes();
+        for(int i = currentMinite/10 ; i< Math.ceil(minite/10); i++){
             if(i == 0){
                 list.add("00分");
             }else {
@@ -199,6 +204,22 @@ public class TimerUtils {
             }
         }
         return list;
+    }
+
+    //只有一天的情况下
+    public static List<String> setCurrentMinite(long times,long current){
+        Date currentDate = null;
+        currentDate = new Date(current);
+        Date date = new Date(times);
+        int currentHours = currentDate.getHours();
+        int dayHours = date.getHours();
+        int currentMinite = currentDate.getMinutes();
+        int minite = date.getMinutes();
+        if(currentHours == dayHours){
+            return getOneMinites(times,current);
+        }else{
+            return getStartMins(current);
+        }
     }
 
     public static String getYear(long time){
@@ -243,6 +264,21 @@ public class TimerUtils {
             t = 0;
         }
         return t;
+    }
+
+    public static boolean isOneHour(long time ,long currentTime){
+        Date currentDate = null;
+        currentDate = new Date(currentTime);
+        Date date = new Date(time);
+        int currentHours = currentDate.getHours();
+        int dayHours = date.getHours();
+        int currentDay = currentDate.getDate();
+        int day = date.getDate();
+        if(currentDay == day && dayHours == currentHours){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public static int getDay(long time, long currentTime){

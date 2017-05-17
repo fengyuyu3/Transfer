@@ -73,7 +73,6 @@ public class PushGetuiBroadcastReceiver extends BroadcastReceiver {
                         }
                     }
 
-
                     break;
                 case PushConsts.GET_CLIENTID:
                     String clientid = bundle.getString("clientid");

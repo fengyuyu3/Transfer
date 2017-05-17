@@ -49,10 +49,10 @@ public class MyTimeDialog {
         public MyTimeDialog(Context context,ItemCallBack mCallBack,long time){
             this.context = context;
             this.mCallBack = mCallBack;
-            this.time = time-(60*60*2000);
+            this.time = time-(60*60*2000+60*30*1000);
             currentTime = time-60*60*24*1000;
-            if(System.currentTimeMillis()+60*60*2000+40*60*1000 > currentTime){
-               currentTime = System.currentTimeMillis()+60*60*2000+40*60*1000;
+            if(System.currentTimeMillis()+60*60*2000+10*60*1000 > currentTime){
+               currentTime = System.currentTimeMillis()+60*60*2000+10*60*1000;
             }else{
 //                currentTime = currentTime+(60*60*2000+10*60*1000);
             }
@@ -68,7 +68,7 @@ public class MyTimeDialog {
             mCameraDialog.setContentView(root);
             Window dialogWindow = mCameraDialog.getWindow();
             dialogWindow.setGravity(Gravity.BOTTOM);
-            list = getStartDate(time);
+//            list = getStartDate(time);
             lwDay = (LoopView) mCameraDialog.findViewById(R.id.loopView_day);
             lwHour = (LoopView) mCameraDialog.findViewById(R.id.loopView_hour);
             lwSec = (LoopView) mCameraDialog.findViewById(R.id.loopView_m);
@@ -98,8 +98,8 @@ public class MyTimeDialog {
                             lwHour.setItems(getMidHour());
                             hours = getMidHour();
                         }
-                        lwHour.setCurrentPosition(0);
                         indexHour = 0;
+                        lwHour.setCurrentPosition(indexHour);
                         setRefreshMinite(indexHour);
                     }
                 }
@@ -108,19 +108,24 @@ public class MyTimeDialog {
                 @Override
                 public void onItemSelected(int index) {
                     indexHour = index;
-                    if(day == 1){
-                        if(index == 0){
-                            lwSec.setItems(getStartMinite());
-                            minites = getStartMinite();
-                        }else if(index == (getOneHour(time).size()-1)){
-                            lwSec.setItems(getEndMinite(time));
-                            minites = getEndMinite(time);
-                        }else{
-                            lwSec.setItems(getMidMinite());
-                            minites = getMidMinite();
+                    if(day == 1 ) {
+                        if (TimerUtils.isOneHour(time, currentTime)) {
+                            minites = TimerUtils.getOneMinites(time,currentTime);
+                            lwSec.setItems(TimerUtils.getOneMinites(time,currentTime));
+                        } else {
+                            if (index == 0) {
+                                lwSec.setItems(TimerUtils.setCurrentMinite(time, currentTime));
+                                minites = TimerUtils.setCurrentMinite(time, currentTime);
+                            } else if (index == (getOneHour(time).size() - 1)) {
+                                lwSec.setItems(getEndMinite(time));
+                                minites = getEndMinite(time);
+                            } else {
+                                lwSec.setItems(getMidMinite());
+                                minites = getMidMinite();
+                            }
+                            indexMinite = 0;
+                            lwSec.setCurrentPosition(indexMinite);
                         }
-                        lwSec.setCurrentPosition(0);
-                        indexMinite = 0;
                     }else{
                         setRefreshMinite(index);
                     }
@@ -153,16 +158,31 @@ public class MyTimeDialog {
                 }
             });
             // 设置原始数据
-            hours = getStartHour();
-            minites = getStartMinite();
+            /*hours = getStartHour();
+            minites = getStartMinite();*/
             if(day==1){
-                lwDay.setItems(TimerUtils.getOneday(time));
-                lwHour.setItems(getOneHour(time));
-                lwSec.setItems(getStartMinite());
-            }else {
-                lwDay.setItems(getStartDate(time));
-                lwHour.setItems(getStartHour());
-                lwSec.setItems(getStartMinite());
+                list = TimerUtils.getOneday(time);
+                lwDay.setItems(list);
+                hours = getOneHour(time);
+                lwHour.setItems(hours);
+                minites = TimerUtils.setCurrentMinite(time,currentTime);
+                lwSec.setItems(minites);
+            }else if (TimerUtils.isOneHour(time, currentTime)) {
+                minites = TimerUtils.getOneMinites(time,currentTime);
+                lwSec.setItems(TimerUtils.getOneMinites(time,currentTime));
+                list = getStartDate(time);
+                lwDay.setItems(list);
+                hours = getStartHour();
+                lwHour.setItems(hours);
+                /*minites =getStartMinite();
+                lwSec.setItems(minites);*/
+            }else{
+                list = getStartDate(time);
+                lwDay.setItems(list);
+                hours = getStartHour();
+                lwHour.setItems(hours);
+                /*minites =getStartMinite();
+                lwSec.setItems(minites);*/
             }
             WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
             lp.x = 0; // 新位置X坐标
@@ -266,8 +286,8 @@ public class MyTimeDialog {
             lwSec.setItems(getMidMinite());
             minites = getMidMinite();
         }
-        lwSec.setCurrentPosition(0);
         indexMinite = 0;
+        lwSec.setCurrentPosition(indexMinite);
     }
 
     public interface ItemCallBack{
