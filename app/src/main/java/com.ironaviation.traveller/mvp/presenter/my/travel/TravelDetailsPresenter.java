@@ -169,7 +169,7 @@ public class TravelDetailsPresenter extends BasePresenter<TravelDetailsContract.
 
     public void setScheduledTime(RouteLine route, PassengersResponse mPassengersResponse) {
 
-        if (mPassengersResponse != null && mPassengersResponse.getChildStatus() != null && mPassengersResponse.getChildStatus().equals(Constant.ABORAD)) {
+        if (mPassengersResponse != null && mPassengersResponse.getChildStatus() != null && (mPassengersResponse.getChildStatus().equals(Constant.ABORAD))) {
 
             mRootView.setScheduledTime((TimerUtils.getDateFormat(System.currentTimeMillis() + route.getDuration() * 1000, fomart)).toString());
 

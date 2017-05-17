@@ -523,7 +523,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
 
     @Override
     public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
-
+            if(geoCodeResult.error != null){}
     }
 
     @Override

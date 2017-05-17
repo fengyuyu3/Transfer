@@ -62,6 +62,7 @@ import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.app.utils.AnimationUtil;
 import com.ironaviation.traveller.app.utils.CommonUtil;
+import com.ironaviation.traveller.app.utils.TimerUtils;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.common.WEApplication;
@@ -204,6 +205,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     private double driverLatitude;*/
     private String uid;
     private String driverCode;
+    private String format = "HH:mm分";
 
     private RouteStateResponse historyResponse;
     /**
@@ -491,6 +493,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
                 showChildStatus(responses.getChildStatus());
                 break;
             case Constant.BOOKSUCCESS: //派单成功
+                mTwWaitTwo.setText("司机预计"+ TimerUtils.getDateFormat(responses.getPickupTime(),format)+"到达");
                 waitPickup();
                 break;
             case Constant.REGISTERED:
@@ -628,7 +631,6 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         mLlDriverInfo.setVisibility(View.VISIBLE); //司机信息
         mLlArrive.setVisibility(View.GONE);  // 确认到达
         mTwWaitOne.setText(getResources().getString(R.string.travel_peer));
-        mTwWaitTwo.setText(getResources().getString(R.string.travel_pickup_info));
     }
 
     public void arrive() { //确认到达

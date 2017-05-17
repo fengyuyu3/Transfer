@@ -20,6 +20,7 @@ public class TimerUtils {
     private static String format ="MM月dd日 HH点mm分";
     private static String formatDate = "dd";
     private static final int day = 1;
+    private static String formatHourMinite = "HH点mm分";
 
     public static List<String> getEightDate(){
         List<String> list = new ArrayList<>();
