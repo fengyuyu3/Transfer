@@ -143,7 +143,9 @@ public class MainPresenter extends BasePresenter<MainContract.Model, MainContrac
 
                 }
             }
-
+            @Override
+            public void onError(Throwable e) {
+            }
 
         });
 

@@ -1,5 +1,6 @@
 package com.ironaviation.traveller.mvp.ui.my;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -47,6 +48,8 @@ import com.ironaviation.traveller.mvp.ui.manager.FullyLinearLayoutManager;
 import com.ironaviation.traveller.mvp.ui.my.adapter.AddressAdapter;
 import com.jess.arms.utils.UiUtils;
 import com.umeng.analytics.MobclickAgent;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.PermissionListener;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
 
@@ -146,12 +149,27 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
         mRvAddress.setAdapter(mAddressAdapter);
         infos = mPresenter.getAddress().getPoiInfos();
         mAddressAdapter.setNewData(infos);
-        initLocation();
+
         mPresenter.getUserAddressBook();
         Bundle pBundle = getIntent().getExtras();
         if (pBundle != null) {
             addressType = pBundle.getInt(Constant.ADDRESS_TYPE);
 
+        }
+
+
+
+        if (AndPermission.hasPermission(this
+                , Manifest.permission.ACCESS_FINE_LOCATION)) {
+            // 有权限，直接do anything.
+            initLocation();
+        } else {
+            mTwAddressText.setText("没有获取到定位权限，请开启");
+            // 申请权限。
+            AndPermission.with(this)
+                    .requestCode(101)
+                    .permission(Manifest.permission.ACCESS_FINE_LOCATION)
+                    .send();
         }
         /**
          * 当输入关键字变化时，动态更新建议列表
@@ -196,7 +214,57 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
         });
     }
 
+    /*
+        * 获取权限回调
+        * */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        // 只需要调用这一句，其它的交给AndPermission吧，最后一个参数是PermissionListener。
+        AndPermission.onRequestPermissionsResult(requestCode, permissions, grantResults, mPermissionListener);
+    }
 
+    /*
+      * 获取权限监听
+      * */
+    private PermissionListener mPermissionListener = new PermissionListener() {
+        @Override
+        public void onSucceed(int requestCode, List<String> grantedPermissions) {
+            // 权限申请成功回调。
+            if (requestCode == 100) {
+                // TODO 相应代码。
+            } else if (requestCode == 101) {
+                // TODO 相应代码。
+                mTwAddressText.setText(getResources().getString(R.string.address_locationing));
+                initLocation();
+            }
+        }
+
+        @Override
+        public void onFailed(int requestCode, List<String> deniedPermissions) {
+            // 权限申请失败回调。
+
+            // 用户否勾选了不再提示并且拒绝了权限，那么提示用户到设置中授权。
+            if (AndPermission.hasAlwaysDeniedPermission(AddressActivity.this, deniedPermissions)) {
+                // 第一种：用默认的提示语。
+                //  AndPermission.defaultSettingDialog(ma, 100).show();
+
+                // 第二种：用自定义的提示语。
+                AndPermission.defaultSettingDialog(AddressActivity.this, 100)
+                        .setTitle("权限申请失败")
+                        .setMessage("我们需要的定位被您拒绝或者系统发生错误申请失败，请您到设置页面手动授权，否则功能无法正常使用！")
+                        .setPositiveButton("好，去设置")
+                        .show();
+
+                // 第三种：自定义dialog样式。
+                // SettingService settingService =
+                //    AndPermission.defineSettingDialog(this, REQUEST_CODE_SETTING);
+                // 你的dialog点击了确定调用：
+                // settingService.execute();
+                // 你的dialog点击了取消调用：
+                // settingService.cancel();
+            }
+        }
+    };
     @Override
     public void showLoading() {
         showProgressDialog();

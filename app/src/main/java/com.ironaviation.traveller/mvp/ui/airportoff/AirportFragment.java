@@ -1,5 +1,6 @@
 package com.ironaviation.traveller.mvp.ui.airportoff;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -38,6 +39,7 @@ import com.ironaviation.traveller.mvp.ui.widget.NumDialog;
 import com.ironaviation.traveller.mvp.ui.widget.PublicTextView;
 import com.ironaviation.traveller.mvp.ui.widget.TerminalPopupWindow;
 import com.jess.arms.utils.UiUtils;
+import com.yanzhenjie.permission.AndPermission;
 import com.zhy.autolayout.AutoLinearLayout;
 
 import org.simple.eventbus.Subscriber;
@@ -247,6 +249,7 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
                 break;
             case R.id.pw_address_off:
                 setAddress(status);
+
                 break;
             case R.id.pw_address_on:
                 setAddress(status);

@@ -97,7 +97,8 @@ dependencies {
     //个推
 
     compile 'com.getui:sdk:2.9.0.0'
-
+    //权限管理
+    compile 'com.yanzhenjie:permission:1.0.5'
     compile files('libs/baidumapapi_base_v4_2_1.jar')
     compile files('libs/baidumapapi_cloud_v4_2_1.jar')
     compile files('libs/baidumapapi_map_v4_2_1.jar')
