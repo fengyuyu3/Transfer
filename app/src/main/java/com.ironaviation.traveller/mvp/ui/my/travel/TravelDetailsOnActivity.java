@@ -760,11 +760,10 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
     @Subscriber(tag = EventBusTags.TRAVEL_DETAIL_ON)
     public void travelDetailOn(BasePushData response) {
         if(bid != null && response.getData()!= null && response.getData().getBID() != null){
-            if(bid.equals(response.getData().getBID())){
+            if(bid.equalsIgnoreCase(response.getData().getBID())){
                 mPresenter.getRouteState(response.getData().getBID());
-            }else{
-                EventBus.getDefault().post(response.getData().getBID(),EventBusTags.REFRESH);
             }
+//            EventBus.getDefault().post(response.getData().getBID(),EventBusTags.REFRESH);
         }
     }
 

@@ -105,6 +105,7 @@ public class PushGetuiBroadcastReceiver extends BroadcastReceiver {
                 setChildCodeOn(response,context);
                 break;
         }
+        EventBus.getDefault().post(true,EventBusTags.REFRESH);
     }
 
 

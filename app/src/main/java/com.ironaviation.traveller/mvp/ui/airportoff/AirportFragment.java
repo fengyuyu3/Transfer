@@ -150,6 +150,7 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
         status = bundle.getString(Constant.STATUS);
         setOrderButtonStatus(false);
         initLayout(status);
+        mPwSeat.setTextInfo("需要" + seatNum + "个座位");
         mNumDialog = new NumDialog(getActivity(), getNumsData(), this, Constant.AIRPORT_TYPE_SEAT);
         if(UserInfoUtils.getInstance().getInfo(getActivity()) != null
                 && UserInfoUtils.getInstance().getInfo(getActivity()).getPhone() != null){
@@ -277,7 +278,7 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
                 if(status != null && status.equals(Constant.CLEAR_PORT)) {
                     mPresenter.isOrderSuccess(bid);
                 }else if(status != null && status.equals(Constant.ENTER_PORT)){
-                    mPresenter.isOrderSuccess(bid);
+                    mPresenter.isOrderOnSuccess(bid);
                 }
                 break;
             case R.id.pw_airport_on:
@@ -532,30 +533,48 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
         }
         request.setTakeOffAddress(flight.getList().get(0).getTakeOff());
         request.setArriveAddress(flight.getList().get(0).getArrive());
-        request.setDestDetailAddress("");
-        request.setPickupAddress(info.name);
-        request.setPickupDetailAddress(info.address);
-        request.setPickupLatitude(info.location.latitude);
-        request.setPickupLongitude(info.location.longitude);
-        request.setPickupTime(time);
+
         request.setCity(Constant.CITY);
         if(status.equals(Constant.CLEAR_PORT)) {
             request.setEnterPort(false);
+            request.setDestDetailAddress("");
+            request.setPickupAddress(info.name);
+            request.setPickupDetailAddress(info.address);
+            request.setPickupLatitude(info.location.latitude);
+            request.setPickupLongitude(info.location.longitude);
+            request.setPickupTime(time);
+            if(terminalNum == 1) {
+                request.setDestAddress(Constant.AIRPORT_T2);
+                request.setDestLatitude(Constant.AIRPORT_T2_LATITUDE);
+                request.setDestLongitude(Constant.AIRPORT_T2_LONGITUDE);
+            }else{
+                request.setDestAddress(Constant.AIRPORT_T1);
+                request.setDestLatitude(Constant.AIRPORT_T1_LATITUDE);
+                request.setDestLongitude(Constant.AIRPORT_T1_LONGITUDE);
+            }
+
         }else if(status.equals(Constant.ENTER_PORT)){
             request.setEnterPort(true);
+            request.setDestLatitude(info.location.latitude);
+            request.setDestLongitude(info.location.longitude);
+            request.setDestAddress(info.name);
+            request.setDestDetailAddress(info.address);
+            request.setPickupDetailAddress("");
+            request.setPickupTime(System.currentTimeMillis());
+            if(terminalNum == 1) {
+                request.setPickupAddress(Constant.AIRPORT_T2);
+                request.setPickupLatitude(Constant.AIRPORT_T2_LATITUDE);
+                request.setPickupLongitude(Constant.AIRPORT_T2_LONGITUDE);
+            }else{
+                request.setPickupAddress(Constant.AIRPORT_T1);
+                request.setPickupLatitude(Constant.AIRPORT_T1_LATITUDE);
+                request.setPickupLongitude(Constant.AIRPORT_T1_LONGITUDE);
+            }
         }
         if(phone != null){
             request.setCallNumber(phone);
         }
-        if(terminalNum == 1) {
-            request.setDestAddress(Constant.AIRPORT_T2);
-            request.setDestLatitude(Constant.AIRPORT_T2_LATITUDE);
-            request.setDestLongitude(Constant.AIRPORT_T2_LONGITUDE);
-        }else{
-            request.setDestAddress(Constant.AIRPORT_T1);
-            request.setDestLatitude(Constant.AIRPORT_T1_LATITUDE);
-            request.setDestLongitude(Constant.AIRPORT_T1_LONGITUDE);
-        }
+
         request.setSeatNum(seatNum);
         if(bid != null){
             request.setBID(bid);

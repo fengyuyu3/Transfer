@@ -36,5 +36,6 @@ public interface AirportContract {
     interface Model extends IModel {
         Observable<BaseData<AirportGoInfoRequest>> getAirPortInfo(AirportGoInfoRequest params);
         Observable<BaseData<Boolean>> isOrderSuccess(String bid);
+        Observable<BaseData<Boolean>> isOrderOnSuccess(String bid);
     }
 }

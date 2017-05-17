@@ -627,8 +627,8 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         mLlComplete.setVisibility(View.GONE);//派单成功
         mLlDriverInfo.setVisibility(View.VISIBLE); //司机信息
         mLlArrive.setVisibility(View.GONE);  // 确认到达
-        mTwTitle.setText(getResources().getString(R.string.travel_peer));
-        mTwText.setText(getResources().getString(R.string.travel_pickup_info));
+        mTwWaitOne.setText(getResources().getString(R.string.travel_peer));
+        mTwWaitTwo.setText(getResources().getString(R.string.travel_pickup_info));
     }
 
     public void arrive() { //确认到达
@@ -666,10 +666,11 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     }
 
     public void callMobile(String phone) {
-        Intent intent = new Intent(Intent.ACTION_DIAL);
+        /*Intent intent = new Intent(Intent.ACTION_DIAL);
         Uri data = Uri.parse("tel:" + phone);
         intent.setData(data);
-        startActivity(intent);
+        startActivity(intent);*/
+        CommonUtil.call(this,phone);
     }
 
     @Override
@@ -1320,11 +1321,10 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     @Subscriber(tag = EventBusTags.TRAVEL_DETAIL)
     public void travelDetail(BasePushData response) {
         if(bid != null && response.getData() != null && response.getData().getBID()!=null){
-            if(bid.equals(response.getData().getBID())){
+            if(bid.equalsIgnoreCase(response.getData().getBID())){
                 mPresenter.getRouteState(response.getData().getBID());
-            }else{
-                EventBus.getDefault().post(response.getData().getBID(),EventBusTags.REFRESH);
             }
+//            EventBus.getDefault().post(response.getData().getBID(),EventBusTags.REFRESH);
         }
     }
 
