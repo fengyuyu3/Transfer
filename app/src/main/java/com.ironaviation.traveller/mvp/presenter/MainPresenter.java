@@ -181,6 +181,7 @@ public class MainPresenter extends BasePresenter<MainContract.Model, MainContrac
                                         @Override
                                         public void onClick(View v) {
 
+
                                         }
                                     }).show();
                                 }
@@ -219,7 +220,7 @@ public class MainPresenter extends BasePresenter<MainContract.Model, MainContrac
                                             }).setNegativeButton("取消", new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-
+                                            UiUtils.killAll();
                                         }
                                     }).show();
                                 }
