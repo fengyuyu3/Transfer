@@ -161,7 +161,11 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
 
 
         if (AndPermission.hasPermission(this
-                , Manifest.permission.ACCESS_FINE_LOCATION)) {
+                ,Manifest.permission.ACCESS_FINE_LOCATION
+                ,Manifest.permission.ACCESS_COARSE_LOCATION
+                ,Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ,Manifest.permission.READ_PHONE_STATE
+                ,Manifest.permission.READ_EXTERNAL_STORAGE)) {
             // 有权限，直接do anything.
             initLocation();
         } else {
@@ -315,12 +319,26 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
                 finish();
                 break;
             case R.id.ll_address:
-                if(info != null && locationFlag) {
-                    mPresenter.isAddress(Constant.CHENGDU_CTU, info.location.longitude,
-                            info.location.latitude, info);
-                }else{
-                    initLocation();
-//                    showMessage("没有定位成功,请检查网络.");
+                if (AndPermission.hasPermission(this
+                        ,Manifest.permission.ACCESS_FINE_LOCATION
+                        ,Manifest.permission.ACCESS_COARSE_LOCATION
+                        ,Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        ,Manifest.permission.READ_PHONE_STATE
+                        ,Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    // 有权限，直接do anything.
+                    if(info != null && locationFlag) {
+                        mPresenter.isAddress(Constant.CHENGDU_CTU, info.location.longitude,
+                                info.location.latitude, info);
+                    }else{
+                        initLocation();
+                    }
+                } else {
+                    mTwAddressText.setText("没有获取到定位权限，请开启权限后重试");
+                    // 申请权限。
+                    AndPermission.with(this)
+                            .requestCode(101)
+                            .permission(Manifest.permission.ACCESS_FINE_LOCATION)
+                            .send();
                 }
                 /*if (addressType == Constant.AIRPORT_GO) {
                     if (info != null) {
