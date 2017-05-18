@@ -313,6 +313,11 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="FLNaGGYv7tQAUZXOW1hVcZDeR3szXggm"/>
 
+        <receiver android:name=".app.receiver.NetWorkBroadcast">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
         <!-- 配置的第三方参数属性 -->
         <meta-data
             android:name="PUSH_APPID"

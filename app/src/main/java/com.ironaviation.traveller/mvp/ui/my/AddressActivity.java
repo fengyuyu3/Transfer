@@ -119,6 +119,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
     private GeoCoder mSearch = null;
     private LocationService locationService;
     private HistoryPoiInfo info;
+    private boolean locationFlag;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -314,11 +315,12 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
                 finish();
                 break;
             case R.id.ll_address:
-                if(info != null) {
+                if(info != null && locationFlag) {
                     mPresenter.isAddress(Constant.CHENGDU_CTU, info.location.longitude,
                             info.location.latitude, info);
                 }else{
-                    showMessage("没有定位成功!");
+                    initLocation();
+//                    showMessage("没有定位成功,请检查网络.");
                 }
                 /*if (addressType == Constant.AIRPORT_GO) {
                     if (info != null) {
@@ -565,12 +567,12 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
      */
     private void initLocation() {
         initMap();
-        if (locationService == null) {
-            locationService = new LocationService(this);
+//        if (locationService == null) {
+            locationService = new LocationService(getApplicationContext());
             locationService.registerListener(mListener);
             locationService.setLocationOption(locationService.getDefaultLocationClientOption());
             locationService.start();
-        }
+//        }
     }
 
     private BDLocationListener mListener = new BDLocationListener() {
@@ -579,13 +581,33 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
 
         @Override
         public void onReceiveLocation(BDLocation location) {
-            if (null != location && location.getLocType() != BDLocation.TypeServerError) {
+            if (null != location) {
+                switch (location.getLocType()) {
+                    case BDLocation.TypeServerError:
+                    case BDLocation.TypeNetWorkException:
+                    case BDLocation.TypeCriteriaException:
+                        locationFlag = false;
+                        showMessage("定位失败！请检查网络或者定位权限是否开启");
+                        break;
+                    default:
+                        locationFlag = true;
+                        LatLng ptCenter = new LatLng(location.getLatitude() //latitude weidu
+                                , location.getLongitude()); //long jingdu
+                        // 反Geo搜索
+                        mSearch.reverseGeoCode(new ReverseGeoCodeOption()
+                                .location(ptCenter));
+                        break;
+                }
+            }
+            /*if (null != location && location.getLocType() != BDLocation.TypeServerError) {
                 LatLng ptCenter = new LatLng(location.getLatitude() //latitude weidu
                         , location.getLongitude()); //long jingdu
                 // 反Geo搜索
                 mSearch.reverseGeoCode(new ReverseGeoCodeOption()
                         .location(ptCenter));
-            }
+            }else if(null != location && location.getLocType() != BDLocation.TypeCriteriaException){
+
+            }*/
         }
     };
 
@@ -624,7 +646,8 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
                 MobclickAgent.reportError(WEApplication.getContext(), e);
             }
         }else{
-            initLocation();
+//            mTwAddressText.setText("获取定位失败,点击重试");
+//            initLocation();
         }
     }
 
@@ -633,4 +656,15 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
         mPresenter.getUserAddressBook();
     }
 
+    @Subscriber(tag = EventBusTags.NO_NETWORK)
+    public void noNetWork(boolean flag){
+        if(flag) {
+            locationFlag = false;
+            mTwAddressText.setText("获取定位失败,点击重试");
+            showMessage("网络连接失败,请检查网络后重试");
+        }else{
+            locationFlag = true;
+            initLocation();
+        }
+    }
 }

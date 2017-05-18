@@ -187,7 +187,7 @@ public class TravelPresenter extends BasePresenter<TravelContract.Model, TravelC
                 .doOnSubscribe(new Action0() {
                     @Override
                     public void call() {//显示进度条
-                        mRootView.showDialog();
+//                        mRootView.showDialog();
                     }
                 })
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -195,7 +195,7 @@ public class TravelPresenter extends BasePresenter<TravelContract.Model, TravelC
                 .doAfterTerminate(new Action0() {
                     @Override
                     public void call() {
-                        mRootView.dismissDialog();
+//                        mRootView.dismissDialog();
                     }
                 })
                 .subscribe(new ErrorHandleSubscriber<BaseData<RouteStateResponse>>(mErrorHandler) {

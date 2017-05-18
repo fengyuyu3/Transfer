@@ -45,4 +45,6 @@ public interface EventBusTags {
     String LOGIN_OTHER = "login_other";
     String ID_CARD_ON = "id_card_on"; //接机
     String ID_CARD = "id_card";  //送机
+    String NO_NETWORK = "no_network";
+    String TRAVEL_DETAILS_ON_CANCEL = "cancel";
 }

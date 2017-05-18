@@ -77,9 +77,11 @@ public class TravelDetailsOnPresenter extends BasePresenter<TravelDetailsOnContr
     int pageIndex = 1;
     String arrivedTime = null;
     private boolean scheduledTime = false;
-    /**
-     * 实时定位任务
-     */
+    private boolean realTimeLocFlag=false;
+
+        /**
+         * 实时定位任务
+         */
     private String fomart = "预计 HH:mm 到达";
 
     private RealTimeHandler realTimeHandler = new RealTimeHandler();
@@ -432,6 +434,7 @@ public class TravelDetailsOnPresenter extends BasePresenter<TravelDetailsOnContr
     }
 
     public void startRealTimeLoc(int interval) {
+        realTimeLocFlag=true;
         realTimeLocRunnable = new RealTimeLocRunnable(interval);
         realTimeHandler.post(realTimeLocRunnable);
     }
@@ -441,6 +444,19 @@ public class TravelDetailsOnPresenter extends BasePresenter<TravelDetailsOnContr
             realTimeHandler.removeCallbacks(realTimeLocRunnable);
             realTimeLocRunnable = null;
         }
+    }
+
+    public void JudgmentStopRealTimeLoc(){
+
+        if (realTimeLocFlag){
+            if (null != realTimeHandler && null != realTimeLocRunnable) {
+                realTimeHandler.removeCallbacks(realTimeLocRunnable);
+                realTimeLocRunnable = null;
+            }
+            realTimeLocFlag=false;
+            mRootView.getMapUtil().cleanMarker();
+        }
+
     }
 
     static class RealTimeHandler extends Handler {

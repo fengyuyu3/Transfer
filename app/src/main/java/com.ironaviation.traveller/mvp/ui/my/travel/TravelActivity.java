@@ -80,6 +80,8 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
     private TravelAdapter mTravelAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private List<RouteItemResponse> mRouteItemResponses;
+    private String pushBid; //推送传过来的bid
+    private String status;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -110,6 +112,11 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
                 showNodata(false);
             }
         }, 300);*/
+        Bundle bundle = getIntent().getExtras();
+        status = bundle.getString(Constant.STATUS);
+        if(status != null && status.equals(Constant.PUSH_ID)){
+            pushBid = bundle.getString(Constant.BID);
+        }
         setTitle(getString(R.string.travel_detail_title));
         mToolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_back));
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -319,6 +326,9 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
     public void setDatas(RouteListResponse responses) {
         mTravelAdapter.setNewData(dataManage(responses.getItems()));
         mRouteItemResponses = mTravelAdapter.getData();
+        if(pushBid != null && status.equals(Constant.PUSH_ID)){
+            mPresenter.getRouteState(pushBid);
+        }
     }
 
     @Override
@@ -431,4 +441,6 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
             break;
         }
     }
+
+    //mPresenter.getRouteState(mRouteItemResponses.get(position).getBID());
 }

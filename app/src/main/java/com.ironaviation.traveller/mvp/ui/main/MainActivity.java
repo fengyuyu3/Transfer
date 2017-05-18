@@ -209,7 +209,9 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
                 startActivity(SettingActivity.class);
                 break;
             case R.id.rl_trip:
-                startActivity(TravelActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString(Constant.STATUS,Constant.NO_PUSH);
+                startActivity(TravelActivity.class,bundle);
                 break;
         }
     }

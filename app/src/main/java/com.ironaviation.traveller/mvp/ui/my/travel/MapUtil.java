@@ -102,6 +102,7 @@ public class MapUtil {
         }
     }
 
+
     /**
      * 将轨迹实时定位点转换为地图坐标
      *
@@ -253,6 +254,13 @@ public class MapUtil {
         }
     }
 
+
+    public void cleanMarker(){
+
+        if(mMoveMarker != null) {
+            mMoveMarker.remove();
+        }
+    }
     /**
      * 绘制历史轨迹
      */

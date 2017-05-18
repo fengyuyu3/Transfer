@@ -461,6 +461,7 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
     }
 
     public void showStatus(RouteStateResponse responses) {
+        mBaiduMap.clear();
         switch (responses.getStatus()) {
             case Constant.REGISTERED:
                 setMark(responses);
@@ -471,13 +472,15 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
                 showChildStatus(responses.getChildStatus());
                 break;
             case Constant.ARRIVED:
-
                 arrive();
-                mPresenter.initOnEntityListenerBlue();
-                mPresenter.queryHistoryTrack(responses, getTraceClient());
+                setMark(responses);
+                mPresenter.JudgmentStopRealTimeLoc();
+                mPresenter.initOnEntityListenerBlue();//初始化
+                mPresenter.queryHistoryTrack(responses, getTraceClient());//查询司机轨迹
                 break;
             case Constant.INHAND:
                 GoOn();
+                setMark(responses);
                 mPresenter.initOnStartTraceListener(responses);//事实更新司机位置
                 mPresenter.initOnEntityListenerBlue();
                 mPresenter.queryHistoryTrack(responses, getTraceClient());

@@ -263,6 +263,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
      */
     private SortType sortType = SortType.asc;
     private AnimationUtil mAnimationUtil;
+    private boolean realTimeLocFlag=false;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -441,14 +442,16 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     public void showStatus(String status, RouteStateResponse responses) {
         /*route = null;
         mBaiduMap.clear();*/
+        mBaiduMap.clear();
         switch (status) {
             case Constant.INHAND: //派单进行中
                 if (bid != null) {
                     mPresenter.getPassengersInfo(bid);
                 }
-                showChildStatus(responses.getChildStatus());
+                showChildStatus(responses);
                 break;
             case Constant.BOOKSUCCESS: //派单成功
+                mTwWaitTwo.setText("司机预计"+ TimerUtils.getDateFormat(responses.getPickupTime(),format)+"到达");
                 setAddress();
                 waitPickup();
                 break;
@@ -463,18 +466,21 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
                 break;
             case Constant.ARRIVED://绘制历史轨迹
                 historyResponse = responses;
+                JudgmentStopRealTimeLoc();
                 queryHistoryTrack(historyResponse);
                 arrive();
                 break;
         }
     }
 
-    public void showChildStatus(String status) {
-        switch (status) {
+    public void showChildStatus(RouteStateResponse responses) {
+        switch (responses.getChildStatus()) {
             case Constant.TOSEND:
+                mTwText.setText("司机预计"+ TimerUtils.getDateFormat(responses.getPickupTime(),format)+"到达");
                 Peer();
                 break;
             case Constant.PICKUP:
+                mTwText.setText("司机预计"+ TimerUtils.getDateFormat(responses.getPickupTime(),format)+"到达");
                 pickup();
                 break;
             case Constant.ABORAD:
@@ -490,10 +496,9 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 //        mAnimationUtil.moveToViewLocation(mLlLayout);
         switch (status) {
             case Constant.INHAND: //派单进行中
-                showChildStatus(responses.getChildStatus());
+                showChildStatus(responses);
                 break;
             case Constant.BOOKSUCCESS: //派单成功
-                mTwWaitTwo.setText("司机预计"+ TimerUtils.getDateFormat(responses.getPickupTime(),format)+"到达");
                 waitPickup();
                 break;
             case Constant.REGISTERED:
@@ -594,7 +599,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         mLlDriverInfo.setVisibility(View.VISIBLE); //司机信息
         mLlArrive.setVisibility(View.GONE);  // 确认到达
         mTwTitle.setText(getResources().getString(R.string.travel_pickup));
-        mTwText.setText(getResources().getString(R.string.travel_pickup_info));
+//        mTwText.setText(getResources().getString(R.string.travel_pickup_info));
     }
 
     public void Peer() { //司机正在接您同行乘客的途中
@@ -605,7 +610,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         mLlDriverInfo.setVisibility(View.VISIBLE); //司机信息
         mLlArrive.setVisibility(View.GONE);  // 确认到达
         mTwTitle.setText(getResources().getString(R.string.travel_peer));
-        mTwText.setText(getResources().getString(R.string.travel_pickup_info));
+//        mTwText.setText(getResources().getString(R.string.travel_pickup_info));
     }
 
     public void already() { //你已经上车
@@ -1358,15 +1363,28 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     public void startRealTimeLoc(int interval) {
         realTimeLocRunnable = new RealTimeLocRunnable(interval);
         realTimeHandler.post(realTimeLocRunnable);
+        realTimeLocFlag=true;
     }
 
     public void stopRealTimeLoc() {
         if (null != realTimeHandler && null != realTimeLocRunnable) {
             realTimeHandler.removeCallbacks(realTimeLocRunnable);
             realTimeLocRunnable = null;
+            realTimeLocFlag=false;
         }
     }
+    public void JudgmentStopRealTimeLoc(){
 
+        if (realTimeLocFlag){
+            if (null != realTimeHandler && null != realTimeLocRunnable) {
+                realTimeHandler.removeCallbacks(realTimeLocRunnable);
+                realTimeLocRunnable = null;
+            }
+            realTimeLocFlag=false;
+            mapUtil.cleanMarker();
+        }
+
+    }
     static class RealTimeHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {

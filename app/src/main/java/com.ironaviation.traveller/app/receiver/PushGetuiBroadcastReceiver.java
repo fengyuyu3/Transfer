@@ -20,6 +20,7 @@ import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.model.entity.BasePushData;
 import com.ironaviation.traveller.mvp.ui.login.LoginActivity;
 import com.ironaviation.traveller.mvp.ui.my.travel.PaymentDetailsActivity;
+import com.ironaviation.traveller.mvp.ui.my.travel.TravelActivity;
 import com.ironaviation.traveller.mvp.ui.my.travel.TravelCancelActivity;
 import com.ironaviation.traveller.mvp.ui.my.travel.TravelDetailsActivity;
 import com.ironaviation.traveller.mvp.ui.my.travel.TravelDetailsOnActivity;
@@ -105,7 +106,6 @@ public class PushGetuiBroadcastReceiver extends BroadcastReceiver {
                 setChildCodeOn(response,context);
                 break;
         }
-        EventBus.getDefault().post(true,EventBusTags.REFRESH);
     }
 
 
@@ -155,7 +155,7 @@ public class PushGetuiBroadcastReceiver extends BroadcastReceiver {
     }
 
     public Intent setChildCodeNotification(BasePushData response, Context context,Intent intent){
-        switch (response.getData().getCode()){
+        /*switch (response.getData().getCode()){
             case Constant.TIMEOUT_NO_PAY:
                 intent.setClass(context, PaymentDetailsActivity.class);
                 if(!TextUtils.isEmpty(response.getData().getBID())) {
@@ -194,12 +194,13 @@ public class PushGetuiBroadcastReceiver extends BroadcastReceiver {
                 }
                 intent.putExtras(bundle1);
                 break;
-        }
+        }*/
+        intent.setClass(context, TravelActivity.class);
         return intent;
     }
 
     public Intent setChildCodeOnNotification(BasePushData response, Context context,Intent intent){
-        switch (response.getData().getCode()){
+        /*switch (response.getData().getCode()){
             case Constant.TIMEOUT_NO_PAY_ON:
                 intent.setClass(context,PaymentDetailsActivity.class);
                 if(!TextUtils.isEmpty(response.getData().getBID())) {
@@ -235,7 +236,8 @@ public class PushGetuiBroadcastReceiver extends BroadcastReceiver {
                 }
                 intent.putExtras(bundle1);
                 break;
-        }
+        }*/
+        intent.setClass(context, TravelActivity.class);
         return intent;
     }
 
@@ -244,9 +246,9 @@ public class PushGetuiBroadcastReceiver extends BroadcastReceiver {
     private void messageLogic(BasePushData response,Context context) {
 
         // EventBus.getDefault().post(transparentMessageEntity);
-        Intent intent = new Intent();
+        Intent intent = new Intent(context, TravelActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if(response.getData().getTripType()!= null){
+        /*if(response.getData().getTripType()!= null){
             if(response.getData().getTripType().equals(Constant.CLEAR_PORT)){
                 intent = setChildCodeNotification(response,context,intent);
                 setPush(context,intent,response);
@@ -254,8 +256,12 @@ public class PushGetuiBroadcastReceiver extends BroadcastReceiver {
                 intent = setChildCodeOnNotification(response,context,intent);
                 setPush(context,intent,response);
             }
-        }
-
+        }*/
+        Bundle bundle = new Bundle();
+        bundle.putString(Constant.BID,response.getData().getBID() != null ? response.getData().getBID():"");
+        bundle.putString(Constant.STATUS,Constant.PUSH_ID);
+        intent.putExtras(bundle);
+        setPush(context,intent,response);
 
     }
 
