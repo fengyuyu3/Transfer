@@ -6,11 +6,14 @@ import com.ironaviation.traveller.mvp.contract.airportoff.AirportContract;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.request.AirportGoInfoRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.BIDRequest;
+import com.ironaviation.traveller.mvp.model.entity.request.PassengersRequest;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.utils.RxUtils;
 import com.jess.arms.widget.imageloader.ImageLoader;
+
+import java.util.List;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
@@ -73,6 +76,10 @@ public class AirportPresenter extends BasePresenter<AirportContract.Model, Airpo
                                 if(airportGoInfoRequestBaseData.getData().getBID() != null){
                                     mRootView.setBID(airportGoInfoRequestBaseData.getData().getBID());
                                 }
+                                if(airportGoInfoRequestBaseData.getData().getPassengers() != null &&
+                                        airportGoInfoRequestBaseData.getData().getPassengers().size() > 0){
+                                    mRootView.setFreeNum(getFreeNum(airportGoInfoRequestBaseData.getData().getPassengers()));
+                                }
                             }else{
                                 mRootView.setError();
                             }
@@ -122,6 +129,16 @@ public class AirportPresenter extends BasePresenter<AirportContract.Model, Airpo
                         }
                     }
                 });
+    }
+
+    public int getFreeNum(List<PassengersRequest> mPassengersRequests){
+        int num = 0;
+        for(int i = 0; i < mPassengersRequests.size(); i++){
+            if(mPassengersRequests.get(i).isIsValid() && !mPassengersRequests.get(i).isHasBooked()){
+                num++;
+            }
+        }
+        return num;
     }
 
 }

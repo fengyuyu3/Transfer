@@ -318,6 +318,9 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
         </receiver>
+
+        <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote">
+        </service>
         <!-- 配置的第三方参数属性 -->
         <meta-data
             android:name="PUSH_APPID"

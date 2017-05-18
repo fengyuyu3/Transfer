@@ -195,6 +195,11 @@ public class WaitingPaymentActivity extends WEActivity<WaitingPaymentPresenter> 
         }
         setRightFunction(R.mipmap.ic_more, this);
         setOrderButtonStatus(timeOutFlag);
+        //初始化 为微信支付
+        mIviWeChat.show(true, R.mipmap.ic_pay_select);
+        mIviAliPay.show(false, R.mipmap.ic_pay_select);
+        mIviUnionPay.show(false, R.mipmap.ic_pay_select);
+        status = Constant.WECHAT;
     }
 
     public void initToolbar(){

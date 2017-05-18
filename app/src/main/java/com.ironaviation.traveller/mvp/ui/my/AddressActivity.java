@@ -161,8 +161,8 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
 
 
         if (AndPermission.hasPermission(this
-                ,Manifest.permission.ACCESS_FINE_LOCATION
-                ,Manifest.permission.ACCESS_COARSE_LOCATION
+                , Manifest.permission.ACCESS_FINE_LOCATION
+                , Manifest.permission.ACCESS_COARSE_LOCATION
                 ,Manifest.permission.WRITE_EXTERNAL_STORAGE
                 ,Manifest.permission.READ_PHONE_STATE
                 ,Manifest.permission.READ_EXTERNAL_STORAGE)) {
@@ -320,11 +320,9 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
                 break;
             case R.id.ll_address:
                 if (AndPermission.hasPermission(this
-                        ,Manifest.permission.ACCESS_FINE_LOCATION
-                        ,Manifest.permission.ACCESS_COARSE_LOCATION
-                        ,Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        ,Manifest.permission.READ_PHONE_STATE
-                        ,Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                        , Manifest.permission.ACCESS_FINE_LOCATION
+                        , Manifest.permission.ACCESS_COARSE_LOCATION
+                        ,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_PHONE_STATE)) {
                     // 有权限，直接do anything.
                     if(info != null && locationFlag) {
                         mPresenter.isAddress(Constant.CHENGDU_CTU, info.location.longitude,
@@ -333,7 +331,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
                         initLocation();
                     }
                 } else {
-                    mTwAddressText.setText("没有获取到定位权限，请开启权限后重试");
+                    mTwAddressText.setText("没有获取到定位权限，请开启权限");
                     // 申请权限。
                     AndPermission.with(this)
                             .requestCode(101)
@@ -585,12 +583,12 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
      */
     private void initLocation() {
         initMap();
-//        if (locationService == null) {
+        if (locationService == null) {
             locationService = new LocationService(getApplicationContext());
             locationService.registerListener(mListener);
             locationService.setLocationOption(locationService.getDefaultLocationClientOption());
             locationService.start();
-//        }
+        }
     }
 
     private BDLocationListener mListener = new BDLocationListener() {
@@ -599,23 +597,24 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
 
         @Override
         public void onReceiveLocation(BDLocation location) {
-            if (null != location) {
-                switch (location.getLocType()) {
+            if (null != location && location.getLocType() != BDLocation.TypeServerError) {
+                /*switch (location.getLocType()) {
                     case BDLocation.TypeServerError:
                     case BDLocation.TypeNetWorkException:
                     case BDLocation.TypeCriteriaException:
                         locationFlag = false;
                         showMessage("定位失败！请检查网络或者定位权限是否开启");
                         break;
-                    default:
-                        locationFlag = true;
-                        LatLng ptCenter = new LatLng(location.getLatitude() //latitude weidu
-                                , location.getLongitude()); //long jingdu
-                        // 反Geo搜索
-                        mSearch.reverseGeoCode(new ReverseGeoCodeOption()
-                                .location(ptCenter));
-                        break;
-                }
+                    default:*/
+                locationFlag = true;
+                LatLng ptCenter = new LatLng(location.getLatitude() //latitude weidu
+                        , location.getLongitude()); //long jingdu
+                // 反Geo搜索
+                mSearch.reverseGeoCode(new ReverseGeoCodeOption()
+                        .location(ptCenter));
+//                        break;
+            }else{
+                locationFlag = false;
             }
             /*if (null != location && location.getLocType() != BDLocation.TypeServerError) {
                 LatLng ptCenter = new LatLng(location.getLatitude() //latitude weidu
@@ -627,6 +626,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
 
             }*/
         }
+
     };
 
     @Override
@@ -665,7 +665,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
             }
         }else{
 //            mTwAddressText.setText("获取定位失败,点击重试");
-//            initLocation();
+            initLocation();
         }
     }
 
@@ -674,7 +674,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
         mPresenter.getUserAddressBook();
     }
 
-    @Subscriber(tag = EventBusTags.NO_NETWORK)
+    /*@Subscriber(tag = EventBusTags.NO_NETWORK)
     public void noNetWork(boolean flag){
         if(flag) {
             locationFlag = false;
@@ -684,5 +684,5 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
             locationFlag = true;
             initLocation();
         }
-    }
+    }*/
 }

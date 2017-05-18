@@ -76,59 +76,60 @@ public class MyTimeDialog {
             TextView twConfirm = (TextView) mCameraDialog.findViewById(R.id.tw_confirm);
             TextView twCancel = (TextView) mCameraDialog.findViewById(R.id.tw_cancel);
             twTitle.setText(title);
-            day = TimerUtils.getDay(time,currentTime);
-            // 滚动监听
-            lwDay.setListener(new OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(int index) {
-                    indexDay = index;
-                    if (day == 1) {
+            try {
+                day = TimerUtils.getDay(time, currentTime);
+                // 滚动监听
+                lwDay.setListener(new OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(int index) {
+                        indexDay = index;
+                        if (day == 1) {
 
-                    } else {
-                        if (index == 0 && list.size() != 1) {// 在第一天并且天数有两天以上
-                            lwHour.setItems(getStartHour());
-                            hours = getStartHour();
-                        } else if (index == list.size() - 1) { //  在最后一天
-                            lwHour.setItems(getEndHour(time));
-                            hours = getEndHour(time);
-                        } else if (index == 0 && list.size() == 1) { //总的天数只有一天
-                            lwHour.setItems(getOneHour(time));
-                            hours = getOneHour(time);
                         } else {
-                            lwHour.setItems(getMidHour());
-                            hours = getMidHour();
-                        }
-                        indexHour = 0;
-                        lwHour.setCurrentPosition(indexHour);
-                        setRefreshMinite(indexHour);
-                    }
-                }
-            });
-            lwHour.setListener(new OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(int index) {
-                    indexHour = index;
-                    if(day == 1 ) {
-                        if (TimerUtils.isOneHour(time, currentTime)) {
-                            minites = TimerUtils.getOneMinites(time,currentTime);
-                            lwSec.setItems(TimerUtils.getOneMinites(time,currentTime));
-                        } else {
-                            if (index == 0) {
-                                lwSec.setItems(TimerUtils.setCurrentMinite(time, currentTime));
-                                minites = TimerUtils.setCurrentMinite(time, currentTime);
-                            } else if (index == (getOneHour(time).size() - 1)) {
-                                lwSec.setItems(getEndMinite(time));
-                                minites = getEndMinite(time);
+                            if (index == 0 && list.size() != 1) {// 在第一天并且天数有两天以上
+                                lwHour.setItems(getStartHour());
+                                hours = getStartHour();
+                            } else if (index == list.size() - 1) { //  在最后一天
+                                lwHour.setItems(getEndHour(time));
+                                hours = getEndHour(time);
+                            } else if (index == 0 && list.size() == 1) { //总的天数只有一天
+                                lwHour.setItems(getOneHour(time));
+                                hours = getOneHour(time);
                             } else {
-                                lwSec.setItems(getMidMinite());
-                                minites = getMidMinite();
+                                lwHour.setItems(getMidHour());
+                                hours = getMidHour();
                             }
-                            indexMinite = 0;
-                            lwSec.setCurrentPosition(indexMinite);
+                            indexHour = 0;
+                            lwHour.setCurrentPosition(indexHour);
+                            setRefreshMinite(indexHour);
                         }
-                    }else{
-                        setRefreshMinite(index);
                     }
+                });
+                lwHour.setListener(new OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(int index) {
+                        indexHour = index;
+                        if (day == 1) {
+                            if (TimerUtils.isOneHour(time, currentTime)) {
+                                minites = TimerUtils.getOneMinites(time, currentTime);
+                                lwSec.setItems(TimerUtils.getOneMinites(time, currentTime));
+                            } else {
+                                if (index == 0) {
+                                    lwSec.setItems(TimerUtils.setCurrentMinite(time, currentTime));
+                                    minites = TimerUtils.setCurrentMinite(time, currentTime);
+                                } else if (index == (getOneHour(time).size() - 1)) {
+                                    lwSec.setItems(getEndMinite(time));
+                                    minites = getEndMinite(time);
+                                } else {
+                                    lwSec.setItems(getMidMinite());
+                                    minites = getMidMinite();
+                                }
+                                indexMinite = 0;
+                                lwSec.setCurrentPosition(indexMinite);
+                            }
+                        } else {
+                            setRefreshMinite(index);
+                        }
 
 
                     /*if(indexDay == 0 && list.size() != 1 && index == 0){ //在第一天并且天数有两天以上并且是第一个小时
@@ -140,12 +141,12 @@ public class MyTimeDialog {
                     }else{
                         lwSec.setItems(getMidMinite());
                     }*/
-                }
-            });
-            lwSec.setListener(new OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(int index) {
-                    indexMinite = index;
+                    }
+                });
+                lwSec.setListener(new OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(int index) {
+                        indexMinite = index;
                     /*if(list.size() == 1){
                         lwSec.setItems(getOneMinite(time));
                     } else if(indexDay == 0 && indexDay != list.size()-1){
@@ -155,34 +156,38 @@ public class MyTimeDialog {
                     }else{
                         lwSec.setItems(getMidMinite());
                     }*/
-                }
-            });
-            // 设置原始数据
+                    }
+                });
+                // 设置原始数据
             /*hours = getStartHour();
             minites = getStartMinite();*/
-            if(day==1){
-                list = TimerUtils.getOneday(time);
-                lwDay.setItems(list);
-                hours = getOneHour(time);
-                lwHour.setItems(hours);
-                minites = TimerUtils.setCurrentMinite(time,currentTime);
-                lwSec.setItems(minites);
-            }else if (TimerUtils.isOneHour(time, currentTime)) {
-                minites = TimerUtils.getOneMinites(time,currentTime);
-                lwSec.setItems(TimerUtils.getOneMinites(time,currentTime));
-                list = getStartDate(time);
-                lwDay.setItems(list);
-                hours = getStartHour();
-                lwHour.setItems(hours);
+                if (day == 1) {
+                    list = TimerUtils.getOneday(time);
+                    lwDay.setItems(list);
+                    hours = getOneHour(time);
+                    lwHour.setItems(hours);
+                    minites = TimerUtils.setCurrentMinite(time, currentTime);
+                    lwSec.setItems(minites);
+                } else if (TimerUtils.isOneHour(time, currentTime)) {
+                    minites = TimerUtils.getOneMinites(time, currentTime);
+                    lwSec.setItems(TimerUtils.getOneMinites(time, currentTime));
+                    list = getStartDate(time);
+                    lwDay.setItems(list);
+                    hours = getStartHour();
+                    lwHour.setItems(hours);
                 /*minites =getStartMinite();
                 lwSec.setItems(minites);*/
-            }else{
-                list = getStartDate(time);
-                lwDay.setItems(list);
-                hours = getStartHour();
-                lwHour.setItems(hours);
-                minites = getStartMinite();
-                lwSec.setItems(minites);
+                } else {
+                    list = getStartDate(time);
+                    lwDay.setItems(list);
+                    hours = getStartHour();
+                    lwHour.setItems(hours);
+                    minites = getStartMinite();
+                    lwSec.setItems(minites);
+                }
+            }catch (Exception e){
+                Toast.makeText(context,context.getString(R.string.time_out_four_hours),Toast.LENGTH_SHORT).show();
+                return;
             }
             WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
             lp.x = 0; // 新位置X坐标

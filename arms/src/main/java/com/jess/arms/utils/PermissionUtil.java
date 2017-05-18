@@ -7,6 +7,7 @@ import com.tbruyelle.rxpermissions.RxPermissions;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
+import rx.functions.Action1;
 import timber.log.Timber;
 
 /**
@@ -20,6 +21,7 @@ public class PermissionUtil {
 
     public interface RequestPermission {
         void onRequestPermissionSuccess();
+        void onRequestPermissionFail();
     }
 
 
@@ -172,6 +174,41 @@ public class PermissionUtil {
                     });
         }
     }
+
+    /**
+     * 请求获取手机定位的权限
+     */
+    public static void location(final RequestPermission requestPermission, RxPermissions rxPermissions) {
+        //先确保是否已经申请过权限
+
+        /**
+         * Manifest.permission.ACCESS_FINE_LOCATION
+         ,Manifest.permission.ACCESS_COARSE_LOCATION
+         ,Manifest.permission.WRITE_EXTERNAL_STORAGE
+         ,Manifest.permission.READ_PHONE_STATE
+         ,Manifest.permission.READ_EXTERNAL_STORAGE
+         */
+        rxPermissions
+                .request(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.READ_PHONE_STATE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean aBoolean) {
+                        if (aBoolean)
+                            requestPermission.onRequestPermissionSuccess();
+                        else
+                            requestPermission.onRequestPermissionFail();
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+
+                    }
+                });
+
+    }
+
 
 }
 

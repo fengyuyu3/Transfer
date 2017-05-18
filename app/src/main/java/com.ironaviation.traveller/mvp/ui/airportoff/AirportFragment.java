@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.airportoff.AirportContract;
 import com.ironaviation.traveller.mvp.model.api.Api;
 import com.ironaviation.traveller.mvp.model.entity.HistoryPoiInfo;
+import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
+import com.ironaviation.traveller.mvp.model.entity.request.AirPortRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.AirportGoInfoRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.PassengersRequest;
 import com.ironaviation.traveller.mvp.model.entity.response.Flight;
@@ -38,6 +41,7 @@ import com.ironaviation.traveller.mvp.ui.widget.MyTimeDialog;
 import com.ironaviation.traveller.mvp.ui.widget.NumDialog;
 import com.ironaviation.traveller.mvp.ui.widget.PublicTextView;
 import com.ironaviation.traveller.mvp.ui.widget.TerminalPopupWindow;
+import com.jess.arms.utils.DataHelper;
 import com.jess.arms.utils.UiUtils;
 import com.yanzhenjie.permission.AndPermission;
 import com.zhy.autolayout.AutoLinearLayout;
@@ -127,6 +131,8 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
     private String phone;
     private List<PassengersRequest> mPassengersRequests;
     private TerminalPopupWindow mTerminalPopupWindow;
+    private List<AirPortRequest> mAirportRequests;
+    private String idCard;
 
 
     @Override
@@ -160,6 +166,7 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
         mPwExpainFree.setFirstTextColor(getResources().getColor(R.color.color_brown));
         mTerminalPopupWindow = new TerminalPopupWindow(getActivity(),getTerminal(),this);
         mTerminalPopupWindow.setNum(terminalNum);
+        initEmptyData();
     }
 
     public void initLayout(String myStatus){
@@ -307,9 +314,9 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
         }
         bundle1.putInt(Constant.PEOPLE_NUM,seatNum != 0 ? seatNum :1);
         AirportGoInfoRequest mRequest = getAirPortInfo();
-        if(mPassengersRequests != null && mPassengersRequests.size() > 0){
+        /*if(mPassengersRequests != null && mPassengersRequests.size() > 0){
             mRequest.setPassengers(mPassengersRequests);
-        }
+        }*/
         bundle1.putSerializable(Constant.AIRPORT_GO_INFO,mRequest);
         intent3.putExtras(bundle1);
         startActivity(intent3);
@@ -396,7 +403,7 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
     public void getFlightInfo(Flight flight){
         this.flight = flight;
         if(status != null && flight.getStatus() != null && flight.getStatus().equals(Constant.ENTER_PORT)&&flight.getStatus().equals(status)){
-            clearData();
+//            clearData();
             if(getTerminalNum(flight.getList().get(0).getTakeOff()) != -1) {
                 terminalNum = getTerminalNum(flight.getList().get(0).getTakeOff());
                 mPwAirportOn.setTextInfo(getTerminal(getTerminalNum(flight.getList().get(0).getTakeOff())));
@@ -571,6 +578,22 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
                 request.setPickupLongitude(Constant.AIRPORT_T1_LONGITUDE);
             }
         }
+
+        List<PassengersRequest> list = getPassengers(mAirportRequests);
+        /*List<PassengersRequest> list = new ArrayList<>();
+        for(int i = 0; i< seatNum;i++){
+            PassengersRequest request1 = new PassengersRequest();
+            if(mAirportRequests.get(i) != null  &&
+                    !TextUtils.isEmpty(mAirportRequests.get(i).getIdCard())) {
+                request1.setIDCardNo(mAirportRequests.get(i).getIdCard().toUpperCase());
+                list.add(request1);
+            }else{
+                mAirportRequests.get(i).setStatus(Constant.AIRPORT_NO);
+            }
+        }*/
+        if(list !=null && list.size() > 0){
+            request.setPassengers(list);
+        }
         if(phone != null){
             request.setCallNumber(phone);
         }
@@ -665,6 +688,15 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
         }
     }
 
+    @Override
+    public void setFreeNum(int num) {
+        if(num != 0) {
+            mPwSeat.setFreeInfo(num + "人免费");
+        }else{
+            mPwSeat.setFreeInfo("");
+        }
+    }
+
     public void showPrice(){ //显示价格和重置价格
         mTwResetPrice.setVisibility(View.GONE);
         mLlSetPrice.setVisibility(View.VISIBLE);
@@ -683,6 +715,81 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
         mTwOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         this.price = price;
         this.acturlPrice = acturlPrice;
+    }
+
+    public void initEmptyData() {
+        mAirportRequests = new ArrayList<>();
+        for (int i = 0; i < Constant.SEAT_NUM; i++) {
+            AirPortRequest request = new AirPortRequest();
+            if(isValid() && i == 0 && idCard != null){
+//                request.setStatus(Constant.AIRPORT_SUCCESS);
+                request.setIdCard(idCard);
+                request.setStatus(Constant.AIRPORT_NO);
+            }else{
+                request.setStatus(Constant.AIRPORT_NO);
+            }
+            mAirportRequests.add(request);
+        }
+    }
+
+    public List<PassengersRequest> getPassengers(List<AirPortRequest> airportRequests){
+        List<PassengersRequest> list = new ArrayList<>();
+        for(int i = 0; i< seatNum;i++){
+            PassengersRequest request1 = new PassengersRequest();
+            if(airportRequests.get(i) != null  &&
+                    !TextUtils.isEmpty(airportRequests.get(i).getIdCard())) {
+                request1.setIDCardNo(airportRequests.get(i).getIdCard().toUpperCase());
+                list.add(request1);
+            }else{
+                airportRequests.get(i).setStatus(Constant.AIRPORT_NO);
+            }
+        }
+        return list;
+    }
+
+    public void getAirport(List<PassengersRequest> requests){
+        for (int i = 0; i < requests.size(); i++) {
+                if (requests.get(i).getIDCardNo() != null ) {
+                    if (requests.get(i).isIsValid() && !requests.get(i).isHasBooked()) {
+                        mAirportRequests.get(i).setStatus(Constant.AIRPORT_SUCCESS);
+                        mAirportRequests.get(i).setIdCard(requests.get(i).getIDCardNo());
+                    } else if (requests.get(i).isIsValid() && requests.get(i).isHasBooked()) {
+                        mAirportRequests.get(i).setStatus(Constant.AIRPORT_FAILURE);
+                    } else {
+                        mAirportRequests.get(i).setStatus(Constant.AIRPORT_FAILURE);
+                    }
+                }
+
+        }
+
+
+       /* for (int i = 0; i < requests.size(); i++) {
+            for (int j = 0; j < mAirportRequests.size(); j++) {
+                if (requests.get(i).getIDCardNo() != null ) {
+                    if (requests.get(i).isIsValid() && !requests.get(i).isHasBooked()) {
+                        mAirportRequests.get(j).setStatus(Constant.AIRPORT_SUCCESS);
+                        mAirportRequests.get(j).setIdCard(requests.get(i).getIDCardNo());
+                    } else if (requests.get(i).isIsValid() && requests.get(i).isHasBooked()) {
+                        mAirportRequests.get(j).setStatus(Constant.AIRPORT_FAILURE);
+                    } else {
+                        mAirportRequests.get(j).setStatus(Constant.AIRPORT_FAILURE);
+                    }
+                }
+            }
+        }*/
+
+    }
+
+    public boolean isValid(){
+        if(DataHelper.getDeviceData(getActivity(),Constant.LOGIN) != null) {
+            LoginEntity response = DataHelper.getDeviceData(getActivity(), Constant.LOGIN);
+            if(response.getIDCard() != null){
+                idCard = response.getIDCard();
+            }
+            return response.isRealValid();
+        }else{
+            return false;
+        }
     }
 
     @Override
@@ -712,7 +819,9 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
                 if(num != 0){
                     mPwSeat.setFreeInfo(num+"人免费");
                 }
+                getAirport(mPassengersRequests);
             }
+
             if(info.getBID() != null){
                 bid = info.getBID();
             }
@@ -737,6 +846,7 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
                 if(num != 0){
                     mPwSeat.setFreeInfo(num+"人免费");
                 }
+                getAirport(mPassengersRequests);
             }
             if(info.getBID() != null){
                 bid = info.getBID();
