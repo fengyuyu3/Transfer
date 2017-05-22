@@ -9,7 +9,7 @@ public interface Api {
 //         String APP_DOMAIN = "http://192.168.0.75:8051";
     //  String APP_DOMAIN = "http://192.168.0.20:8050";//junge
 //    String APP_DOMAIN = "http://th-api.bestwise.net"; //测试服务器
-    String APP_DOMAIN = "http://mgr.jichangzhuanxian.com";//正式服务器
+    String APP_DOMAIN = "https://mgr.jichangzhuanxian.com";//正式服务器
     String LOGIN = "/api/Users/LoginWithSMS";// 登录
     String Travel = "";
     String MESSAGE = "";

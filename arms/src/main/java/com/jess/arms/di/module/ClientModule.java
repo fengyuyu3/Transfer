@@ -3,8 +3,10 @@ package com.jess.arms.di.module;
 import android.app.Application;
 
 import com.jess.arms.base.AppManager;
+import com.jess.arms.base.BaseApplication;
 import com.jess.arms.http.RequestIntercept;
 import com.jess.arms.utils.DataHelper;
+import com.jess.arms.utils.SslUtils;
 
 import java.io.File;
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
+import javax.net.ssl.SSLSocketFactory;
 
 import dagger.Module;
 import dagger.Provides;
@@ -69,10 +72,13 @@ public class ClientModule {
     @Provides
     OkHttpClient provideClient(OkHttpClient.Builder okHttpClient, Interceptor intercept
             , List<Interceptor> interceptors) {
+        SSLSocketFactory sslSocketFactory = SslUtils.getSslContextForCertificateFile(BaseApplication.getContext(),"mgrjichangzhuanxiancom.cer")
+                .getSocketFactory();
         OkHttpClient.Builder builder = okHttpClient
                 .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
                 .readTimeout(TIME_OUT, TimeUnit.SECONDS)
-                .addNetworkInterceptor(intercept);
+                .addNetworkInterceptor(intercept)
+                .sslSocketFactory(sslSocketFactory);
         if (interceptors != null && interceptors.size() > 0) {//如果外部提供了interceptor的数组则遍历添加
             for (Interceptor interceptor : interceptors) {
                 builder.addInterceptor(interceptor);

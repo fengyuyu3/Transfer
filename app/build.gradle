@@ -15,12 +15,12 @@ android {
         testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
         multiDexEnabled true
         manifestPlaceholders = [
-                GETUI_APP_ID    : "5mDVi3xHB49M5q1AW6lAI6",
+                /*GETUI_APP_ID    : "5mDVi3xHB49M5q1AW6lAI6",
                 GETUI_APP_KEY   : "E3cvOSQooM7P7HhxLsrcA",
-                GETUI_APP_SECRET: "1C4SddDbDq5RpT4ajRNBA9",
-                /*GETUI_APP_ID    : "K7LYTYchYK90p97ulbSl55",
+                GETUI_APP_SECRET: "1C4SddDbDq5RpT4ajRNBA9",*/
+                GETUI_APP_ID    : "K7LYTYchYK90p97ulbSl55",
                 GETUI_APP_KEY   : "zDgXBowynw9BQfoBxD9cs",
-                GETUI_APP_SECRET: "KOkuzK2NlG9uWdidNKoX71",*/
+                GETUI_APP_SECRET: "KOkuzK2NlG9uWdidNKoX71",
                 PACKAGE_NAME    : applicationId
         ]
         ndk {

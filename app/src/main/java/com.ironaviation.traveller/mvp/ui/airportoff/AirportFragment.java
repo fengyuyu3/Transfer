@@ -41,6 +41,7 @@ import com.ironaviation.traveller.mvp.ui.widget.MyTimeDialog;
 import com.ironaviation.traveller.mvp.ui.widget.NumDialog;
 import com.ironaviation.traveller.mvp.ui.widget.PublicTextView;
 import com.ironaviation.traveller.mvp.ui.widget.TerminalPopupWindow;
+import com.ironaviation.traveller.mvp.ui.widget.TimeNewDialog;
 import com.jess.arms.utils.DataHelper;
 import com.jess.arms.utils.UiUtils;
 import com.yanzhenjie.permission.AndPermission;
@@ -133,6 +134,7 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
     private TerminalPopupWindow mTerminalPopupWindow;
     private List<AirPortRequest> mAirportRequests;
     private String idCard;
+    private TimeNewDialog mTimeNewDialog;
 
 
     @Override
@@ -367,7 +369,8 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
             if (num < 4) {
                 showMessage(getString(R.string.fly_four_time));
             } else {
-                mMyTimeDialog.showDialog(getResources().getString(R.string.airport_input_time));
+                mTimeNewDialog.showDialog(getResources().getString(R.string.airport_input_time));
+//                mMyTimeDialog.showDialog(getResources().getString(R.string.airport_input_time));
             }
         }
     }
@@ -417,7 +420,8 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
             }
         }else if(status != null && flight.getStatus() != null && flight.getStatus().equals(Constant.CLEAR_PORT) && flight.getStatus().equals(status)){
             clearData();
-            mMyTimeDialog = new MyTimeDialog(getActivity(),this,flight.getList().get(0).getTakeOffTime());
+            mTimeNewDialog = new TimeNewDialog(getActivity(),this,flight.getList().get(0).getTakeOffTime());
+//            mMyTimeDialog = new MyTimeDialog(getActivity(),this,flight.getList().get(0).getTakeOffTime());
             if(getTerminalNum(flight.getList().get(0).getTakeOff()) != -1) {
                 terminalNum = getTerminalNum(flight.getList().get(0).getTakeOff());
                 mPwAirportOff.setTextInfo(getTerminal(getTerminalNum(flight.getList().get(0).getTakeOff())));

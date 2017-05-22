@@ -89,8 +89,8 @@ public interface Constant {
     int EAGLE_EYE_HISTORY_PAGE_SIZE = 5000;
     int EAGLE_EYE_LOCATION_SIZE = 1000;
     int EAGLE_EYE_NOW_TIME_PACK_INTERVAL = 10;
-    int SERVICEID = 139760; //正式
-//    int SERVICEID = 141262; //测试
+//    int SERVICEID = 139760; //正式
+    int SERVICEID = 141262; //测试
     String CITY = "成都";
     String ON = "on";  //接机
     String OFF = "off"; //送机
@@ -165,4 +165,7 @@ public interface Constant {
     String SOCKET_TIME_OUT = "java.net.SocketTimeoutException";
     String UNKNOWN_HOST = "java.net.UnknownHostException";
     String GSON = "com.google.gson.JsonSyntaxException";
+
+    String API_VERSION = "Api_Version";
+
 }

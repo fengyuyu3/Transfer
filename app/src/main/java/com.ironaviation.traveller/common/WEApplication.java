@@ -201,6 +201,7 @@ public class WEApplication extends BaseApplication {
                         builder.addHeader("ClientType", "App");
                         builder.addHeader("appType", "Passenger");
                         builder.addHeader("systemType", "Android");
+                        builder.addHeader(Constant.API_VERSION,"1.0");
                         return builder.build();
 
 //                        return request;

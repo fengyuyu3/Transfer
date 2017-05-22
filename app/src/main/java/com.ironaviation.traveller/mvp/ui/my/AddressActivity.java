@@ -33,6 +33,7 @@ import com.baidu.mapapi.search.poi.PoiSearch;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
+import com.ironaviation.traveller.app.utils.BaiDuLBS;
 import com.ironaviation.traveller.app.utils.LocationService;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
@@ -120,6 +121,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
     private LocationService locationService;
     private HistoryPoiInfo info;
     private boolean locationFlag;
+    private BaiDuLBS baiDuLBS;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -155,9 +157,9 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
         Bundle pBundle = getIntent().getExtras();
         if (pBundle != null) {
             addressType = pBundle.getInt(Constant.ADDRESS_TYPE);
-
         }
-
+        initLocation();
+        baiDuLBS = new BaiDuLBS(this,mListener);
 
 
         if (AndPermission.hasPermission(this
@@ -167,7 +169,8 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
                 ,Manifest.permission.READ_PHONE_STATE
                 ,Manifest.permission.READ_EXTERNAL_STORAGE)) {
             // 有权限，直接do anything.
-            initLocation();
+//            initLocation();
+            baiDuLBS.startLocation();
         } else {
             mTwAddressText.setText("没有获取到定位权限，请开启");
             // 申请权限。
@@ -240,7 +243,9 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
             } else if (requestCode == 101) {
                 // TODO 相应代码。
                 mTwAddressText.setText(getResources().getString(R.string.address_locationing));
-                initLocation();
+//                initLocation();
+                baiDuLBS.startLocation();
+
             }
         }
 
@@ -328,7 +333,8 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
                         mPresenter.isAddress(Constant.CHENGDU_CTU, info.location.longitude,
                                 info.location.latitude, info);
                     }else{
-                        initLocation();
+                        /*initLocation();*/
+                        baiDuLBS.startLocation();
                     }
                 } else {
                     mTwAddressText.setText("没有获取到定位权限，请开启权限");
@@ -583,12 +589,12 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
      */
     private void initLocation() {
         initMap();
-        if (locationService == null) {
+        /*if (locationService == null) {
             locationService = new LocationService(getApplicationContext());
             locationService.registerListener(mListener);
             locationService.setLocationOption(locationService.getDefaultLocationClientOption());
             locationService.start();
-        }
+        }*/
     }
 
     private BDLocationListener mListener = new BDLocationListener() {
@@ -615,6 +621,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
 //                        break;
             }else{
                 locationFlag = false;
+                baiDuLBS.startLocation();
             }
             /*if (null != location && location.getLocType() != BDLocation.TypeServerError) {
                 LatLng ptCenter = new LatLng(location.getLatitude() //latitude weidu
@@ -665,7 +672,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
             }
         }else{
 //            mTwAddressText.setText("获取定位失败,点击重试");
-            initLocation();
+//            initLocation();
         }
     }
 
