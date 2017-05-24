@@ -55,7 +55,7 @@
                     android:id="@+id/pw_address_off"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hint1="@string/airport_down_address"
+                    app:hint1="@string/airport_address"
                     app:left_logo1="@mipmap/ic_blue_big_point"
                     />
 

@@ -160,7 +160,7 @@ public class VerifyIdCardActivity extends WEActivity<VerifyIdCardPresenter> impl
             holder.mLineEdt = view.findViewById(R.id.line_edt); //底下的线
             holder.mIvStatus = (ImageView) view.findViewById(R.id.iv_status); //右边的图标  占时不用;
             holder.mEdtContent = (EditText) view.findViewById(R.id.edt_content); // 文本框
-            holder.mTvCode = (TextView) view.findViewById(R.id.tv_code);  //验证按钮
+            holder.mTvCode = (TextView) view.findViewById(R.id.tv_code);  //本人身份证
             holder.mPwLl = (AutoLinearLayout) view.findViewById(R.id.pw_ll); //整个布局
             holder.mIwDelete = (ImageView) view.findViewById(R.id.iw_delete);
             if (mAirportRequests.get(i).getStatus() == Constant.AIRPORT_SUCCESS) {
@@ -375,6 +375,18 @@ public class VerifyIdCardActivity extends WEActivity<VerifyIdCardPresenter> impl
             @Override
             public void afterTextChanged(Editable editable) {
                 mAirportRequests.get(position).setIdCard(editable.toString());
+                mAirportRequests.get(position).setStatus(Constant.AIRPORT_NO);
+                setNomal(holder);
+                if(isValid()){
+                    if(idCard != null && editable.toString().equals(idCard)){
+                        holder.mTvCode.setVisibility(View.VISIBLE);
+                    }else{
+                        holder.mTvCode.setVisibility(View.GONE);
+                    }
+                }else{
+                    holder.mTvCode.setVisibility(View.GONE);
+                }
+
             }
         });
 
@@ -458,8 +470,10 @@ public class VerifyIdCardActivity extends WEActivity<VerifyIdCardPresenter> impl
     //设置数据
     public void setAirportData(MyAirportHolder holder, AirPortRequest request) {
         if(isValid() && request != null && request.getIdCard() != null && request.getIdCard().equalsIgnoreCase(idCard)){
-            holder.mEdtContent.setText(request.getIdCard()+"(本人)");
+            holder.mEdtContent.setText(request.getIdCard());
+            holder.mTvCode.setVisibility(View.VISIBLE);
         }else{
+            holder.mTvCode.setVisibility(View.GONE);
             holder.mEdtContent.setText(request.getIdCard());
         }
         if (request.getStatus() == Constant.AIRPORT_SUCCESS) {

@@ -90,7 +90,7 @@ public class TimeNewUtil {
             }
         }else if(isOneDay(currentTime,endTime)){//只有一天
             if(hour == 0){
-                list = getStartMinite(currentMinite,endMinite,MINITE_NUM);
+                list = getStartMinite(currentMinite,endMinite,MINITE_NUM,currentTime,endTime);
             }else if(getHours(currentTime,endTime,day) != null &&
                     hour == getHours(currentTime,endTime,day).size()-1){
                 list = getEndMinite(currentMinite,endMinite,MINITE_NUM);
@@ -99,7 +99,7 @@ public class TimeNewUtil {
             }
         }else{ //两天的情况
             if(day == 0 && hour == 0){
-                list = getStartMinite(currentMinite,endMinite,MINITE_NUM);
+                list = getStartMinite(currentMinite,endMinite,MINITE_NUM,currentTime,endTime);
             }else if(day == 1 && hour == getHours(currentTime,endTime,day).size()-1){
                 list = getEndMinite(currentMinite,endMinite,MINITE_NUM);
             }else{
@@ -110,9 +110,10 @@ public class TimeNewUtil {
         return list;
     }
 
-    public static List<String> getStartMinite(int currentMinite,long endMinite,int miniteNum){
+    public static List<String> getStartMinite(int currentMinite,int endMinite,int miniteNum
+    ,long currentTime,long endTime){
         List<String> list = new ArrayList<>();
-        if(isMoreOneMinite(currentMinite,endMinite)){
+        if(isMoreOneMinite(currentTime,endTime)){
             list = getMidMinite(currentMinite,endMinite,miniteNum);
         }else {
             for (int i = currentMinite; i <= miniteNum; i++) {

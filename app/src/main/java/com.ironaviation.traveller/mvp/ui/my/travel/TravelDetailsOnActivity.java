@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,9 +15,12 @@ import android.widget.TextView;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.InfoWindow;
+import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.RouteLine;
@@ -39,6 +43,7 @@ import com.baidu.trace.api.track.SortType;
 import com.baidu.trace.model.OnTraceListener;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
+import com.ironaviation.traveller.app.utils.AnimationUtil;
 import com.ironaviation.traveller.app.utils.CommonUtil;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
@@ -92,7 +97,7 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 
 public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter> implements TravelDetailsOnContract.View
-        , View.OnClickListener, OnGetRoutePlanResultListener {
+        , View.OnClickListener, OnGetRoutePlanResultListener , BaiduMap.OnMarkerClickListener{
 
 
     @BindView(R.id.iv_function_left)
@@ -152,6 +157,8 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
             TextView mTwTextOn;
     @BindView(R.id.mapview_on)
     MapView mMapview;
+    @BindView(R.id.ll_layout_on)
+    AutoLinearLayout mLlLayoutOn;
     private String status;
     private RouteStateResponse responses;
     private MoreActionPopupWindow mPopupWindow;
@@ -167,6 +174,12 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
     private String bid;
     private List<PlanNode> mPlanNodes;
     private String phone;
+    private Marker startMarkers;
+    private Marker endMarkers;
+    private String startAddress;
+    private String endAddress;
+    private InfoWindow mInfoWindow;
+    private AnimationUtil mAnimationUtil;
     /**
      * 地图工具
      */
@@ -247,6 +260,8 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
                 }
             }
         }
+        mAnimationUtil = AnimationUtil.getInstance(this);
+        mBaiduMap.setOnMarkerClickListener(this);
     }
 
     @Override
@@ -452,15 +467,19 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
     }
 
     public void AllGone() {
-        mIwZoomAirport.setVisibility(View.GONE);
+        mAnimationUtil.moveToViewBottom(mLlLayoutOn);
+        mLlLayoutOn.setVisibility(View.GONE);
+        mAnimationUtil.showAnimation(mIwZoomNomalAirport);
         mIwZoomNomalAirport.setVisibility(View.VISIBLE);
-        mLlWaitAirport.setVisibility(View.GONE);   //等待上车
+        /*mLlWaitAirport.setVisibility(View.GONE);   //等待上车
         mLlArriveAirport.setVisibility(View.GONE); //确认到达
         mLlGoOnAirport.setVisibility(View.GONE);   //进行中
-        mRlSuccessful.setVisibility(View.GONE);    //预约成功
+        mRlSuccessful.setVisibility(View.GONE); */   //预约成功
     }
 
     public void showStatus(RouteStateResponse responses) {
+        startAddress = responses.getPickupAddress();
+        endAddress = responses.getDestAddress();
         mBaiduMap.clear();
         switch (responses.getStatus()) {
             case Constant.REGISTERED:
@@ -574,7 +593,11 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
                 break;
             case R.id.iw_zoom_nomal_airport: //隐藏
                 if (status != null) {
-                    showStatusAll(responses);
+                    mAnimationUtil.moveToViewLocation(mLlLayoutOn);
+                    mLlLayoutOn.setVisibility(View.VISIBLE);
+//                    mAnimationUtil.hiddenAnimation(mIwZoomNomal);
+                    mIwZoomNomalAirport.setVisibility(View.GONE);
+//                    showStatusAll(responses);
                 }
                 break;
             case R.id.iw_zoom_airport:
@@ -741,12 +764,12 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
         }
     }
 
-    //路径规划 route  stNode设置一个假的 Latitude 30.542191  Longitude 104.066535
+    /*//路径规划 route  stNode设置一个假的 Latitude 30.542191  Longitude 104.066535
     private void pathPlanning(List<PathPlanning> planningListt) {
         mPlanNodes = new ArrayList<>();
         stNode = PlanNode.withLocation(new LatLng(30.622657, 104.083864));//起点 104.083864,30.622657
-        /*mSearch.drivingSearch((new DrivingRoutePlanOption())
-                .from(stNode).to(enNode));*/
+        *//*mSearch.drivingSearch((new DrivingRoutePlanOption())
+                .from(stNode).to(enNode));*//*
         for (int i = 0; i < planningListt.size(); i++) {
             mPlanNodes.add(PlanNode.withLocation(new LatLng
                     (planningListt.get(i).getLatitude(),
@@ -758,7 +781,7 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
         drivingRoutePlanOption.passBy(mPlanNodes);
         mSearch.drivingSearch(drivingRoutePlanOption);
         initMarker(planningListt); //初始化覆盖物
-    }
+    }*/
 
     @Subscriber(tag = EventBusTags.TRAVEL_DETAIL_ON)
     public void travelDetailOn(BasePushData response) {
@@ -779,8 +802,8 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
                 .position(pickup).icon(start).zIndex(9).draggable(true);
         MarkerOptions markerOptions1 = new MarkerOptions()
                 .position(dest).icon(end).zIndex(9).draggable(true);
-        mBaiduMap.addOverlay(markerOptions);
-        mBaiduMap.addOverlay(markerOptions1);
+        startMarkers = (Marker) mBaiduMap.addOverlay(markerOptions);
+        endMarkers = (Marker) mBaiduMap.addOverlay(markerOptions1);
         MapStatus mMapStatus = new MapStatus.Builder().target(dest).build();
         mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(mMapStatus));
     }
@@ -829,4 +852,53 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
     }
 
 
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        TextView location = new TextView(this);
+        location.setBackgroundResource(R.mipmap.ic_pup);
+        location.setPadding(30, Constant.BTN_TOP, 30, Constant.BTN_BOTTOM);
+        InfoWindow.OnInfoWindowClickListener listener = null;
+        if(marker == startMarkers){
+            if(startAddress != null) {
+                location.setText(startAddress);
+            }else{
+                showMessage("地址获取失败,请重新刷新界面！");
+            }
+            listener = new InfoWindow.OnInfoWindowClickListener() {
+                public void onInfoWindowClick() {
+                    mBaiduMap.hideInfoWindow();
+                }
+            };
+            LatLng ll = marker.getPosition();
+            mInfoWindow = new InfoWindow(BitmapDescriptorFactory.fromView(location), ll, Constant.MARK_DISTANCE, listener);
+            mBaiduMap.showInfoWindow(mInfoWindow);
+        }else if(marker == endMarkers){
+            if(endAddress != null) {
+                location.setText(endAddress);
+            }else{
+                showMessage("地址获取失败,请重新刷新界面！");
+            }
+            listener = new InfoWindow.OnInfoWindowClickListener() {
+                public void onInfoWindowClick() {
+                    mBaiduMap.hideInfoWindow();
+                }
+            };
+            LatLng ll = marker.getPosition();
+            mInfoWindow = new InfoWindow(BitmapDescriptorFactory.fromView(location), ll, Constant.MARK_DISTANCE, listener);
+            mBaiduMap.showInfoWindow(mInfoWindow);
+        }
+
+        mBaiduMap.setOnMapClickListener(new BaiduMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                mBaiduMap.hideInfoWindow();
+            }
+
+            @Override
+            public boolean onMapPoiClick(MapPoi mapPoi) {
+                return false;
+            }
+        });
+        return true;
+    }
 }

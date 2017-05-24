@@ -19,8 +19,10 @@ import com.ironaviation.traveller.di.component.login.DaggerIdentificationCompone
 import com.ironaviation.traveller.di.module.login.IdentificationModule;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.login.IdentificationContract;
+import com.ironaviation.traveller.mvp.model.api.Api;
 import com.ironaviation.traveller.mvp.presenter.Login.IdentificationPresenter;
 import com.ironaviation.traveller.mvp.ui.main.MainActivity;
+import com.ironaviation.traveller.mvp.ui.webview.WebViewActivity;
 import com.ironaviation.traveller.mvp.ui.widget.AlertDialog;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoRelativeLayout;
@@ -64,6 +66,7 @@ public class IdentificationActivity extends WEActivity<IdentificationPresenter> 
     @BindView(R.id.et_numeral)
     EditText mEtNumeral;
 
+    private String status;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -89,7 +92,7 @@ public class IdentificationActivity extends WEActivity<IdentificationPresenter> 
     protected void initData() {
         setTitle(getString(R.string.title_identification));
         Intent intent = getIntent();
-        String status = intent.getStringExtra(Constant.STATUS);
+        status = intent.getStringExtra(Constant.STATUS);
         if(status != null && status.equals(Constant.LOGIN)) {
             setRightFunctionText(getString(R.string.function_skip),R.color.color_eec0be, new View.OnClickListener() {
                 @Override
@@ -152,7 +155,15 @@ public class IdentificationActivity extends WEActivity<IdentificationPresenter> 
 
     @Override
     public void isSuccess() {
-        showDialog();
+        if(status != null && status.equals(Constant.LOGIN)) {
+            showDialog();
+        }else if(status != null && status.equals(Constant.SETTING_NOMAL)){
+            Intent intent = new Intent(this, WebViewActivity.class);
+            intent.putExtra(Constant.URL, Api.PHONE_ID_CARD+"?userName="+getName()+"&number="+setTextIDCard(getNumeral()));
+            intent.putExtra(Constant.TITLE,getResources().getString(R.string.authenticated_success));
+            intent.putExtra(Constant.STATUS,Constant.SETTING);
+            startActivity(intent);
+        }
     }
     public void showDialog(){
         AlertDialog dialog = new AlertDialog(this);
@@ -207,5 +218,11 @@ public class IdentificationActivity extends WEActivity<IdentificationPresenter> 
                 }
                 break;
         }
+    }
+
+    public String setTextIDCard(String idCard) {
+        StringBuilder telBuilder = new StringBuilder(idCard);
+        telBuilder.replace(3, 15, "************");
+        return telBuilder.toString();
     }
 }

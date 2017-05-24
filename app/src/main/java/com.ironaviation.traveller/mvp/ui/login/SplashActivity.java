@@ -27,6 +27,7 @@ import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.ui.main.MainActivity;
+import com.ironaviation.traveller.mvp.ui.widget.AutoViewPager;
 import com.jess.arms.utils.DataHelper;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
@@ -44,7 +45,7 @@ public class SplashActivity extends WEActivity {
 
 
     @BindView(R.id.viewpager)
-    ViewPager viewpager;
+    AutoViewPager viewpager;
     @BindView(R.id.ll)
     AutoRelativeLayout ll;
     @BindView(R.id.ll_point)
@@ -54,8 +55,8 @@ public class SplashActivity extends WEActivity {
     @BindView(R.id.tw_jump)
     TextView jump;
     private Gson gson;
-    private ImageView[]  imageViews;
-    private static final int SIZE = 3;
+    private ImageView[] imageViews;
+    private static final int SIZE = 4;
     //    private String locationMsg;
     //    private int locationTimes = 0;//当前定位次数
 //    private final static int LOCATION_TIMES_MAX = 5;//最大定位次数
@@ -72,7 +73,7 @@ public class SplashActivity extends WEActivity {
 
     @Override
     protected void initData() {
-        if(DataHelper.getStringSF(this,FIRST) != null && DataHelper.getStringSF(this,FIRST).equals("second")){
+        if (DataHelper.getStringSF(this, FIRST) != null && DataHelper.getStringSF(this, FIRST).equals("second")) {
             viewpager.setVisibility(View.GONE);
             ImageView imageView = new ImageView(this);
             imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
@@ -84,11 +85,11 @@ public class SplashActivity extends WEActivity {
                 public void run() {
                     Login();
                 }
-            },2000);
+            }, 2000);
         }
 //        initClientId();
         PushManager.getInstance().initialize(this);
-        DataHelper.SetStringSF(this,FIRST,"second");
+        DataHelper.SetStringSF(this, FIRST, "second");
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,10 +104,10 @@ public class SplashActivity extends WEActivity {
         });
         firstLaunch();
         imageViews = new ImageView[SIZE];
-        for(int i = 0; i < SIZE; i++){
+        for (int i = 0; i < SIZE; i++) {
             ImageView imageView = new ImageView(this);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-            if(i != 0){
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            if (i != 0) {
                 layoutParams.leftMargin = 20;
             }
             imageView.setLayoutParams(layoutParams);
@@ -118,11 +119,11 @@ public class SplashActivity extends WEActivity {
 
     }
 
-    public void Login(){
-        if(DataHelper.getDeviceData(mApplication, Constant.LOGIN) != null){
+    public void Login() {
+        if (DataHelper.getDeviceData(mApplication, Constant.LOGIN) != null) {
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             startActivity(intent);
-        }else{
+        } else {
             Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
             startActivity(intent);
         }
@@ -138,7 +139,8 @@ public class SplashActivity extends WEActivity {
     private void firstLaunch() {
         final int[] imgs = new int[]{R.mipmap.ic_launch_one,
                 R.mipmap.ic_launch_two,
-                R.mipmap.ic_launch_three};
+                R.mipmap.ic_launch_three,
+                R.mipmap.ic_launch_four};
         ImageAdapter adapter = new ImageAdapter(this, imgs);
         viewpager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -150,6 +152,9 @@ public class SplashActivity extends WEActivity {
             public void onPageSelected(int position) {
                 if (position == imgs.length - 1) {
                     btn1.setVisibility(View.VISIBLE);
+                    point.setVisibility(View.GONE);
+                    viewpager.setDisableScroll(true);
+                    jump.setVisibility(View.GONE);
                 } else {
                     btn1.setVisibility(View.GONE);
                 }
@@ -166,12 +171,10 @@ public class SplashActivity extends WEActivity {
     }
 
 
-
     @Override
     protected void nodataRefresh() {
 
     }
-
 
 
     public static class ImageAdapter extends PagerAdapter {
@@ -217,8 +220,8 @@ public class SplashActivity extends WEActivity {
 
     }
 
-    public void setClear(){
-        for(int i =0 ; i< SIZE ;i++){
+    public void setClear() {
+        for (int i = 0; i < SIZE; i++) {
             imageViews[i].setImageResource(R.drawable.ic_page_indicator_theme_splash);
         }
     }
@@ -234,29 +237,4 @@ public class SplashActivity extends WEActivity {
         getWindow().setAttributes(attrs);
     }
 
-    /*public void initClientId() {
-
-        // com.getui.demo.DemoPushService 为第三方自定义推送服务
-        PackageManager pkgManager = getPackageManager();
-
-        // 读写 sd card 权限非常重要, android6.0默认禁止的, 建议初始化之前就弹窗让用户赋予该权限
-        boolean sdCardWritePermission =
-                pkgManager.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, getPackageName()) == PackageManager.PERMISSION_GRANTED;
-
-        // read phone state用于获取 imei 设备信息
-        boolean phoneSatePermission =
-                pkgManager.checkPermission(Manifest.permission.READ_PHONE_STATE, getPackageName()) == PackageManager.PERMISSION_GRANTED;
-
-        if (Build.VERSION.SDK_INT >= 23 && !sdCardWritePermission || !phoneSatePermission) {
-            requestPermission();
-        } else {
-            PushManager.getInstance().initialize(this.getApplicationContext(), userPushService);
-        }
-        PushManager.getInstance().initialize(this.getApplicationContext(), userPushService);
-        PushManager.getInstance().registerPushIntentService(this.getApplicationContext(), WEGTIntentService.class);
-    }
-    private void requestPermission() {
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE},
-                REQUEST_PERMISSION);
-    }*/
 }

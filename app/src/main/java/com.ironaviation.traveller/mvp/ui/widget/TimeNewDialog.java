@@ -91,13 +91,17 @@ public class TimeNewDialog {
                     }else{
 //                        days = TimeNewUtil.getDays(currentTime,time);
                         hours = TimeNewUtil.getHours(currentTime,time,indexDay);
-                        lwHour.setItems(hours);
-                        indexHour = 0;
-                        lwHour.setCurrentPosition(indexHour);
+                        if(hours != null && hours.size() > 0) {
+                            lwHour.setItems(hours);
+                            indexHour = 0;
+                            lwHour.setCurrentPosition(indexHour);
+                        }
                         minites = TimeNewUtil.getMinite(currentTime,time,indexDay,indexHour);
-                        lwSec.setItems(minites);
-                        indexMinite = 0;
-                        lwSec.setCurrentPosition(indexMinite);
+                        if(minites != null && minites.size() > 0) {
+                            lwSec.setItems(minites);
+                            indexMinite = 0;
+                            lwSec.setCurrentPosition(indexMinite);
+                        }
                     }
                 }
             });
@@ -108,16 +112,20 @@ public class TimeNewDialog {
                     if(isOneDay && isOneHour){
                     }else if(isOneDay){
                         hours = TimeNewUtil.getHours(currentTime,time,indexDay);
-                        minites = TimeNewUtil.getMinite(currentTime,time,indexDay,indexHour);
-                        lwSec.setItems(minites);
-                        indexMinite = 0;
-                        lwSec.setCurrentPosition(indexMinite);
+                        minites = TimeNewUtil.getMinite(currentTime, time, indexDay, indexHour);
+                        if(minites != null && minites.size() > 0) {
+                            lwSec.setItems(minites);
+                            indexMinite = 0;
+                            lwSec.setCurrentPosition(indexMinite);
+                        }
                     }else{
                         hours = TimeNewUtil.getHours(currentTime,time,indexDay);
-                        minites = TimeNewUtil.getMinite(currentTime,time,indexDay,indexHour);
-                        lwSec.setItems(minites);
-                        indexMinite = 0;
-                        lwSec.setCurrentPosition(indexMinite);
+                        minites = TimeNewUtil.getMinite(currentTime, time, indexDay, indexHour);
+                        if(minites != null && minites.size() > 0) {
+                            lwSec.setItems(minites);
+                            indexMinite = 0;
+                            lwSec.setCurrentPosition(indexMinite);
+                        }
                     }
                 }
             });

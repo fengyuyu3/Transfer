@@ -25,13 +25,13 @@ public class AnimationUtil {
 
     public void showAnimation(View view){
         mShowAction = new AlphaAnimation(0.1f,1.0f);
-        mShowAction.setDuration(500);
+        mShowAction.setDuration(1000);
         view.startAnimation(mShowAction);
     }
 
     public void hiddenAnimation(View view){
         mHiddenAction = new AlphaAnimation(1.0f,0.1f);
-        mHiddenAction.setDuration(500);
+        mHiddenAction.setDuration(1000);
         view.startAnimation(mHiddenAction);
     }
 

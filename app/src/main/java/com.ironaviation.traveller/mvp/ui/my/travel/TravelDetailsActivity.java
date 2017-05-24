@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,6 +20,8 @@ import android.widget.TextView;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.InfoWindow;
+import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
@@ -28,6 +31,7 @@ import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.PolylineOptions;
+import com.baidu.mapapi.map.Text;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.model.LatLngBounds;
 import com.baidu.mapapi.search.core.RouteLine;
@@ -264,6 +268,11 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     private SortType sortType = SortType.asc;
     private AnimationUtil mAnimationUtil;
     private boolean realTimeLocFlag=false;
+    private Marker startMarkers;
+    private Marker endMarkers;
+    private String startAddress;
+    private String endAddress;
+    private InfoWindow mInfoWindow;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -288,12 +297,6 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         if (pBundle != null) {
             responses = (RouteStateResponse) pBundle.getSerializable(Constant.STATUS);
             if (responses != null && !TextUtils.isEmpty(responses.getBID())) {
-//                mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.WAITING_PAYMENT,responses.getBID());
-                /*status = responses.getStatus();
-                bid = responses.getBID();
-                mPresenter.setRouteStateResponse(responses);
-                showStatus(status,responses);
-                mPopupWindow = new MoreActionPopupWindow(this, EventBusTags.TRAVEL_DETAILS, responses.getBID());*/
                 setPassengersResponseInfo(responses);
             } else {
                 bid = pBundle.getString(Constant.BID);
@@ -302,19 +305,9 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
                 }
             }
         } else {
-//            mPresenter.getRouteState();
         }
-        /*Bundle bundle = getIntent().getExtras();
-        responses = bundle.getParcelable(Constant.STATUS);
-        if(responses != null) {
-            pStatus = responses.getStatus();
-        }else{
-//            mPresenter.getRouteState();
-        }*/
-
-//        pathPlanning(getList());//路径规划
-//        initQuery();
         mAnimationUtil = AnimationUtil.getInstance(this);
+        mBaiduMap.setOnMarkerClickListener(this);
     }
 
     @Override
@@ -417,12 +410,15 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     public void myOnClick(View view) {
         switch (view.getId()) {
             case R.id.iw_zoom:
-//                mAnimationUtil.moveToViewBottom(mLlLayout);
                 AllGone();
                 break;
             case R.id.iw_zoom_nomal:
                 if (status != null) {
-                    showStatusAll(status, responses);
+                    mAnimationUtil.moveToViewLocation(mLlLayout);
+                    mLlLayout.setVisibility(View.VISIBLE);
+//                    mAnimationUtil.hiddenAnimation(mIwZoomNomal);
+                    mIwZoomNomal.setVisibility(View.GONE);
+//                    showStatusAll(status, responses);
                 }
                 break;
             case R.id.iw_mobile:
@@ -442,6 +438,8 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     public void showStatus(String status, RouteStateResponse responses) {
         /*route = null;
         mBaiduMap.clear();*/
+        startAddress = responses.getPickupAddress();
+        endAddress = responses.getDestAddress();
         mBaiduMap.clear();
         switch (status) {
             case Constant.INHAND: //派单进行中
@@ -493,7 +491,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     public void showStatusAll(String status, RouteStateResponse responses) {
         /*route = null;
         mBaiduMap.clear();*/
-//        mAnimationUtil.moveToViewLocation(mLlLayout);
+        mAnimationUtil.moveToViewLocation(mLlLayout);
         switch (status) {
             case Constant.INHAND: //派单进行中
                 showChildStatus(responses);
@@ -648,11 +646,14 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     }
 
     public void AllGone() {  //隐藏
+        mAnimationUtil.moveToViewBottom(mLlLayout);
+        mLlLayout.setVisibility(View.GONE);
+        mAnimationUtil.showAnimation(mIwZoomNomal);
         mIwZoomNomal.setVisibility(View.VISIBLE);
-        mIwZoom.setVisibility(View.GONE);
+        /*mIwZoom.setVisibility(View.GONE);
         mLlArrive.setVisibility(View.GONE);  // 确认到达
         mLlOrdering.setVisibility(View.GONE);//派单中
-        mLlComplete.setVisibility(View.GONE);//派单成功
+        mLlComplete.setVisibility(View.GONE);//派单成功*/
 //        mLlDriverInfo.setVisibility(View.GONE); //司机信息
 //        mLlGoing.setVisibility(View.GONE); //正在进行中
     }
@@ -719,7 +720,6 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     @Override
     public void setPassengersInfo(final List<PassengersResponse> info) {
         initOnEntityListener();
-        setTraceServer();
         mPassengersResponseList = info;
         mClient.queryRealTimeLoc(locRequest, new OnEntityListener() {
             @Override
@@ -750,7 +750,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 
     }
 
-    public void mapLocation(List<PassengersResponse> info, PassengersResponse mPassengersResponse) {
+    /*public void mapLocation(List<PassengersResponse> info, PassengersResponse mPassengersResponse) {
 
         List<PassengersResponse> passengersResponseList = new ArrayList<>();
         if (info != null) {
@@ -779,12 +779,12 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         double latitude = passengersResponseList.get(0).getPickupLatitude();
         double longtude = passengersResponseList.get(0).getPickupLongitude();
         passengersResponseList.remove(0);
-        /*if (responses.getDestAddress() != null) {
+        *//*if (responses.getDestAddress() != null) {
             pathPlanning(passengersResponseList, latitude, longtude, responses.getDestAddress());
         } else {
             pathPlanning(passengersResponseList, latitude, longtude, Constant.AIRPORT_T1);
-        }*/
-    }
+        }*//*
+    }*/
 
     //正在进行中
     public void mapNewLocation(List<PassengersResponse> info, PassengersResponse mPassengersResponse,
@@ -817,16 +817,6 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         }
     }
 
-    //
-    public void setEndPoint() {
-
-
-    }
-
-    //开启轨迹
-    public void setTraceServer() {
-        // 开启轨迹服务
-    }
 
     public void initMap() {
         trackApp = (WEApplication) getApplicationContext();
@@ -877,16 +867,15 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 
     private void pathTwo(double startlatitude, double startlongitude
             , double endlatitude, double endlongitude, String address) {
-        stNode = PlanNode.withLocation(new LatLng(startlatitude, startlongitude));//起点 104.083864,30.622657
-        etNode = PlanNode.withLocation(new LatLng(endlatitude, endlongitude));
-        /*mSearch.drivingSearch((new DrivingRoutePlanOption())
-                .from(stNode).to(enNode));*/
+        LatLng startLatlng = new LatLng(startlatitude,startlongitude);
+        LatLng endLatlng = new LatLng(endlatitude,endlongitude);
+        stNode = PlanNode.withLocation(startLatlng);//起点 104.083864,30.622657
+        etNode = PlanNode.withLocation(endLatlng);
         DrivingRoutePlanOption drivingRoutePlanOption = new DrivingRoutePlanOption();
-        drivingRoutePlanOption.from(stNode);
-//        drivingRoutePlanOption.to(etNode);
-        drivingRoutePlanOption.to(PlanNode.withCityNameAndPlaceName("成都", address));
+        drivingRoutePlanOption.from(stNode).to(etNode);
+//        drivingRoutePlanOption.to(PlanNode.withCityNameAndPlaceName("成都", address));
         mSearch.drivingSearch(drivingRoutePlanOption);
-        setStartEndMarker(startlatitude,startlongitude,endlatitude,endlongitude);
+        setStartEndMarker(startLatlng,endLatlng);
     }
 
     @Override
@@ -930,9 +919,9 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
                 route = result.getRouteLines().get(index);
             }
             MyDrivingRouteOverlay overlay = new MyDrivingRouteOverlay(mBaiduMap, this);
-            mOverlayManager = overlay;
-            route.getDuration();
-            mBaiduMap.setOnMarkerClickListener(overlay);
+//            mOverlayManager = overlay;
+//            route.getDuration();
+//            mBaiduMap.setOnMarkerClickListener(overlay);
             overlay.setData(result.getRouteLines().get(0));
             overlay.addToMap();
             overlay.zoomToSpan();
@@ -954,7 +943,52 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        return false;
+        TextView location = new TextView(this);
+        location.setBackgroundResource(R.mipmap.ic_pup);
+        location.setPadding(30, Constant.BTN_TOP, 30, Constant.BTN_BOTTOM);
+        InfoWindow.OnInfoWindowClickListener listener = null;
+        if(marker == startMarkers){
+            if(startAddress != null) {
+                location.setText(startAddress);
+            }else{
+                showMessage("地址获取失败,请重新刷新界面！");
+            }
+            listener = new InfoWindow.OnInfoWindowClickListener() {
+                public void onInfoWindowClick() {
+                    mBaiduMap.hideInfoWindow();
+                }
+            };
+            LatLng ll = marker.getPosition();
+            mInfoWindow = new InfoWindow(BitmapDescriptorFactory.fromView(location), ll, Constant.MARK_DISTANCE, listener);
+            mBaiduMap.showInfoWindow(mInfoWindow);
+        }else if(marker == endMarkers){
+            if(endAddress != null) {
+                location.setText(endAddress);
+            }else{
+                showMessage("地址获取失败,请重新刷新界面！");
+            }
+            listener = new InfoWindow.OnInfoWindowClickListener() {
+                public void onInfoWindowClick() {
+                    mBaiduMap.hideInfoWindow();
+                }
+            };
+            LatLng ll = marker.getPosition();
+            mInfoWindow = new InfoWindow(BitmapDescriptorFactory.fromView(location), ll, Constant.MARK_DISTANCE, listener);
+            mBaiduMap.showInfoWindow(mInfoWindow);
+        }
+
+        mBaiduMap.setOnMapClickListener(new BaiduMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                mBaiduMap.hideInfoWindow();
+            }
+
+            @Override
+            public boolean onMapPoiClick(MapPoi mapPoi) {
+                return false;
+            }
+        });
+        return true;
     }
 
     public void initMarker(List<PassengersResponse> planningListt) {
@@ -977,23 +1011,22 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         }
     }
 
-    public void setStartEndMarker(double startlatitude, double startlongitude
-            , double endlatitude, double endlongitude){
-        LatLng llStart = new LatLng(startlatitude, startlongitude);
-        LatLng llEnd = new LatLng(endlatitude,endlongitude);
+    public void setStartEndMarker(LatLng llStart,LatLng llEnd){
+        /*LatLng llStart = new LatLng(startlatitude, startlongitude);
+        LatLng llEnd = new LatLng(endlatitude,endlongitude);*/
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(llStart).icon(start).zIndex(9).draggable(true);
         MarkerOptions markerOptionEnd = new MarkerOptions()
                 .position(llEnd).icon(end).zIndex(9).draggable(true);
-        mBaiduMap.addOverlay(markerOptions);
-        mBaiduMap.addOverlay(markerOptionEnd);
+        startMarkers = (Marker) mBaiduMap.addOverlay(markerOptions);
+        endMarkers = (Marker) mBaiduMap.addOverlay(markerOptionEnd);
     }
 
     public void setEndMarker(double endlatitude, double endlongitude){
         LatLng llEnd = new LatLng(endlatitude,endlongitude);
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(llEnd).icon(end).zIndex(9).draggable(true);
-        mBaiduMap.addOverlay(markerOptions);
+        endMarkers = (Marker) mBaiduMap.addOverlay(markerOptions);
     }
 
 
@@ -1315,12 +1348,12 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 
         @Override
         public BitmapDescriptor getStartMarker() {
-            return BitmapDescriptorFactory.fromResource(R.mipmap.ic_transfer);
+            return BitmapDescriptorFactory.fromResource(R.mipmap.ic_transfer_1px);
         }
 
         @Override
         public BitmapDescriptor getTerminalMarker() {
-            return BitmapDescriptorFactory.fromResource(R.mipmap.ic_transfer);
+            return BitmapDescriptorFactory.fromResource(R.mipmap.ic_transfer_1px);
         }
     }
 
@@ -1331,7 +1364,6 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
             if(bid.equalsIgnoreCase(response.getData().getBID())){
                 mPresenter.getRouteState(response.getData().getBID());
             }
-//            EventBus.getDefault().post(response.getData().getBID(),EventBusTags.REFRESH);
         }
     }
 

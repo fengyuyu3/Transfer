@@ -55,17 +55,16 @@
             />
 
         <TextView
-            android:background="@drawable/btn_code_brown"
-            android:textColor="@color/white"
+            android:layout_marginRight="60px"
             android:gravity="center"
-            android:textSize="30px"
+            android:textSize="26px"
             android:visibility="gone"
             android:id="@+id/tv_code"
-            android:layout_width="116px"
+            android:layout_width="wrap_content"
             android:layout_height="47px"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="验证"/>
+            android:text="乘客本人"/>
 
         <ImageView
             android:visibility="gone"

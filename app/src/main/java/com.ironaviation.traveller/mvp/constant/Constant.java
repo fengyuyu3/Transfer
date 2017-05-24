@@ -168,4 +168,8 @@ public interface Constant {
 
     String API_VERSION = "Api_Version";
 
+    int BTN_BOTTOM = 10;
+    int BTN_TOP = 30;
+    int MARK_DISTANCE = -127;
+
 }
