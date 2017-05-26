@@ -104,13 +104,13 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
         PushClientUtil.initClientId(this);
         mPresenter.loginRegulation();
         mCountTimerUtil = new CountTimerUtil(60000, 1000, mTvCode);
-        mFirstInfoPopupwindow = new FirstInfoPopupwindow(this);
+       /* mFirstInfoPopupwindow = new FirstInfoPopupwindow(this);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 mFirstInfoPopupwindow.show(mTvCode);
             }
-        },1000);
+        },1000);*/
     }
 
 
