@@ -138,4 +138,15 @@
         &lt;!&ndash; 设置屏幕变暗 &ndash;&gt;
         <item name="android:backgroundDimEnabled">true</item>
     </style>-->
+
+    <style name="popwin_anim_style">
+        <item name="android:windowEnterAnimation">@anim/left_in_alpha_1</item>
+        <item name="android:windowExitAnimation">@anim/right_out_alpha_1</item>
+    </style>
+
+    <style name="popwindow_action_show">
+        <item name="android:windowEnterAnimation">@anim/top_in</item>
+        <item name="android:windowExitAnimation">@anim/top_out</item>
+    </style>
+
 </resources>

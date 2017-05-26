@@ -1,14 +1,18 @@
 package com.ironaviation.traveller.mvp.ui.login;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
@@ -25,7 +29,9 @@ import com.ironaviation.traveller.mvp.ui.main.MainActivity;
 import com.ironaviation.traveller.mvp.ui.webview.WebViewActivity;
 import com.ironaviation.traveller.mvp.ui.widget.AlertDialog;
 import com.jess.arms.utils.UiUtils;
+import com.zhy.autolayout.AutoLayoutInfo;
 import com.zhy.autolayout.AutoRelativeLayout;
+import com.zhy.autolayout.utils.AutoLayoutHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -224,5 +230,35 @@ public class IdentificationActivity extends WEActivity<IdentificationPresenter> 
         StringBuilder telBuilder = new StringBuilder(idCard);
         telBuilder.replace(3, 15, "************");
         return telBuilder.toString();
+    }
+
+    public static class LayoutParams extends CardView.LayoutParams
+            implements AutoLayoutHelper.AutoLayoutParams {
+        private AutoLayoutInfo mAutoLayoutInfo;
+
+        public LayoutParams(Context c, AttributeSet attrs) {
+            super(c, attrs);
+            mAutoLayoutInfo = AutoLayoutHelper.getAutoLayoutInfo(c, attrs);
+        }
+
+        @Override
+        public AutoLayoutInfo getAutoLayoutInfo() {
+            return mAutoLayoutInfo;
+        }
+
+
+        public LayoutParams(int width, int height) {
+            super(width, height);
+        }
+
+
+        public LayoutParams(ViewGroup.LayoutParams source) {
+            super(source);
+        }
+
+        public LayoutParams(ViewGroup.MarginLayoutParams source) {
+            super(source);
+        }
+
     }
 }

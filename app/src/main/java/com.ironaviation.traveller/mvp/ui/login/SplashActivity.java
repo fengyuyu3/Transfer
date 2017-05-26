@@ -56,7 +56,7 @@ public class SplashActivity extends WEActivity {
     TextView jump;
     private Gson gson;
     private ImageView[] imageViews;
-    private static final int SIZE = 4;
+    private static final int SIZE = 3;
     //    private String locationMsg;
     //    private int locationTimes = 0;//当前定位次数
 //    private final static int LOCATION_TIMES_MAX = 5;//最大定位次数
@@ -139,8 +139,7 @@ public class SplashActivity extends WEActivity {
     private void firstLaunch() {
         final int[] imgs = new int[]{R.mipmap.ic_launch_one,
                 R.mipmap.ic_launch_two,
-                R.mipmap.ic_launch_three,
-                R.mipmap.ic_launch_four};
+                R.mipmap.ic_launch_three};
         ImageAdapter adapter = new ImageAdapter(this, imgs);
         viewpager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -152,8 +151,8 @@ public class SplashActivity extends WEActivity {
             public void onPageSelected(int position) {
                 if (position == imgs.length - 1) {
                     btn1.setVisibility(View.VISIBLE);
-                    point.setVisibility(View.GONE);
-                    viewpager.setDisableScroll(true);
+//                    point.setVisibility(View.GONE);
+//                    viewpager.setDisableScroll(true);
                     jump.setVisibility(View.GONE);
                 } else {
                     btn1.setVisibility(View.GONE);

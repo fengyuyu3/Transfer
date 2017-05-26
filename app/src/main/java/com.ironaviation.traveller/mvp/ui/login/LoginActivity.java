@@ -31,6 +31,7 @@ import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.login.LoginContract;
 import com.ironaviation.traveller.mvp.presenter.Login.LoginPresenter;
 import com.ironaviation.traveller.mvp.ui.main.MainActivity;
+import com.ironaviation.traveller.mvp.ui.widget.FirstInfoPopupwindow;
 import com.jess.arms.utils.DataHelper;
 import com.jess.arms.utils.UiUtils;
 
@@ -75,6 +76,7 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
     // DemoPushService.class 自定义服务名称, 核心服务
 
     CountTimerUtil mCountTimerUtil;
+    FirstInfoPopupwindow mFirstInfoPopupwindow;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -102,6 +104,13 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
         PushClientUtil.initClientId(this);
         mPresenter.loginRegulation();
         mCountTimerUtil = new CountTimerUtil(60000, 1000, mTvCode);
+        mFirstInfoPopupwindow = new FirstInfoPopupwindow(this);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mFirstInfoPopupwindow.show(mTvCode);
+            }
+        },1000);
     }
 
 

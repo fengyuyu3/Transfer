@@ -55,4 +55,20 @@ public class AnimationUtil {
         mTShowAction.setDuration(500);
         view.startAnimation(mTShowAction);
     }
+
+    public void moveToViewCenter(View view){
+        mTShowAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
+                -1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+        mTShowAction.setDuration(300);
+        view.startAnimation(mTShowAction);
+    }
+
+    public void moveToViewTop(View view){
+        mTShowAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
+                0.0f, Animation.RELATIVE_TO_SELF, -1.0f);
+        mTShowAction.setDuration(300);
+        view.startAnimation(mTShowAction);
+    }
 }

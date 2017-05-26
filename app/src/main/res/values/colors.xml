@@ -78,5 +78,7 @@
     <color name="titleBGColor">#004b92</color>
     <color name="colorOrange">#f4723e</color>
     <color name="transparent_background">#00111111</color>-->
+    <color name="color_transparent_30">#1e000000</color>
+    <color name="color_3a3e47">#3a3e47</color>
 
 </resources>

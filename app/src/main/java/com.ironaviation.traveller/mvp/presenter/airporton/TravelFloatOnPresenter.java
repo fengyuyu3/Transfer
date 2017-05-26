@@ -59,7 +59,7 @@ public class TravelFloatOnPresenter extends BasePresenter<TravelFloatOnContract.
         this.mApplication = null;
     }
 
-    public void getFlightInfo(String flightNo, final String date){
+    public void getFlightInfo(final String flightNo, final String date){
         mModel.getFlightInfo(flightNo,date)
                 .compose(RxUtils.<BaseData<Flight>>applySchedulers(mRootView))
                 .subscribe(new ErrorHandleSubscriber<BaseData<Flight>>(mErrorHandler) {
@@ -69,7 +69,11 @@ public class TravelFloatOnPresenter extends BasePresenter<TravelFloatOnContract.
                             if(flightBaseData.getData() != null){
 //                                mRootView.showMessage(flightBaseData.getData().getInfo().toString());
                                 mRootView.setData(flightBaseData.getData(),date);
+                            }else{
+                                mRootView.showMessage(flightBaseData.getMessage());
                             }
+                        }else{
+                            mRootView.showMessage(flightBaseData.getMessage());
                         }
                     }
                 });
