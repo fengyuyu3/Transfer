@@ -59,7 +59,7 @@
             android:id="@+id/it_driver_name"
             style="@style/common_text_style"
             android:gravity="center"
-            android:text="李师傅"
+            android:text=""
             android:textSize="@dimen/word_title_little"
             />
 
@@ -76,7 +76,7 @@
             style="@style/common_text_style"
             android:layout_marginLeft="9px"
             android:gravity="center"
-            android:text="5.0"
+            android:text=""
             android:textSize="@dimen/word_content_little"
             />
 
