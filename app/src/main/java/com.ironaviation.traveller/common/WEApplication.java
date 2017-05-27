@@ -55,6 +55,7 @@ public class WEApplication extends BaseApplication {
     private RefWatcher mRefWatcher;//leakCanary观察器
     private LBSTraceClient client = null;
     private Trace trace = null;
+    private long serverId = 0 ;
 
     @Override
     public void onCreate() {
@@ -144,7 +145,8 @@ public class WEApplication extends BaseApplication {
     protected GlobeConfigModule getGlobeConfigModule() {
         return GlobeConfigModule
                 .buidler()
-                .baseurl(Api.APP_DOMAIN)
+                .baseurl(getString(R.string.APP_DOMAIN))
+//                .baseurl(Api.APP_DOMAIN)
                 .globeHttpHandler(new GlobeHttpHandler() {// 这里可以提供一个全局处理http响应结果的处理类,
                     // 这里可以比客户端提前一步拿到服务器返回的结果,可以做一些操作,比如token超时,重新获取
                     @Override
@@ -236,7 +238,11 @@ public class WEApplication extends BaseApplication {
      */
     public void initRequest(BaseRequest request) {
         request.setTag(getTag());
-        request.setServiceId(Constant.SERVICEID);
+        request.setServiceId(getServerId());
+    }
+
+    public long getServerId(){
+        return Long.parseLong(getString(R.string.SERVER_ID));
     }
 
     private AtomicInteger mSequenceGenerator = new AtomicInteger();

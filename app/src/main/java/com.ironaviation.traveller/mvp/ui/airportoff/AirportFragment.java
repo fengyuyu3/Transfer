@@ -36,6 +36,7 @@ import com.ironaviation.traveller.mvp.ui.my.AddressActivity;
 import com.ironaviation.traveller.mvp.ui.my.travel.PaymentDetailsActivity;
 import com.ironaviation.traveller.mvp.ui.payment.WaitingPaymentActivity;
 import com.ironaviation.traveller.mvp.ui.webview.WebViewActivity;
+import com.ironaviation.traveller.mvp.ui.widget.AlertDialog;
 import com.ironaviation.traveller.mvp.ui.widget.FontTextView;
 import com.ironaviation.traveller.mvp.ui.widget.MyTimeDialog;
 import com.ironaviation.traveller.mvp.ui.widget.NumDialog;
@@ -120,7 +121,7 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
     private String fomartOFF = "预计MM/dd EEEE HH:mm起飞";
     private String fomartOn = "预计MM/dd EEEE HH:mm到达";
     private boolean addressFlagOFF,addressFlagON;
-    private boolean timeFlag;
+    private boolean timeFlag,flightFlag;
     private HistoryPoiInfo info;
     private double price, acturlPrice;
     private String bid;
@@ -405,6 +406,7 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
     @Subscriber(tag = EventBusTags.FLIGHT)
     public void getFlightInfo(Flight flight){
         this.flight = flight;
+        flightFlag = true;
         if(status != null && flight.getStatus() != null && flight.getStatus().equals(Constant.ENTER_PORT)&&flight.getStatus().equals(status)){
 //            clearData();
             if(getTerminalNum(flight.getList().get(0).getTakeOff()) != -1) {
@@ -417,6 +419,9 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
             if(flight.getInfo().getFlightNo() != null){
                 flightNo = flight.getInfo().getFlightNo();
                 mPwFlt.setTextInfo(flight.getInfo().getFlightNo());
+            }
+            if(flightFlag && addressFlagON){
+                mPresenter.getAirportInfo(getAirPortInfo());
             }
         }else if(status != null && flight.getStatus() != null && flight.getStatus().equals(Constant.CLEAR_PORT) && flight.getStatus().equals(status)){
             clearData();
@@ -526,7 +531,7 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
             addressFlagON = true;
             this.info = info;
             mPwAddressOn.setTextInfo(info.name);
-            if (addressFlagON) {
+            if (addressFlagON && flightFlag) {
                 mPresenter.getAirportInfo(getAirPortInfo());
             }
         }
@@ -869,5 +874,23 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
             mPwAirportOn.setTextInfo("成都双流国际机场T" + (position + 1) + "航站楼");
             mTerminalPopupWindow.dismiss();
         }
+    }
+
+    @Override
+    public void setForbid(String info) {
+        mLlPrice.setVisibility(View.GONE);
+        showIDCardDialog(info);
+        setOrderButtonStatus(false);
+    }
+
+    public void showIDCardDialog(String info){
+        AlertDialog dialog = new AlertDialog(getActivity());
+        dialog.builder().setTitle("温馨提示").setMsg(info)
+                .setOneButton("确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }).show();
     }
 }

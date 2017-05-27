@@ -200,7 +200,7 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
     public Trace mTrace = null;
 
     //轨迹服务ID
-    public long serviceId = Constant.SERVICEID;
+    public long serviceId = 0;
 
     /**
      * Entity标识
@@ -657,6 +657,7 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
 
     public void initMap() {
         trackApp = (WEApplication) getApplicationContext();
+        serviceId = trackApp.getServerId();
         mapUtil = MapUtil.getInstance();
         mapUtil.init((MapView) findViewById(R.id.mapview_on));
         BitmapUtil.init();

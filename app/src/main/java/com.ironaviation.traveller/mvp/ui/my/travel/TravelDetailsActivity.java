@@ -235,7 +235,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     /**
      * 轨迹服务ID
      */
-    public long serviceId = Constant.SERVICEID;
+    public long serviceId = 0;
 
     /**
      * Entity标识
@@ -638,6 +638,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         mLlDriverInfo.setVisibility(View.VISIBLE); //司机信息
         mLlArrive.setVisibility(View.GONE);  // 确认到达
         mTwWaitOne.setText(getResources().getString(R.string.travel_peer));
+        mTwTitleWait.setText(getResources().getString(R.string.travel_wait));
     }
 
     public void arrive() { //确认到达
@@ -824,6 +825,7 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 
     public void initMap() {
         trackApp = (WEApplication) getApplicationContext();
+        serviceId = trackApp.getServerId();
         mapUtil = MapUtil.getInstance();
         mapUtil.init((MapView) findViewById(R.id.mapview));
         BitmapUtil.init();
