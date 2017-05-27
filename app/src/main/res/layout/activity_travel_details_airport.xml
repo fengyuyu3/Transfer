@@ -297,8 +297,6 @@
                 android:layout_height="190px"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="16px"
-                android:layout_marginLeft="18px"
-                android:layout_marginRight="18px"
                 android:background="@drawable/bg_white_shap"                android:orientation="vertical"
                 android:visibility="gone">
 
@@ -415,7 +413,7 @@
                 <TextView
                     android:textSize="32px"
                     android:drawablePadding="10px"
-                    android:drawableLeft="@mipmap/ic_address"
+                    android:drawableLeft="@mipmap/ic_qr_code"
                     android:layout_centerInParent="true"
                     android:layout_centerHorizontal="true"
                     android:textColor="@color/white"

@@ -187,4 +187,28 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
         }
         return reason;
     }
+
+    public void isInstallApp(String code){
+
+        String id = null;
+        if(mRootView.getClientId() != null){
+            id = mRootView.getClientId();
+        }else{
+            id = "";
+        }
+        mModel.isInstallApp(id, code)
+                .compose(RxUtils.<BaseData<Boolean>>applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseData<Boolean>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<Boolean> booleanBaseData) {
+                        if(booleanBaseData.isSuccess()){
+                            mRootView.showMessage("推荐成功");
+                            mRootView.isInstallSuccess();
+                        }else{
+                            mRootView.showMessage(booleanBaseData.getMessage());
+                        }
+                    }
+                });
+    }
+
 }

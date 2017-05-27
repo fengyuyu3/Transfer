@@ -163,6 +163,7 @@ public class VerifyIdCardActivity extends WEActivity<VerifyIdCardPresenter> impl
             holder.mTvCode = (TextView) view.findViewById(R.id.tv_code);  //本人身份证
             holder.mPwLl = (AutoLinearLayout) view.findViewById(R.id.pw_ll); //整个布局
             holder.mIwDelete = (ImageView) view.findViewById(R.id.iw_delete);
+            holder.mIwCancel  = (ImageView) view.findViewById(R.id.iw_cancel_port);
             if (mAirportRequests.get(i).getStatus() == Constant.AIRPORT_SUCCESS) {
                 setSuccess(holder);
             } else if (mAirportRequests.get(i).getStatus() == Constant.AIRPORT_FAILURE) {
@@ -358,6 +359,7 @@ public class VerifyIdCardActivity extends WEActivity<VerifyIdCardPresenter> impl
         public TextView mTvCode;
         public AutoLinearLayout mPwLl;
         public ImageView mIwDelete;
+        public ImageView mIwCancel;
     }
 
     public void setlistener(final MyAirportHolder holder, final int position) {
@@ -390,6 +392,16 @@ public class VerifyIdCardActivity extends WEActivity<VerifyIdCardPresenter> impl
             }
         });
 
+        holder.mIwCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.mEdtContent.setText("");
+                mAirportRequests.get(position).setStatus(Constant.AIRPORT_NO);
+                mAirportRequests.get(position).setIdCard("");
+//                holder.mIwCancel.setVisibility(View.GONE);
+                setNomal(holder);
+            }
+        });
 
         holder.mIwDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -408,6 +420,11 @@ public class VerifyIdCardActivity extends WEActivity<VerifyIdCardPresenter> impl
 
     //正常状况
     public void setNomal(MyAirportHolder holder) {
+        if(!TextUtils.isEmpty(holder.mEdtContent.getText().toString().trim())){
+            holder.mIwCancel.setVisibility(View.VISIBLE);
+        }else{
+            holder.mIwCancel.setVisibility(View.GONE);
+        }
         holder.mIvLogo.setImageResource(R.mipmap.ic_validate);
         holder.mIwDelete.setVisibility(View.GONE);
         holder.mEdtContent.setEnabled(true);
@@ -418,6 +435,7 @@ public class VerifyIdCardActivity extends WEActivity<VerifyIdCardPresenter> impl
         holder.mIvLogo.setImageResource(R.mipmap.ic_success_id_card);
         holder.mIwDelete.setVisibility(View.VISIBLE);
         holder.mEdtContent.setEnabled(false);
+        holder.mIwCancel.setVisibility(View.GONE);
     }
 
     //失败状态
@@ -425,6 +443,7 @@ public class VerifyIdCardActivity extends WEActivity<VerifyIdCardPresenter> impl
         holder.mIvLogo.setImageResource(R.mipmap.ic_failure_id_card);
         holder.mIwDelete.setVisibility(View.GONE);
         holder.mEdtContent.setEnabled(true);
+        holder.mIwCancel.setVisibility(View.VISIBLE);
     }
 
     public void initEmptyData() {

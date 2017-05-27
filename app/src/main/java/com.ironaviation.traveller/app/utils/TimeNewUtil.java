@@ -46,8 +46,14 @@ public class TimeNewUtil {
                     if(isMoreOneMinite(currentTime,endTime)){
                         currentHour = currentHour+1;
                     }
-                    for (int i = currentHour; i <= endHour; i++) {
-                        list.add(i + "点");
+                    if(currentHour == 24){
+                       for(int  i = 0; i < endHour; i++){
+                           list.add(i + "点");
+                       }
+                    }else {
+                        for (int i = currentHour; i <= endHour; i++) {
+                            list.add(i + "点");
+                        }
                     }
                 }
                 return list;

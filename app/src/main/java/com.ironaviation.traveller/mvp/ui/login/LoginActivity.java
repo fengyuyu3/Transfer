@@ -21,6 +21,7 @@ import com.igexin.sdk.PushManager;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.app.utils.BarUtils;
+import com.ironaviation.traveller.app.utils.CommonUtil;
 import com.ironaviation.traveller.app.utils.CountTimerUtil;
 import com.ironaviation.traveller.app.utils.PushClientUtil;
 import com.ironaviation.traveller.common.AppComponent;
@@ -62,7 +63,7 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  * 修改备注：
  */
 
-public class LoginActivity extends WEActivity<LoginPresenter> implements LoginContract.View {
+public class LoginActivity extends WEActivity<LoginPresenter> implements LoginContract.View,FirstInfoPopupwindow.CallBack {
 
     @BindView(R.id.et_phone)
     EditText etphone;
@@ -77,6 +78,7 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
 
     CountTimerUtil mCountTimerUtil;
     FirstInfoPopupwindow mFirstInfoPopupwindow;
+    private static final String FIRST = "isFirst";
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -101,16 +103,20 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
     @Override
     protected void initData() {
 //        initClientId();
+        Intent intent = getIntent();
+        boolean flag = intent.getBooleanExtra(Constant.STATUS,true);
         PushClientUtil.initClientId(this);
         mPresenter.loginRegulation();
         mCountTimerUtil = new CountTimerUtil(60000, 1000, mTvCode);
-       /* mFirstInfoPopupwindow = new FirstInfoPopupwindow(this);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mFirstInfoPopupwindow.show(mTvCode);
-            }
-        },1000);*/
+        if(!flag) {
+            mFirstInfoPopupwindow = new FirstInfoPopupwindow(this, this);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mFirstInfoPopupwindow.show(mTvCode);
+                }
+            },50);
+        }
     }
 
 
@@ -168,6 +174,20 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
         mCountTimerUtil.start();
     }
 
+    @Override
+    public String getAPPId(){
+        if(CommonUtil.getDeviceId(this) != null){
+            return CommonUtil.getDeviceId(this);
+        }else {
+            return null;
+        }
+    }
+
+    @Override
+    public void isInstallSuccess() {
+        mFirstInfoPopupwindow.dismiss();
+    }
+
 
     @OnClick({R.id.btn_login, R.id.tv_code})
     public void onClick(View view) {
@@ -210,5 +230,10 @@ public class LoginActivity extends WEActivity<LoginPresenter> implements LoginCo
     @Subscriber(tag = EventBusTags.LOGIN_OTHER)
     public void loginOther(boolean flag){
         showMessage(getString(R.string.login_other));
+    }
+
+    @Override
+    public void getDriverInterfaceCode(String code){
+        mPresenter.isInstallApp(code);
     }
 }

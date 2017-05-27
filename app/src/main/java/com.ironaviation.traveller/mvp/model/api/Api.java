@@ -52,6 +52,6 @@ public interface Api {
 
     String GET_LATEST_VERSION = "/api/" + "AppVersion/GetLatestVersion";//get 最新版本
     String HAS_BOOK = "/api/Booking/VaildHasBooked"; //验证乘客是否预约
-
+    String APP_INSTALLED ="/api/Stats/AppInstalled"; //乘客下载次数
 
 }

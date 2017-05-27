@@ -83,7 +83,7 @@ public class SplashActivity extends WEActivity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Login();
+                    Login(true);
                 }
             }, 2000);
         }
@@ -93,13 +93,13 @@ public class SplashActivity extends WEActivity {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Login();
+                Login(false);
             }
         });
         jump.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Login();
+                Login(false);
             }
         });
         firstLaunch();
@@ -119,12 +119,13 @@ public class SplashActivity extends WEActivity {
 
     }
 
-    public void Login() {
+    public void Login(boolean flag) {
         if (DataHelper.getDeviceData(mApplication, Constant.LOGIN) != null) {
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             startActivity(intent);
         } else {
             Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+            intent.putExtra(Constant.STATUS,flag);
             startActivity(intent);
         }
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
@@ -155,6 +156,7 @@ public class SplashActivity extends WEActivity {
 //                    viewpager.setDisableScroll(true);
                     jump.setVisibility(View.GONE);
                 } else {
+                    jump.setVisibility(View.VISIBLE);
                     btn1.setVisibility(View.GONE);
                 }
                 setClear();

@@ -225,7 +225,8 @@ public class CommonUtil {
      *
      * @return String
      */
-    public static String getImei(Context context, String imei) {
+    public static String getImei(Context context) {
+        String imei = null;
         try {
             TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
             imei = telephonyManager.getDeviceId();

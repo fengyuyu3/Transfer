@@ -113,7 +113,9 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
             }
         }, 300);*/
         Bundle bundle = getIntent().getExtras();
-        status = bundle.getString(Constant.STATUS);
+        if(bundle != null) {
+            status = bundle.getString(Constant.STATUS);
+        }
         if(status != null && status.equals(Constant.PUSH_ID)){
             pushBid = bundle.getString(Constant.BID);
         }
@@ -377,6 +379,8 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
         }else if(routeStateResponse.getTripType().equals(Constant.ENTER_PORT)){
             enterPort(routeStateResponse.getStatus(),routeStateResponse);
         }
+
+        pushBid = null;
 //        setStatus(routeStateResponse.getStatus(),routeStateResponse);
     }
 

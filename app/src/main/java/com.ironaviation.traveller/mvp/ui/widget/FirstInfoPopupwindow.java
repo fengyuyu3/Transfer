@@ -35,11 +35,12 @@ public class FirstInfoPopupwindow extends PopupWindow implements View.OnClickLis
   private AnimationUtil mAnimationUtil;
   private AutoLinearLayout rlDriverCode,llText;
   private EditText etText;
+  private CallBack  mCallBack;
 
-
-  public FirstInfoPopupwindow(Context mContext) {
+  public FirstInfoPopupwindow(Context mContext,CallBack callBack) {
     super(mContext);
     this.context = mContext;
+    this.mCallBack = callBack;
     init();
   }
 
@@ -57,7 +58,7 @@ public class FirstInfoPopupwindow extends PopupWindow implements View.OnClickLis
     btnCancel.setOnClickListener(this);
     llText.setOnClickListener(this);
     twCommit.setOnClickListener(this);
-    setAnimationStyle(R.style.popwindow_action_show);
+    setAnimationStyle(R.style.popwin_anim_style);
     setEnable(false);
     etText.addTextChangedListener(new TextWatcher() {
       @Override
@@ -79,18 +80,18 @@ public class FirstInfoPopupwindow extends PopupWindow implements View.OnClickLis
              setEnable(false);
           }else if(s.toString().length() == 1){
              twTwo.setBackgroundResource(R.drawable.text_red_shap);
-             twOne.setText(s.toString());
+             twOne.setText(s.toString().trim());
              twTwo.setText("");
              setEnable(false);
 //             twThree.setText("");
           }else if(s.toString().length() == 2){
              twThree.setBackgroundResource(R.drawable.text_red_shap);
-             twTwo.setText(s.toString().charAt(1)+"");
+             twTwo.setText(s.toString().trim().charAt(1)+"");
              twThree.setText("");
              setEnable(false);
           }else{
              setEnable(true);
-             twThree.setText(s.toString().charAt(2)+"");
+             twThree.setText(s.toString().trim().charAt(2)+"");
           }
       }
     });
@@ -117,6 +118,7 @@ public class FirstInfoPopupwindow extends PopupWindow implements View.OnClickLis
         /*mAnimationUtil.moveToViewTop(rlDriverCode);
         rlDriverCode.setVisibility(View.GONE);*/
         dismiss();
+        break;
       case R.id.ll_text:
         etText.requestFocus();
         InputMethodManager imm = (InputMethodManager) etText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -124,9 +126,14 @@ public class FirstInfoPopupwindow extends PopupWindow implements View.OnClickLis
         etText.setSelection(etText.getText().length());
         break;
       case R.id.tw_commit:
-        Toast.makeText(context,etText.getText().toString(),Toast.LENGTH_SHORT).show();
+          mCallBack.getDriverInterfaceCode(etText.getText().toString().trim());
+//        Toast.makeText(context,etText.getText().toString(),Toast.LENGTH_SHORT).show();
       break;
     }
+  }
+
+  public interface CallBack{
+      void getDriverInterfaceCode(String code);
   }
 
   public void clearText(){

@@ -80,5 +80,6 @@
     <color name="transparent_background">#00111111</color>-->
     <color name="color_transparent_30">#1e000000</color>
     <color name="color_3a3e47">#3a3e47</color>
+    <color name="popwindow_backgound1">#bb000000</color>
 
 </resources>

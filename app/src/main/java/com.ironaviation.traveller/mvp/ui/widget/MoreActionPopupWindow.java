@@ -58,6 +58,7 @@ public class MoreActionPopupWindow extends PopupWindow implements View.OnClickLi
         setFocusable(true);
         setOutsideTouchable(true);
         setBackgroundDrawable(new BitmapDrawable());
+        setAnimationStyle(R.style.popwin_anim_select_style);
     }
 
     public void showPopupWindow(View view) {

@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -290,6 +291,8 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(TravelDetailsOnActivity.this,TravelActivity.class));
+                EventBus.getDefault().post(true, EventBusTags.REFRESH);
                 finish();
             }
         });
@@ -900,5 +903,18 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
             }
         });
         return true;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            startActivity(new Intent(TravelDetailsOnActivity.this,TravelActivity.class));
+            EventBus.getDefault().post(true, EventBusTags.REFRESH);
+            finish();
+            return false;
+        }else {
+            return super.onKeyDown(keyCode, event);
+        }
+
     }
 }

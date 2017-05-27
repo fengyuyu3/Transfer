@@ -7,6 +7,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -129,6 +130,7 @@ public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> im
             @Override
             public void onClick(View v) {
                 EventBus.getDefault().post(true, EventBusTags.PAYMENT_FINISH);
+                startActivity(new Intent(CancelSuccessActivity.this,TravelActivity.class));
                 EventBus.getDefault().post(true, EventBusTags.REFRESH);
                 finish();
             }
@@ -279,6 +281,20 @@ public class CancelSuccessActivity extends WEActivity<CancelSuccessPresenter> im
                 }
                 break;
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            startActivity(new Intent(CancelSuccessActivity.this,TravelActivity.class));
+            EventBus.getDefault().post(true, EventBusTags.REFRESH);
+            EventBus.getDefault().post(true, EventBusTags.PAYMENT_FINISH);
+            finish();
+            return false;
+        }else {
+            return super.onKeyDown(keyCode, event);
+        }
+
     }
 
 }

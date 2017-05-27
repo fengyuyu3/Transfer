@@ -13,6 +13,7 @@ import com.ironaviation.traveller.mvp.model.entity.request.BIDRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.CancelBookingRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.CancelOrderRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.IdentificationRequest;
+import com.ironaviation.traveller.mvp.model.entity.request.InstallRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.MessageRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.PhoneRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.RouteListMoreRequest;
@@ -130,4 +131,7 @@ public interface CommonService {
 
     @POST(Api.HAS_BOOK)
     Observable<BaseData<AirportGoInfoRequest>> getHasBookInfo(@Body AirportGoInfoRequest params);
+
+    @POST(Api.APP_INSTALLED)
+    Observable<BaseData<Boolean>> isInstallApp(@Body InstallRequest params);
 }

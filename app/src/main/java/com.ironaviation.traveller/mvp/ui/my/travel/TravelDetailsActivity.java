@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -67,6 +68,7 @@ import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.app.utils.AnimationUtil;
 import com.ironaviation.traveller.app.utils.CommonUtil;
 import com.ironaviation.traveller.app.utils.TimerUtils;
+import com.ironaviation.traveller.app.utils.Utils;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.common.WEApplication;
@@ -357,6 +359,8 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(TravelDetailsActivity.this,TravelActivity.class));
+                EventBus.getDefault().post(true, EventBusTags.REFRESH);
                 finish();
             }
         });
@@ -1422,5 +1426,18 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            startActivity(new Intent(TravelDetailsActivity.this,TravelActivity.class));
+            EventBus.getDefault().post(true, EventBusTags.REFRESH);
+            finish();
+            return false;
+        }else {
+            return super.onKeyDown(keyCode, event);
+        }
+
     }
 }
