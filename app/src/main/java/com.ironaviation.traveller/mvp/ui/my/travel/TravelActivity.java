@@ -151,7 +151,23 @@ public class TravelActivity extends WEActivity<TravelPresenter> implements Trave
         mPresenter.getTravelData(defaultIndex,true);//第一次为true
     }
 
-    public void setStatus(String status,RouteStateResponse responses){
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null) {
+            status = bundle.getString(Constant.STATUS);
+        }
+        if(bundle != null && status != null && status.equals(Constant.PUSH_ID)){
+            pushBid = bundle.getString(Constant.BID);
+            if(pushBid != null) {
+                mPresenter.getRouteState(pushBid);
+            }
+        }
+    }
+
+    public void setStatus(String status, RouteStateResponse responses){
         if(Constant.REGISTERED .equals(status)){
             setTravelDetailsActivity(responses);
         }else if(Constant.INHAND .equals(status)){

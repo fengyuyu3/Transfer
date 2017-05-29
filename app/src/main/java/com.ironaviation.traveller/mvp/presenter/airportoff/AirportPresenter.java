@@ -81,15 +81,15 @@ public class AirportPresenter extends BasePresenter<AirportContract.Model, Airpo
                                     mRootView.setFreeNum(getFreeNum(airportGoInfoRequestBaseData.getData().getPassengers()));
                                 }
                             }else{
-                                if(airportGoInfoRequestBaseData.getMessage().equals("您已被禁止预约，请联系客服")){
-                                    mRootView.setForbid(airportGoInfoRequestBaseData.getMessage());
-                                }else{
                                     mRootView.setError();
-                                }
                             }
                         }else{
-                            mRootView.setError();
-                            mRootView.showMessage(airportGoInfoRequestBaseData.getMessage());
+                            if(airportGoInfoRequestBaseData.getMessage().equals("您已被禁止预约，请联系客服")){
+                                mRootView.setForbid(airportGoInfoRequestBaseData.getMessage());
+                            }else {
+                                mRootView.setError();
+                                mRootView.showMessage(airportGoInfoRequestBaseData.getMessage());
+                            }
                         }
                     }
 

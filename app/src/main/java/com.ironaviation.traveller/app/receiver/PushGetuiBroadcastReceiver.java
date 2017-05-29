@@ -247,7 +247,7 @@ public class PushGetuiBroadcastReceiver extends BroadcastReceiver {
 
         // EventBus.getDefault().post(transparentMessageEntity);
         Intent intent = new Intent(context, TravelActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         /*if(response.getData().getTripType()!= null){
             if(response.getData().getTripType().equals(Constant.CLEAR_PORT)){
                 intent = setChildCodeNotification(response,context,intent);

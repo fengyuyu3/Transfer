@@ -311,8 +311,8 @@
                   android:windowSoftInputMode="stateHidden|adjustPan"></activity>
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="RWwiqZzNGztarUvOZdntaG15fCDTNcEj"/>
-        <!--FLNaGGYv7tQAUZXOW1hVcZDeR3szXggm-->
+            android:value="${BAIDU_KEY}"/>
+        <!--RWwiqZzNGztarUvOZdntaG15fCDTNcEj-->
         <receiver android:name=".app.receiver.NetWorkBroadcast">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>

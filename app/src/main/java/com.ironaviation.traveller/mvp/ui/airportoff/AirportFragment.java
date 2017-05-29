@@ -878,6 +878,7 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
 
     @Override
     public void setForbid(String info) {
+        mLlPriceSeat.setVisibility(View.VISIBLE);
         mLlPrice.setVisibility(View.GONE);
         showIDCardDialog(info);
         setOrderButtonStatus(false);
