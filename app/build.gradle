@@ -32,6 +32,7 @@ android {
         debug {
             buildConfigField "boolean", "LOG_DEBUG", "true"
             buildConfigField "boolean", "USE_CANARY", "true"
+            buildConfigField "boolean", "IS_DEBUG", "true"
             minifyEnabled false
             resValue("string", "SERVER_ID", "141262")
             resValue("string", "APP_DOMAIN","http://th-api.bestwise.net")
@@ -42,6 +43,7 @@ android {
         release {
             buildConfigField "boolean", "LOG_DEBUG", "false"
             buildConfigField "boolean", "USE_CANARY", "false"
+            buildConfigField "boolean", "IS_DEBUG", "false"
             minifyEnabled false
             shrinkResources false
             zipAlignEnabled false

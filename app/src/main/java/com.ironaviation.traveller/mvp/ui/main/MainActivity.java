@@ -25,11 +25,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.igexin.sdk.PushManager;
+import com.ironaviation.traveller.BuildConfig;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
 import com.ironaviation.traveller.app.utils.CountTimerUtil;
 import com.ironaviation.traveller.app.utils.PushClientUtil;
 import com.ironaviation.traveller.app.utils.PushCountTimerUtil;
+import com.ironaviation.traveller.app.utils.TimerUtils;
 import com.ironaviation.traveller.app.utils.ViewFindUtils;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
@@ -122,6 +124,8 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
     ImageView mIvSetting;
     @BindView(R.id.rl_setting)
     AutoRelativeLayout mRlSetting;
+    @BindView(R.id.tv_version)
+    TextView mTvVersion;
     private ArrayList<Fragment> mFragments = new ArrayList<>();
     private final String[] mTitles = {
             "接机", "送机"
@@ -200,7 +204,11 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
         mPresenter.getLatestVersion();
         PushCountTimerUtil pushCountTimerUtil = new PushCountTimerUtil(this, 5 * 60 * 1000, 3 * 60 * 60 * 1000);
         pushCountTimerUtil.start();
-
+        mTvVersion.setVisibility(View.GONE);
+        if(BuildConfig.IS_DEBUG){
+            mTvVersion.setVisibility(View.VISIBLE);
+            mTvVersion.setText("V:"+ TimerUtils.getDateFormat(System.currentTimeMillis(),"yyyy.MM.dd")+1);
+        }
     }
 
     @OnClick({R.id.rl_message, R.id.rl_setting, R.id.rl_trip})
