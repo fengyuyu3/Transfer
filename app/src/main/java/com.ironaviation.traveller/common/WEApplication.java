@@ -34,6 +34,8 @@ import com.ironaviation.traveller.BuildConfig;
 import com.ironaviation.traveller.di.module.CacheModule;
 import com.ironaviation.traveller.di.module.ServiceModule;
 import com.ironaviation.traveller.mvp.model.api.Api;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.umeng.analytics.MobclickAgent;
@@ -82,6 +84,8 @@ public class WEApplication extends BaseApplication {
 //        // 将该app注册到微信
         msgApi.registerApp("wxb277d9d5c3cf0829");
         //  installLeakCanary();//leakCanary内存泄露检查
+        Bugly.init(getApplicationContext(), "6525888fc6", false);
+//        CrashReport.initCrashReport(getApplicationContext(), "6525888fc6", BuildConfig.BUGLY_LOG);
         initMap();
     }
 

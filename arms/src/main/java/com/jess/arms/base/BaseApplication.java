@@ -2,6 +2,7 @@ package com.jess.arms.base;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 import com.jess.arms.di.component.DaggerBaseComponent;
@@ -41,6 +42,7 @@ public abstract class BaseApplication extends MultiDexApplication {
         super.onCreate();
         mApplication = this;
         this.mAppModule = new AppModule(this);//提供application
+        MultiDex.install(this);
         DaggerBaseComponent
                 .builder()
                 .appModule(mAppModule)

@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'bugly'
 
 android {
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
@@ -27,23 +28,32 @@ android {
             abiFilters "armeabi", "armeabi-v7a", "x86_64","x86","arm64-v8a"
         }
     }
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
     buildTypes {
 
         debug {
+            buildConfigField("String", "debugTime", "\""+new Date().format("yyyy/MM/dd HH:mm:ss")+"\"")
+            buildConfigField "boolean", "IS_TEST", "true"
             buildConfigField "boolean", "LOG_DEBUG", "true"
             buildConfigField "boolean", "USE_CANARY", "true"
-            buildConfigField "boolean", "IS_DEBUG", "true"
+            buildConfigField "boolean", "BUGLY_LOG", "true"
             minifyEnabled false
             resValue("string", "SERVER_ID", "141262")
+            //192.168.0.80:8050
+//            resValue("string", "APP_DOMAIN","http://192.168.0.80:8050")
             resValue("string", "APP_DOMAIN","http://th-api.bestwise.net")
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             manifestPlaceholders = [GETUI_APP_ID: "K7LYTYchYK90p97ulbSl55", GETUI_APP_KEY: "zDgXBowynw9BQfoBxD9cs",GETUI_APP_SECRET:"KOkuzK2NlG9uWdidNKoX71",PACKAGE_NAME:"com.ironaviation.traveller",BAIDU_KEY:"RWwiqZzNGztarUvOZdntaG15fCDTNcEj"]
         }
 
         release {
+            buildConfigField("String", "debugTime", "\""+"\"")
             buildConfigField "boolean", "LOG_DEBUG", "false"
             buildConfigField "boolean", "USE_CANARY", "false"
-            buildConfigField "boolean", "IS_DEBUG", "false"
+            buildConfigField "boolean", "IS_TEST", "false"
+            buildConfigField "boolean", "BUGLY_LOG", "false"
             minifyEnabled false
             shrinkResources false
             zipAlignEnabled false
@@ -60,6 +70,10 @@ android {
         baidu {
 
         }
+        /*ZTest {
+            buildConfigField("String", "debugTime", "\""+new Date().format("yyyy/MM/dd HH:mm:ss")+"\"")
+            buildConfigField "boolean", "IS_TEST", "true"
+        }*/
     }
 
     lintOptions {
@@ -67,6 +81,12 @@ android {
         disable "ResourceType"
         abortOnError false
     }
+
+}
+
+bugly {
+    appId = '6525888fc6'
+    appKey = '7a23e57e-5865-4978-b5ff-5382ee94d860'
 }
 
 /*
@@ -128,4 +148,6 @@ dependencies {
     compile files('libs/bos-android-sdk-1.0.2.jar')
     //友盟统计
     compile 'com.umeng.analytics:analytics:latest.integration'
+    compile 'com.tencent.bugly:crashreport_upgrade:latest.release'
+
 }

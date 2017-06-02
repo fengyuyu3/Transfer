@@ -32,7 +32,8 @@
     <!-- 自定义权限 -->
     <uses-permission android:name="getui.permission.GetuiService.${applicationId}"/>
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
-
+    <!--bugly-->
+    <uses-permission android:name="android.permission.READ_LOGS" />
     <permission
         android:name="getui.permission.GetuiService.${applicationId}"
         android:protectionLevel="normal">
@@ -321,6 +322,20 @@
 
         <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote">
         </service>
+
+        <activity
+            android:name="com.tencent.bugly.beta.ui.BetaActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|locale"
+            android:theme="@android:style/Theme.Translucent" />
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
         <!-- 配置的第三方参数属性 -->
         <meta-data
             android:name="PUSH_APPID"
@@ -346,6 +361,23 @@
             android:name="com.jess.arms.widget.imageloader.glide.GlideConfiguration"
             android:value="GlideModule"/>
 
+
+        <!--&lt;!&ndash; 配置APP ID &ndash;&gt;
+        <meta-data
+            android:name="BUGLY_APPID"
+            android:value="<APP_ID>" />
+        &lt;!&ndash; 配置APP版本号 &ndash;&gt;
+        <meta-data
+            android:name="BUGLY_APP_VERSION"
+            android:value="<APP_Version>" />
+        &lt;!&ndash; 配置APP渠道号 &ndash;&gt;
+        <meta-data
+            android:name="BUGLY_APP_CHANNEL"
+            android:value="<APP_Channel>" />
+        &lt;!&ndash; 配置Bugly调试模式（true或者false）&ndash;&gt;
+        <meta-data
+            android:name="BUGLY_ENABLE_DEBUG"
+            android:value="<isDebug>" />-->
     </application>
 
 </manifest>

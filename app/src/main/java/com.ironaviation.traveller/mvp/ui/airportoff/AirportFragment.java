@@ -414,7 +414,7 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
                 mPwAirportOn.setTextInfo(getTerminal(getTerminalNum(flight.getList().get(0).getTakeOff())));
             }
             if(flight.getList().get(0).getTakeOffTime() != 0){
-                mPwFlt.setArriveTime(TimerUtils.getDateFormat(flight.getList().get(0).getTakeOffTime(),fomartOn));
+                mPwFlt.setArriveTime(TimerUtils.getDateFormat(flight.getList().get(0).getArriveTime(),fomartOn));
             }
             if(flight.getInfo().getFlightNo() != null){
                 flightNo = flight.getInfo().getFlightNo();
@@ -576,7 +576,7 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
             request.setDestAddress(info.name);
             request.setDestDetailAddress(info.address);
             request.setPickupDetailAddress("");
-            request.setPickupTime(System.currentTimeMillis());
+            request.setPickupTime(flight.getList().get(0).getArriveTime());
             if(terminalNum == 1) {
                 request.setPickupAddress(Constant.AIRPORT_T2);
                 request.setPickupLatitude(Constant.AIRPORT_T2_LATITUDE);

@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.igexin.sdk.PushManager;
 import com.ironaviation.traveller.BuildConfig;
@@ -52,6 +53,7 @@ import com.ironaviation.traveller.mvp.ui.widget.AutoSlidingTabLayout;
 import com.ironaviation.traveller.mvp.ui.widget.AutoToolbar;
 import com.jess.arms.utils.DataHelper;
 import com.jess.arms.utils.UiUtils;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
 import com.yanzhenjie.permission.AndPermission;
 import com.zhy.autolayout.AutoRelativeLayout;
@@ -205,9 +207,9 @@ public class MainActivity extends WEActivity<MainPresenter> implements MainContr
         PushCountTimerUtil pushCountTimerUtil = new PushCountTimerUtil(this, 5 * 60 * 1000, 3 * 60 * 60 * 1000);
         pushCountTimerUtil.start();
         mTvVersion.setVisibility(View.GONE);
-        if(BuildConfig.IS_DEBUG){
+        if(BuildConfig.IS_TEST){
             mTvVersion.setVisibility(View.VISIBLE);
-            mTvVersion.setText("V:"+ TimerUtils.getDateFormat(System.currentTimeMillis(),"yyyy.MM.dd")+1);
+            mTvVersion.setText("V:"+ BuildConfig.debugTime+".1");
         }
     }
 
