@@ -94,7 +94,7 @@ public class MessagePresenter extends BasePresenter<MessageContract.Model, Messa
                     @Override
                     public void onNext(BaseData<MessageResponse> commentTagBaseData) {
                         if (commentTagBaseData.isSuccess()) {
-                            if (commentTagBaseData.getData() != null
+                            if (commentTagBaseData.getData() != null && commentTagBaseData.getData().getItems() != null
                                     && commentTagBaseData.getData().getItems().size() > 0) {
                                     mRootView.setDatas(commentTagBaseData.getData());
                                 if(commentTagBaseData.getData().getItems().size() <10){
@@ -137,7 +137,7 @@ public class MessagePresenter extends BasePresenter<MessageContract.Model, Messa
                                 }
                             }else{
                                 mRootView.setNoMore();
-                                mRootView.showMessage(commentTagBaseData.getMessage());
+//                                mRootView.showMessage(commentTagBaseData.getMessage());
                             }
                         } else {
 

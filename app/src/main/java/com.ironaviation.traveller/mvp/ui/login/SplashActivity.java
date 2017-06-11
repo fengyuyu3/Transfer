@@ -27,6 +27,7 @@ import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.ui.main.MainActivity;
+import com.ironaviation.traveller.mvp.ui.main.MainNewActivity;
 import com.ironaviation.traveller.mvp.ui.widget.AutoViewPager;
 import com.jess.arms.utils.DataHelper;
 import com.zhy.autolayout.AutoLinearLayout;
@@ -121,7 +122,7 @@ public class SplashActivity extends WEActivity {
 
     public void Login(boolean flag) {
         if (DataHelper.getDeviceData(mApplication, Constant.LOGIN) != null) {
-            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+            Intent intent = new Intent(SplashActivity.this, MainNewActivity.class);
             startActivity(intent);
         } else {
             Intent intent = new Intent(SplashActivity.this, LoginActivity.class);

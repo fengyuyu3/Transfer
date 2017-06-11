@@ -1,11 +1,15 @@
 package com.ironaviation.traveller.mvp.ui.my.travel;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -80,6 +84,7 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
     private TravelCancelAdapter mTravelCancelAdapter;
     private String bid;
     private String status;
+    private int maxLines = 5;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -132,6 +137,30 @@ public class TravelCancelActivity extends WEActivity<TravelCancelPresenter> impl
                     mTravelCancelResponse.setType(true);
                 }
                 mTravelCancelAdapter.notifyDataSetChanged();
+            }
+        });
+        mEtOtherReason.addTextChangedListener(new TextWatcher() {
+            String currentText = "";
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+            @Override
+            public void afterTextChanged(Editable s) {
+                int lines = mEtOtherReason.getLineCount();
+                // 限制最大输入行数
+                if (lines > maxLines) {
+                    mEtOtherReason.setText(currentText);
+                    mEtOtherReason.setSelection(currentText.length());
+                } else if (lines <= maxLines) {
+                    currentText = s != null ? s.toString() : "";
+                }
             }
         });
     }

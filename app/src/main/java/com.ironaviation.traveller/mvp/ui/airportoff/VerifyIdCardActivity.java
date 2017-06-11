@@ -548,12 +548,12 @@ public class VerifyIdCardActivity extends WEActivity<VerifyIdCardPresenter> impl
                     if (list.get(i).getIDCardNo() != null && list.get(i).getIDCardNo().equals(mAirportRequests.get(j).getIdCard())) {
                         if (list.get(i).isIsValid() && !list.get(i).isHasBooked()) {
                             mAirportRequests.get(j).setStatus(Constant.AIRPORT_SUCCESS);
-                        } else if (list.get(i).isIsValid() && list.get(i).isHasBooked()) {
+                        } /*else if (list.get(i).isIsValid() && list.get(i).isHasBooked()) {
                             mAirportRequests.get(j).setStatus(Constant.AIRPORT_FAILURE);
                             //弹出dialog
                             flag = true;
                             prompt.append(list.get(i).getIDCardNo()).append(",");
-                        } else {
+                        }*/ else {
                             mAirportRequests.get(j).setStatus(Constant.AIRPORT_FAILURE);
                         }
                     }
@@ -571,10 +571,18 @@ public class VerifyIdCardActivity extends WEActivity<VerifyIdCardPresenter> impl
     public void showDialog(String msg){
         AlertDialog dialog = new AlertDialog(this);
         dialog.builder().setTitle("温馨提示").setMsg(msg +"已经预约此航班")
-                .setOneButton("确定", new View.OnClickListener() {
+                .setNegativeButton("取消", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        
+                    }
+                })
+                .setPositiveButton("下一步", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(mRequest != null) {
+                            mPresenter.getAirportInfo(setPassengers(mRequest, mAirportRequests, seatNum));
+                        }
                     }
                 }).show();
     }

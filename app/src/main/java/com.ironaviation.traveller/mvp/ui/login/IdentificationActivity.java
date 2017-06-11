@@ -26,6 +26,7 @@ import com.ironaviation.traveller.mvp.contract.login.IdentificationContract;
 import com.ironaviation.traveller.mvp.model.api.Api;
 import com.ironaviation.traveller.mvp.presenter.Login.IdentificationPresenter;
 import com.ironaviation.traveller.mvp.ui.main.MainActivity;
+import com.ironaviation.traveller.mvp.ui.main.MainNewActivity;
 import com.ironaviation.traveller.mvp.ui.webview.WebViewActivity;
 import com.ironaviation.traveller.mvp.ui.widget.AlertDialog;
 import com.jess.arms.utils.UiUtils;
@@ -103,7 +104,7 @@ public class IdentificationActivity extends WEActivity<IdentificationPresenter> 
             setRightFunctionText(getString(R.string.function_skip),R.color.color_eec0be, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(MainActivity.class);
+                    startActivity(MainNewActivity.class);
                     finish();
                 }
             });
@@ -177,7 +178,7 @@ public class IdentificationActivity extends WEActivity<IdentificationPresenter> 
                 .setOneButton("立即体验", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startActivity(MainActivity.class);
+                        startActivity(MainNewActivity.class);
                         finish();
                     }
                 }).show();

@@ -58,7 +58,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginRight="@dimen/h_fillet2"
-
                 android:gravity="center"
                 android:padding="10px"
                 android:visibility="gone"

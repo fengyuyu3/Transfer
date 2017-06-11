@@ -160,9 +160,17 @@ public class AddressPresenter extends BasePresenter<AddressContract.Model, Addre
                     @Override
                     public void onNext(BaseData<List<UpdateAddressBookRequest>> loginEntityBaseData) {
 
-                        if (loginEntityBaseData.getData() == null || loginEntityBaseData.getData().size() < 2) {
+                        if (loginEntityBaseData.getData() == null ) {
+                            List<UpdateAddressBookRequest>updateAddressBookRequests=new ArrayList<UpdateAddressBookRequest>();
+                            loginEntityBaseData.setData( updateAddressBookRequests);
                             setDefaultData(loginEntityBaseData.getData());
+
+                        }else if (loginEntityBaseData.getData().size() < 2){
+                            setDefaultData(loginEntityBaseData.getData());
+
                         }
+
+
                         mRootView.setView(loginEntityBaseData.getData());
 
                     }

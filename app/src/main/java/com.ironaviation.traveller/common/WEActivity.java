@@ -13,13 +13,16 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ironaviation.traveller.R;
+import com.ironaviation.traveller.app.utils.KeyBoardUtils;
 import com.ironaviation.traveller.mvp.ui.widget.CustomProgress;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.mvp.Presenter;
@@ -290,4 +293,71 @@ public abstract class WEActivity<P extends Presenter> extends BaseWEActivity<P> 
         MobclickAgent.onPageEnd(getClass().getSimpleName()); // （仅有Activity的应用中SDK自动调用，不需要单独写）保证 onPageEnd 在onPause 之前调用,因为 onPause 中会保存信息。"SplashScreen"为页面名称，可自定义
         MobclickAgent.onPause(this);
     }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            //获取焦点View
+            View v = getCurrentFocus();
+            if (isFocusEditText(v, hideSoftByEditViewIds())) {
+                //如果焦点在editText上
+                //隐藏键盘
+                KeyBoardUtils.hideInputForce(this);
+                //清除焦点
+                clearViewFocus(v, hideSoftByEditViewIds());
+            }
+        }
+        return super.dispatchTouchEvent(ev);
+
+    }
+    /**
+     * 隐藏键盘
+     *
+     * @param v   焦点所在View
+     * @param ids 输入框
+     * @return true代表焦点在edit上
+     */
+    public boolean isFocusEditText(View v, int... ids) {
+        if (v instanceof EditText) {
+            EditText tmp_et = (EditText) v;
+            if(ids != null) {
+                for (int id : ids) {
+                    if (tmp_et.getId() == id) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 清除editText的焦点
+     *
+     * @param v   焦点所在View
+     * @param ids 输入框
+     */
+    public void clearViewFocus(View v, int... ids) {
+        if (null != v && null != ids && ids.length > 0) {
+            for (int id : ids) {
+                if (v.getId() == id) {
+                    v.clearFocus();
+                    break;
+                }
+            }
+        }
+
+
+    }
+
+    /**
+     * 传入EditText的Id
+     * 没有传入的EditText不做处理
+     *
+     * @return id 数组
+     */
+    public int[] hideSoftByEditViewIds() {
+        return null;
+    }
+
 }

@@ -97,7 +97,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
     AutoRelativeLayout mRlUsualAddress;
     @BindView(R.id.ll_address)
     AutoLinearLayout mLlAddress;
-    @BindView(R.id.tw_address_text)
+//    @BindView(R.id.tw_address_text)
     TextView mTwAddressText;
     @BindView(R.id.ll_home_address)
     AutoRelativeLayout mLlHomeAddress;
@@ -107,6 +107,10 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
     TextView mTvItemDetailAddress;
     @BindView(R.id.tv_company_detail_address)
     TextView mTvCompanyDetailAddress;
+    @BindView(R.id.ll_search)
+    AutoLinearLayout mLlSearch;
+    @BindView(R.id.tw_nodata)
+    TextView mTwNodata;
     private RecyclerView.LayoutManager mLayoutManager;
     List<UpdateAddressBookRequest> mUpdateAddressBookRequests = new ArrayList<>();
     private PoiSearch mPoiSearch = null;
@@ -140,6 +144,7 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
 
     @Override
     protected void initData() {
+        mTwAddressText = (TextView) findViewById(R.id.tw_address_text);
         mTwAddressText.setText(getResources().getString(R.string.address_locationing));
         // 初始化搜索模块，注册搜索事件监听
         mPoiSearch = PoiSearch.newInstance();
@@ -198,11 +203,17 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
             @Override
             public void onTextChanged(CharSequence charSequence, int arg1, int arg2,
                                       int arg3) {
+                showSearch();
                 if (charSequence.length() <= 0) {
                     //mRvAddress.setVisibility(View.GONE);
                     //infos = null;
                     infos = mPresenter.getAddress().getPoiInfos();
-                    mAddressAdapter.setNewData(infos);
+                    if(infos != null) {
+                        showRecyClerView();
+                        mAddressAdapter.setNewData(infos);
+                    }else{
+                        showNodata();
+                    }
                     searchRunnable.clear();
                     return;
                 }
@@ -452,9 +463,10 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
     @Override
     public void onGetPoiResult(PoiResult result) {
 
-        dismissProgressDialog();
+//        dismissProgressDialog();
         if (result == null || result.getAllPoi() == null) {
-            mRvAddress.setVisibility(View.GONE);
+//            mRvAddress.setVisibility(View.GONE);
+            showNodata();
             return;
         }
         infos = new ArrayList<>();
@@ -467,12 +479,14 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
         mAddressAdapter.setNewData(infos);
 
         if (infos.size() != 0) {
-            mRvAddress.setVisibility(View.VISIBLE);
+            showRecyClerView();
+//            mRvAddress.setVisibility(View.VISIBLE);
             //rl_passenger_phone.setVisibility(View.INVISIBLE);
             // rl_passenger_standby_phone.setVisibility(View.INVISIBLE);
             // rl_reservation.setVisibility(View.INVISIBLE);
         } else {
-            mRvAddress.setVisibility(View.GONE);
+            showNodata();
+//            mRvAddress.setVisibility(View.GONE);
             // rl_passenger_phone.setVisibility(View.VISIBLE);
             //rl_passenger_standby_phone.setVisibility(View.VISIBLE);
             // rl_reservation.setVisibility(View.VISIBLE);
@@ -662,17 +676,19 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
             showMessage("定位失败,请重新定位");
         }*/
 
-        HistoryPoiInfo info = new HistoryPoiInfo(result.getPoiList().get(0), false);
-        if (result.getAddress() != null && info != null && info.name != null) {
-            try {
-                mTwAddressText.setText(info.name);
-                this.info = info;
-            } catch (Exception e) {
-                MobclickAgent.reportError(WEApplication.getContext(), e);
-            }
-        }else{
+        if(result.getPoiList() != null) {
+            HistoryPoiInfo info = new HistoryPoiInfo(result.getPoiList().get(0), false);
+            if (result.getAddress() != null && info != null && info.name != null) {
+                try {
+                    mTwAddressText.setText(info.name);
+                    this.info = info;
+                } catch (Exception e) {
+                    MobclickAgent.reportError(WEApplication.getContext(), e);
+                }
+            } else {
 //            mTwAddressText.setText("获取定位失败,点击重试");
 //            initLocation();
+            }
         }
     }
 
@@ -692,4 +708,37 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
             initLocation();
         }
     }*/
+
+    public void showRecyClerView(){
+        setRecyclerView(true);
+        setSearch(false);
+        setNodata(false);
+    }
+    public void showSearch(){
+        setRecyclerView(false);
+        setSearch(true);
+        setNodata(false);
+    }
+    public void showNodata(){
+        setRecyclerView(false);
+        setSearch(false);
+        setNodata(true);
+    }
+
+    public void setRecyclerView(boolean show){
+        mRvAddress.setVisibility(show == true ? View.VISIBLE : View.GONE);
+    }
+
+    public void setSearch(boolean show){
+        mLlSearch.setVisibility(show == true ? View.VISIBLE : View.GONE);
+    }
+    public void setNodata(boolean show){
+        mTwNodata.setVisibility(show == true ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public int[] hideSoftByEditViewIds() {
+        int[] ids = {R.id.et_address};
+        return ids;
+    }
 }

@@ -18,6 +18,7 @@ import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
 import com.ironaviation.traveller.mvp.ui.login.IdentificationActivity;
 import com.ironaviation.traveller.mvp.ui.main.MainActivity;
+import com.ironaviation.traveller.mvp.ui.main.MainNewActivity;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
@@ -108,7 +109,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
                     public void onNext(BaseData<LoginEntity> loginEntityBaseData) {
                         if (loginEntityBaseData.isSuccess()) {
                             if(loginEntityBaseData.getData().isRealValid()) {
-                                weActivity.startActivity(MainActivity.class);
+                                weActivity.startActivity(MainNewActivity.class);
                             }else{
                                 Intent intent = new Intent(weActivity,IdentificationActivity.class);
                                 intent.putExtra(Constant.STATUS,Constant.LOGIN_NOMAL);
@@ -165,7 +166,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
       //  weActivity.startActivity(MainActivity.class);
 
         if (DataHelper.getDeviceData(mApplication, Constant.LOGIN) != null) {
-            weActivity.startActivity(MainActivity.class);
+            weActivity.startActivity(MainNewActivity.class);
         } else {
 
         }

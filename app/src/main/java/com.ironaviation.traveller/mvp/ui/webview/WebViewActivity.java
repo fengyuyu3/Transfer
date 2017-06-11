@@ -13,6 +13,7 @@ import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.ui.main.MainActivity;
+import com.ironaviation.traveller.mvp.ui.main.MainNewActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,7 +73,7 @@ public class WebViewActivity extends WEActivity {
                             finish();
                         break;
                         case Constant.AUTO_SETTTING:
-                            startActivity(MainActivity.class);
+                            startActivity(MainNewActivity.class);
                         break;
                     }
                 }else {
