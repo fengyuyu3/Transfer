@@ -284,5 +284,7 @@
     <string name="travel_time_out">网络连接超时</string>
     <string name="travel_gson">系统异常，请稍后再试</string>
 
+    <string name="travel_address_time_info">航班到达30分钟乘车</string>
+    <string name="travel_free_info">四川航空可享减免优惠</string>
 
 </resources>

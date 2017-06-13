@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 
 import android.app.Application;
 
-import com.ironaviation.traveller.mvp.contract.airportoff.SpecialCarEnterPortContract;
-import com.ironaviation.traveller.mvp.model.airportoff.SpecialCarEnterPortModel;
+import com.ironaviation.traveller.mvp.contract.airportoff.SpecialCarContract;
+import com.ironaviation.traveller.mvp.model.airportoff.SpecialCarModel;
 import com.jess.arms.di.scope.ActivityScope;
 
 import dagger.Module;
@@ -21,30 +21,30 @@ import dagger.Provides;
  */
 
 /**
- * Created by Administrator on 2017/6/9.
+ * Created by Dennis on 2017/6/12.
  */
 
 @Module
-public class SpecialCarEnterPortModule {
-    private SpecialCarEnterPortContract.View view;
+public class SpecialCarModule {
+    private SpecialCarContract.View view;
 
     /**
-     * 构建SpecialCarEnterPortModule时,将View的实现类传进来,这样就可以提供View的实现类给presenter
+     * 构建SpecialCarModule时,将View的实现类传进来,这样就可以提供View的实现类给presenter
      * @param view
      */
-    public SpecialCarEnterPortModule(SpecialCarEnterPortContract.View view) {
+    public SpecialCarModule(SpecialCarContract.View view) {
         this.view = view;
     }
 
     @ActivityScope
     @Provides
-    SpecialCarEnterPortContract.View provideSpecialCarEnterPortView() {
+    SpecialCarContract.View provideSpecialCarView() {
         return this.view;
     }
 
     @ActivityScope
     @Provides
-    SpecialCarEnterPortContract.Model provideSpecialCarEnterPortModel(SpecialCarEnterPortModel model) {
+    SpecialCarContract.Model provideSpecialCarModel(SpecialCarModel model) {
         return model;
     }
 }

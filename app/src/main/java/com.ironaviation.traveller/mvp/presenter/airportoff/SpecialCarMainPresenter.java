@@ -1,17 +1,16 @@
-package com.ironaviation.traveller.mvp.model.airportoff;
+package com.ironaviation.traveller.mvp.presenter.airportoff;
 
 import android.app.Application;
 
-import com.google.gson.Gson;
-import com.ironaviation.traveller.mvp.contract.airportoff.SpecialCarEnterPortContract;
-import com.ironaviation.traveller.mvp.model.api.cache.CacheManager;
-import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
+import com.ironaviation.traveller.mvp.contract.airportoff.SpecialCarMainContract;
+import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
-import com.jess.arms.mvp.BaseModel;
+import com.jess.arms.mvp.BasePresenter;
+import com.jess.arms.widget.imageloader.ImageLoader;
+
+import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 
 import javax.inject.Inject;
-
-import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
 /**
@@ -23,26 +22,35 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  * 如果想生成Fragment的相关文件,则将上面构建顺序中的Activity换为Fragment,并将Component中inject方法的参数改为此Fragment
  */
 
+
 /**
  * Created by Administrator on 2017/6/9.
  */
 
 @ActivityScope
-public class SpecialCarEnterPortModel extends BaseModel<ServiceManager, CacheManager> implements SpecialCarEnterPortContract.Model {
-    private Gson mGson;
+public class SpecialCarMainPresenter extends BasePresenter<SpecialCarMainContract.Model, SpecialCarMainContract.View> {
+    private RxErrorHandler mErrorHandler;
     private Application mApplication;
+    private ImageLoader mImageLoader;
+    private AppManager mAppManager;
 
     @Inject
-    public SpecialCarEnterPortModel(ServiceManager serviceManager, CacheManager cacheManager, Gson gson, Application application) {
-        super(serviceManager, cacheManager);
-        this.mGson = gson;
+    public SpecialCarMainPresenter(SpecialCarMainContract.Model model, SpecialCarMainContract.View rootView
+            , RxErrorHandler handler, Application application
+            , ImageLoader imageLoader, AppManager appManager) {
+        super(model, rootView);
+        this.mErrorHandler = handler;
         this.mApplication = application;
+        this.mImageLoader = imageLoader;
+        this.mAppManager = appManager;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        this.mGson = null;
+        this.mErrorHandler = null;
+        this.mAppManager = null;
+        this.mImageLoader = null;
         this.mApplication = null;
     }
 

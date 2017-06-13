@@ -18,6 +18,8 @@ public interface EventBusTags {
     String ALIPAY = "alipay";
     String AIRPORT_GO = "airport_go";
     String AIRPORT_ON = "airport_on";
+    String AIRPORT_Z_GO = "airport_z_go";
+    String AIRPORT_Z_ON = "airport_z_on";
     String PAYMENT = "payment";
 
     String FLIGHT_INFO_ON = "flight_info_on";

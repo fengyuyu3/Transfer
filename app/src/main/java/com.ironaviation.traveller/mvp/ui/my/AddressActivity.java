@@ -537,8 +537,12 @@ public class AddressActivity extends WEActivity<AddressPresenter> implements Add
             } else if (addressType == Constant.AIRPORT_ON) {
                 EventBus.getDefault().post(info, EventBusTags.AIRPORT_ON);
                 finish();
-            } else {
-
+            } else if(addressType == Constant.AIRPORT_Z_GO){
+                EventBus.getDefault().post(info, EventBusTags.AIRPORT_Z_GO);
+                finish();
+            }else if(addressType == Constant.AIRPORT_Z_ON){
+                EventBus.getDefault().post(info, EventBusTags.AIRPORT_Z_ON);
+                finish();
             }
         }
     }

@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.utils.TimeNewUtil;
 import com.ironaviation.traveller.app.utils.TimerUtils;
+import com.ironaviation.traveller.mvp.constant.Constant;
 import com.weigan.loopview.LoopView;
 import com.weigan.loopview.OnItemSelectedListener;
 
@@ -43,9 +44,15 @@ public class TimeNewDialog {
     private boolean isOneDay;
     private boolean isOneHour;
     private boolean isMinite;
-    public TimeNewDialog(Context context, MyTimeDialog.ItemCallBack mCallBack, long time){
+    private int myStatus;
+    public TimeNewDialog(Context context, MyTimeDialog.ItemCallBack mCallBack){
         this.context = context;
         this.mCallBack = mCallBack;
+
+    }
+
+    public void setTime(long time,int status){
+        this.myStatus = status;
         this.time = time-(60*60*2000+60*30*1000);
         currentTime = time-60*60*24*1000;
         if(System.currentTimeMillis()+60*60*2000+10*60*1000 > currentTime){
@@ -54,10 +61,23 @@ public class TimeNewDialog {
 //                currentTime = currentTime+(60*60*2000+10*60*1000);
         }
     }
+
+    public void setZTime(long time,int status){
+        this.myStatus = status;
+        this.time = time + 60*60*24*1000;
+        if((time - System.currentTimeMillis()) > 30*60*1000){
+            currentTime = time;
+        }else{
+            currentTime = System.currentTimeMillis() + 30*60*1000;
+        }
+    }
+
     public void showDialog(final String title) {
-        if (currentTime > time){
-            Toast.makeText(context,context.getString(R.string.time_out_four_hours),Toast.LENGTH_SHORT).show();
-            return;
+        if(status == Constant.AIRPORT_GO) {
+            if (currentTime > time) {
+                Toast.makeText(context, context.getString(R.string.time_out_four_hours), Toast.LENGTH_SHORT).show();
+                return;
+            }
         }
         mCameraDialog  = new Dialog(context, R.style.picker_dialog_background);
         LinearLayout root = (LinearLayout) LayoutInflater.from(context).inflate(

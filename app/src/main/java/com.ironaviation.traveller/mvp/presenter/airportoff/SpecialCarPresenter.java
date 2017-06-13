@@ -2,7 +2,7 @@ package com.ironaviation.traveller.mvp.presenter.airportoff;
 
 import android.app.Application;
 
-import com.ironaviation.traveller.mvp.contract.airportoff.SpecialCarEnterPortContract;
+import com.ironaviation.traveller.mvp.contract.airportoff.SpecialCarContract;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
@@ -24,18 +24,18 @@ import javax.inject.Inject;
 
 
 /**
- * Created by Administrator on 2017/6/9.
+ * Created by Dennis on 2017/6/12.
  */
 
 @ActivityScope
-public class SpecialCarEnterPortPresenter extends BasePresenter<SpecialCarEnterPortContract.Model, SpecialCarEnterPortContract.View> {
+public class SpecialCarPresenter extends BasePresenter<SpecialCarContract.Model, SpecialCarContract.View> {
     private RxErrorHandler mErrorHandler;
     private Application mApplication;
     private ImageLoader mImageLoader;
     private AppManager mAppManager;
 
     @Inject
-    public SpecialCarEnterPortPresenter(SpecialCarEnterPortContract.Model model, SpecialCarEnterPortContract.View rootView
+    public SpecialCarPresenter(SpecialCarContract.Model model, SpecialCarContract.View rootView
             , RxErrorHandler handler, Application application
             , ImageLoader imageLoader, AppManager appManager) {
         super(model, rootView);

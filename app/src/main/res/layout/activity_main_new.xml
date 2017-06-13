@@ -39,7 +39,6 @@
                         android:layout_gravity="center"
                         tl:tl_iconVisible="false"
                         tl:tl_indicator_style="BLOCK"
-                        tl:tl_textsize="28px"
                         tl:tl_indicator_color="@color/white"
                         tl:tl_textSelectColor="@color/word_toolbar_select"
                         tl:tl_textUnselectColor="@color/white"/>

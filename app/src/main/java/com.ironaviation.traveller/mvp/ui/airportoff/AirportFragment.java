@@ -45,6 +45,7 @@ import com.ironaviation.traveller.mvp.ui.widget.TerminalPopupWindow;
 import com.ironaviation.traveller.mvp.ui.widget.TimeNewDialog;
 import com.jess.arms.utils.DataHelper;
 import com.jess.arms.utils.UiUtils;
+import com.squareup.haha.guava.base.Predicates;
 import com.yanzhenjie.permission.AndPermission;
 import com.zhy.autolayout.AutoLinearLayout;
 
@@ -118,8 +119,8 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
     private Flight flight;
     private MyTimeDialog mMyTimeDialog;
     private int terminalNum = 0;
-    private String fomartOFF = "预计MM/dd EEEE HH:mm起飞";
-    private String fomartOn = "预计MM/dd EEEE HH:mm到达";
+    /*private String fomartOFF = "预计MM/dd EEEE HH:mm起飞";
+    private String fomartOn = "预计MM/dd EEEE HH:mm到达";*/
     private boolean addressFlagOFF,addressFlagON;
     private boolean timeFlag,flightFlag;
     private HistoryPoiInfo info;
@@ -127,8 +128,8 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
     private String bid;
     private int seatNum = 1;
     private NumDialog mNumDialog;
-    private String formatDate = "yyyy-MM-dd";
-    private String format = "MM月dd日 HH点mm分";
+   /* private String formatDate = "yyyy-MM-dd";
+    private String format = "MM月dd日 HH点mm分";*/
     private long time;
     private String phone;
     private List<PassengersRequest> mPassengersRequests;
@@ -383,9 +384,11 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
             if(myStatus.equals(Constant.ENTER_PORT)){
                 intent.setClass(getActivity(), TravelFloatOnActivity.class);
                 intent.putExtra(Constant.FLIGHT_NO,flightNo);
+                intent.putExtra(Constant.STATUS,Constant.ENTER_PORT);
             }else if(myStatus.equals(Constant.CLEAR_PORT)){
                 intent.setClass(getActivity(), TravelFloatActivity.class);
                 intent.putExtra(Constant.FLIGHT_NO,flightNo);
+                intent.putExtra(Constant.STATUS,Constant.CLEAR_PORT);
             }
             startActivity(intent);
             getActivity().overridePendingTransition(R.anim.left_in_alpha, R.anim.right_out_alpha);
@@ -414,7 +417,7 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
                 mPwAirportOn.setTextInfo(getTerminal(getTerminalNum(flight.getList().get(0).getTakeOff())));
             }
             if(flight.getList().get(0).getTakeOffTime() != 0){
-                mPwFlt.setArriveTime(TimerUtils.getDateFormat(flight.getList().get(0).getArriveTime(),fomartOn));
+                mPwFlt.setArriveTime(TimerUtils.getDateFormat(flight.getList().get(0).getArriveTime(),Constant.fomartOn));
             }
             if(flight.getInfo().getFlightNo() != null){
                 flightNo = flight.getInfo().getFlightNo();
@@ -425,14 +428,15 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
             }
         }else if(status != null && flight.getStatus() != null && flight.getStatus().equals(Constant.CLEAR_PORT) && flight.getStatus().equals(status)){
             clearData();
-            mTimeNewDialog = new TimeNewDialog(getActivity(),this,flight.getList().get(0).getTakeOffTime());
+            mTimeNewDialog = new TimeNewDialog(getActivity(),this);
+            mTimeNewDialog.setTime(flight.getList().get(0).getArriveTime(),Constant.AIRPORT_GO);
 //            mMyTimeDialog = new MyTimeDialog(getActivity(),this,flight.getList().get(0).getTakeOffTime());
             if(getTerminalNum(flight.getList().get(0).getTakeOff()) != -1) {
                 terminalNum = getTerminalNum(flight.getList().get(0).getTakeOff());
                 mPwAirportOff.setTextInfo(getTerminal(getTerminalNum(flight.getList().get(0).getTakeOff())));
             }
             if(flight.getList().get(0).getTakeOffTime() != 0){
-                mPwFlt.setArriveTime(TimerUtils.getDateFormat(flight.getList().get(0).getTakeOffTime(),fomartOFF));
+                mPwFlt.setArriveTime(TimerUtils.getDateFormat(flight.getList().get(0).getTakeOffTime(),Constant.fomartOFF));
             }
             if(flight.getInfo().getFlightNo() != null){
                 flightNo = flight.getInfo().getFlightNo();
@@ -506,7 +510,7 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
     @Override
     public void setTime(long time) {
         this.time = time;
-        mPwTimeOff.setTextInfo(TimerUtils.getDateFormat(time,format));
+        mPwTimeOff.setTextInfo(TimerUtils.getDateFormat(time,Constant.format));
         timeFlag = true;
         if(timeFlag && addressFlagOFF ){
             mPresenter.getAirportInfo(getAirPortInfo());
@@ -540,7 +544,7 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
     public AirportGoInfoRequest getAirPortInfo(){
         AirportGoInfoRequest request = new AirportGoInfoRequest();
         request.setFlightNo(flight.getInfo().getFlightNo());
-        request.setFlightDate(TimerUtils.getDateFormat(flight.getList().get(0).getTakeOffTime(),formatDate));
+        request.setFlightDate(TimerUtils.getDateFormat(flight.getList().get(0).getTakeOffTime(),Constant.formatDate));
         request.setTakeOffDateTime(flight.getList().get(0).getTakeOffTime());
         if(flight.getList().get(0).getRealityArriveTime() != null) {
             request.setArriveDateTime(flight.getList().get(0).getRealityArriveTime());

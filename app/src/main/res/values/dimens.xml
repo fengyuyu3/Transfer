@@ -27,4 +27,8 @@
     <dimen name="pickerview_topbar_paddingright">30dp</dimen>
     <dimen name="pickerview_topbar_title_textsize">21sp</dimen>
     <dimen name="margin_left">24px</dimen>
+    <dimen name="margin_new_right">16px</dimen>
+    <dimen name="margin_new_left">16px</dimen>
+    <dimen name="margin_new_top">16px</dimen>
+    <dimen name="item_height">74px</dimen>
 </resources>

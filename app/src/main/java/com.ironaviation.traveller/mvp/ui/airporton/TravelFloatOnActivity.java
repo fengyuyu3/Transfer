@@ -92,6 +92,7 @@ public class TravelFloatOnActivity extends WEActivity<TravelFloatOnPresenter> im
     private TravelFloatAdapter mTravelFloatAdapter;
     private MyDialog mMyDialog;
     private Flight mFlight;
+    private String status;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -112,6 +113,7 @@ public class TravelFloatOnActivity extends WEActivity<TravelFloatOnPresenter> im
     protected void initData() {
         Intent intent = getIntent();
         String flightNo = intent.getStringExtra(Constant.FLIGHT_NO);
+        status = intent.getStringExtra(Constant.STATUS);
         if(!TextUtils.isEmpty(flightNo)){
             mEdtTravelNum.setText(flightNo);
         }
@@ -309,7 +311,11 @@ public class TravelFloatOnActivity extends WEActivity<TravelFloatOnPresenter> im
         List<FlightDetails> list = new ArrayList<>();
         list.add(flightDetails);
         mFlight.setList(list);
-        mFlight.setStatus(Constant.ENTER_PORT);
+        if(status != null && status.equals(Constant.ENTER_PORT)){
+            mFlight.setStatus(Constant.ENTER_PORT);
+        }else if(status != null && status.equals(Constant.Z_ENTER_PORT)){
+            mFlight.setStatus(Constant.Z_ENTER_PORT);
+        }
         EventBus.getDefault().post(mFlight, EventBusTags.FLIGHT);
         finish();
     }

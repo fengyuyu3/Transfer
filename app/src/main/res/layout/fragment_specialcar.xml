@@ -6,6 +6,7 @@
                                      android:layout_height="match_parent">
 
     <com.ironaviation.traveller.mvp.ui.widget.AutoSlidingTabLayout
+        android:paddingLeft="39px"
         android:id="@+id/tablayout"
         android:layout_width="match_parent"
         android:layout_height="67px"

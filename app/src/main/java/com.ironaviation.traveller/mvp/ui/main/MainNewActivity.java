@@ -33,6 +33,10 @@ import com.ironaviation.traveller.mvp.contract.MainNewContract;
 import com.ironaviation.traveller.mvp.model.entity.TabEntity;
 import com.ironaviation.traveller.mvp.presenter.MainNewPresenter;
 import com.ironaviation.traveller.mvp.ui.airportoff.AirportFragment;
+import com.ironaviation.traveller.mvp.ui.airportoff.SpecialCarMainFragment;
+import com.ironaviation.traveller.mvp.ui.my.MessageActivity;
+import com.ironaviation.traveller.mvp.ui.my.SettingActivity;
+import com.ironaviation.traveller.mvp.ui.my.travel.TravelActivity;
 import com.ironaviation.traveller.mvp.ui.widget.AutoCommonTabLayout;
 import com.ironaviation.traveller.mvp.ui.widget.AutoDrawerLayout;
 import com.ironaviation.traveller.mvp.ui.widget.AutoToolbar;
@@ -44,6 +48,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -131,14 +136,11 @@ public class MainNewActivity extends WEActivity<MainNewPresenter> implements Mai
         bundle.putString(Constant.STATUS, Constant.ENTER_PORT);
         AirportFragment airportFragment = new AirportFragment();
         airportFragment.setArguments(bundle);
-        Bundle bundle1 = new Bundle();
-        bundle1.putString(Constant.STATUS, Constant.CLEAR_PORT);
-        AirportFragment mAirportFragment = new AirportFragment();
-        mAirportFragment.setArguments(bundle1);
+        SpecialCarMainFragment fragment = new SpecialCarMainFragment();
+        mFragments.add(fragment);
         mFragments.add(airportFragment);
-        mFragments.add(mAirportFragment);
         PushManager.getInstance().initialize(this);
-        mToolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_head));
+        mToolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_new_head));
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -225,6 +227,23 @@ public class MainNewActivity extends WEActivity<MainNewPresenter> implements Mai
         @Override
         public Fragment getItem(int position) {
             return mFragments.get(position);
+        }
+    }
+
+    @OnClick({R.id.rl_message, R.id.rl_setting, R.id.rl_trip})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.rl_message:
+                startActivity(MessageActivity.class);
+                break;
+            case R.id.rl_setting:
+                startActivity(SettingActivity.class);
+                break;
+            case R.id.rl_trip:
+                Bundle bundle = new Bundle();
+                bundle.putString(Constant.STATUS,Constant.NO_PUSH);
+                startActivity(TravelActivity.class,bundle);
+                break;
         }
     }
 }

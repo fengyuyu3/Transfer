@@ -1,11 +1,7 @@
-package com.ironaviation.traveller.di.component.airportoff;
+package com.ironaviation.traveller.mvp.contract.airportoff;
 
-import com.ironaviation.traveller.common.AppComponent;
-import com.ironaviation.traveller.di.module.airportoff.SpecialCarEnterPortModule;
-import com.ironaviation.traveller.mvp.ui.airportoff.SpecialCarEnterPortFragment;
-import com.jess.arms.di.scope.ActivityScope;
-
-import dagger.Component;
+import com.jess.arms.mvp.BaseView;
+import com.jess.arms.mvp.IModel;
 
 /**
  * 通过Template生成对应页面的MVP和Dagger代码,请注意输入框中输入的名字必须相同
@@ -20,8 +16,14 @@ import dagger.Component;
  * Created by Administrator on 2017/6/9.
  */
 
-@ActivityScope
-@Component(modules = SpecialCarEnterPortModule.class, dependencies = AppComponent.class)
-public interface SpecialCarEnterPortComponent {
-    void inject(SpecialCarEnterPortFragment activity);
+public interface SpecialCarMainContract {
+    //对于经常使用的关于UI的方法可以定义到BaseView中,如显示隐藏进度条,和显示文字消息
+    interface View extends BaseView {
+
+    }
+
+    //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存
+    interface Model extends IModel {
+
+    }
 }

@@ -48,6 +48,8 @@ public interface Constant {
 
     int AIRPORT_GO = 993;
     int AIRPORT_ON = 994;
+    int AIRPORT_Z_GO = 995;
+    int AIRPORT_Z_ON = 996;
     double AIRPORT_T1_LONGITUDE = 103.965305;
     double AIRPORT_T1_LATITUDE = 30.585158;
     double AIRPORT_T2_LONGITUDE = 103.961509;
@@ -96,6 +98,8 @@ public interface Constant {
     String OFF = "off"; //送机
     String CLEAR_PORT = "ClearPort"; //送机
     String ENTER_PORT = "EnterPort"; //接机
+    String Z_CLEAR_PORT = "Z_ClearPort"; //专车送机
+    String Z_ENTER_PORT = "Z_EnterPort"; //专车接机
 
     String CLASS_PAY_INFO = "PayInfo";
     String CURRENT_PICKUP = "CurrentPickup";
@@ -172,4 +176,12 @@ public interface Constant {
     int BTN_TOP = 20;
     int MARK_DISTANCE = -47;
 
+    String fomartOFF = "预计MM/dd EEEE HH:mm起飞";
+    String fomartOn = "预计MM/dd EEEE HH:mm到达";
+    String formatDate = "yyyy-MM-dd";
+    String format = "MM月dd日 HH点mm分";
+
+    int CAR_ONE = 1001;
+    int CAR_TWO = 1002;
+    int CAR_THREE = 1003;
 }
