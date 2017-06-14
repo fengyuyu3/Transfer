@@ -429,7 +429,7 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
         }else if(status != null && flight.getStatus() != null && flight.getStatus().equals(Constant.CLEAR_PORT) && flight.getStatus().equals(status)){
             clearData();
             mTimeNewDialog = new TimeNewDialog(getActivity(),this);
-            mTimeNewDialog.setTime(flight.getList().get(0).getArriveTime(),Constant.AIRPORT_GO);
+            mTimeNewDialog.setTime(flight.getList().get(0).getTakeOffTime(),Constant.AIRPORT_GO);
 //            mMyTimeDialog = new MyTimeDialog(getActivity(),this,flight.getList().get(0).getTakeOffTime());
             if(getTerminalNum(flight.getList().get(0).getTakeOff()) != -1) {
                 terminalNum = getTerminalNum(flight.getList().get(0).getTakeOff());

@@ -19,6 +19,11 @@ import com.ironaviation.traveller.mvp.constant.Constant;
 import com.weigan.loopview.LoopView;
 import com.weigan.loopview.OnItemSelectedListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import static com.jess.arms.utils.UiUtils.getResources;
@@ -52,6 +57,7 @@ public class TimeNewDialog {
     }
 
     public void setTime(long time,int status){
+        initIndex();
         this.myStatus = status;
         this.time = time-(60*60*2000+60*30*1000);
         currentTime = time-60*60*24*1000;
@@ -63,13 +69,42 @@ public class TimeNewDialog {
     }
 
     public void setZTime(long time,int status){
+        initIndex();
         this.myStatus = status;
         this.time = time + 60*60*24*1000;
         if((time - System.currentTimeMillis()) > 30*60*1000){
-            currentTime = time;
+            currentTime = time + 10*60*1000;
         }else{
             currentTime = System.currentTimeMillis() + 30*60*1000;
         }
+    }
+
+    public void  setSenvenTime(long time,int status){
+        initIndex();
+        this.myStatus = status;
+        currentTime = System.currentTimeMillis()+30*60*1000;
+
+        Date date=new Date();//取时间
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        calendar.add(calendar.DATE, 6);//把日期往后增加一天.整数往后推,负数往前移动
+        date = calendar.getTime(); //这个时间就是日期往后推一天的结果
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = formatter.format(date);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
+        try {
+            Date date1 = simpleDateFormat.parse(dateString+"-23-50");
+            this.time = date1.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            this.time = 0;
+        }
+    }
+
+    public void initIndex(){
+        indexDay = 0;
+        indexHour = 0;
+        indexMinite = 0;
     }
 
     public void showDialog(final String title) {

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.mvp.constant.Constant;
+import com.ironaviation.traveller.mvp.model.entity.PayInfo;
 
 /**
  * Created by Dennis on 2017/6/12.
@@ -31,6 +33,12 @@ public class ViewPagerCarFragment extends Fragment{
         twPrice = (TextView) view.findViewById(R.id.tw_price);
         twConcessions = (TextView) view.findViewById(R.id.tw_concessions);
         twMultiple = (TextView) view.findViewById(R.id.tw_multiple);
+        Bundle bundle = getArguments();
+        if(bundle != null) {
+            status = bundle.getInt(Constant.STATUS, 0);
+            PayInfo info = (PayInfo) bundle.getSerializable("test");
+            Log.e("kkk",status+"  "+info.getBID());
+        }
         setData();
         return view;
     }

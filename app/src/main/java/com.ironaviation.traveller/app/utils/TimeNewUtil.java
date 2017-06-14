@@ -1,5 +1,7 @@
 package com.ironaviation.traveller.app.utils;
 
+import com.ironaviation.traveller.mvp.constant.Constant;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,7 +24,7 @@ public class TimeNewUtil {
         if(isOneDay(currentTime,endTime)){
             list.add(formatter.format(endDate));
         }else{
-            for(int i = 0 ; i < 2; i++){
+            for(int i = 0 ; i <= endDate.getDate()-currentDate.getDate(); i++){
                 Date current = new Date(currentTime);
                 list.add(formatter.format(current));
                 currentTime = currentTime+24*60*60*1000;
@@ -212,8 +214,8 @@ public class TimeNewUtil {
     public static boolean isOneDay(long currentTime, long endTime){
         Date currentDate = new Date(currentTime);
         Date endDate = new Date(endTime);
-        int currentDay = currentDate.getDay();
-        int endDay = endDate.getDay();
+        int currentDay = currentDate.getDate();
+        int endDay = endDate.getDate();
         int currentHour = currentDate.getHours();
         int currentMinite = currentDate.getMinutes();
         if(currentDay == endDay || (currentHour == 23 && currentMinite > 50 )){
@@ -221,5 +223,20 @@ public class TimeNewUtil {
         }else{
             return false;
         }
+    }
+
+    public static String getwholePoint(long time){
+        try {
+            Date date = new Date(time);
+            SimpleDateFormat formatter = new SimpleDateFormat(Constant.formatPoint);
+            String dateString = formatter.format(date);
+            double currentMinite = date.getMinutes();
+            int resultMinite = ((int) Math.ceil(currentMinite/10))*10;
+            return dateString+resultMinite+"分";
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
     }
 }

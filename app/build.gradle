@@ -41,7 +41,7 @@ android {
             buildConfigField "boolean", "BUGLY_LOG", "true"
             minifyEnabled false
             resValue("string", "SERVER_ID", "141262")
-            //192.168.0.80:8050
+            //192.168.0.80:8050   https://prerelease.jichangzhuanxian.com
 //            resValue("string", "APP_DOMAIN","http://192.168.0.80:8050")
             resValue("string", "APP_DOMAIN","http://th-api.bestwise.net")
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

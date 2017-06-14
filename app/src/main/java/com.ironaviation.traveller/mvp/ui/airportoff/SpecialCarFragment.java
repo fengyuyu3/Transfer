@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
+import com.ironaviation.traveller.app.utils.TimeNewUtil;
 import com.ironaviation.traveller.app.utils.TimerUtils;
 import com.ironaviation.traveller.app.utils.UserInfoUtils;
 import com.ironaviation.traveller.common.AppComponent;
@@ -25,6 +26,7 @@ import com.ironaviation.traveller.di.module.airportoff.SpecialCarModule;
 import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.airportoff.SpecialCarContract;
 import com.ironaviation.traveller.mvp.model.entity.HistoryPoiInfo;
+import com.ironaviation.traveller.mvp.model.entity.PayInfo;
 import com.ironaviation.traveller.mvp.model.entity.response.Flight;
 import com.ironaviation.traveller.mvp.presenter.airportoff.SpecialCarPresenter;
 import com.ironaviation.traveller.mvp.ui.airporton.TravelFloatOnActivity;
@@ -124,6 +126,7 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
     @Override
     protected void initData() {
         Bundle bundle = getArguments();
+        mTimeNewDialog = new TimeNewDialog(getActivity(),this);
         mTerminalPopupWindow = new TerminalPopupWindow(getActivity(),getTerminal(),this);
         mTerminalPopupWindow.setNum(terminalNum);
         status = bundle.getString(Constant.STATUS);
@@ -136,6 +139,7 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
         adapter = new MyAdapter(getActivity().getSupportFragmentManager());
         vpNewCar.setAdapter(adapter);
         InitPort();
+        pwNewAirportOn.setTextInfo(Constant.AIRPORT_T1);
 
         vpNewCar.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -183,9 +187,12 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
         for(int i = 0 ; i < 3; i++) {
             Bundle bundle = new Bundle();
             bundle.putInt(Constant.STATUS,Constant.CAR_ONE);
+            PayInfo  info = new PayInfo();
+            info.setBID("333333");
+            bundle.putSerializable("test",info);
             ViewPagerCarFragment fragment = new ViewPagerCarFragment();
             fragment.setArguments(bundle);
-            fragmentList.add(new ViewPagerCarFragment());
+            fragmentList.add(fragment);
         }
     }
 
@@ -298,11 +305,11 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
     public void judgeFlyNo() {
         String fno = pwNewFlt.getTextInfo();
         if (fno.equals(getActivity().getResources().getString(R.string.airport_no))) {
-            showMessage(getString(R.string.airport_no));
-        } else {
+//            showMessage(getString(R.string.airport_no));
+            mTimeNewDialog.setSenvenTime(System.currentTimeMillis(),Constant.AIRPORT_NO_PORT);
+        }
             mTimeNewDialog.showDialog(getResources().getString(R.string.airport_input_time));
 //          mMyTimeDialog.showDialog(getResources().getString(R.string.airport_input_time));
-        }
     }
 
     public void setAddress(String status){
@@ -319,9 +326,9 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
 
         @Subscriber(tag = EventBusTags.FLIGHT)
         public void getFlightInfo(Flight flight){
+            clearTime();
             this.flight = flight;
             if(status != null && flight.getStatus() != null && flight.getStatus().equals(Constant.Z_ENTER_PORT)&&flight.getStatus().equals(status)){
-                mTimeNewDialog = new TimeNewDialog(getActivity(),this);
                 mTimeNewDialog.setZTime(flight.getList().get(0).getArriveTime(),Constant.AIRPORT_Z_ON);
                 if(getTerminalNum(flight.getList().get(0).getTakeOff()) != -1) {
                     terminalNum = getTerminalNum(flight.getList().get(0).getArrive());
@@ -334,10 +341,26 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
                     flightNo = flight.getInfo().getFlightNo();
                     pwNewFlt.setTextInfo(flight.getInfo().getFlightNo());
                 }
+                /*if((flight.getList().get(0).getArriveTime() - System.currentTimeMillis()) > 30*60*1000){
+                    currentTime = flight.getList().get(0).getArriveTime() + 10*60*1000;
+                }else{
+                    currentTime = System.currentTimeMillis() + 30*60*1000;
+                }*/
+                if(flight.getList().get(0).getArriveTime() - System.currentTimeMillis() > 0){
+                    pwNewTimeOn.setTextInfo(TimerUtils.getDateFormat(flight.getList().get(0).getArriveTime()+30*60*1000,Constant.format));
+                    pwNewTimeOn.setArriveTime(getActivity().getResources().getString(R.string.travel_address_time_info));
+                }
+                pwNewAirportOn.setTextInfo(getTerminal(terminalNum));
             }else if(status != null && flight.getStatus() != null && flight.getStatus().equals(Constant.Z_CLEAR_PORT) && flight.getStatus().equals(status)){
 
             }
         }
+    public void clearTime(){
+        pwNewTimeOn.setTextInfo("");
+        pwNewTimeOn.setArriveTime("");
+        pwNewTimeOn.setInitInfo(getActivity().getResources().getString(R.string.airport_time));
+    }
+
     //判断是哪个航站楼
     public int getTerminalNum(String text){
         if(text.contains("T1")){
@@ -371,7 +394,7 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
     public void setTime(long time) {
         this.time = time;
         pwNewTimeOn.setTextInfo(TimerUtils.getDateFormat(time,Constant.format));
-        pwNewTimeOn.setArriveTime(getActivity().getResources().getString(R.string.travel_address_time_info));
+        pwNewTimeOn.setArriveTime("");
 //        mPresenter.getAirportInfo(getAirPortInfo());
     }
 

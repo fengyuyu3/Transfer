@@ -50,6 +50,7 @@ public interface Constant {
     int AIRPORT_ON = 994;
     int AIRPORT_Z_GO = 995;
     int AIRPORT_Z_ON = 996;
+    int AIRPORT_NO_PORT = 997;
     double AIRPORT_T1_LONGITUDE = 103.965305;
     double AIRPORT_T1_LATITUDE = 30.585158;
     double AIRPORT_T2_LONGITUDE = 103.961509;
@@ -180,6 +181,7 @@ public interface Constant {
     String fomartOn = "预计MM/dd EEEE HH:mm到达";
     String formatDate = "yyyy-MM-dd";
     String format = "MM月dd日 HH点mm分";
+    String formatPoint = "MM月dd日 HH点";
 
     int CAR_ONE = 1001;
     int CAR_TWO = 1002;

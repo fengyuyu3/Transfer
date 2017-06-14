@@ -104,7 +104,6 @@ public class MainNewActivity extends WEActivity<MainNewPresenter> implements Mai
     private MyPagerAdapter mAdapter;
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
 
-
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerMainNewComponent
@@ -133,7 +132,7 @@ public class MainNewActivity extends WEActivity<MainNewPresenter> implements Mai
         PushClientUtil.initClientId(this);
 
         Bundle bundle = new Bundle();
-        bundle.putString(Constant.STATUS, Constant.ENTER_PORT);
+        bundle.putString(Constant.STATUS, Constant.CLEAR_PORT);
         AirportFragment airportFragment = new AirportFragment();
         airportFragment.setArguments(bundle);
         SpecialCarMainFragment fragment = new SpecialCarMainFragment();
