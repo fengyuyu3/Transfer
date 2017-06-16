@@ -12,11 +12,11 @@ import android.view.ViewGroup;
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEFragment;
-import com.ironaviation.traveller.di.component.airportoff.DaggerSpecialCarMainComponent;
-import com.ironaviation.traveller.di.module.airportoff.SpecialCarMainModule;
+import com.ironaviation.traveller.di.component.airportoff.DaggerSpecialCarMainClearPortComponent;
+import com.ironaviation.traveller.di.module.airportoff.SpecialCarMainClearPortModule;
 import com.ironaviation.traveller.mvp.constant.Constant;
-import com.ironaviation.traveller.mvp.contract.airportoff.SpecialCarMainContract;
-import com.ironaviation.traveller.mvp.presenter.airportoff.SpecialCarMainPresenter;
+import com.ironaviation.traveller.mvp.contract.airportoff.SpecialCarMainClearPortContract;
+import com.ironaviation.traveller.mvp.presenter.airportoff.SpecialCarMainClearPortPresenter;
 import com.ironaviation.traveller.mvp.ui.my.adapter.TableLayoutAdapter;
 import com.ironaviation.traveller.mvp.ui.widget.AutoSlidingTabLayout;
 import com.jess.arms.utils.UiUtils;
@@ -39,69 +39,57 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  */
 
 /**
- * 接机
- * Created by Administrator on 2017/6/9.
+ * Created by flq on 2017/6/16.
  */
 
-public class SpecialCarMainFragment extends WEFragment<SpecialCarMainPresenter> implements SpecialCarMainContract.View {
+public class SpecialCarMainClearPortFragment extends WEFragment<SpecialCarMainClearPortPresenter> implements SpecialCarMainClearPortContract.View {
 
 
-    @BindView(R.id.tablayout)
+    @BindView(R.id.tablayout1)
     AutoSlidingTabLayout tablayout;
-    @BindView(R.id.vp)
+    @BindView(R.id.vp1)
     ViewPager vp;
     Unbinder unbinder;
+
     private String[] mTitles = new String[]{"拼车","专车"};
     private ArrayList<Fragment> mFragments = new ArrayList<>();
     private TableLayoutAdapter adapter;
 
-    public static SpecialCarMainFragment newInstance() {
-        SpecialCarMainFragment fragment = new SpecialCarMainFragment();
+    public static SpecialCarMainClearPortFragment newInstance() {
+        SpecialCarMainClearPortFragment fragment = new SpecialCarMainClearPortFragment();
         return fragment;
     }
 
     @Override
     protected void setupFragmentComponent(AppComponent appComponent) {
-        DaggerSpecialCarMainComponent
+        DaggerSpecialCarMainClearPortComponent
                 .builder()
                 .appComponent(appComponent)
-                .specialCarMainModule(new SpecialCarMainModule(this))//请将SpecialCarMainModule()第一个首字母改为小写
+                .specialCarMainClearPortModule(new SpecialCarMainClearPortModule(this))//请将SpecialCarMainClearPortModule()第一个首字母改为小写
                 .build()
                 .inject(this);
     }
 
     @Override
     protected View initView(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.fragment_specialcar, container, false);
+        return inflater.inflate(R.layout.fragment_specialcar_one, container, false);
     }
 
     @Override
     protected void initData() {
-        /*String status = getArguments().getString(Constant.STATUS);
-        if(status != null && status.equals(Constant.ON)) {*/
-            Bundle bundle = new Bundle();
-            bundle.putString(Constant.STATUS, Constant.ENTER_PORT);
-            AirportFragment airportFragment = new AirportFragment();
-            airportFragment.setArguments(bundle);
-            Bundle bundle1 = new Bundle();
-            bundle1.putString(Constant.STATUS, Constant.Z_ENTER_PORT);
-            SpecialCarFragment mAirportFragment = new SpecialCarFragment();
-            mAirportFragment.setArguments(bundle1);
-            mFragments.add(airportFragment);
-            mFragments.add(mAirportFragment);
-        /*}else{
-            Bundle bundle = new Bundle();
-            bundle.putString(Constant.STATUS, Constant.CLEAR_PORT);
-            AirportFragment airportFragment = new AirportFragment();
-            airportFragment.setArguments(bundle);
-            Bundle bundle1 = new Bundle();
-            bundle1.putString(Constant.STATUS, Constant.Z_CLEAR_PORT);
-            SpecialCarFragment mAirportFragment = new SpecialCarFragment();
-            mAirportFragment.setArguments(bundle1);
-            mFragments.add(airportFragment);
-            mFragments.add(mAirportFragment);
-        }*/
-        adapter = new TableLayoutAdapter(getActivity().getSupportFragmentManager(),mTitles,mFragments);
+        Bundle bundle = new Bundle();
+        bundle.putString(Constant.STATUS, Constant.CLEAR_PORT);
+        AirportFragment airportFragment = new AirportFragment();
+        airportFragment.setArguments(bundle);
+        Bundle bundle1 = new Bundle();
+        bundle1.putString(Constant.STATUS, Constant.Z_CLEAR_PORT);
+        SpecialCarFragment mAirportFragment = new SpecialCarFragment();
+        mAirportFragment.setArguments(bundle1);
+        mFragments.add(airportFragment);
+        mFragments.add(mAirportFragment);
+        /*mFragments.add(new ViewPagerCarFragment());
+        mFragments.add(new ViewPagerCarFragment());*/
+        adapter = new TableLayoutAdapter(getActivity().getSupportFragmentManager(), mTitles, mFragments);
         vp.setAdapter(adapter);
         tablayout.setViewPager(vp, mTitles);
         vp.setCurrentItem(0);

@@ -177,10 +177,13 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
     private String phone;
     private Marker startMarkers;
     private Marker endMarkers;
+    private Marker startMarkerOne;
+    private Marker endMarkererOne;
     private String startAddress;
     private String endAddress;
     private InfoWindow mInfoWindow;
     private AnimationUtil mAnimationUtil;
+    private LatLng startLatlng,endLatlng;
     /**
      * 地图工具
      */
@@ -410,6 +413,24 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
         return mapUtil;
     }
 
+    //专车预约成功
+    public void zSuccess(RouteStateResponse responses){
+        mLlDriverInfoAirport.setVisibility(View.GONE);
+        mIwZoomAirport.setVisibility(View.VISIBLE);
+        mIwZoomNomalAirport.setVisibility(View.GONE);
+        mLlWaitAirport.setVisibility(View.GONE);   //等待上车
+        mLlArriveAirport.setVisibility(View.GONE); //确认到达
+        mLlGoOnAirport.setVisibility(View.VISIBLE);//进行中
+        mRlSuccessful.setVisibility(View.GONE);    //预约成功
+        mTwTitleOn.setText(getResources().getString(R.string.travel_ordering_success));
+        if(responses.getPickupTime()-System.currentTimeMillis() < 30*60*1000){
+            mTwTextOn.setText(getResources().getString(R.string.travel_success_info_little));
+        }else {
+            mTwTextOn.setText(getResources().getString(R.string.travel_success_info));
+        }
+    }
+
+
     public void waitPickUp() {  //等待上车
         mLlDriverInfoAirport.setVisibility(View.VISIBLE);
         mIwZoomAirport.setVisibility(View.VISIBLE);
@@ -483,6 +504,8 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
     public void showStatus(RouteStateResponse responses) {
         startAddress = responses.getPickupAddress();
         endAddress = responses.getDestAddress();
+        startLatlng = new LatLng(responses.getPickupLatitude(),responses.getPickupLongitude());
+        endLatlng = new LatLng(responses.getDestLatitude(),responses.getDestLongitude());
         mBaiduMap.clear();
         switch (responses.getStatus()) {
             case Constant.REGISTERED:
@@ -768,24 +791,6 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
         }
     }
 
-    /*//路径规划 route  stNode设置一个假的 Latitude 30.542191  Longitude 104.066535
-    private void pathPlanning(List<PathPlanning> planningListt) {
-        mPlanNodes = new ArrayList<>();
-        stNode = PlanNode.withLocation(new LatLng(30.622657, 104.083864));//起点 104.083864,30.622657
-        *//*mSearch.drivingSearch((new DrivingRoutePlanOption())
-                .from(stNode).to(enNode));*//*
-        for (int i = 0; i < planningListt.size(); i++) {
-            mPlanNodes.add(PlanNode.withLocation(new LatLng
-                    (planningListt.get(i).getLatitude(),
-                            planningListt.get(i).getLongitude())));
-        }
-        DrivingRoutePlanOption drivingRoutePlanOption = new DrivingRoutePlanOption();
-        drivingRoutePlanOption.from(stNode);
-        drivingRoutePlanOption.to(PlanNode.withCityNameAndPlaceName("成都", "双流机场T1航站楼"));
-        drivingRoutePlanOption.passBy(mPlanNodes);
-        mSearch.drivingSearch(drivingRoutePlanOption);
-        initMarker(planningListt); //初始化覆盖物
-    }*/
 
     @Subscriber(tag = EventBusTags.TRAVEL_DETAIL_ON)
     public void travelDetailOn(BasePushData response) {
@@ -808,7 +813,7 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
                 .position(dest).icon(end).zIndex(9).draggable(true);
         startMarkers = (Marker) mBaiduMap.addOverlay(markerOptions);
         endMarkers = (Marker) mBaiduMap.addOverlay(markerOptions1);
-        MapStatus mMapStatus = new MapStatus.Builder().target(dest).build();
+        MapStatus mMapStatus = new MapStatus.Builder().target(pickup).build();
         mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(mMapStatus));
     }
 
@@ -855,10 +860,57 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
         finish();
     }
 
+    public View setStartMark(String text,String status){
+        TextView twMark;
+        ImageView igMark;
+        View view = LayoutInflater.from(this).inflate(R.layout.mark_popuwindow,null,false);
+        twMark = (TextView) view.findViewById(R.id.tw_mark);
+        igMark = (ImageView) view.findViewById(R.id.img_mark);
+        twMark.setText(text);
+        if(status.equals("end")){
+            igMark.setImageResource(R.mipmap.ic_location_end);
+        }else{
+            igMark.setImageResource(R.mipmap.ic_location_start);
+        }
+        return view;
+    }
+
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        TextView location = new TextView(this);
+        View view = null;
+
+        if(marker == startMarkers){
+            if(startAddress != null){
+                view = setStartMark(startAddress,"start");
+            }else{
+                showMessage("地址获取失败,请重新刷新界面！");
+            }
+            if(view != null) {
+                addStartMark(view);
+                if(endMarkererOne != null){
+                    endMarkererOne.remove();
+                }
+            }
+        }else if(marker == endMarkers){
+            if(endAddress != null){
+                view = setStartMark(endAddress,"end");
+            }else{
+                showMessage("地址获取失败,请重新刷新界面！");
+            }
+            if(view != null){
+                addEndMark(view);
+                if(startMarkerOne != null){
+                    startMarkerOne.remove();
+                }
+            }
+        }else if(marker == startMarkerOne){
+            startMarkerOne.remove();
+        }else if(marker == endMarkererOne){
+            endMarkererOne.remove();
+        }
+
+        /*TextView location = new TextView(this);
         location.setBackgroundResource(R.mipmap.ic_pup);
         location.setPadding(30, Constant.BTN_TOP, 30, Constant.BTN_BOTTOM);
         InfoWindow.OnInfoWindowClickListener listener = null;
@@ -890,12 +942,29 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
             LatLng ll = marker.getPosition();
             mInfoWindow = new InfoWindow(BitmapDescriptorFactory.fromView(location), ll, Constant.MARK_DISTANCE, listener);
             mBaiduMap.showInfoWindow(mInfoWindow);
-        }
+        }*/
+
 
         mBaiduMap.setOnMapClickListener(new BaiduMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                mBaiduMap.hideInfoWindow();
+                if(endMarkererOne != null) {
+                    endMarkererOne.remove();
+                }
+                if(startMarkerOne != null){
+                    startMarkerOne.remove();
+                }
+                if(startMarkers == null){
+                    MarkerOptions markerOptions = new MarkerOptions()
+                            .position(startLatlng).icon(start).zIndex(9).draggable(true);
+                    mBaiduMap.addOverlay(markerOptions);
+                }
+                if(endMarkers == null){
+                    MarkerOptions markerOptions = new MarkerOptions()
+                            .position(endLatlng).icon(end).zIndex(9).draggable(true);
+                    mBaiduMap.addOverlay(markerOptions);
+                }
+//                mBaiduMap.hideInfoWindow();
             }
 
             @Override
@@ -904,6 +973,18 @@ public class TravelDetailsOnActivity extends WEActivity<TravelDetailsOnPresenter
             }
         });
         return true;
+    }
+
+    public void addStartMark(View view){
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(startLatlng).icon(BitmapDescriptorFactory.fromView(view)).zIndex(9).draggable(true);
+        startMarkerOne = (Marker) mBaiduMap.addOverlay(markerOptions);
+    }
+
+    public void addEndMark(View view){
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(endLatlng).icon(BitmapDescriptorFactory.fromView(view)).zIndex(9).draggable(true);
+        endMarkererOne = (Marker) mBaiduMap.addOverlay(markerOptions);
     }
 
     @Override

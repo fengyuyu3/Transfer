@@ -3,6 +3,7 @@ package com.ironaviation.traveller.mvp.ui.main;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.flyco.tablayout.listener.CustomTabEntity;
+import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.igexin.sdk.PushManager;
 import com.ironaviation.traveller.BuildConfig;
 import com.ironaviation.traveller.R;
@@ -33,6 +35,7 @@ import com.ironaviation.traveller.mvp.contract.MainNewContract;
 import com.ironaviation.traveller.mvp.model.entity.TabEntity;
 import com.ironaviation.traveller.mvp.presenter.MainNewPresenter;
 import com.ironaviation.traveller.mvp.ui.airportoff.AirportFragment;
+import com.ironaviation.traveller.mvp.ui.airportoff.SpecialCarMainClearPortFragment;
 import com.ironaviation.traveller.mvp.ui.airportoff.SpecialCarMainFragment;
 import com.ironaviation.traveller.mvp.ui.my.MessageActivity;
 import com.ironaviation.traveller.mvp.ui.my.SettingActivity;
@@ -132,12 +135,12 @@ public class MainNewActivity extends WEActivity<MainNewPresenter> implements Mai
         PushClientUtil.initClientId(this);
 
         Bundle bundle = new Bundle();
-        bundle.putString(Constant.STATUS, Constant.CLEAR_PORT);
-        AirportFragment airportFragment = new AirportFragment();
-        airportFragment.setArguments(bundle);
+        bundle.putString(Constant.STATUS, Constant.ENTER_PORT);
         SpecialCarMainFragment fragment = new SpecialCarMainFragment();
         mFragments.add(fragment);
-        mFragments.add(airportFragment);
+
+        SpecialCarMainClearPortFragment fragment1 = new SpecialCarMainClearPortFragment();
+        mFragments.add(fragment1);
         PushManager.getInstance().initialize(this);
         mToolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_new_head));
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -150,8 +153,26 @@ public class MainNewActivity extends WEActivity<MainNewPresenter> implements Mai
         /*final ViewPager vp = ViewFindUtils.find(decorView, R.id.vp);
         mAdapter = new MyPagerAdapter(getSupportFragmentManager());
         vp.setAdapter(mAdapter);*/
-        AutoCommonTabLayout tl_2 = ViewFindUtils.find(decorView, R.id.tl_2);
+        final AutoCommonTabLayout tl_2 = ViewFindUtils.find(decorView, R.id.tl_2);
         tl_2.setTabData(getArrayList(),this,R.id.frament,mFragments);
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                tl_2.setCurrentTab(1);
+                tl_2.setCurrentTab(0);
+            }
+        });
+        /*tl_2.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelect(int position) {
+                tl_2.setCurrentTab(position);
+            }
+
+            @Override
+            public void onTabReselect(int position) {
+
+            }
+        });*/
         PushCountTimerUtil pushCountTimerUtil = new PushCountTimerUtil(this, 5 * 60 * 1000, 3 * 60 * 60 * 1000);
         pushCountTimerUtil.start();
         mTvVersion.setVisibility(View.GONE);

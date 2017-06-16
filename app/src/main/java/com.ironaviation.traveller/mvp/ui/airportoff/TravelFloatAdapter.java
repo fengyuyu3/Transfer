@@ -71,7 +71,7 @@ public class TravelFloatAdapter extends RecyclerView.Adapter<TravelFloatHolder> 
                     flag = city.contains("成都");
                     }
                 if(type == Constant.TYPE_AIRPORT_OFF){
-                    if((flightDetailsList.get(position).getTakeOffTime())-System.currentTimeMillis()-4*60*60*1000 < 0){
+                    if((flightDetailsList.get(position).getTakeOffTime())-System.currentTimeMillis()-5*60*60*1000 < 0){
                         Toast.makeText(mContext, mContext.getResources().getString(R.string.fly_four_time), Toast.LENGTH_SHORT).show();
                     }else{
                         if(flag){

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/include_toolbar"/>
+
+    <include layout="@layout/include_line_one"/>
+
+    <TextView
+        android:textColor="@color/color_dbac6f"
+        android:textSize="28px"
+        android:paddingBottom="22px"
+        android:paddingTop="22px"
+        android:paddingRight="72px"
+        android:paddingLeft="72px"
+        android:text="@string/travel_free_info_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_marginTop="@dimen/margin_new_top"
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.zhy.autolayout.AutoLinearLayout>
+
+    <TextView
+        android:layout_gravity="center"
+        android:drawablePadding="18px"
+        android:textColor="@color/color_2b2b2b"
+        android:drawableRight="@mipmap/ic_right_ic_card"
+        android:text="@string/travel_free_rule"
+        android:id="@+id/tw_free_rule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_marginTop="32px"
+        android:id="@+id/tw_go_to_order"
+        style="@style/button_red_style"
+        android:layout_marginLeft="20px"
+        android:layout_marginRight="20px"
+        android:layout_marginBottom="40px"
+        android:layout_width="match_parent"
+        android:layout_height="97px"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/travel_submit"></TextView>
+</com.zhy.autolayout.AutoLinearLayout>

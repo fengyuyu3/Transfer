@@ -93,6 +93,9 @@ public class TimeNewUtil {
                 && isOneMinite(currentTime,endTime)){ //只有一小时 并且只有一分
             list.add(getMinite(endMinite));
         }else if(isOneDay(currentTime,endTime) && isOneHours(currentTime,endTime)){
+            if(currentMinite == 6){
+                currentMinite = 0;
+            }
             for(int i = currentMinite ; i <= endMinite ; i++){//只有一小时
                list.add(getMinite(i));
             }

@@ -263,7 +263,7 @@
     <string name="start_jump">跳过</string>
     <string name="start_experience">立即体验</string>
     <string name="login_other">您已在其他设备登录</string>
-    <string name="fly_four_time">送机需在起飞时间前4小时预约</string>
+    <string name="fly_four_time">送机需在起飞时间前5小时预约</string>
     <string name="get_num_failed">获取号码失败,请联系客户,电话028-86868686</string>
     <string name="no_data">你暂时没有行程</string>
     <string name="btn_start_travel">开始行程</string>
@@ -286,5 +286,10 @@
 
     <string name="travel_address_time_info">航班到达30分钟乘车</string>
     <string name="travel_free_info">四川航空可享减免优惠</string>
+
+    <string name="travel_success_info">在您出行前30分钟准时为您发送司机的信息</string>
+    <string name="travel_success_info_little">我们会尽快为您发送司机的信息</string>
+    <string name="travel_free_info_details">输入乘机人证件号,验证成功1名立减40,可叠加</string>
+    <string name="travel_free_rule">四川航空减免规则说明</string>
 
 </resources>

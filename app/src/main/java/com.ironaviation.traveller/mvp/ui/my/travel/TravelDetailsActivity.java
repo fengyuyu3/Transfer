@@ -272,9 +272,12 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
     private boolean realTimeLocFlag=false;
     private Marker startMarkers;
     private Marker endMarkers;
+    private Marker startMarkerOne;
+    private Marker endMarkererOne;
     private String startAddress;
     private String endAddress;
     private InfoWindow mInfoWindow;
+    private LatLng startLatlng,endLatlng;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -444,6 +447,8 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
         mBaiduMap.clear();*/
         startAddress = responses.getPickupAddress();
         endAddress = responses.getDestAddress();
+        startLatlng = new LatLng(responses.getPickupLatitude(),responses.getPickupLongitude());
+        endLatlng = new LatLng(responses.getDestLatitude(),responses.getDestLongitude());
         mBaiduMap.clear();
         switch (status) {
             case Constant.INHAND: //派单进行中
@@ -946,10 +951,56 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
 
     }
 
+    public View setStartMark(String text,String status){
+        TextView twMark;
+        ImageView igMark;
+        View view = LayoutInflater.from(this).inflate(R.layout.mark_popuwindow,null,false);
+        twMark = (TextView) view.findViewById(R.id.tw_mark);
+        igMark = (ImageView) view.findViewById(R.id.img_mark);
+        twMark.setText(text);
+        if(status.equals("end")){
+            igMark.setImageResource(R.mipmap.ic_location_end);
+        }else{
+            igMark.setImageResource(R.mipmap.ic_location_start);
+        }
+        return view;
+    }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        TextView location = new TextView(this);
+        View view = null;
+
+        if(marker == startMarkers){
+            if(startAddress != null){
+                view = setStartMark(startAddress,"start");
+            }else{
+                showMessage("地址获取失败,请重新刷新界面！");
+            }
+            if(view != null) {
+                addStartMark(view);
+                if(endMarkererOne != null){
+                    endMarkererOne.remove();
+                }
+            }
+        }else if(marker == endMarkers){
+            if(endAddress != null){
+                view = setStartMark(endAddress,"end");
+            }else{
+                showMessage("地址获取失败,请重新刷新界面！");
+            }
+            if(view != null){
+                addEndMark(view);
+                if(startMarkerOne != null){
+                    startMarkerOne.remove();
+                }
+            }
+        }else if(marker == startMarkerOne){
+            startMarkerOne.remove();
+        }else if(marker == endMarkererOne){
+            endMarkererOne.remove();
+        }
+
+        /*TextView location = new TextView(this);
         location.setBackgroundResource(R.mipmap.ic_pup);
         location.setPadding(30, Constant.BTN_TOP, 30, Constant.BTN_BOTTOM);
         InfoWindow.OnInfoWindowClickListener listener = null;
@@ -981,12 +1032,29 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
             LatLng ll = marker.getPosition();
             mInfoWindow = new InfoWindow(BitmapDescriptorFactory.fromView(location), ll, Constant.MARK_DISTANCE, listener);
             mBaiduMap.showInfoWindow(mInfoWindow);
-        }
+        }*/
+
 
         mBaiduMap.setOnMapClickListener(new BaiduMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                mBaiduMap.hideInfoWindow();
+                if(endMarkererOne != null) {
+                    endMarkererOne.remove();
+                }
+                if(startMarkerOne != null){
+                    startMarkerOne.remove();
+                }
+                if(startMarkers == null){
+                    MarkerOptions markerOptions = new MarkerOptions()
+                            .position(startLatlng).icon(start).zIndex(9).draggable(true);
+                    mBaiduMap.addOverlay(markerOptions);
+                }
+                if(endMarkers == null){
+                    MarkerOptions markerOptions = new MarkerOptions()
+                            .position(endLatlng).icon(end).zIndex(9).draggable(true);
+                    mBaiduMap.addOverlay(markerOptions);
+                }
+//                mBaiduMap.hideInfoWindow();
             }
 
             @Override
@@ -995,6 +1063,18 @@ public class TravelDetailsActivity extends WEActivity<TravelDetailsPresenter> im
             }
         });
         return true;
+    }
+
+    public void addStartMark(View view){
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(startLatlng).icon(BitmapDescriptorFactory.fromView(view)).zIndex(9).draggable(true);
+        startMarkerOne = (Marker) mBaiduMap.addOverlay(markerOptions);
+    }
+
+    public void addEndMark(View view){
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(endLatlng).icon(BitmapDescriptorFactory.fromView(view)).zIndex(9).draggable(true);
+        endMarkererOne = (Marker) mBaiduMap.addOverlay(markerOptions);
     }
 
     public void initMarker(List<PassengersResponse> planningListt) {

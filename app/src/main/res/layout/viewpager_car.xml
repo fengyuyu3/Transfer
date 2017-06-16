@@ -22,13 +22,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </com.zhy.autolayout.AutoLinearLayout>
-    <com.zhy.autolayout.AutoLinearLayout
-        android:layout_weight="1"
+    <com.zhy.autolayout.AutoRelativeLayout
         android:layout_gravity="center"
         android:gravity="center"
-        android:orientation="vertical"
+        android:layout_weight="1"
         android:layout_width="0px"
         android:layout_height="wrap_content">
+    <com.zhy.autolayout.AutoLinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
         <com.zhy.autolayout.AutoLinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
@@ -68,4 +72,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </com.zhy.autolayout.AutoLinearLayout>
+        <ProgressBar
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            android:id="@+id/reset_progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="100px"
+            android:layout_height="100px"
+            />
+    </com.zhy.autolayout.AutoRelativeLayout>
 </com.zhy.autolayout.AutoLinearLayout>

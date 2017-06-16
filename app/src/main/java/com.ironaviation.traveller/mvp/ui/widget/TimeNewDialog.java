@@ -57,19 +57,17 @@ public class TimeNewDialog {
     }
 
     public void setTime(long time,int status){
-        initIndex();
         this.myStatus = status;
         this.time = time-(60*60*2000+60*30*1000);
         currentTime = time-60*60*24*1000;
-        if(System.currentTimeMillis()+60*60*2000+10*60*1000 > currentTime){
-            currentTime = System.currentTimeMillis()+60*60*2000+10*60*1000;
+        if(/*System.currentTimeMillis()*/1497516405000l+60*60*2000+10*60*1000 > currentTime){
+            currentTime = /*System.currentTimeMillis()*/1497516405000l+60*60*2000+10*60*1000;
         }else{
 //                currentTime = currentTime+(60*60*2000+10*60*1000);
         }
     }
 
     public void setZTime(long time,int status){
-        initIndex();
         this.myStatus = status;
         this.time = time + 60*60*24*1000;
         if((time - System.currentTimeMillis()) > 30*60*1000){
@@ -80,10 +78,9 @@ public class TimeNewDialog {
     }
 
     public void  setSenvenTime(long time,int status){
-        initIndex();
+
         this.myStatus = status;
         currentTime = System.currentTimeMillis()+30*60*1000;
-
         Date date=new Date();//取时间
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(date);
@@ -108,6 +105,7 @@ public class TimeNewDialog {
     }
 
     public void showDialog(final String title) {
+        initIndex();
         if(status == Constant.AIRPORT_GO) {
             if (currentTime > time) {
                 Toast.makeText(context, context.getString(R.string.time_out_four_hours), Toast.LENGTH_SHORT).show();
@@ -132,9 +130,15 @@ public class TimeNewDialog {
             days = TimeNewUtil.getDays(currentTime,time);
             hours = TimeNewUtil.getHours(currentTime,time,0);
             minites = TimeNewUtil.getMinite(currentTime,time,0,0);
-            lwDay.setItems(days);
-            lwHour.setItems(hours);
-            lwSec.setItems(minites);
+            if(days != null && days.size()> 0) {
+                lwDay.setItems(days);
+            }
+            if(hours != null && hours.size() > 0) {
+                lwHour.setItems(hours);
+            }
+            if(minites != null && minites.size() > 0) {
+                lwSec.setItems(minites);
+            }
 
             // 滚动监听
             lwDay.setListener(new OnItemSelectedListener() {
@@ -214,11 +218,16 @@ public class TimeNewDialog {
                     @Override
                     public void run() {
 //                      EventBus.getDefault().post(myIndex, EventBusTags.DIALOG_EVENT);
-                        String date = TimerUtils.getYear(currentTime+indexDay*24*60*60)
-                                +days.get(indexDay) + hours.get(indexHour)+minites.get(indexMinite);
+                        if(days != null && days.size() > 0 && hours != null && hours.size() > 0
+                                && minites != null && minites.size() > 0) {
+                            String date = TimerUtils.getYear(currentTime + indexDay * 24 * 60 * 60)
+                                    + days.get(indexDay) + hours.get(indexHour) + minites.get(indexMinite);
 //                      Log.e("kkk",date+"   "+TimerUtils.getTimeMillis(date));
-                        mCallBack.setTime(TimerUtils.getTimeMillis(date));
-                        mCameraDialog.dismiss();
+                            mCallBack.setTime(TimerUtils.getTimeMillis(date));
+                            mCameraDialog.dismiss();
+                        }else{
+                            Toast.makeText(context,"不能预约航班",Toast.LENGTH_SHORT).show();
+                        }
                     }
                 },200);
             }

@@ -368,7 +368,7 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
         } else {
             long num = (flight.getList().get(0).getTakeOffTime() - System.currentTimeMillis())
                     / (60 * 60 * 1000);
-            if (num < 4) {
+            if (num < 5) {
                 showMessage(getString(R.string.fly_four_time));
             } else {
                 mTimeNewDialog.showDialog(getResources().getString(R.string.airport_input_time));

@@ -12,11 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
-import com.ironaviation.traveller.app.utils.TimeNewUtil;
 import com.ironaviation.traveller.app.utils.TimerUtils;
 import com.ironaviation.traveller.app.utils.UserInfoUtils;
 import com.ironaviation.traveller.common.AppComponent;
@@ -64,8 +64,8 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  * Created by Dennis on 2017/6/12.
  */
 
-public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implements SpecialCarContract.View,MyTimeDialog.ItemCallBack,
-        TerminalPopupWindow.CallBackItem{
+public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implements SpecialCarContract.View, MyTimeDialog.ItemCallBack,
+        TerminalPopupWindow.CallBackItem {
 
 
     @BindView(R.id.pw_new_person_airport)
@@ -89,9 +89,19 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
     @BindView(R.id.ll_new_port)
     AutoLinearLayout mLlNewPort;
     Unbinder unbinder;
+    @BindView(R.id.ll_enterPort)
+    AutoLinearLayout llEnterPort;
+    @BindView(R.id.pw_new_address_off)
+    PublicTextView pwNewAddressOff;
+    @BindView(R.id.pw_new_airport_off)
+    PublicTextView pwNewAirportOff;
+    @BindView(R.id.ll_clearPort)
+    AutoLinearLayout llClearPort;
+    @BindView(R.id.viewpager_progress)
+    ProgressBar viewpagerProgress;
 
     private String phone;
-    private String flightNo="";
+    private String flightNo = "";
     private String status;
     private TimeNewDialog mTimeNewDialog;
     private Flight flight;
@@ -103,10 +113,6 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
     private int SIZE = 3;
     private ImageView[] imageViews;
     private MyAdapter adapter;
-    public static SpecialCarFragment newInstance() {
-        SpecialCarFragment fragment = new SpecialCarFragment();
-        return fragment;
-    }
 
     @Override
     protected void setupFragmentComponent(AppComponent appComponent) {
@@ -126,12 +132,19 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
     @Override
     protected void initData() {
         Bundle bundle = getArguments();
-        mTimeNewDialog = new TimeNewDialog(getActivity(),this);
-        mTerminalPopupWindow = new TerminalPopupWindow(getActivity(),getTerminal(),this);
+        mTimeNewDialog = new TimeNewDialog(getActivity(), this);
+        mTerminalPopupWindow = new TerminalPopupWindow(getActivity(), getTerminal(), this);
         mTerminalPopupWindow.setNum(terminalNum);
         status = bundle.getString(Constant.STATUS);
-        if(UserInfoUtils.getInstance().getInfo(getActivity()) != null
-                && UserInfoUtils.getInstance().getInfo(getActivity()).getPhone() != null){
+        if(status.equals(Constant.ON)){
+            llEnterPort.setVisibility(View.VISIBLE);
+            llClearPort.setVisibility(View.GONE);
+        }else if(status.equals(Constant.OFF)){
+            llEnterPort.setVisibility(View.GONE);
+            llClearPort.setVisibility(View.VISIBLE);
+        }
+        if (UserInfoUtils.getInstance().getInfo(getActivity()) != null
+                && UserInfoUtils.getInstance().getInfo(getActivity()).getPhone() != null) {
             phone = UserInfoUtils.getInstance().getInfo(getActivity()).getPhone();
             pwNewPersonAirport.setTextInfo(phone);
         }
@@ -161,7 +174,7 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
 
     }
 
-    public void InitPort(){
+    public void InitPort() {
         imageViews = new ImageView[SIZE];
         for (int i = 0; i < SIZE; i++) {
             ImageView imageView = new ImageView(getActivity());
@@ -183,13 +196,13 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
         }
     }
 
-    public void setFragmentTestData(){
-        for(int i = 0 ; i < 3; i++) {
+    public void setFragmentTestData() {
+        for (int i = 0; i < 3; i++) {
             Bundle bundle = new Bundle();
-            bundle.putInt(Constant.STATUS,Constant.CAR_ONE);
-            PayInfo  info = new PayInfo();
+            bundle.putInt(Constant.STATUS, Constant.CAR_ONE);
+            PayInfo info = new PayInfo();
             info.setBID("333333");
-            bundle.putSerializable("test",info);
+            bundle.putSerializable("test", info);
             ViewPagerCarFragment fragment = new ViewPagerCarFragment();
             fragment.setArguments(bundle);
             fragmentList.add(fragment);
@@ -257,8 +270,10 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
     }
 
 
-    @OnClick({R.id.pw_new_flt,R.id.pw_new_time_on,R.id.pw_new_airport_on,R.id.pw_new_address_on})
-    public void onClick(View view){
+    @OnClick({R.id.pw_new_flt, R.id.pw_new_time_on,
+            R.id.pw_new_airport_on, R.id.pw_new_address_on,
+            R.id.pw_new_airport_off, R.id.pw_new_address_off})
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.pw_new_flt:
                 setPwFltNo(status);
@@ -275,24 +290,34 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
             case R.id.pw_new_address_on:
                 setAddress(Constant.Z_ENTER_PORT);
                 break;
+            case R.id.pw_new_address_off:
+                setAddress(Constant.Z_CLEAR_PORT);
+                break;
+            case R.id.pw_new_airport_off:
+                if (mTerminalPopupWindow != null) {
+                    mTerminalPopupWindow.setNum(terminalNum);
+                    mTerminalPopupWindow.show(pwNewAirportOn);
+                }
+                break;
         }
     }
 
     /**
      * 航班判断是跳转到接机或者送机
+     *
      * @param myStatus 状态
      */
-    public void setPwFltNo(String myStatus){
-        if(myStatus != null){
+    public void setPwFltNo(String myStatus) {
+        if (myStatus != null) {
             Intent intent = new Intent();
-            if(myStatus.equals(Constant.Z_ENTER_PORT)){
+            if (myStatus.equals(Constant.Z_ENTER_PORT)) {
                 intent.setClass(getActivity(), TravelFloatOnActivity.class);
-                intent.putExtra(Constant.FLIGHT_NO,flightNo);
-                intent.putExtra(Constant.STATUS,Constant.Z_ENTER_PORT);
-            }else if(myStatus.equals(Constant.Z_CLEAR_PORT)){
+                intent.putExtra(Constant.FLIGHT_NO, flightNo);
+                intent.putExtra(Constant.STATUS, Constant.Z_ENTER_PORT);
+            } else if (myStatus.equals(Constant.Z_CLEAR_PORT)) {
                 intent.setClass(getActivity(), TravelFloatActivity.class);
-                intent.putExtra(Constant.FLIGHT_NO,flightNo);
-                intent.putExtra(Constant.STATUS,Constant.Z_CLEAR_PORT);
+                intent.putExtra(Constant.FLIGHT_NO, flightNo);
+                intent.putExtra(Constant.STATUS, Constant.Z_CLEAR_PORT);
             }
             startActivity(intent);
             getActivity().overridePendingTransition(R.anim.left_in_alpha, R.anim.right_out_alpha);
@@ -302,72 +327,73 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
     /**
      * 判断时间
      */
-    public void judgeFlyNo() {
+    public void judgeFlyNo() { //判断时间
         String fno = pwNewFlt.getTextInfo();
         if (fno.equals(getActivity().getResources().getString(R.string.airport_no))) {
 //            showMessage(getString(R.string.airport_no));
-            mTimeNewDialog.setSenvenTime(System.currentTimeMillis(),Constant.AIRPORT_NO_PORT);
+            mTimeNewDialog.setSenvenTime(System.currentTimeMillis(), Constant.AIRPORT_NO_PORT);
         }
-            mTimeNewDialog.showDialog(getResources().getString(R.string.airport_input_time));
+        mTimeNewDialog.showDialog(getResources().getString(R.string.airport_input_time));
 //          mMyTimeDialog.showDialog(getResources().getString(R.string.airport_input_time));
     }
 
-    public void setAddress(String status){
+    public void setAddress(String status) {
         Bundle bundle = new Bundle();
-        if(status != null && status.equals(Constant.Z_ENTER_PORT)){
-            bundle.putInt(Constant.ADDRESS_TYPE,Constant.AIRPORT_Z_ON);
-        }/*else if(status != null && status.equals(Constant.CLEAR_PORT)){
-            bundle.putInt(Constant.ADDRESS_TYPE,Constant.AIRPORT_GO);
-        }*/
-        Intent intent1 = new Intent(getActivity(),AddressActivity.class);
+        if (status != null && status.equals(Constant.Z_ENTER_PORT)) {
+            bundle.putInt(Constant.ADDRESS_TYPE, Constant.AIRPORT_Z_ON);
+        }else if(status != null && status.equals(Constant.Z_CLEAR_PORT)){
+            bundle.putInt(Constant.ADDRESS_TYPE,Constant.AIRPORT_Z_GO);
+        }
+        Intent intent1 = new Intent(getActivity(), AddressActivity.class);
         intent1.putExtras(bundle);
         launchActivity(intent1);
     }
 
-        @Subscriber(tag = EventBusTags.FLIGHT)
-        public void getFlightInfo(Flight flight){
-            clearTime();
-            this.flight = flight;
-            if(status != null && flight.getStatus() != null && flight.getStatus().equals(Constant.Z_ENTER_PORT)&&flight.getStatus().equals(status)){
-                mTimeNewDialog.setZTime(flight.getList().get(0).getArriveTime(),Constant.AIRPORT_Z_ON);
-                if(getTerminalNum(flight.getList().get(0).getTakeOff()) != -1) {
-                    terminalNum = getTerminalNum(flight.getList().get(0).getArrive());
-                    pwNewFlt.setTextInfo(getTerminal(getTerminalNum(flight.getList().get(0).getArrive())));
-                }
-                if(flight.getList().get(0).getTakeOffTime() != 0){
-                    pwNewFlt.setArriveTime(TimerUtils.getDateFormat(flight.getList().get(0).getArriveTime(),Constant.fomartOn));
-                }
-                if(flight.getInfo().getFlightNo() != null){
-                    flightNo = flight.getInfo().getFlightNo();
-                    pwNewFlt.setTextInfo(flight.getInfo().getFlightNo());
-                }
+    @Subscriber(tag = EventBusTags.FLIGHT)
+    public void getFlightInfo(Flight flight) {
+        clearTime();
+        this.flight = flight;
+        if (status != null && flight.getStatus() != null && flight.getStatus().equals(Constant.Z_ENTER_PORT) && flight.getStatus().equals(status)) {
+            mTimeNewDialog.setZTime(flight.getList().get(0).getArriveTime(), Constant.AIRPORT_Z_ON);
+            if (getTerminalNum(flight.getList().get(0).getTakeOff()) != -1) {
+                terminalNum = getTerminalNum(flight.getList().get(0).getArrive());
+                pwNewFlt.setTextInfo(getTerminal(getTerminalNum(flight.getList().get(0).getArrive())));
+            }
+            if (flight.getList().get(0).getTakeOffTime() != 0) {
+                pwNewFlt.setArriveTime(TimerUtils.getDateFormat(flight.getList().get(0).getArriveTime(), Constant.fomartOn));
+            }
+            if (flight.getInfo().getFlightNo() != null) {
+                flightNo = flight.getInfo().getFlightNo();
+                pwNewFlt.setTextInfo(flight.getInfo().getFlightNo());
+            }
                 /*if((flight.getList().get(0).getArriveTime() - System.currentTimeMillis()) > 30*60*1000){
                     currentTime = flight.getList().get(0).getArriveTime() + 10*60*1000;
                 }else{
                     currentTime = System.currentTimeMillis() + 30*60*1000;
                 }*/
-                if(flight.getList().get(0).getArriveTime() - System.currentTimeMillis() > 0){
-                    pwNewTimeOn.setTextInfo(TimerUtils.getDateFormat(flight.getList().get(0).getArriveTime()+30*60*1000,Constant.format));
-                    pwNewTimeOn.setArriveTime(getActivity().getResources().getString(R.string.travel_address_time_info));
-                }
-                pwNewAirportOn.setTextInfo(getTerminal(terminalNum));
-            }else if(status != null && flight.getStatus() != null && flight.getStatus().equals(Constant.Z_CLEAR_PORT) && flight.getStatus().equals(status)){
-
+            if (flight.getList().get(0).getArriveTime() - System.currentTimeMillis() > 0) {
+                pwNewTimeOn.setTextInfo(TimerUtils.getDateFormat(flight.getList().get(0).getArriveTime() + 30 * 60 * 1000, Constant.format));
+                pwNewTimeOn.setArriveTime(getActivity().getResources().getString(R.string.travel_address_time_info));
             }
+            pwNewAirportOn.setTextInfo(getTerminal(terminalNum));
+        } else if (status != null && flight.getStatus() != null && flight.getStatus().equals(Constant.Z_CLEAR_PORT) && flight.getStatus().equals(status)) {
+
         }
-    public void clearTime(){
+    }
+
+    public void clearTime() {
         pwNewTimeOn.setTextInfo("");
         pwNewTimeOn.setArriveTime("");
         pwNewTimeOn.setInitInfo(getActivity().getResources().getString(R.string.airport_time));
     }
 
     //判断是哪个航站楼
-    public int getTerminalNum(String text){
-        if(text.contains("T1")){
+    public int getTerminalNum(String text) {
+        if (text.contains("T1")) {
             return 0;
-        }else if(text.contains("T2")){
+        } else if (text.contains("T2")) {
             return 1;
-        }else{
+        } else {
             return -1;
         }
     }
@@ -375,17 +401,17 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
     public List<String> getTerminal() {
         List<String> list = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
-            list.add("成都双流国际机场T"  + (i + 1) + "航站楼");
+            list.add("成都双流国际机场T" + (i + 1) + "航站楼");
         }
         return list;
     }
 
-    public String getTerminal(int terminalNum){
-        if(terminalNum == 0){
+    public String getTerminal(int terminalNum) {
+        if (terminalNum == 0) {
             return Constant.AIRPORT_T1;
-        }else if(terminalNum == 1){
+        } else if (terminalNum == 1) {
             return Constant.AIRPORT_T2;
-        }else{
+        } else {
             return Constant.AIRPORT_T1;
         }
     }
@@ -393,30 +419,35 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
     @Override
     public void setTime(long time) {
         this.time = time;
-        pwNewTimeOn.setTextInfo(TimerUtils.getDateFormat(time,Constant.format));
+        pwNewTimeOn.setTextInfo(TimerUtils.getDateFormat(time, Constant.format));
         pwNewTimeOn.setArriveTime("");
 //        mPresenter.getAirportInfo(getAirPortInfo());
     }
 
     @Override
     public void getItem(int position) {
-        if(status != null && status.equals(Constant.Z_ENTER_PORT)) {
+        if (status != null && status.equals(Constant.Z_ENTER_PORT)) {
             terminalNum = position;
-            pwNewAirportOn.setTextInfo("成都双流国际机场T" + (position + 1) + "航站楼");
+            pwNewAirportOn.setTextInfo(getTerminal(position));
+            mTerminalPopupWindow.dismiss();
+        }else if(status != null && status.equals(Constant.Z_CLEAR_PORT)){
+            terminalNum = position;
+            pwNewAddressOff.setTextInfo(getTerminal(position));
             mTerminalPopupWindow.dismiss();
         }
     }
 
     @Subscriber(tag = EventBusTags.AIRPORT_Z_GO)
-    public void getAddress(HistoryPoiInfo info){
-        if(status != null && status.equals(Constant.Z_CLEAR_PORT)) {
+    public void getAddress(HistoryPoiInfo info) {
+        if (status != null && status.equals(Constant.Z_CLEAR_PORT)) {
             this.info = info;
+            pwNewAddressOff.setTextInfo(info.name);
         }
     }
 
     @Subscriber(tag = EventBusTags.AIRPORT_Z_ON)
-    public void getAddressOn(HistoryPoiInfo info){
-        if(status != null && status.equals(Constant.Z_ENTER_PORT)) {
+    public void getAddressOn(HistoryPoiInfo info) {
+        if (status != null && status.equals(Constant.Z_ENTER_PORT)) {
             this.info = info;
             pwNewAddressOn.setTextInfo(info.name);
            /* if (addressFlagON && flightFlag) {
@@ -425,7 +456,7 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
         }
     }
 
-    public class MyAdapter extends FragmentPagerAdapter{
+    public class MyAdapter extends FragmentPagerAdapter {
 
         public MyAdapter(FragmentManager fm) {
             super(fm);
@@ -441,4 +472,4 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
             return fragmentList != null ? fragmentList.size() : 0;
         }
     }
- }
+}
