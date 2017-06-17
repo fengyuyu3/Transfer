@@ -27,17 +27,20 @@ import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.airportoff.SpecialCarContract;
 import com.ironaviation.traveller.mvp.model.entity.HistoryPoiInfo;
 import com.ironaviation.traveller.mvp.model.entity.PayInfo;
+import com.ironaviation.traveller.mvp.model.entity.request.AirportGoInfoRequest;
 import com.ironaviation.traveller.mvp.model.entity.response.Flight;
 import com.ironaviation.traveller.mvp.presenter.airportoff.SpecialCarPresenter;
 import com.ironaviation.traveller.mvp.ui.airporton.TravelFloatOnActivity;
 import com.ironaviation.traveller.mvp.ui.my.AddressActivity;
 import com.ironaviation.traveller.mvp.ui.widget.AutoViewPager;
+import com.ironaviation.traveller.mvp.ui.widget.BalancePopupwindow;
 import com.ironaviation.traveller.mvp.ui.widget.MyTimeDialog;
 import com.ironaviation.traveller.mvp.ui.widget.PublicTextView;
 import com.ironaviation.traveller.mvp.ui.widget.TerminalPopupWindow;
 import com.ironaviation.traveller.mvp.ui.widget.TimeNewDialog;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoLinearLayout;
+import com.zhy.autolayout.AutoRelativeLayout;
 
 import org.simple.eventbus.Subscriber;
 
@@ -99,6 +102,8 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
     AutoLinearLayout llClearPort;
     @BindView(R.id.viewpager_progress)
     ProgressBar viewpagerProgress;
+    @BindView(R.id.al_validate)
+    AutoRelativeLayout alValidate;
 
     private String phone;
     private String flightNo = "";
@@ -113,6 +118,7 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
     private int SIZE = 3;
     private ImageView[] imageViews;
     private MyAdapter adapter;
+    private BalancePopupwindow balancePopupwindow;
 
     @Override
     protected void setupFragmentComponent(AppComponent appComponent) {
@@ -135,11 +141,12 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
         mTimeNewDialog = new TimeNewDialog(getActivity(), this);
         mTerminalPopupWindow = new TerminalPopupWindow(getActivity(), getTerminal(), this);
         mTerminalPopupWindow.setNum(terminalNum);
+        balancePopupwindow = new BalancePopupwindow(getActivity());
         status = bundle.getString(Constant.STATUS);
-        if(status.equals(Constant.ON)){
+        if(status.equals(Constant.Z_ENTER_PORT)){
             llEnterPort.setVisibility(View.VISIBLE);
             llClearPort.setVisibility(View.GONE);
-        }else if(status.equals(Constant.OFF)){
+        }else if(status.equals(Constant.Z_CLEAR_PORT)){
             llEnterPort.setVisibility(View.GONE);
             llClearPort.setVisibility(View.VISIBLE);
         }
@@ -272,7 +279,8 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
 
     @OnClick({R.id.pw_new_flt, R.id.pw_new_time_on,
             R.id.pw_new_airport_on, R.id.pw_new_address_on,
-            R.id.pw_new_airport_off, R.id.pw_new_address_off})
+            R.id.pw_new_airport_off, R.id.pw_new_address_off,
+            R.id.al_validate,R.id.tw_go_to_order})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.pw_new_flt:
@@ -299,7 +307,26 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
                     mTerminalPopupWindow.show(pwNewAirportOn);
                 }
                 break;
+            case R.id.al_validate:
+                expainFree();
+                break;
+            case R.id.tw_go_to_order:
+                balancePopupwindow.show(twGoToOrder);
+                break;
         }
+    }
+
+    public void  expainFree(){
+        Intent intent3 = new Intent(getActivity(),ZVerifyIdCardActivity.class);
+        Bundle bundle1 = new Bundle();
+        bundle1.putString(Constant.STATUS,status);
+        AirportGoInfoRequest mRequest = new AirportGoInfoRequest();
+        /*if(mPassengersRequests != null && mPassengersRequests.size() > 0){
+            mRequest.setPassengers(mPassengersRequests);
+        }*/
+        bundle1.putSerializable(Constant.AIRPORT_GO_INFO,mRequest);
+        intent3.putExtras(bundle1);
+        startActivity(intent3);
     }
 
     /**
@@ -432,7 +459,7 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
             mTerminalPopupWindow.dismiss();
         }else if(status != null && status.equals(Constant.Z_CLEAR_PORT)){
             terminalNum = position;
-            pwNewAddressOff.setTextInfo(getTerminal(position));
+            pwNewAirportOff.setTextInfo(getTerminal(position));
             mTerminalPopupWindow.dismiss();
         }
     }

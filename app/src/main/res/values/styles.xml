@@ -154,4 +154,13 @@
         <item name="android:windowExitAnimation">@anim/right_out_alpha</item>
     </style>
 
+    <style name="money_text_style">
+        <item name="android:layout_width">202px</item>
+        <item name="android:layout_height">104px</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">36px</item>
+        <item name="android:textColor">@color/color_2b2b2b</item>
+        <item name="android:background">@drawable/white_4_radius_stroke_shap</item>
+    </style>
 </resources>

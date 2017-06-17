@@ -3,6 +3,7 @@ package com.ironaviation.traveller.mvp.ui.airportoff;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.common.AppComponent;
@@ -21,8 +23,8 @@ import com.ironaviation.traveller.mvp.constant.Constant;
 import com.ironaviation.traveller.mvp.contract.airportoff.ZVerifyIdCardContract;
 import com.ironaviation.traveller.mvp.model.entity.LoginEntity;
 import com.ironaviation.traveller.mvp.model.entity.request.AirPortRequest;
+import com.ironaviation.traveller.mvp.model.entity.request.AirportGoInfoRequest;
 import com.ironaviation.traveller.mvp.presenter.airportoff.ZVerifyIdCardPresenter;
-import com.ironaviation.traveller.mvp.ui.widget.AutoToolbar;
 import com.jess.arms.utils.DataHelper;
 import com.jess.arms.utils.UiUtils;
 import com.zhy.autolayout.AutoLinearLayout;
@@ -32,7 +34,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
+import static android.R.attr.onClick;
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 /**
@@ -59,8 +63,9 @@ public class ZVerifyIdCardActivity extends WEActivity<ZVerifyIdCardPresenter> im
 
     private String idCard;
     private List<AirPortRequest> mAirportRequests;
-    private int i = 0;
     private int seatNum = 0;
+    private AirportGoInfoRequest mRequest;
+    private String status;
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerZVerifyIdCardComponent
@@ -78,9 +83,34 @@ public class ZVerifyIdCardActivity extends WEActivity<ZVerifyIdCardPresenter> im
 
     @Override
     protected void initData() {
-
+        initTitile();
+        Bundle bundle = getIntent().getExtras();
+        status = bundle.getString(Constant.STATUS);
+        mRequest = (AirportGoInfoRequest) bundle.getSerializable(Constant.AIRPORT_GO_INFO);
+        initEmptyData();
+        if(mRequest != null && mRequest.getPassengers() != null && mRequest.getPassengers().size() > 0) {
+            addLinearLayout(mRequest.getPassengers().size());
+        }else{
+            addLinearLayout(Constant.DEFULT_SEAT);
+        }
     }
 
+    public void initTitile(){
+        setTitle(getString(R.string.travel_free_verify_Z));
+        mToolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.mipmap.ic_back));
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        setRightFunction(ContextCompat.getDrawable(this, R.mipmap.ic_add), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addLinearOnelayout();
+            }
+        });
+    }
 
     @Override
     public void showLoading() {
@@ -109,7 +139,6 @@ public class ZVerifyIdCardActivity extends WEActivity<ZVerifyIdCardPresenter> im
         finish();
     }
 
-
     @Override
     protected void nodataRefresh() {
 
@@ -117,8 +146,8 @@ public class ZVerifyIdCardActivity extends WEActivity<ZVerifyIdCardPresenter> im
 
     public void initEmptyData() {
         mAirportRequests = new ArrayList<>();
-       /* if(mRequest != null && mRequest.getPassengers() != null && mRequest.getPassengers().size() > 0) {
-            for(int  i = 0 ; i < Constant.SEAT_NUM ; i++){
+        if(mRequest != null && mRequest.getPassengers() != null && mRequest.getPassengers().size() > 0) {
+            for(int  i = 0 ; i < mRequest.getPassengers().size() ; i++){
                 AirPortRequest request = new AirPortRequest();
                 if(mRequest.getPassengers().size() > i){
                     request.setIdCard(mRequest.getPassengers().get(i).getIDCardNo()!= null ?
@@ -129,7 +158,7 @@ public class ZVerifyIdCardActivity extends WEActivity<ZVerifyIdCardPresenter> im
                 mAirportRequests.add(request);
             }
         }else{
-            for (int i = 0; i < Constant.SEAT_NUM; i++) {
+            for (int i = 0; i < Constant.DEFULT_SEAT; i++) {
                 AirPortRequest request = new AirPortRequest();
                 if (isValid() && i == 0 && idCard != null) {
 //                request.setStatus(Constant.AIRPORT_SUCCESS);
@@ -140,33 +169,44 @@ public class ZVerifyIdCardActivity extends WEActivity<ZVerifyIdCardPresenter> im
                 request.setStatus(Constant.AIRPORT_NO);
                 mAirportRequests.add(request);
             }
-        }*/
+        }
     }
 
-    public void addLinearLayout() {
-            i++;
-            if(i > seatNum) {
-                MyAirportHolder holder = new MyAirportHolder();
-                View view = LayoutInflater.from(this).inflate(R.layout.include_public_view, null, false);
-                holder.mIvLogo = (ImageView) view.findViewById(R.id.iv_logo); //右边的图标
-                holder.mLineEdt = view.findViewById(R.id.line_edt); //底下的线
-                holder.mIvStatus = (ImageView) view.findViewById(R.id.iv_status); //右边的图标  占时不用;
-                holder.mEdtContent = (EditText) view.findViewById(R.id.edt_content); // 文本框
-                holder.mTvCode = (TextView) view.findViewById(R.id.tv_code);  //本人身份证
-                holder.mPwLl = (AutoLinearLayout) view.findViewById(R.id.pw_ll); //整个布局
-                holder.mIwDelete = (ImageView) view.findViewById(R.id.iw_delete);
-                holder.mIwCancel = (ImageView) view.findViewById(R.id.iw_cancel_port);
+    public void addLinearLayout(int position) {
 
-                if (i == seatNum) {
-                    holder.mLineEdt.setVisibility(View.GONE);
-                }
-                setAirportData(holder, mAirportRequests.get(i));
-                setlistener(holder, i);
-                recyclerView.addView(view);
-            }else{
-                i--;
-                showMessage("最大座位数为"+(seatNum+1));
+        recyclerView.removeAllViews();
+        for (int i = 0; i < position; i++) {
+            MyAirportHolder holder = new MyAirportHolder();
+            View view = LayoutInflater.from(this).inflate(R.layout.include_public_view, null, false);
+            holder.mIvLogo = (ImageView) view.findViewById(R.id.iv_logo); //右边的图标
+            holder.mLineEdt = view.findViewById(R.id.line_edt); //底下的线
+            holder.mIvStatus = (ImageView) view.findViewById(R.id.iv_status); //右边的图标  占时不用;
+            holder.mEdtContent = (EditText) view.findViewById(R.id.edt_content); // 文本框
+            holder.mTvCode = (TextView) view.findViewById(R.id.tv_code);  //本人身份证
+            holder.mPwLl = (AutoLinearLayout) view.findViewById(R.id.pw_ll); //整个布局
+            holder.mIwDelete = (ImageView) view.findViewById(R.id.iw_delete);
+            holder.mIwCancel  = (ImageView) view.findViewById(R.id.iw_cancel_port);
+            if (mAirportRequests.get(i).getStatus() == Constant.AIRPORT_SUCCESS) {
+                setSuccess(holder);
+            } else if (mAirportRequests.get(i).getStatus() == Constant.AIRPORT_FAILURE) {
+                setFailure(holder);
+            } else {
+                setNomal(holder);
             }
+            if (i == position - 1) {
+                holder.mLineEdt.setVisibility(View.GONE);
+            }
+            setAirportData(holder, mAirportRequests.get(i));
+            setlistener(holder, i);
+            recyclerView.addView(view);
+        }
+    }
+
+    public void addLinearOnelayout(){
+        AirPortRequest request = new AirPortRequest();
+        request.setStatus(Constant.AIRPORT_NO);
+        mAirportRequests.add(request);
+        addLinearLayout(mAirportRequests.size());
     }
 
     //设置数据
@@ -293,6 +333,15 @@ public class ZVerifyIdCardActivity extends WEActivity<ZVerifyIdCardPresenter> im
             return response.isRealValid();
         }else{
             return false;
+        }
+    }
+
+    @OnClick({R.id.tw_go_to_order})
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.tw_go_to_order:
+                showMessage(mAirportRequests.toString());
+                break;
         }
     }
 }

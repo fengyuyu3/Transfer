@@ -31,4 +31,5 @@
     <dimen name="margin_new_left">16px</dimen>
     <dimen name="margin_new_top">16px</dimen>
     <dimen name="item_height">74px</dimen>
+    <dimen name="money_margin_left">42px</dimen>
 </resources>

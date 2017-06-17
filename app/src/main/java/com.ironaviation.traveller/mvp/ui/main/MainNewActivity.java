@@ -155,13 +155,6 @@ public class MainNewActivity extends WEActivity<MainNewPresenter> implements Mai
         vp.setAdapter(mAdapter);*/
         final AutoCommonTabLayout tl_2 = ViewFindUtils.find(decorView, R.id.tl_2);
         tl_2.setTabData(getArrayList(),this,R.id.frament,mFragments);
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                tl_2.setCurrentTab(1);
-                tl_2.setCurrentTab(0);
-            }
-        });
         /*tl_2.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {

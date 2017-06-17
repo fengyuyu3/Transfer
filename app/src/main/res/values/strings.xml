@@ -291,5 +291,10 @@
     <string name="travel_success_info_little">我们会尽快为您发送司机的信息</string>
     <string name="travel_free_info_details">输入乘机人证件号,验证成功1名立减40,可叠加</string>
     <string name="travel_free_rule">四川航空减免规则说明</string>
+    <string name="travel_free_verify_Z">减免验证</string>
 
+    <string name="travel_charge_money">充值金额(元)</string>
+    <string name="travel_select_charge_money">选择充值金额(元)</string>
+    <string name="travel_at_once_money">立即充值</string>
+    <string name="travel_charge_money_notice">请输入充值金额</string>
 </resources>

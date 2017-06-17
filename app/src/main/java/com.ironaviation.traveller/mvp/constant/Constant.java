@@ -186,4 +186,6 @@ public interface Constant {
     int CAR_ONE = 1001;
     int CAR_TWO = 1002;
     int CAR_THREE = 1003;
+
+    String PAY_MONEY = "pay_money";
 }

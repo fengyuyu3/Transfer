@@ -8,6 +8,8 @@
     <include layout="@layout/include_line_one"/>
 
     <TextView
+        android:gravity="center"
+        android:layout_gravity="center"
         android:textColor="@color/color_dbac6f"
         android:textSize="28px"
         android:paddingBottom="22px"
@@ -19,6 +21,7 @@
         android:layout_height="wrap_content" />
 
     <com.zhy.autolayout.AutoLinearLayout
+        android:orientation="vertical"
         android:layout_marginTop="@dimen/margin_new_top"
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
@@ -26,10 +29,11 @@
     </com.zhy.autolayout.AutoLinearLayout>
 
     <TextView
+        android:layout_marginTop="187px"
         android:layout_gravity="center"
         android:drawablePadding="18px"
         android:textColor="@color/color_2b2b2b"
-        android:drawableRight="@mipmap/ic_right_ic_card"
+        android:drawableRight="@mipmap/ic_black_right"
         android:text="@string/travel_free_rule"
         android:id="@+id/tw_free_rule"
         android:layout_width="wrap_content"

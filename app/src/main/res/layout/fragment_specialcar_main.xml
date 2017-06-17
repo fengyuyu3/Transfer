@@ -87,7 +87,6 @@
                         android:layout_height="wrap_content"
                         app:hint1="@string/airport_address"
                         app:left_logo1="@mipmap/ic_getdowm_address"
-                        app:line1="false"
                         />
                 <com.ironaviation.traveller.mvp.ui.widget.PublicTextView
                     android:id="@+id/pw_new_airport_off"
@@ -95,6 +94,7 @@
                     android:layout_height="wrap_content"
                     app:hint1="@string/airport_airport"
                     app:left_logo1="@mipmap/ic_come_address"
+                    app:line1="false"
                     />
                 </com.zhy.autolayout.AutoLinearLayout>
             </com.zhy.autolayout.AutoLinearLayout>
@@ -130,6 +130,7 @@
             </com.zhy.autolayout.AutoRelativeLayout>
 
             <com.zhy.autolayout.AutoRelativeLayout
+                android:id="@+id/al_validate"
                 android:layout_marginTop="@dimen/margin_new_top"
                 android:background="@drawable/white_8_radius_shap"
                 android:layout_width="match_parent"

@@ -104,7 +104,7 @@
         </com.zhy.autolayout.AutoRelativeLayout>
 
         <com.ironaviation.traveller.mvp.ui.widget.ImageTextImageView
-            android:visibility="gone"
+            android:visibility="visible"
             android:layout_marginTop="@dimen/h_fillet"
             android:id="@+id/ivi_we_chat"
             android:layout_width="match_parent"

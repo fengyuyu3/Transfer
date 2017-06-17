@@ -101,10 +101,10 @@ public class SpecialCarMainFragment extends WEFragment<SpecialCarMainPresenter> 
             mFragments.add(airportFragment);
             mFragments.add(mAirportFragment);
         }*/
-        adapter = new TableLayoutAdapter(getActivity().getSupportFragmentManager(),mTitles,mFragments);
-        vp.setAdapter(adapter);
-        tablayout.setViewPager(vp, mTitles);
-        vp.setCurrentItem(0);
+            adapter = new TableLayoutAdapter(getActivity().getSupportFragmentManager(),mTitles,mFragments);
+            vp.setAdapter(adapter);
+            tablayout.setViewPager(vp, mTitles);
+            vp.setCurrentItem(0);
     }
 
     /**

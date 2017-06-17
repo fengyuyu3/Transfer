@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/include_toolbar"/>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_marginTop="@dimen/margin_new_top"
+        android:layout_marginLeft="@dimen/margin_new_left"
+        android:layout_marginRight="@dimen/margin_new_right"
+        android:background="@drawable/white_8_radius_shap"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginLeft="@dimen/money_margin_left"
+            android:layout_marginTop="32px"
+            android:textColor="@color/color_626262"
+            android:textSize="28px"
+            android:text="@string/travel_charge_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textColor="@color/color_2b2b2b"
+                android:textSize="60px"
+                android:layout_marginLeft="20px"
+                android:layout_marginTop="42px"
+                android:text="¥"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:digits="0123456789"
+                android:inputType="number"
+                android:layout_marginLeft="@dimen/money_margin_left"
+                android:layout_marginBottom="32px"
+                android:textColor="@color/color_2b2b2b"
+                android:textSize="60px"
+                android:text="13.00"
+                android:layout_marginTop="42px"
+                android:id="@+id/tw_money"
+                android:textColorHint="@color/airport_edit_gray"
+                android:paddingLeft="10px"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:background="@null"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+            <ImageView
+                android:padding="20px"
+                android:layout_centerHorizontal="true"
+                android:layout_marginRight="42px"
+                android:id="@+id/iw_cancel_money"
+                android:visibility="visible"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/ic_delete_edt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:visibility="gone"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="32px">
+            <include layout="@layout/include_line_one"/>
+            <TextView
+                android:layout_marginBottom="27px"
+                android:layout_marginTop="24px"
+                android:layout_marginLeft="10px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </com.zhy.autolayout.AutoLinearLayout>
+        </com.zhy.autolayout.AutoLinearLayout>
+
+    <com.zhy.autolayout.AutoLinearLayout
+            android:background="@drawable/white_8_radius_shap"
+            android:layout_marginTop="@dimen/margin_new_top"
+            android:layout_marginLeft="@dimen/margin_new_left"
+            android:layout_marginRight="@dimen/margin_new_right"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/money_margin_left"
+            android:paddingRight="@dimen/money_margin_left">
+
+            <TextView
+                android:textSize="28px"
+                android:textColor="@color/color_626262"
+                android:layout_marginTop="30px"
+                android:text="@string/travel_select_charge_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView3" />
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_marginTop="34px"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/money_text_style"
+                    android:text="¥30"
+                    android:id="@+id/tw_price_1" />
+
+                <TextView
+                    android:layout_marginLeft="16px"
+                    style="@style/money_text_style"
+                    android:text="¥50"
+                    android:id="@+id/tw_price_2"/>
+
+                <TextView
+                    android:layout_marginLeft="16px"
+                    style="@style/money_text_style"
+                    android:text="¥100"
+                    android:id="@+id/tw_price_3"/>
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_marginTop="16px"
+                android:layout_marginBottom="20px"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/money_text_style"
+                    android:text="¥120"
+                    android:id="@+id/tw_price_4" />
+
+                <TextView
+                    android:layout_marginLeft="16px"
+                    style="@style/money_text_style"
+                    android:text="¥150"
+                    android:id="@+id/tw_price_5"/>
+
+                <TextView
+                    android:layout_marginLeft="16px"
+                    style="@style/money_text_style"
+                    android:text="¥200"
+                    android:id="@+id/tw_price_6"/>
+            </com.zhy.autolayout.AutoLinearLayout>
+        </com.zhy.autolayout.AutoLinearLayout>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/margin_new_top"
+        android:layout_marginLeft="@dimen/margin_new_left"
+        android:layout_marginRight="@dimen/margin_new_right"
+        android:background="@drawable/white_8_radius_shap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.ironaviation.traveller.mvp.ui.widget.ImageTextImageView
+            android:visibility="visible"
+            android:id="@+id/ivi_we_chat"
+            android:layout_width="match_parent"
+            android:layout_height="106px"
+            app:left_logo_iti="@mipmap/ic_new_we_chat"
+            app:text_iti="@string/we_chat_Payment"/>
+
+        <LinearLayout
+            android:background="@color/color_dadada"
+            android:layout_marginLeft="21px"
+            android:layout_marginRight="21px"
+            android:layout_width="match_parent"
+            android:layout_height="1px"/>
+        <com.ironaviation.traveller.mvp.ui.widget.ImageTextImageView
+                android:visibility="visible"
+                android:id="@+id/ivi_ali_pay"
+                android:layout_width="match_parent"
+                android:layout_height="106px"
+                app:left_logo_iti="@mipmap/ic_new_alipay"
+                app:text_iti="@string/we_chat_Payment"/>
+
+    </com.zhy.autolayout.AutoLinearLayout>
+    <TextView
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_marginTop="32px"
+        android:id="@+id/tw_go_to_order"
+        style="@style/button_red_style"
+        android:layout_marginLeft="20px"
+        android:layout_marginRight="20px"
+        android:layout_marginBottom="40px"
+        android:layout_width="match_parent"
+        android:layout_height="97px"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/travel_at_once_money"></TextView>
+</com.zhy.autolayout.AutoLinearLayout>

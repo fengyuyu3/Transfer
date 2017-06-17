@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.app.EventBusTags;
-import com.ironaviation.traveller.app.utils.CheckIdCardUtils;
 import com.ironaviation.traveller.common.AppComponent;
 import com.ironaviation.traveller.common.WEActivity;
 import com.ironaviation.traveller.di.component.airportoff.DaggerVerifyIdCardComponent;

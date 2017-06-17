@@ -102,6 +102,15 @@ public class ImageTextImageView extends AutoLinearLayout {
             ivGoOn.setVisibility(show == true ? VISIBLE : GONE);
     }
 
+    public void newShow(boolean show){
+        ivGoOn.setVisibility(VISIBLE);
+        if(show) {
+            ivGoOn.setImageResource(R.mipmap.ic_select);
+        }else{
+            ivGoOn.setImageResource(R.mipmap.ic_select_nomal);
+        }
+    }
+
     public void setBackGround(int resId) {
 
         rl_iti.setBackgroundColor(resId);
