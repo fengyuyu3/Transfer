@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ironaviation.traveller.R;
 import com.ironaviation.traveller.common.AppComponent;
@@ -36,7 +35,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static android.R.attr.onClick;
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 /**
@@ -66,6 +64,7 @@ public class ZVerifyIdCardActivity extends WEActivity<ZVerifyIdCardPresenter> im
     private int seatNum = 0;
     private AirportGoInfoRequest mRequest;
     private String status;
+    private int maxSize = 5;
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerZVerifyIdCardComponent
@@ -174,31 +173,35 @@ public class ZVerifyIdCardActivity extends WEActivity<ZVerifyIdCardPresenter> im
 
     public void addLinearLayout(int position) {
 
-        recyclerView.removeAllViews();
-        for (int i = 0; i < position; i++) {
-            MyAirportHolder holder = new MyAirportHolder();
-            View view = LayoutInflater.from(this).inflate(R.layout.include_public_view, null, false);
-            holder.mIvLogo = (ImageView) view.findViewById(R.id.iv_logo); //右边的图标
-            holder.mLineEdt = view.findViewById(R.id.line_edt); //底下的线
-            holder.mIvStatus = (ImageView) view.findViewById(R.id.iv_status); //右边的图标  占时不用;
-            holder.mEdtContent = (EditText) view.findViewById(R.id.edt_content); // 文本框
-            holder.mTvCode = (TextView) view.findViewById(R.id.tv_code);  //本人身份证
-            holder.mPwLl = (AutoLinearLayout) view.findViewById(R.id.pw_ll); //整个布局
-            holder.mIwDelete = (ImageView) view.findViewById(R.id.iw_delete);
-            holder.mIwCancel  = (ImageView) view.findViewById(R.id.iw_cancel_port);
-            if (mAirportRequests.get(i).getStatus() == Constant.AIRPORT_SUCCESS) {
-                setSuccess(holder);
-            } else if (mAirportRequests.get(i).getStatus() == Constant.AIRPORT_FAILURE) {
-                setFailure(holder);
-            } else {
-                setNomal(holder);
+        if(position < maxSize) {
+            recyclerView.removeAllViews();
+            for (int i = 0; i < position; i++) {
+                MyAirportHolder holder = new MyAirportHolder();
+                View view = LayoutInflater.from(this).inflate(R.layout.include_public_view, null, false);
+                holder.mIvLogo = (ImageView) view.findViewById(R.id.iv_logo); //右边的图标
+                holder.mLineEdt = view.findViewById(R.id.line_edt); //底下的线
+                holder.mIvStatus = (ImageView) view.findViewById(R.id.iv_status); //右边的图标  占时不用;
+                holder.mEdtContent = (EditText) view.findViewById(R.id.edt_content); // 文本框
+                holder.mTvCode = (TextView) view.findViewById(R.id.tv_code);  //本人身份证
+                holder.mPwLl = (AutoLinearLayout) view.findViewById(R.id.pw_ll); //整个布局
+                holder.mIwDelete = (ImageView) view.findViewById(R.id.iw_delete);
+                holder.mIwCancel = (ImageView) view.findViewById(R.id.iw_cancel_port);
+                if (mAirportRequests.get(i).getStatus() == Constant.AIRPORT_SUCCESS) {
+                    setSuccess(holder);
+                } else if (mAirportRequests.get(i).getStatus() == Constant.AIRPORT_FAILURE) {
+                    setFailure(holder);
+                } else {
+                    setNomal(holder);
+                }
+                if (i == position - 1) {
+                    holder.mLineEdt.setVisibility(View.GONE);
+                }
+                setAirportData(holder, mAirportRequests.get(i));
+                setlistener(holder, i);
+                recyclerView.addView(view);
             }
-            if (i == position - 1) {
-                holder.mLineEdt.setVisibility(View.GONE);
-            }
-            setAirportData(holder, mAirportRequests.get(i));
-            setlistener(holder, i);
-            recyclerView.addView(view);
+        }else{
+            showMessage("超出最大座位数!");
         }
     }
 

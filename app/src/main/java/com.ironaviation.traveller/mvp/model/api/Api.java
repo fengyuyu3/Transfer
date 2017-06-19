@@ -56,4 +56,7 @@ public interface Api {
 
     String Z_PREVIEW_DETAILS = "/api/Booking/PreviewBooking"; //专车预览订单
 
+    String VALIDATE_PASSENGER = "/api/Booking/ValidatePassenger"; //验证乘客
+    String CAR_TYPES ="/api/Booking/GetCarTypes"; //车辆信息
+
 }

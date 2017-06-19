@@ -15,13 +15,16 @@ import com.ironaviation.traveller.mvp.model.entity.request.CancelOrderRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.IdentificationRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.InstallRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.MessageRequest;
+import com.ironaviation.traveller.mvp.model.entity.request.PassengersRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.PhoneRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.PreViewRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.RouteListMoreRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.TravelRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.UpdateAddressBookRequest;
+import com.ironaviation.traveller.mvp.model.entity.request.ValidatePassengerRequest;
 import com.ironaviation.traveller.mvp.model.entity.response.AddressResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.CancelBookingInfo;
+import com.ironaviation.traveller.mvp.model.entity.response.CarTypeResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.CommentTag;
 import com.ironaviation.traveller.mvp.model.entity.response.CommentsInfo;
 import com.ironaviation.traveller.mvp.model.entity.response.Flight;
@@ -138,4 +141,10 @@ public interface CommonService {
 
     @POST(Api.Z_PREVIEW_DETAILS)
     Observable<BaseData<AirportGoInfoRequest>> getZPreViewDetails(@Body PreViewRequest params);
+
+    @POST(Api.VALIDATE_PASSENGER)
+    Observable<BaseData<List<PassengersRequest>>> getPassengerInfo(@Body ValidatePassengerRequest params);
+
+    @POST(Api.CAR_TYPES)
+    Observable<BaseData<List<CarTypeResponse>>> getCarTypes();
 }

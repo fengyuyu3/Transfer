@@ -10,8 +10,11 @@ import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.request.AirportGoInfoRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.PreViewRequest;
+import com.ironaviation.traveller.mvp.model.entity.response.CarTypeResponse;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BaseModel;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -57,5 +60,10 @@ public class SpecialCarModel extends BaseModel<ServiceManager, CacheManager> imp
     @Override
     public Observable<BaseData<AirportGoInfoRequest>> getPreViewInfo(PreViewRequest params) {
         return mCommonService.getZPreViewDetails(params);
+    }
+
+    @Override
+    public Observable<BaseData<List<CarTypeResponse>>> getCarTypes() {
+        return mCommonService.getCarTypes();
     }
 }

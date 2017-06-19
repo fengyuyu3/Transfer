@@ -30,6 +30,7 @@ import com.ironaviation.traveller.mvp.model.entity.HistoryPoiInfo;
 import com.ironaviation.traveller.mvp.model.entity.PayInfo;
 import com.ironaviation.traveller.mvp.model.entity.request.AirportGoInfoRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.PreViewRequest;
+import com.ironaviation.traveller.mvp.model.entity.response.CarTypeResponse;
 import com.ironaviation.traveller.mvp.model.entity.response.Flight;
 import com.ironaviation.traveller.mvp.presenter.airportoff.SpecialCarPresenter;
 import com.ironaviation.traveller.mvp.ui.airporton.TravelFloatOnActivity;
@@ -116,7 +117,6 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
     private TerminalPopupWindow mTerminalPopupWindow;
     private HistoryPoiInfo info;
     private List<Fragment> fragmentList = new ArrayList<>();
-    private int SIZE = 3;
     private ImageView[] imageViews;
     private MyAdapter adapter;
     private BalancePopupwindow balancePopupwindow;
@@ -148,44 +148,24 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
         if(status.equals(Constant.Z_ENTER_PORT)){
             llEnterPort.setVisibility(View.VISIBLE);
             llClearPort.setVisibility(View.GONE);
+            pwNewAirportOn.setTextInfo(Constant.AIRPORT_T1);
         }else if(status.equals(Constant.Z_CLEAR_PORT)){
             llEnterPort.setVisibility(View.GONE);
             llClearPort.setVisibility(View.VISIBLE);
+            pwNewAirportOff.setTextInfo(Constant.AIRPORT_T1);
         }
         if (UserInfoUtils.getInstance().getInfo(getActivity()) != null
                 && UserInfoUtils.getInstance().getInfo(getActivity()).getPhone() != null) {
             phone = UserInfoUtils.getInstance().getInfo(getActivity()).getPhone();
             pwNewPersonAirport.setTextInfo(phone);
         }
-        setFragmentTestData();
-        adapter = new MyAdapter(getActivity().getSupportFragmentManager());
-        vpNewCar.setAdapter(adapter);
-        InitPort();
-        pwNewAirportOn.setTextInfo(Constant.AIRPORT_T1);
-
-        vpNewCar.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                setClear();
-                imageViews[position].setImageResource(R.drawable.ic_page_indicator_theme_splash_focus);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
+        //setViewPager(false);
+        mPresenter.getCarType();
     }
 
-    public void InitPort() {
-        imageViews = new ImageView[SIZE];
-        for (int i = 0; i < SIZE; i++) {
+    public void InitPort(int size) {
+        imageViews = new ImageView[size];
+        for (int i = 0; i < size; i++) {
             ImageView imageView = new ImageView(getActivity());
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             if (i != 0) {
@@ -199,19 +179,16 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
         imageViews[0].setImageResource(R.drawable.ic_page_indicator_theme_splash_focus);
     }
 
-    public void setClear() {
-        for (int i = 0; i < SIZE; i++) {
+    public void setClear(int size) {
+        for (int i = 0; i < size; i++) {
             imageViews[i].setImageResource(R.drawable.ic_page_indicator_theme_splash);
         }
     }
 
-    public void setFragmentTestData() {
-        for (int i = 0; i < 3; i++) {
+    public void setFragmentData(List<CarTypeResponse> list) {
+        for(int i = 0 ; i < list.size(); i++){
             Bundle bundle = new Bundle();
-            bundle.putInt(Constant.STATUS, Constant.CAR_ONE);
-            PayInfo info = new PayInfo();
-            info.setBID("333333");
-            bundle.putSerializable("test", info);
+            bundle.putSerializable(Constant.STATUS,list.get(i));
             ViewPagerCarFragment fragment = new ViewPagerCarFragment();
             fragment.setArguments(bundle);
             fragmentList.add(fragment);
@@ -504,6 +481,32 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
         }
     }
 
+    @Override
+    public void freshCarType(final List<CarTypeResponse> list) {
+        setViewPager(true);
+        setFragmentData(list);
+        InitPort(list.size());
+        vpNewCar.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                setClear(list.size());
+                imageViews[position].setImageResource(R.drawable.ic_page_indicator_theme_splash_focus);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        adapter = new MyAdapter(getActivity().getSupportFragmentManager());
+        vpNewCar.setAdapter(adapter);
+    }
+
     public class MyAdapter extends FragmentPagerAdapter {
 
         public MyAdapter(FragmentManager fm) {
@@ -550,5 +553,11 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
         params.setIDCardNos(new ArrayList<String>());//身份证集合
 
         return params;
+    }
+
+    public void setViewPager(boolean show){
+        vpNewCar.setVisibility(show ? View.VISIBLE : View.GONE);
+        mLlNewPort.setVisibility(show ? View.VISIBLE : View.GONE);
+        viewpagerProgress.setVisibility(!show ? View.VISIBLE :View.GONE);
     }
 }

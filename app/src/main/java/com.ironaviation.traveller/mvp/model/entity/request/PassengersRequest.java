@@ -27,6 +27,24 @@ public class PassengersRequest implements Serializable{
     private float Price;
     private boolean IsValid;
     private boolean HasBooked;
+    private int SeatNumber;
+    private String CabinSeat;
+
+    public int getSeatNumber() {
+        return SeatNumber;
+    }
+
+    public void setSeatNumber(int seatNumber) {
+        SeatNumber = seatNumber;
+    }
+
+    public String getCabinSeat() {
+        return CabinSeat;
+    }
+
+    public void setCabinSeat(String cabinSeat) {
+        CabinSeat = cabinSeat;
+    }
 
     public boolean isValid() {
         return IsValid;

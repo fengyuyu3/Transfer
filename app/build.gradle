@@ -42,8 +42,9 @@ android {
             minifyEnabled false
             resValue("string", "SERVER_ID", "141262")
             //192.168.0.80:8050   https://prerelease.jichangzhuanxian.com
-//            resValue("string", "APP_DOMAIN","http://192.168.0.80:8050")
-            resValue("string", "APP_DOMAIN","http://th-api.bestwise.net")
+//            resValue("string", "APP_DOMAIN","http://192.168.0.80:8050") //http://192.168.0.75:8051
+//            resValue("string", "APP_DOMAIN","http://th-api.bestwise.net")
+            resValue("string", "APP_DOMAIN","http://192.168.0.75:8051")
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             manifestPlaceholders = [GETUI_APP_ID: "K7LYTYchYK90p97ulbSl55", GETUI_APP_KEY: "zDgXBowynw9BQfoBxD9cs",GETUI_APP_SECRET:"KOkuzK2NlG9uWdidNKoX71",PACKAGE_NAME:"com.ironaviation.traveller",BAIDU_KEY:"RWwiqZzNGztarUvOZdntaG15fCDTNcEj"]
         }

@@ -6,14 +6,20 @@ import com.ironaviation.traveller.mvp.contract.airportoff.SpecialCarContract;
 import com.ironaviation.traveller.mvp.model.entity.BaseData;
 import com.ironaviation.traveller.mvp.model.entity.request.AirportGoInfoRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.PreViewRequest;
+import com.ironaviation.traveller.mvp.model.entity.response.CarTypeResponse;
 import com.jess.arms.base.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.utils.RxUtils;
 import com.jess.arms.widget.imageloader.ImageLoader;
 
+import java.util.List;
+
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
+import rx.schedulers.Schedulers;
 
 import javax.inject.Inject;
 
@@ -70,6 +76,38 @@ public class SpecialCarPresenter extends BasePresenter<SpecialCarContract.Model,
                          }else{
                              //error
                          }
+                    }
+                });
+    }
+
+    public void getCarType(){
+        mModel.getCarTypes()
+                .subscribeOn(Schedulers.io())
+                .doOnSubscribe(new Action0() {
+                    @Override
+                    public void call() {//显示进度条
+                    }
+                })
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doAfterTerminate(new Action0() {
+                    @Override
+                    public void call() {
+                    }
+                })
+                .subscribe(new ErrorHandleSubscriber<BaseData<List<CarTypeResponse>>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseData<List<CarTypeResponse>> listBaseData) {
+                        if(listBaseData.isSuccess()){
+                            if(listBaseData.getData() != null && listBaseData.getData().size() > 0 ){
+                                mRootView.freshCarType(listBaseData.getData());
+                            }else{
+                                //  no data
+                            }
+                        }else{
+                            //error
+                            mRootView.showMessage(listBaseData.getMessage());
+                        }
                     }
                 });
     }

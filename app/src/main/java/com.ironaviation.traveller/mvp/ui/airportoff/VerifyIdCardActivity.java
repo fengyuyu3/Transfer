@@ -227,7 +227,6 @@ public class VerifyIdCardActivity extends WEActivity<VerifyIdCardPresenter> impl
         finish();
     }
 
-
     @Override
     protected void nodataRefresh() {
 
