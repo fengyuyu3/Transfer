@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.util.TimeUtils;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ import com.ironaviation.traveller.mvp.contract.airportoff.SpecialCarContract;
 import com.ironaviation.traveller.mvp.model.entity.HistoryPoiInfo;
 import com.ironaviation.traveller.mvp.model.entity.PayInfo;
 import com.ironaviation.traveller.mvp.model.entity.request.AirportGoInfoRequest;
+import com.ironaviation.traveller.mvp.model.entity.request.PreViewRequest;
 import com.ironaviation.traveller.mvp.model.entity.response.Flight;
 import com.ironaviation.traveller.mvp.presenter.airportoff.SpecialCarPresenter;
 import com.ironaviation.traveller.mvp.ui.airporton.TravelFloatOnActivity;
@@ -69,7 +71,6 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implements SpecialCarContract.View, MyTimeDialog.ItemCallBack,
         TerminalPopupWindow.CallBackItem {
-
 
     @BindView(R.id.pw_new_person_airport)
     PublicTextView pwNewPersonAirport;
@@ -119,6 +120,7 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
     private ImageView[] imageViews;
     private MyAdapter adapter;
     private BalancePopupwindow balancePopupwindow;
+    private boolean timeFlag,pickAddressFlag;
 
     @Override
     protected void setupFragmentComponent(AppComponent appComponent) {
@@ -382,9 +384,9 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
         this.flight = flight;
         if (status != null && flight.getStatus() != null && flight.getStatus().equals(Constant.Z_ENTER_PORT) && flight.getStatus().equals(status)) {
             mTimeNewDialog.setZTime(flight.getList().get(0).getArriveTime(), Constant.AIRPORT_Z_ON);
-            if (getTerminalNum(flight.getList().get(0).getTakeOff()) != -1) {
+            if (getTerminalNum(flight.getList().get(0).getArrive()) != -1) {
                 terminalNum = getTerminalNum(flight.getList().get(0).getArrive());
-                pwNewFlt.setTextInfo(getTerminal(getTerminalNum(flight.getList().get(0).getArrive())));
+                pwNewAirportOn.setTextInfo(getTerminal(terminalNum));
             }
             if (flight.getList().get(0).getTakeOffTime() != 0) {
                 pwNewFlt.setArriveTime(TimerUtils.getDateFormat(flight.getList().get(0).getArriveTime(), Constant.fomartOn));
@@ -402,8 +404,19 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
                 pwNewTimeOn.setTextInfo(TimerUtils.getDateFormat(flight.getList().get(0).getArriveTime() + 30 * 60 * 1000, Constant.format));
                 pwNewTimeOn.setArriveTime(getActivity().getResources().getString(R.string.travel_address_time_info));
             }
-            pwNewAirportOn.setTextInfo(getTerminal(terminalNum));
         } else if (status != null && flight.getStatus() != null && flight.getStatus().equals(Constant.Z_CLEAR_PORT) && flight.getStatus().equals(status)) {
+            mTimeNewDialog.setSenvenTime(System.currentTimeMillis(),Constant.AIRPORT_Z_GO);
+            if(getTerminalNum(flight.getList().get(0).getTakeOff()) != -1){
+                terminalNum = getTerminalNum(flight.getList().get(0).getTakeOff());
+                pwNewAirportOff.setTextInfo(getTerminal(getTerminalNum(flight.getList().get(0).getArrive())));
+            }
+            if(flight.getList().get(0).getArriveTime() != 0){
+                pwNewFlt.setArriveTime(TimerUtils.getDateFormat(flight.getList().get(0).getTakeOffTime(),Constant.fomartOFF));
+            }
+            if(flight.getInfo().getFlightNo() != null){
+                flightNo = flight.getInfo().getFlightNo();
+                pwNewFlt.setTextInfo(flight.getInfo().getFlightNo());
+            }
 
         }
     }
@@ -448,7 +461,10 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
         this.time = time;
         pwNewTimeOn.setTextInfo(TimerUtils.getDateFormat(time, Constant.format));
         pwNewTimeOn.setArriveTime("");
-//        mPresenter.getAirportInfo(getAirPortInfo());
+        timeFlag = true;
+        if(timeFlag && pickAddressFlag){
+//            mPresenter.getPreViewInfo(getPreViewData()); 接口出来了，才可以
+        }
     }
 
     @Override
@@ -469,6 +485,10 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
         if (status != null && status.equals(Constant.Z_CLEAR_PORT)) {
             this.info = info;
             pwNewAddressOff.setTextInfo(info.name);
+            pickAddressFlag = true;
+            if(timeFlag && pickAddressFlag){
+//                mPresenter.getPreViewInfo(getPreViewData());
+            }
         }
     }
 
@@ -477,9 +497,10 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
         if (status != null && status.equals(Constant.Z_ENTER_PORT)) {
             this.info = info;
             pwNewAddressOn.setTextInfo(info.name);
-           /* if (addressFlagON && flightFlag) {
-                mPresenter.getAirportInfo(getAirPortInfo());
-            }*/
+            pickAddressFlag = true;
+            if(timeFlag && pickAddressFlag){
+//                mPresenter.getPreViewInfo(getPreViewData());
+            }
         }
     }
 
@@ -498,5 +519,36 @@ public class SpecialCarFragment extends WEFragment<SpecialCarPresenter> implemen
         public int getCount() {
             return fragmentList != null ? fragmentList.size() : 0;
         }
+    }
+
+    public PreViewRequest getPreViewData(){
+        PreViewRequest params = new PreViewRequest();
+        if(phone != null) {
+            params.setPhone(phone);
+        }
+        if(flightNo != null){
+            params.setFlightNo(flightNo);
+        }
+        params.setFlightDate(TimerUtils.getDateFormat(flight.getList().get(0).getTakeOffTime(),Constant.formatDate));
+        params.setCarType(""); // 车型
+        if(status.equals(Constant.Z_CLEAR_PORT)){ //送机
+            params.setPickupTime(time);
+            params.setPickupAddress(info.name);
+            params.setPickupDetailAddress(info.address);
+            params.setArriveAddress(getTerminal(terminalNum));
+            params.setArriveDetailAddress("");
+            params.setPortType(Constant.PORT_TYPE_CLEAR_PORT);
+        }else if(status.equals(Constant.Z_ENTER_PORT)){//接机
+            params.setPickupTime(time);
+            params.setPickupAddress("");
+            params.setPickupDetailAddress("");
+            params.setArriveAddress(info.name);
+            params.setArriveDetailAddress(info.address);
+            params.setPortType(Constant.PORT_TYPE_ENTER_PORT);
+        }
+        params.setServiceType(Constant.SERVICE_TYPE_Z);
+        params.setIDCardNos(new ArrayList<String>());//身份证集合
+
+        return params;
     }
 }

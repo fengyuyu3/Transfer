@@ -16,6 +16,7 @@ import com.ironaviation.traveller.mvp.model.entity.request.IdentificationRequest
 import com.ironaviation.traveller.mvp.model.entity.request.InstallRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.MessageRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.PhoneRequest;
+import com.ironaviation.traveller.mvp.model.entity.request.PreViewRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.RouteListMoreRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.TravelRequest;
 import com.ironaviation.traveller.mvp.model.entity.request.UpdateAddressBookRequest;
@@ -134,4 +135,7 @@ public interface CommonService {
 
     @POST(Api.APP_INSTALLED)
     Observable<BaseData<Boolean>> isInstallApp(@Body InstallRequest params);
+
+    @POST(Api.Z_PREVIEW_DETAILS)
+    Observable<BaseData<AirportGoInfoRequest>> getZPreViewDetails(@Body PreViewRequest params);
 }

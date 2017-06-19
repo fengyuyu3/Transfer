@@ -5,11 +5,17 @@ import android.app.Application;
 import com.google.gson.Gson;
 import com.ironaviation.traveller.mvp.contract.airportoff.SpecialCarContract;
 import com.ironaviation.traveller.mvp.model.api.cache.CacheManager;
+import com.ironaviation.traveller.mvp.model.api.service.CommonService;
 import com.ironaviation.traveller.mvp.model.api.service.ServiceManager;
+import com.ironaviation.traveller.mvp.model.entity.BaseData;
+import com.ironaviation.traveller.mvp.model.entity.request.AirportGoInfoRequest;
+import com.ironaviation.traveller.mvp.model.entity.request.PreViewRequest;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BaseModel;
 
 import javax.inject.Inject;
+
+import rx.Observable;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -31,12 +37,14 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
 public class SpecialCarModel extends BaseModel<ServiceManager, CacheManager> implements SpecialCarContract.Model {
     private Gson mGson;
     private Application mApplication;
+    private CommonService mCommonService;
 
     @Inject
     public SpecialCarModel(ServiceManager serviceManager, CacheManager cacheManager, Gson gson, Application application) {
         super(serviceManager, cacheManager);
         this.mGson = gson;
         this.mApplication = application;
+        this.mCommonService = serviceManager.getCommonService();
     }
 
     @Override
@@ -46,4 +54,8 @@ public class SpecialCarModel extends BaseModel<ServiceManager, CacheManager> imp
         this.mApplication = null;
     }
 
+    @Override
+    public Observable<BaseData<AirportGoInfoRequest>> getPreViewInfo(PreViewRequest params) {
+        return mCommonService.getZPreViewDetails(params);
+    }
 }

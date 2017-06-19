@@ -188,4 +188,10 @@ public interface Constant {
     int CAR_THREE = 1003;
 
     String PAY_MONEY = "pay_money";
+
+    int PORT_TYPE_ENTER_PORT = 1;
+    int PORT_TYPE_CLEAR_PORT = 2;
+
+    int SERVICE_TYPE_P = 1;
+    int SERVICE_TYPE_Z = 2;
 }

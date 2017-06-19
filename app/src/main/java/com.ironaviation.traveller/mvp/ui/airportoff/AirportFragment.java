@@ -188,12 +188,14 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
         mPwAirportOn.setTextInfo(Constant.AIRPORT_T1);
         mLlOnAddress.setVisibility(View.VISIBLE);
         mLlOffAddress.setVisibility(View.GONE);
+        mPwFlt.setInitInfo(getResources().getString(R.string.airport_no));
     }
 
     public void showOffLayout(){
         mPwAirportOff.setTextInfo(Constant.AIRPORT_T1);
         mLlOffAddress.setVisibility(View.VISIBLE);
         mLlOnAddress.setVisibility(View.GONE);
+        mPwFlt.setInitInfo(getResources().getString(R.string.airport_off));
     }
 
     public void showPrice(boolean flag){
@@ -363,8 +365,8 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
     //判断时间
     public void judgeFlyNo() {
         String fno = mPwFlt.getTextInfo();
-        if (fno.equals(getActivity().getResources().getString(R.string.airport_no))) {
-            showMessage(getString(R.string.airport_no));
+        if (fno.equals(getActivity().getResources().getString(R.string.airport_off))) {
+            showMessage(getString(R.string.airport_off));
         } else {
             long num = (flight.getList().get(0).getTakeOffTime() - System.currentTimeMillis())
                     / (60 * 60 * 1000);
@@ -669,7 +671,7 @@ public class AirportFragment extends WEFragment<AirportPresenter> implements Air
             mPwSeat.setFreeInfo("");
             mPassengersRequests = null;
             seatNum = 1;
-            mPwFlt.setInitInfo(getResources().getString(R.string.airport_no));
+            mPwFlt.setInitInfo(getResources().getString(R.string.airport_off));
             mPwFlt.setArriveTime("");
             flightNo = "";
             bid = null;

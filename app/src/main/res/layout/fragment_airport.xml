@@ -41,7 +41,7 @@
                 android:id="@+id/pw_flt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:hint1="@string/airport_no"
+                app:hint1="@string/airport_off"
                 app:left_logo1="@mipmap/ic_new_fly"
                 app:line1="false"
                 app:right_time1="true"/>
